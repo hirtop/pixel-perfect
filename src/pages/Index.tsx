@@ -1,4 +1,4 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
 import { Camera, Layers, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero-bathroom.jpg";
