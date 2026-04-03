@@ -129,8 +129,8 @@ const ProjectSummary = () => (
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg">
-            Continue to Subcontractors
+          <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
+            <Link to="/subcontractors">Continue to Subcontractors</Link>
           </Button>
           <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg">
             Save Project
