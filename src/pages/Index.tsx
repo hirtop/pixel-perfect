@@ -99,7 +99,7 @@ export default function LandingPage() {
             <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
           </div>
           <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
-            Start Your Project
+            Start Your Bathroom Project
           </Button>
         </div>
       </nav>
@@ -114,7 +114,7 @@ export default function LandingPage() {
             height={1080}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
         </div>
         <div className="relative container mx-auto px-6 py-32 md:py-44">
           <motion.div
@@ -136,7 +136,7 @@ export default function LandingPage() {
             <motion.p
               variants={fadeUp}
               custom={1}
-              className="text-lg md:text-xl text-primary-foreground/80 mb-10 font-body leading-relaxed max-w-md"
+              className="text-lg md:text-xl text-primary-foreground/80 mb-10 font-body leading-relaxed max-w-lg"
             >
               BOBOX Remodel helps you turn a bathroom photo into visual remodel
               packages with live budgets, real product suggestions, and a simple
@@ -149,7 +149,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-primary-foreground/60 text-primary-foreground hover:bg-primary-foreground/15 backdrop-blur-sm text-base px-8"
+                className="border-white/70 text-white hover:bg-white/10 backdrop-blur-sm text-base px-8"
               >
                 See a Sample Remodel
               </Button>
