@@ -140,7 +140,7 @@ const StartProject = () => {
             </div>
 
             {/* Actions */}
-            <div className="pt-6 flex flex-col sm:flex-row items-center gap-4">
+            <div className="pt-4 flex flex-col sm:flex-row items-center gap-5">
               <Button
                 size="lg"
                 className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg"
