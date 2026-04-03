@@ -199,42 +199,42 @@ const CustomizeOption = () => {
                           transition={{ duration: 0.25 }}
                           className="overflow-hidden"
                         >
-                          <div className="border-t border-border px-5 pb-5 pt-4 space-y-3">
-                            <p className="text-xs text-muted-foreground font-medium">Alternative options</p>
-                            {cat.alternatives.map((alt) => (
-                              <div
-                                key={alt.name}
-                                className="flex items-center justify-between rounded-lg border border-border bg-secondary/30 p-4 hover:border-primary/30 transition-colors"
-                              >
-                                <div className="flex items-center gap-4 flex-1 min-w-0">
-                                  <div className="w-12 h-12 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
-                                    <span className="text-xs text-muted-foreground font-medium">{cat.name.slice(0, 2)}</span>
+                          <div className="border-t border-border px-5 pb-5 pt-4 space-y-4">
+                            <p className="text-sm font-medium text-foreground">Compare {cat.name} Options</p>
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                              {cat.alternatives.map((alt) => (
+                                <div
+                                  key={alt.name}
+                                  className="rounded-xl border border-border bg-secondary/20 p-4 flex flex-col gap-3 hover:border-primary/30 transition-colors"
+                                >
+                                  <div className="w-full aspect-[3/2] rounded-lg bg-secondary flex items-center justify-center">
+                                    <span className="text-xs text-muted-foreground font-medium tracking-wide">{cat.name}</span>
                                   </div>
-                                  <div className="min-w-0">
-                                    <p className="text-sm font-medium text-foreground truncate">{alt.name}</p>
-                                    <p className="text-xs text-muted-foreground">{alt.desc}</p>
+                                  <div className="flex-1">
+                                    <p className="text-sm font-medium text-foreground leading-snug">{alt.name}</p>
+                                    <p className="text-xs text-muted-foreground mt-1">{alt.desc}</p>
+                                  </div>
+                                  <div className="flex items-center justify-between pt-1">
+                                    <span className={`text-xs font-semibold ${
+                                      alt.impactValue > 0
+                                        ? "text-accent"
+                                        : alt.impactValue < 0
+                                          ? "text-primary"
+                                          : "text-muted-foreground"
+                                    }`}>
+                                      {alt.impact}
+                                    </span>
+                                    <Button
+                                      size="sm"
+                                      className="text-xs h-8 px-4 rounded-lg"
+                                      onClick={() => selectAlternative(cat.name, alt)}
+                                    >
+                                      Select This Option
+                                    </Button>
                                   </div>
                                 </div>
-                                <div className="flex items-center gap-3 ml-4">
-                                  <span className={`text-xs font-semibold whitespace-nowrap ${
-                                    alt.impactValue > 0
-                                      ? "text-accent"
-                                      : alt.impactValue < 0
-                                        ? "text-primary"
-                                        : "text-muted-foreground"
-                                  }`}>
-                                    {alt.impact}
-                                  </span>
-                                  <Button
-                                    size="sm"
-                                    className="text-xs h-8 px-3 rounded-lg"
-                                    onClick={() => selectAlternative(cat.name, alt)}
-                                  >
-                                    Select
-                                  </Button>
-                                </div>
-                              </div>
-                            ))}
+                              ))}
+                            </div>
                           </div>
                         </motion.div>
                       )}
