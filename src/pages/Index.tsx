@@ -289,9 +289,12 @@ export default function LandingPage() {
             <motion.p variants={fadeUp} custom={0} className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
               Pricing
             </motion.p>
-            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground">
+            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground mb-4">
               Free to plan, pro to optimize
             </motion.h2>
+            <motion.p variants={fadeUp} custom={2} className="text-muted-foreground max-w-md mx-auto leading-relaxed">
+              Start free, then unlock deeper planning tools as your project gets more detailed.
+            </motion.p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
