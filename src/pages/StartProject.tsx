@@ -36,7 +36,7 @@ const StartProject = () => {
           className="max-w-2xl mx-auto"
         >
           {/* Header */}
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
               Start Your Bathroom Project
             </h1>
