@@ -1,8 +1,10 @@
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Star, ShieldCheck, BadgeCheck, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { useProject } from "@/contexts/ProjectContext";
 
 interface Pro {
   name: string;
@@ -35,115 +37,147 @@ const BadgePill = ({ label }: { label: string }) => (
   </span>
 );
 
-const ProCard = ({ pro }: { pro: Pro }) => (
-  <div className={`rounded-xl border bg-card p-5 space-y-3 transition-colors ${
-    pro.sponsored ? "border-accent/30" : "border-border"
-  }`}>
-    {pro.sponsored && (
-      <span className="inline-block text-[10px] font-semibold uppercase tracking-widest text-accent">Sponsored</span>
-    )}
-    <div className="flex items-start justify-between gap-3">
-      <div>
-        <p className="text-sm font-semibold text-foreground">{pro.name}</p>
-        <p className="text-xs text-muted-foreground">{pro.trade} · {pro.location}</p>
-      </div>
-      <div className="flex items-center gap-1 text-xs flex-shrink-0">
-        <Star className="h-3.5 w-3.5 fill-accent text-accent" />
-        <span className="font-semibold text-foreground">{pro.rating}</span>
-        <span className="text-muted-foreground">({pro.reviews})</span>
-      </div>
-    </div>
-    <div className="flex flex-wrap gap-1.5">
-      {pro.badges.map((b) => <BadgePill key={b} label={b} />)}
-    </div>
-    <p className="text-xs text-muted-foreground leading-relaxed">{pro.desc}</p>
-    <div className="flex gap-2 pt-1">
-      <Button size="sm" className="text-xs h-8 px-4 rounded-lg"
-        onClick={() => toast.success("Quote requested", { description: `We'll notify ${pro.name} with your project details.` })}
-      >Request Quote</Button>
-      <Button size="sm" variant="outline" className="text-xs h-8 px-3 rounded-lg gap-1.5"
-        onClick={() => toast.success("Summary sent", { description: `Your project summary was shared with ${pro.name}.` })}
-      >
-        <FileText className="h-3 w-3" /> Send Summary
-      </Button>
-    </div>
-  </div>
-);
+const Subcontractors = () => {
+  const { project, updateProject, markStepComplete } = useProject();
 
-const Subcontractors = () => (
-  <div className="min-h-screen bg-background">
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
-        <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
-          BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
-        </Link>
-        <Link to="/summary" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="h-3.5 w-3.5" /> Back to Summary
-        </Link>
-      </div>
-    </nav>
+  // Track interactions locally, seeded from context
+  const [interactions, setInteractions] = useState<Record<string, { quote: boolean; summary: boolean }>>(
+    () => {
+      const map: Record<string, { quote: boolean; summary: boolean }> = {};
+      project.subcontractor_interactions.forEach((si) => {
+        map[si.name] = { quote: !!si.quote_requested, summary: !!si.summary_sent };
+      });
+      return map;
+    }
+  );
 
-    <main className="pt-28 pb-20 px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-4xl mx-auto"
-      >
-        {/* Header */}
-        <div className="text-center mb-10">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">Connect</p>
-          <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Find Subcontractors</h1>
-          <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-            Connect your remodel plan with the right professionals for each step of the project.
-          </p>
-        </div>
+  const recordInteraction = (proName: string, type: "quote" | "summary") => {
+    setInteractions((prev) => {
+      const current = prev[proName] || { quote: false, summary: false };
+      const updated = { ...prev, [proName]: { ...current, [type]: true } };
 
-        {/* Trust block */}
-        <div className="rounded-xl border border-border bg-secondary/20 p-5 mb-8 flex flex-col sm:flex-row gap-4 sm:gap-8 text-xs text-muted-foreground">
-          <div className="flex items-start gap-2.5">
-            <BadgeCheck className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-            <span><strong className="text-foreground">Verified Pros</strong> are shown with ratings, service area, and license or insurance status where applicable.</span>
+      // Sync to context
+      const list = Object.entries(updated).map(([name, v]) => ({
+        name,
+        quote_requested: v.quote,
+        summary_sent: v.summary,
+      }));
+      updateProject({ subcontractor_interactions: list });
+
+      return updated;
+    });
+  };
+
+  const handleQuote = (pro: Pro) => {
+    recordInteraction(pro.name, "quote");
+    toast.success("Quote requested", { description: `We'll notify ${pro.name} with your project details.` });
+  };
+
+  const handleSummary = (pro: Pro) => {
+    recordInteraction(pro.name, "summary");
+    toast.success("Summary sent", { description: `Your project summary was shared with ${pro.name}.` });
+  };
+
+  const ProCard = ({ pro }: { pro: Pro }) => {
+    const state = interactions[pro.name] || { quote: false, summary: false };
+    return (
+      <div className={`rounded-xl border bg-card p-5 space-y-3 transition-colors ${pro.sponsored ? "border-accent/30" : "border-border"}`}>
+        {pro.sponsored && <span className="inline-block text-[10px] font-semibold uppercase tracking-widest text-accent">Sponsored</span>}
+        <div className="flex items-start justify-between gap-3">
+          <div>
+            <p className="text-sm font-semibold text-foreground">{pro.name}</p>
+            <p className="text-xs text-muted-foreground">{pro.trade} · {pro.location}</p>
           </div>
-          <div className="flex items-start gap-2.5">
-            <span className="inline-block w-4 h-4 rounded-sm bg-accent/20 flex-shrink-0 mt-0.5 text-center leading-4 text-accent font-bold text-[9px]">S</span>
-            <span><strong className="text-foreground">Sponsored Pros</strong> are clearly labeled promotional placements from partner professionals.</span>
+          <div className="flex items-center gap-1 text-xs flex-shrink-0">
+            <Star className="h-3.5 w-3.5 fill-accent text-accent" />
+            <span className="font-semibold text-foreground">{pro.rating}</span>
+            <span className="text-muted-foreground">({pro.reviews})</span>
           </div>
         </div>
-
-        {/* Trade context */}
-        <p className="text-sm text-muted-foreground mb-8">
-          Based on your workflow, you may need help with <span className="text-foreground font-medium">plumbing, electrical, tile, shower hardware, and finishing</span>.
-        </p>
-
-        {/* Verified Pros */}
-        <section className="mb-12">
-          <h2 className="font-heading text-xl text-foreground mb-5">Verified Pros</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {verifiedPros.map((pro) => <ProCard key={pro.name} pro={pro} />)}
-          </div>
-        </section>
-
-        {/* Sponsored Pros */}
-        <section className="mb-12">
-          <h2 className="font-heading text-xl text-foreground mb-5">Sponsored Pros</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {sponsoredPros.map((pro) => <ProCard key={pro.name} pro={pro} />)}
-          </div>
-        </section>
-
-        {/* Actions */}
-        <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
-            <Link to="/agreement">Continue to Agreement Template</Link>
+        <div className="flex flex-wrap gap-1.5">
+          {pro.badges.map((b) => <BadgePill key={b} label={b} />)}
+        </div>
+        <p className="text-xs text-muted-foreground leading-relaxed">{pro.desc}</p>
+        <div className="flex gap-2 pt-1">
+          <Button size="sm" className="text-xs h-8 px-4 rounded-lg" variant={state.quote ? "secondary" : "default"} onClick={() => handleQuote(pro)}>
+            {state.quote ? "Quote Requested" : "Request Quote"}
           </Button>
-          <Link to="/summary" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Back to Project Summary
+          <Button size="sm" variant="outline" className="text-xs h-8 px-3 rounded-lg gap-1.5" onClick={() => handleSummary(pro)} disabled={state.summary}>
+            <FileText className="h-3 w-3" /> {state.summary ? "Sent" : "Send Summary"}
+          </Button>
+        </div>
+      </div>
+    );
+  };
+
+  const handleContinue = () => {
+    markStepComplete("subcontractors");
+  };
+
+  return (
+    <div className="min-h-screen bg-background">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
+          <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
+            BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
+          </Link>
+          <Link to="/summary" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="h-3.5 w-3.5" /> Back to Summary
           </Link>
         </div>
-      </motion.div>
-    </main>
-  </div>
-);
+      </nav>
+
+      <main className="pt-28 pb-20 px-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-4xl mx-auto">
+          <div className="text-center mb-10">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">Connect</p>
+            <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Find Subcontractors</h1>
+            <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
+              Connect your remodel plan with the right professionals for each step of the project.
+            </p>
+          </div>
+
+          <div className="rounded-xl border border-border bg-secondary/20 p-5 mb-8 flex flex-col sm:flex-row gap-4 sm:gap-8 text-xs text-muted-foreground">
+            <div className="flex items-start gap-2.5">
+              <BadgeCheck className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+              <span><strong className="text-foreground">Verified Pros</strong> are shown with ratings, service area, and license or insurance status where applicable.</span>
+            </div>
+            <div className="flex items-start gap-2.5">
+              <span className="inline-block w-4 h-4 rounded-sm bg-accent/20 flex-shrink-0 mt-0.5 text-center leading-4 text-accent font-bold text-[9px]">S</span>
+              <span><strong className="text-foreground">Sponsored Pros</strong> are clearly labeled promotional placements from partner professionals.</span>
+            </div>
+          </div>
+
+          <p className="text-sm text-muted-foreground mb-8">
+            Based on your workflow, you may need help with <span className="text-foreground font-medium">plumbing, electrical, tile, shower hardware, and finishing</span>.
+          </p>
+
+          <section className="mb-12">
+            <h2 className="font-heading text-xl text-foreground mb-5">Verified Pros</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {verifiedPros.map((pro) => <ProCard key={pro.name} pro={pro} />)}
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <h2 className="font-heading text-xl text-foreground mb-5">Sponsored Pros</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {sponsoredPros.map((pro) => <ProCard key={pro.name} pro={pro} />)}
+            </div>
+          </section>
+
+          <div className="flex flex-col sm:flex-row items-center gap-4">
+            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild onClick={handleContinue}>
+              <Link to="/agreement">Continue to Agreement Template</Link>
+            </Button>
+            <Link to="/summary" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Back to Project Summary
+            </Link>
+          </div>
+        </motion.div>
+      </main>
+    </div>
+  );
+};
 
 export default Subcontractors;

@@ -1,6 +1,18 @@
-import { createContext, useContext, useState, useCallback, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+
+export interface PhotoMeta {
+  name: string;
+  size: number;
+  type: string;
+}
+
+export interface SubcontractorInteraction {
+  name: string;
+  quote_requested?: boolean;
+  summary_sent?: boolean;
+}
 
 export interface ProjectData {
   id?: string;
@@ -8,6 +20,10 @@ export interface ProjectData {
   status: "draft" | "in_progress" | "completed";
   bathroom_type: string;
   property_type: string;
+  photos: {
+    metadata: PhotoMeta[];
+    notes: string;
+  };
   dimensions: {
     width_ft?: string;
     width_in?: string;
@@ -25,12 +41,22 @@ export interface ProjectData {
     budget_level?: string;
     finish?: string;
   };
-  selected_package: Record<string, unknown>;
-  customizations: Record<string, unknown>;
+  selected_package: {
+    name?: string;
+    tier?: string;
+  };
+  customizations: {
+    categories?: Array<{
+      name: string;
+      selected: string;
+      price: number;
+    }>;
+  };
   workflow_progress: {
     current_step: string;
     completed_steps: string[];
   };
+  subcontractor_interactions: SubcontractorInteraction[];
   agreement_data: Record<string, unknown>;
 }
 
@@ -39,11 +65,13 @@ const defaultProject: ProjectData = {
   status: "draft",
   bathroom_type: "",
   property_type: "",
+  photos: { metadata: [], notes: "" },
   dimensions: {},
   style_preferences: {},
   selected_package: {},
   customizations: {},
   workflow_progress: { current_step: "start", completed_steps: [] },
+  subcontractor_interactions: [],
   agreement_data: {},
 };
 
@@ -51,8 +79,12 @@ interface ProjectContextType {
   project: ProjectData;
   updateProject: (updates: Partial<ProjectData>) => void;
   saveProject: () => Promise<void>;
+  loadLatestProject: () => Promise<void>;
+  resetProject: () => void;
   markStepComplete: (step: string) => void;
   isSaving: boolean;
+  isLoading: boolean;
+  isLoaded: boolean;
 }
 
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
@@ -60,9 +92,16 @@ const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   const [project, setProject] = useState<ProjectData>(defaultProject);
   const [isSaving, setIsSaving] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   const updateProject = useCallback((updates: Partial<ProjectData>) => {
     setProject((prev) => ({ ...prev, ...updates }));
+  }, []);
+
+  const resetProject = useCallback(() => {
+    setProject(defaultProject);
+    setIsLoaded(false);
   }, []);
 
   const markStepComplete = useCallback((step: string) => {
@@ -71,6 +110,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
       if (completed.includes(step)) return prev;
       return {
         ...prev,
+        status: "in_progress" as const,
         workflow_progress: {
           current_step: step,
           completed_steps: [...completed, step],
@@ -78,6 +118,69 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
       };
     });
   }, []);
+
+  const loadLatestProject = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("updated_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        const row = data as Record<string, unknown>;
+        setProject({
+          id: data.id,
+          name: data.name,
+          status: data.status as ProjectData["status"],
+          bathroom_type: data.bathroom_type || "",
+          property_type: data.property_type || "",
+          photos: (row.photos as ProjectData["photos"]) || { metadata: [], notes: "" },
+          dimensions: (data.dimensions as ProjectData["dimensions"]) || {},
+          style_preferences: (data.style_preferences as ProjectData["style_preferences"]) || {},
+          selected_package: (data.selected_package as ProjectData["selected_package"]) || {},
+          customizations: (data.customizations as ProjectData["customizations"]) || {},
+          workflow_progress: (data.workflow_progress as ProjectData["workflow_progress"]) || { current_step: "start", completed_steps: [] },
+          subcontractor_interactions: ((row.subcontractor_interactions || []) as SubcontractorInteraction[]),
+          agreement_data: (data.agreement_data as Record<string, unknown>) || {},
+        });
+        setIsLoaded(true);
+      }
+    } catch (err) {
+      console.error("Load error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Auto-load on auth change
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") {
+        loadLatestProject();
+      } else if (event === "SIGNED_OUT") {
+        resetProject();
+      }
+    });
+
+    // Check initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) loadLatestProject();
+    });
+
+    return () => subscription.unsubscribe();
+  }, [loadLatestProject, resetProject]);
 
   const saveProject = useCallback(async () => {
     setIsSaving(true);
@@ -91,18 +194,20 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
+      const toJson = (v: unknown) => JSON.parse(JSON.stringify(v));
+
       const payload = {
         user_id: user.id,
         name: project.name,
         status: project.status,
         bathroom_type: project.bathroom_type || null,
         property_type: project.property_type || null,
-        dimensions: JSON.parse(JSON.stringify(project.dimensions)),
-        style_preferences: JSON.parse(JSON.stringify(project.style_preferences)),
-        selected_package: JSON.parse(JSON.stringify(project.selected_package)),
-        customizations: JSON.parse(JSON.stringify(project.customizations)),
-        workflow_progress: JSON.parse(JSON.stringify(project.workflow_progress)),
-        agreement_data: JSON.parse(JSON.stringify(project.agreement_data)),
+        dimensions: toJson(project.dimensions),
+        style_preferences: toJson(project.style_preferences),
+        selected_package: toJson(project.selected_package),
+        customizations: toJson(project.customizations),
+        workflow_progress: toJson(project.workflow_progress),
+        agreement_data: toJson({ ...project.agreement_data, subcontractor_interactions: project.subcontractor_interactions, photos: project.photos }),
       };
 
       if (project.id) {
@@ -135,7 +240,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   }, [project]);
 
   return (
-    <ProjectContext.Provider value={{ project, updateProject, saveProject, markStepComplete, isSaving }}>
+    <ProjectContext.Provider value={{ project, updateProject, saveProject, loadLatestProject, resetProject, markStepComplete, isSaving, isLoading, isLoaded }}>
       {children}
     </ProjectContext.Provider>
   );
