@@ -90,12 +90,27 @@ interface ProjectContextType {
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export const ProjectProvider = ({ children }: { children: ReactNode }) => {
-  const [project, setProject] = useState<ProjectData>(defaultProject);
+  const LOCAL_STORAGE_KEY = "bobox_project_draft";
+
+  const [project, setProject] = useState<ProjectData>(() => {
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (stored) return { ...defaultProject, ...JSON.parse(stored) };
+    } catch { /* ignore */ }
+    return defaultProject;
+  });
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const projectRef = useRef(project);
   projectRef.current = project;
+
+  // Auto-persist to localStorage on every state change
+  useEffect(() => {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(project));
+    } catch { /* ignore quota errors */ }
+  }, [project]);
 
   const updateProject = useCallback((updates: Partial<ProjectData>) => {
     setProject((prev) => ({ ...prev, ...updates }));
@@ -104,6 +119,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   const resetProject = useCallback(() => {
     setProject(defaultProject);
     setIsLoaded(false);
+    try { localStorage.removeItem(LOCAL_STORAGE_KEY); } catch { /* ignore */ }
   }, []);
 
   const markStepComplete = useCallback((step: string) => {
