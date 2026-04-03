@@ -12,6 +12,7 @@ import RemodelOptions from "./pages/RemodelOptions.tsx";
 import PackageDetail from "./pages/PackageDetail.tsx";
 import CustomizeOption from "./pages/CustomizeOption.tsx";
 import Workflow from "./pages/Workflow.tsx";
+import ProjectSummary from "./pages/ProjectSummary.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -32,6 +33,7 @@ const App = () => (
           <Route path="/package/:id" element={<PackageDetail />} />
           <Route path="/customize/:id" element={<CustomizeOption />} />
           <Route path="/workflow" element={<Workflow />} />
+          <Route path="/summary" element={<ProjectSummary />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
