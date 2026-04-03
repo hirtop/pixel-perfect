@@ -11,6 +11,7 @@ import StyleBudget from "./pages/StyleBudget.tsx";
 import RemodelOptions from "./pages/RemodelOptions.tsx";
 import PackageDetail from "./pages/PackageDetail.tsx";
 import CustomizeOption from "./pages/CustomizeOption.tsx";
+import Workflow from "./pages/Workflow.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
