@@ -12,6 +12,7 @@ import RemodelOptions from "./pages/RemodelOptions.tsx";
 import PackageDetail from "./pages/PackageDetail.tsx";
 import CustomizeOption from "./pages/CustomizeOption.tsx";
 import Workflow from "./pages/Workflow.tsx";
+import ProjectSummary from "./pages/ProjectSummary.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
