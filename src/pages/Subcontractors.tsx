@@ -129,8 +129,8 @@ const Subcontractors = () => (
 
         {/* Actions */}
         <div className="flex flex-col sm:flex-row items-center gap-4">
-          <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg">
-            Continue to Agreement Template
+          <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
+            <Link to="/agreement">Continue to Agreement Template</Link>
           </Button>
           <Link to="/summary" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Back to Project Summary
