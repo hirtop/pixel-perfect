@@ -11,7 +11,6 @@ const propertyTypes = ["House", "Condo", "Apartment", "Other"];
 const styleOptions = ["Modern", "Spa", "Traditional", "Minimal", "Luxury", "Transitional"];
 
 const StartProject = () => {
-  const navigate = useNavigate();
   const [projectName, setProjectName] = useState("");
   const [bathroomType, setBathroomType] = useState("");
   const [propertyType, setPropertyType] = useState("");
