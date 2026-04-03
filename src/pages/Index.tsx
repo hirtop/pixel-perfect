@@ -125,15 +125,18 @@ export default function LandingPage() {
             <motion.h1
               variants={fadeUp}
               custom={0}
-              className="font-heading text-4xl md:text-6xl leading-tight text-primary-foreground mb-6"
+              className="font-heading text-3xl md:text-5xl lg:text-[3.25rem] leading-snug md:leading-[1.2] text-primary-foreground mb-6 max-w-lg"
             >
-              Scan your room. Compare remodel options.{" "}
+              Scan your room.
+              <br />
+              Compare remodel options.
+              <br />
               <span className="text-accent">Shop with confidence.</span>
             </motion.h1>
             <motion.p
               variants={fadeUp}
               custom={1}
-              className="text-lg md:text-xl text-primary-foreground/80 mb-8 font-body leading-relaxed"
+              className="text-lg md:text-xl text-primary-foreground/80 mb-10 font-body leading-relaxed max-w-md"
             >
               BOBOX Remodel helps you turn a bathroom photo into visual remodel
               packages with live budgets, real product suggestions, and a simple
@@ -146,7 +149,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-base px-8"
+                className="border-primary-foreground/60 text-primary-foreground hover:bg-primary-foreground/15 backdrop-blur-sm text-base px-8"
               >
                 See a Sample Remodel
               </Button>
@@ -206,9 +209,12 @@ export default function LandingPage() {
             <motion.p variants={fadeUp} custom={0} className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
               Transformation
             </motion.p>
-            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground">
+            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground mb-4">
               See the difference
             </motion.h2>
+            <motion.p variants={fadeUp} custom={2} className="text-muted-foreground max-w-md mx-auto leading-relaxed">
+              See how BOBOX turns a dated bathroom into a visual remodel direction.
+            </motion.p>
           </motion.div>
 
           <motion.div
@@ -241,9 +247,12 @@ export default function LandingPage() {
             <motion.p variants={fadeUp} custom={0} className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
               Why BOBOX
             </motion.p>
-            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground">
+            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground mb-4">
               Built for real remodel decisions
             </motion.h2>
+            <motion.p variants={fadeUp} custom={2} className="text-muted-foreground max-w-lg mx-auto leading-relaxed">
+              BOBOX combines visual planning, product guidance, live budget tracking, and simple project workflow in one clean experience.
+            </motion.p>
           </motion.div>
 
           <div className="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
@@ -280,9 +289,12 @@ export default function LandingPage() {
             <motion.p variants={fadeUp} custom={0} className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
               Pricing
             </motion.p>
-            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground">
+            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground mb-4">
               Free to plan, pro to optimize
             </motion.h2>
+            <motion.p variants={fadeUp} custom={2} className="text-muted-foreground max-w-md mx-auto leading-relaxed">
+              Start free, then unlock deeper planning tools as your project gets more detailed.
+            </motion.p>
           </motion.div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
