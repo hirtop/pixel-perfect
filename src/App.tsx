@@ -14,6 +14,7 @@ import CustomizeOption from "./pages/CustomizeOption.tsx";
 import Workflow from "./pages/Workflow.tsx";
 import ProjectSummary from "./pages/ProjectSummary.tsx";
 import Subcontractors from "./pages/Subcontractors.tsx";
+import Agreement from "./pages/Agreement.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
