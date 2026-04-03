@@ -28,7 +28,7 @@ const StartProject = () => {
         </div>
       </nav>
 
-      <main className="pt-32 pb-24 px-6">
+      <main className="pt-28 pb-20 px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
