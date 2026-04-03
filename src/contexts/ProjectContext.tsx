@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useCallback, useEffect, useRef, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -94,6 +94,8 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const projectRef = useRef(project);
+  projectRef.current = project;
 
   const updateProject = useCallback((updates: Partial<ProjectData>) => {
     setProject((prev) => ({ ...prev, ...updates }));
@@ -139,21 +141,30 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
       if (error) throw error;
 
       if (data) {
-        const row = data as Record<string, unknown>;
+        // Extract photos and subcontractor_interactions from agreement_data blob (where save stores them)
+        const agreementBlob = (data.agreement_data as Record<string, unknown>) || {};
+        const photosFromBlob = agreementBlob.photos as ProjectData["photos"] | undefined;
+        const subInteractionsFromBlob = agreementBlob.subcontractor_interactions as SubcontractorInteraction[] | undefined;
+
+        // Clean agreement_data by removing the extracted fields
+        const cleanAgreement = { ...agreementBlob };
+        delete cleanAgreement.photos;
+        delete cleanAgreement.subcontractor_interactions;
+
         setProject({
           id: data.id,
           name: data.name,
           status: data.status as ProjectData["status"],
           bathroom_type: data.bathroom_type || "",
           property_type: data.property_type || "",
-          photos: (row.photos as ProjectData["photos"]) || { metadata: [], notes: "" },
+          photos: photosFromBlob || { metadata: [], notes: "" },
           dimensions: (data.dimensions as ProjectData["dimensions"]) || {},
           style_preferences: (data.style_preferences as ProjectData["style_preferences"]) || {},
           selected_package: (data.selected_package as ProjectData["selected_package"]) || {},
           customizations: (data.customizations as ProjectData["customizations"]) || {},
           workflow_progress: (data.workflow_progress as ProjectData["workflow_progress"]) || { current_step: "start", completed_steps: [] },
-          subcontractor_interactions: ((row.subcontractor_interactions || []) as SubcontractorInteraction[]),
-          agreement_data: (data.agreement_data as Record<string, unknown>) || {},
+          subcontractor_interactions: subInteractionsFromBlob || [],
+          agreement_data: cleanAgreement,
         });
         setIsLoaded(true);
       }
@@ -174,7 +185,6 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
       }
     });
 
-    // Check initial session
     supabase.auth.getSession().then(({ data: { session } }) => {
       if (session) loadLatestProject();
     });
@@ -183,6 +193,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   }, [loadLatestProject, resetProject]);
 
   const saveProject = useCallback(async () => {
+    const current = projectRef.current;
     setIsSaving(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -198,23 +209,27 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
 
       const payload = {
         user_id: user.id,
-        name: project.name,
-        status: project.status,
-        bathroom_type: project.bathroom_type || null,
-        property_type: project.property_type || null,
-        dimensions: toJson(project.dimensions),
-        style_preferences: toJson(project.style_preferences),
-        selected_package: toJson(project.selected_package),
-        customizations: toJson(project.customizations),
-        workflow_progress: toJson(project.workflow_progress),
-        agreement_data: toJson({ ...project.agreement_data, subcontractor_interactions: project.subcontractor_interactions, photos: project.photos }),
+        name: current.name,
+        status: current.status,
+        bathroom_type: current.bathroom_type || null,
+        property_type: current.property_type || null,
+        dimensions: toJson(current.dimensions),
+        style_preferences: toJson(current.style_preferences),
+        selected_package: toJson(current.selected_package),
+        customizations: toJson(current.customizations),
+        workflow_progress: toJson(current.workflow_progress),
+        agreement_data: toJson({
+          ...current.agreement_data,
+          subcontractor_interactions: current.subcontractor_interactions,
+          photos: current.photos,
+        }),
       };
 
-      if (project.id) {
+      if (current.id) {
         const { error } = await supabase
           .from("projects")
           .update(payload)
-          .eq("id", project.id);
+          .eq("id", current.id);
         if (error) throw error;
       } else {
         const { data, error } = await supabase
@@ -237,7 +252,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsSaving(false);
     }
-  }, [project]);
+  }, []);
 
   return (
     <ProjectContext.Provider value={{ project, updateProject, saveProject, loadLatestProject, resetProject, markStepComplete, isSaving, isLoading, isLoaded }}>

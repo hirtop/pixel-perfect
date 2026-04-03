@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Star, ShieldCheck, BadgeCheck, FileText } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -39,8 +39,8 @@ const BadgePill = ({ label }: { label: string }) => (
 
 const Subcontractors = () => {
   const { project, updateProject, markStepComplete } = useProject();
+  const navigate = useNavigate();
 
-  // Track interactions locally, seeded from context
   const [interactions, setInteractions] = useState<Record<string, { quote: boolean; summary: boolean }>>(
     () => {
       const map: Record<string, { quote: boolean; summary: boolean }> = {};
@@ -56,7 +56,6 @@ const Subcontractors = () => {
       const current = prev[proName] || { quote: false, summary: false };
       const updated = { ...prev, [proName]: { ...current, [type]: true } };
 
-      // Sync to context
       const list = Object.entries(updated).map(([name, v]) => ({
         name,
         quote_requested: v.quote,
@@ -112,6 +111,7 @@ const Subcontractors = () => {
 
   const handleContinue = () => {
     markStepComplete("subcontractors");
+    navigate("/agreement");
   };
 
   return (
@@ -167,8 +167,8 @@ const Subcontractors = () => {
           </section>
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild onClick={handleContinue}>
-              <Link to="/agreement">Continue to Agreement Template</Link>
+            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
+              Continue to Agreement Template
             </Button>
             <Link to="/summary" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Back to Project Summary

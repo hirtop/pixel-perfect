@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -12,7 +12,7 @@ const propertyTypes = ["House", "Condo", "Apartment", "Other"];
 const styleOptions = ["Modern", "Spa", "Traditional", "Minimal", "Luxury", "Transitional"];
 
 const StartProject = () => {
-  const { project, updateProject, markStepComplete } = useProject();
+  const { project, updateProject, saveProject, markStepComplete, isSaving } = useProject();
   const navigate = useNavigate();
 
   const [projectName, setProjectName] = useState(project.name === "Untitled Project" ? "" : project.name);
@@ -21,20 +21,28 @@ const StartProject = () => {
   const [budget, setBudget] = useState(project.style_preferences.budget || "");
   const [style, setStyle] = useState(project.style_preferences.style || "");
 
-  const handleContinue = () => {
+  const syncToContext = () => {
     updateProject({
       name: projectName || "Untitled Project",
       bathroom_type: bathroomType,
       property_type: propertyType,
       style_preferences: { ...project.style_preferences, budget, style },
     });
+  };
+
+  const handleContinue = () => {
+    syncToContext();
     markStepComplete("start");
     navigate("/upload");
   };
 
+  const handleSaveLater = async () => {
+    syncToContext();
+    await saveProject();
+  };
+
   return (
     <div className="min-h-screen bg-background">
-      {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
@@ -53,7 +61,6 @@ const StartProject = () => {
           transition={{ duration: 0.5 }}
           className="max-w-2xl mx-auto"
         >
-          {/* Header */}
           <div className="text-center mb-10">
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
               Start Your Bathroom Project
@@ -63,9 +70,7 @@ const StartProject = () => {
             </p>
           </div>
 
-          {/* Form */}
           <div className="space-y-8">
-            {/* Project Name */}
             <div className="space-y-2">
               <Label htmlFor="project-name" className="text-sm font-medium text-foreground">
                 Project Name
@@ -79,7 +84,6 @@ const StartProject = () => {
               />
             </div>
 
-            {/* Bathroom Type */}
             <div className="space-y-3">
               <Label className="text-sm font-medium text-foreground">Bathroom Type</Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -99,7 +103,6 @@ const StartProject = () => {
               </div>
             </div>
 
-            {/* Property Type */}
             <div className="space-y-3">
               <Label className="text-sm font-medium text-foreground">Property Type</Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
@@ -119,7 +122,6 @@ const StartProject = () => {
               </div>
             </div>
 
-            {/* Budget */}
             <div className="space-y-2">
               <Label htmlFor="budget" className="text-sm font-medium text-foreground">
                 Target Budget <span className="text-muted-foreground font-normal">(optional)</span>
@@ -137,7 +139,6 @@ const StartProject = () => {
               </div>
             </div>
 
-            {/* Style Preference */}
             <div className="space-y-3">
               <Label className="text-sm font-medium text-foreground">Style Preference</Label>
               <div className="flex flex-wrap gap-3">
@@ -157,7 +158,6 @@ const StartProject = () => {
               </div>
             </div>
 
-            {/* Actions */}
             <div className="pt-4 flex flex-col sm:flex-row items-center gap-5">
               <Button
                 size="lg"
@@ -166,8 +166,12 @@ const StartProject = () => {
               >
                 Continue
               </Button>
-              <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Save and finish later
+              <button
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                onClick={handleSaveLater}
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving…" : "Save and finish later"}
               </button>
             </div>
           </div>
