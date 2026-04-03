@@ -98,7 +98,7 @@ const baseShipping = 650;
 
 const CustomizeOption = () => {
   const [categories, setCategories] = useState(initialCategories);
-  const [expandedCategory, setExpandedCategory] = useState<string | null>(null);
+  const [expandedCategory, setExpandedCategory] = useState<string | null>("Vanity");
 
   const materialsTotal = categories.reduce((sum, c) => sum + c.price, 0);
   const laborTotal = baseLaborRate;
