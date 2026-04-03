@@ -2,6 +2,7 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Check, ChevronDown, ChevronUp, Minus, Plus } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
 interface Alternative {
@@ -114,6 +115,7 @@ const CustomizeOption = () => {
       )
     );
     setExpandedCategory(null);
+    toast.success(`${alt.name} selected`, { description: `${catName} updated in your package` });
   };
 
   const toggleExpand = (name: string) => {

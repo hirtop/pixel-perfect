@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import balancedImg from "@/assets/package-balanced.jpg";
 
@@ -132,7 +133,9 @@ const ProjectSummary = () => (
           <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
             <Link to="/subcontractors">Continue to Subcontractors</Link>
           </Button>
-          <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg">
+          <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg"
+            onClick={() => toast.success("Project saved", { description: "You can return to this project anytime." })}
+          >
             Save Project
           </Button>
           <Link to="/workflow" className="text-sm text-muted-foreground hover:text-foreground transition-colors">

@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, Star, ShieldCheck, BadgeCheck, FileText } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 
 interface Pro {
@@ -57,8 +58,12 @@ const ProCard = ({ pro }: { pro: Pro }) => (
     </div>
     <p className="text-xs text-muted-foreground leading-relaxed">{pro.desc}</p>
     <div className="flex gap-2 pt-1">
-      <Button size="sm" className="text-xs h-8 px-4 rounded-lg">Request Quote</Button>
-      <Button size="sm" variant="outline" className="text-xs h-8 px-3 rounded-lg gap-1.5">
+      <Button size="sm" className="text-xs h-8 px-4 rounded-lg"
+        onClick={() => toast.success("Quote requested", { description: `We'll notify ${pro.name} with your project details.` })}
+      >Request Quote</Button>
+      <Button size="sm" variant="outline" className="text-xs h-8 px-3 rounded-lg gap-1.5"
+        onClick={() => toast.success("Summary sent", { description: `Your project summary was shared with ${pro.name}.` })}
+      >
         <FileText className="h-3 w-3" /> Send Summary
       </Button>
     </div>

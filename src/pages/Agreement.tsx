@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, AlertCircle, Download } from "lucide-react";
+import { ArrowLeft, AlertCircle, Download, Check } from "lucide-react";
+import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -189,15 +190,38 @@ const Agreement = () => {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-8">
-            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg">
+            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg"
+              onClick={() => toast.success("Agreement saved", { description: "Your starter agreement has been saved to your project." })}
+            >
               Save Agreement Template
             </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg gap-2">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg gap-2"
+              onClick={() => toast("Preparing PDF…", { description: "Your agreement will be ready to download shortly." })}
+            >
               <Download className="h-4 w-4" /> Download as PDF
             </Button>
             <Link to="/subcontractors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Back to Subcontractors
             </Link>
+          </div>
+
+          {/* Completion block */}
+          <div className="mt-16 rounded-2xl border border-primary/20 bg-primary/5 p-8 md:p-10 text-center">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
+              <Check className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="font-heading text-xl text-foreground mb-2">You've completed your BOBOX Remodel plan</h3>
+            <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed mb-6">
+              Your project setup, package selection, customization, workflow, and starter agreement are all in one place. You're ready to move forward with confidence.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button size="lg" className="px-8 h-11 text-sm font-semibold rounded-lg" asChild>
+                <Link to="/summary">View Project Summary</Link>
+              </Button>
+              <Button size="lg" variant="outline" className="px-8 h-11 text-sm rounded-lg" asChild>
+                <Link to="/">Back to Home</Link>
+              </Button>
+            </div>
           </div>
         </motion.div>
       </main>
