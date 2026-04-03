@@ -91,8 +91,8 @@ const Workflow = () => (
 
         {/* Actions */}
         <div className="pt-12 flex flex-col sm:flex-row items-center gap-5">
-          <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg">
-            Continue to Project Summary
+          <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
+            <Link to="/summary">Continue to Project Summary</Link>
           </Button>
           <Link to="/customize/balanced" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Back to Customization
