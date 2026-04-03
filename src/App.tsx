@@ -25,6 +25,7 @@ const App = () => (
           <Route path="/upload" element={<UploadPhotos />} />
           <Route path="/dimensions" element={<Dimensions />} />
           <Route path="/style-budget" element={<StyleBudget />} />
+          <Route path="/options" element={<RemodelOptions />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
