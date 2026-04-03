@@ -1,5 +1,5 @@
 import { motion, type Variants } from "framer-motion";
-import { Camera, Layers, DollarSign } from "lucide-react";
+import { Camera, Layers, DollarSign, TrendingUp, ShoppingBag, ListChecks, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
@@ -17,18 +17,41 @@ const fadeUp: Variants = {
 const steps = [
   {
     icon: Camera,
-    title: "Scan Your Room",
-    desc: "Upload photos of your bathroom. We handle the rest.",
+    title: "Upload Your Bathroom",
+    desc: "Add photos of your current bathroom and enter simple dimensions.",
   },
   {
     icon: Layers,
-    title: "Compare Options",
-    desc: "Get three curated remodel packages — budget, balanced, and premium.",
+    title: "Compare Remodel Packages",
+    desc: "Review budget, balanced, and premium remodel options tailored to your style.",
   },
   {
     icon: DollarSign,
-    title: "Shop With Confidence",
-    desc: "Live budget updates as you swap products. No surprises.",
+    title: "Track Budget and Shop",
+    desc: "See live pricing updates as you explore products and build your remodel plan.",
+  },
+];
+
+const whyItems = [
+  {
+    icon: TrendingUp,
+    title: "Live Budget Updates",
+    desc: "Watch your remodel total update as you compare products.",
+  },
+  {
+    icon: ShoppingBag,
+    title: "Real Product Options",
+    desc: "Explore curated products from trusted vendors.",
+  },
+  {
+    icon: ListChecks,
+    title: "Simple Remodel Workflow",
+    desc: "Understand the typical project sequence step by step.",
+  },
+  {
+    icon: Users,
+    title: "Help When Needed",
+    desc: "Connect with verified pros when you're ready.",
   },
 ];
 
@@ -36,7 +59,12 @@ const plans = [
   {
     name: "Free",
     price: "$0",
-    features: ["1 bathroom project", "3 remodel options", "Basic product list", "Budget estimate"],
+    features: [
+      "1 bathroom project",
+      "3 remodel options",
+      "Basic product recommendations",
+      "Live budget estimate",
+    ],
     cta: "Get Started",
     highlighted: false,
   },
@@ -45,10 +73,10 @@ const plans = [
     price: "$19/mo",
     features: [
       "Unlimited projects",
-      "Premium product matching",
-      "Exportable summaries",
-      "Subcontractor access",
-      "Priority support",
+      "Deeper product comparisons",
+      "Exportable project summary",
+      "Workflow + subcontractor tools",
+      "Premium planning features",
     ],
     cta: "Go Pro",
     highlighted: true,
@@ -67,10 +95,11 @@ export default function LandingPage() {
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
             <a href="#how" className="hover:text-foreground transition-colors">How It Works</a>
             <a href="#transform" className="hover:text-foreground transition-colors">Before & After</a>
+            <a href="#why" className="hover:text-foreground transition-colors">Why BOBOX</a>
             <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
           </div>
           <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
-            Start Your Room
+            Start Your Project
           </Button>
         </div>
       </nav>
@@ -98,27 +127,28 @@ export default function LandingPage() {
               custom={0}
               className="font-heading text-4xl md:text-6xl leading-tight text-primary-foreground mb-6"
             >
-              Turn your bathroom into a{" "}
-              <span className="text-accent">shoppable remodel plan</span>
+              Scan your room. Compare remodel options.{" "}
+              <span className="text-accent">Shop with confidence.</span>
             </motion.h1>
             <motion.p
               variants={fadeUp}
               custom={1}
               className="text-lg md:text-xl text-primary-foreground/80 mb-8 font-body leading-relaxed"
             >
-              Scan your room. Compare three curated packages. Swap products
-              with live budget updates — no guesswork, no surprises.
+              BOBOX Remodel helps you turn a bathroom photo into visual remodel
+              packages with live budgets, real product suggestions, and a simple
+              project plan.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex gap-4">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8">
-                Start Your Room
+                Start Your Bathroom Project
               </Button>
               <Button
                 size="lg"
                 variant="outline"
                 className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10 text-base px-8"
               >
-                See How It Works
+                See a Sample Remodel
               </Button>
             </motion.div>
           </motion.div>
@@ -187,38 +217,59 @@ export default function LandingPage() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
           >
-            <motion.div variants={fadeUp} custom={0} className="relative rounded-2xl overflow-hidden group">
-              <img
-                src={beforeImg}
-                alt="Bathroom before remodel"
-                width={800}
-                height={600}
-                loading="lazy"
-                className="w-full h-80 object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-foreground/70 text-primary-foreground px-4 py-1.5 rounded-full text-sm font-semibold">
-                Before
-              </div>
+            <motion.div variants={fadeUp} custom={0} className="relative rounded-2xl overflow-hidden">
+              <img src={beforeImg} alt="Bathroom before remodel" width={800} height={600} loading="lazy" className="w-full h-80 object-cover" />
+              <div className="absolute top-4 left-4 bg-foreground/70 text-primary-foreground px-4 py-1.5 rounded-full text-sm font-semibold">Before</div>
             </motion.div>
-            <motion.div variants={fadeUp} custom={1} className="relative rounded-2xl overflow-hidden group">
-              <img
-                src={afterImg}
-                alt="Bathroom after remodel"
-                width={800}
-                height={600}
-                loading="lazy"
-                className="w-full h-80 object-cover"
-              />
-              <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-semibold">
-                After
-              </div>
+            <motion.div variants={fadeUp} custom={1} className="relative rounded-2xl overflow-hidden">
+              <img src={afterImg} alt="Bathroom after remodel" width={800} height={600} loading="lazy" className="w-full h-80 object-cover" />
+              <div className="absolute top-4 left-4 bg-primary text-primary-foreground px-4 py-1.5 rounded-full text-sm font-semibold">After</div>
             </motion.div>
           </motion.div>
         </div>
       </section>
 
+      {/* Why BOBOX */}
+      <section id="why" className="py-24 bg-background">
+        <div className="container mx-auto px-6">
+          <motion.div
+            className="text-center mb-16"
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, amount: 0.3 }}
+          >
+            <motion.p variants={fadeUp} custom={0} className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
+              Why BOBOX
+            </motion.p>
+            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground">
+              Built for real remodel decisions
+            </motion.h2>
+          </motion.div>
+
+          <div className="grid sm:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            {whyItems.map((item, i) => (
+              <motion.div
+                key={item.title}
+                className="p-8 rounded-2xl bg-card border border-border"
+                initial="hidden"
+                whileInView="visible"
+                viewport={{ once: true, amount: 0.3 }}
+                variants={fadeUp}
+                custom={i}
+              >
+                <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center mb-5">
+                  <item.icon className="w-6 h-6 text-primary" />
+                </div>
+                <h3 className="font-heading text-lg text-foreground mb-2">{item.title}</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">{item.desc}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Pricing */}
-      <section id="pricing" className="py-24 bg-background">
+      <section id="pricing" className="py-24 bg-card">
         <div className="container mx-auto px-6">
           <motion.div
             className="text-center mb-16"
@@ -241,7 +292,7 @@ export default function LandingPage() {
                 className={`rounded-2xl p-8 border ${
                   plan.highlighted
                     ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-card text-foreground border-border"
+                    : "bg-background text-foreground border-border"
                 }`}
                 initial="hidden"
                 whileInView="visible"
