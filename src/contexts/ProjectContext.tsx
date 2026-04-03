@@ -97,12 +97,12 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         status: project.status,
         bathroom_type: project.bathroom_type || null,
         property_type: project.property_type || null,
-        dimensions: project.dimensions as Record<string, unknown>,
-        style_preferences: project.style_preferences as Record<string, unknown>,
-        selected_package: project.selected_package,
-        customizations: project.customizations,
-        workflow_progress: project.workflow_progress as Record<string, unknown>,
-        agreement_data: project.agreement_data,
+        dimensions: JSON.parse(JSON.stringify(project.dimensions)),
+        style_preferences: JSON.parse(JSON.stringify(project.style_preferences)),
+        selected_package: JSON.parse(JSON.stringify(project.selected_package)),
+        customizations: JSON.parse(JSON.stringify(project.customizations)),
+        workflow_progress: JSON.parse(JSON.stringify(project.workflow_progress)),
+        agreement_data: JSON.parse(JSON.stringify(project.agreement_data)),
       };
 
       if (project.id) {
