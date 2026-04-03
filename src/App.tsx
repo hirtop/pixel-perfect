@@ -13,6 +13,7 @@ import PackageDetail from "./pages/PackageDetail.tsx";
 import CustomizeOption from "./pages/CustomizeOption.tsx";
 import Workflow from "./pages/Workflow.tsx";
 import ProjectSummary from "./pages/ProjectSummary.tsx";
+import Subcontractors from "./pages/Subcontractors.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -34,6 +35,7 @@ const App = () => (
           <Route path="/customize/:id" element={<CustomizeOption />} />
           <Route path="/workflow" element={<Workflow />} />
           <Route path="/summary" element={<ProjectSummary />} />
+          <Route path="/subcontractors" element={<Subcontractors />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
