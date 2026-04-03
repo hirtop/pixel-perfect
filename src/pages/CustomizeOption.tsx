@@ -281,7 +281,7 @@ const CustomizeOption = () => {
                 </div>
 
                 <Button size="lg" className="w-full h-12 text-base font-semibold rounded-lg">
-                  Finalize Package
+                  Continue with This Package
                 </Button>
               </div>
             </div>
