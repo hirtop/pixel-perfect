@@ -23,7 +23,7 @@ const StartProject = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
-            BOBOX
+            BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </Link>
         </div>
       </nav>
