@@ -99,7 +99,7 @@ export default function LandingPage() {
             <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
           </div>
           <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90">
-            Start Your Project
+            Start Your Bathroom Project
           </Button>
         </div>
       </nav>
