@@ -90,12 +90,27 @@ interface ProjectContextType {
 const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 
 export const ProjectProvider = ({ children }: { children: ReactNode }) => {
-  const [project, setProject] = useState<ProjectData>(defaultProject);
+  const LOCAL_STORAGE_KEY = "bobox_project_draft";
+
+  const [project, setProject] = useState<ProjectData>(() => {
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (stored) return { ...defaultProject, ...JSON.parse(stored) };
+    } catch { /* ignore */ }
+    return defaultProject;
+  });
   const [isSaving, setIsSaving] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const projectRef = useRef(project);
   projectRef.current = project;
+
+  // Auto-persist to localStorage on every state change
+  useEffect(() => {
+    try {
+      localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(project));
+    } catch { /* ignore quota errors */ }
+  }, [project]);
 
   const updateProject = useCallback((updates: Partial<ProjectData>) => {
     setProject((prev) => ({ ...prev, ...updates }));
@@ -104,6 +119,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   const resetProject = useCallback(() => {
     setProject(defaultProject);
     setIsLoaded(false);
+    try { localStorage.removeItem(LOCAL_STORAGE_KEY); } catch { /* ignore */ }
   }, []);
 
   const markStepComplete = useCallback((step: string) => {
@@ -198,8 +214,8 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast.info("Sign in to save your project", {
-          description: "Your progress is saved locally for now.",
+        toast.success("Progress saved on this device", {
+          description: "Create an account to save across devices and keep your project safe.",
         });
         setIsSaving(false);
         return;
@@ -241,8 +257,8 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         if (data) setProject((prev) => ({ ...prev, id: data.id }));
       }
 
-      toast.success("Project saved", {
-        description: "Your progress has been saved.",
+      toast.success("Project saved to your account", {
+        description: "Your progress is backed up and ready when you return.",
       });
     } catch (err) {
       console.error("Save error:", err);
