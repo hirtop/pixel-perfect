@@ -209,9 +209,12 @@ export default function LandingPage() {
             <motion.p variants={fadeUp} custom={0} className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
               Transformation
             </motion.p>
-            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground">
+            <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground mb-4">
               See the difference
             </motion.h2>
+            <motion.p variants={fadeUp} custom={2} className="text-muted-foreground max-w-md mx-auto leading-relaxed">
+              See how BOBOX turns a dated bathroom into a visual remodel direction.
+            </motion.p>
           </motion.div>
 
           <motion.div
