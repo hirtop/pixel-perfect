@@ -29,6 +29,7 @@ const App = () => (
           <Route path="/style-budget" element={<StyleBudget />} />
           <Route path="/options" element={<RemodelOptions />} />
           <Route path="/package/:id" element={<PackageDetail />} />
+          <Route path="/customize/:id" element={<CustomizeOption />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
