@@ -204,6 +204,25 @@ const Agreement = () => {
               Back to Subcontractors
             </Link>
           </div>
+
+          {/* Completion block */}
+          <div className="mt-16 rounded-2xl border border-primary/20 bg-primary/5 p-8 md:p-10 text-center">
+            <div className="inline-flex items-center justify-center w-12 h-12 rounded-full bg-primary/10 mb-4">
+              <Check className="h-6 w-6 text-primary" />
+            </div>
+            <h3 className="font-heading text-xl text-foreground mb-2">You've completed your BOBOX Remodel plan</h3>
+            <p className="text-sm text-muted-foreground max-w-md mx-auto leading-relaxed mb-6">
+              Your project setup, package selection, customization, workflow, and starter agreement are all in one place. You're ready to move forward with confidence.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button size="lg" className="px-8 h-11 text-sm font-semibold rounded-lg" asChild>
+                <Link to="/summary">View Project Summary</Link>
+              </Button>
+              <Button size="lg" variant="outline" className="px-8 h-11 text-sm rounded-lg" asChild>
+                <Link to="/">Back to Home</Link>
+              </Button>
+            </div>
+          </div>
         </motion.div>
       </main>
     </div>
