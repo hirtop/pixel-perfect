@@ -149,7 +149,7 @@ export default function LandingPage() {
               <Button
                 size="lg"
                 variant="outline"
-                className="border-primary-foreground/60 text-primary-foreground hover:bg-primary-foreground/15 backdrop-blur-sm text-base px-8"
+                className="border-white/70 text-white hover:bg-white/10 backdrop-blur-sm text-base px-8"
               >
                 See a Sample Remodel
               </Button>
