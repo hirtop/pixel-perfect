@@ -280,8 +280,8 @@ const CustomizeOption = () => {
                   </div>
                 </div>
 
-                <Button size="lg" className="w-full h-12 text-base font-semibold rounded-lg">
-                  Continue with This Package
+                <Button size="lg" className="w-full h-12 text-base font-semibold rounded-lg" asChild>
+                  <Link to="/workflow">Continue with This Package</Link>
                 </Button>
               </div>
             </div>
