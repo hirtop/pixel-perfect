@@ -7,6 +7,7 @@ import Index from "./pages/Index.tsx";
 import StartProject from "./pages/StartProject.tsx";
 import UploadPhotos from "./pages/UploadPhotos.tsx";
 import Dimensions from "./pages/Dimensions.tsx";
+import StyleBudget from "./pages/StyleBudget.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -22,6 +23,7 @@ const App = () => (
           <Route path="/start" element={<StartProject />} />
           <Route path="/upload" element={<UploadPhotos />} />
           <Route path="/dimensions" element={<Dimensions />} />
+          <Route path="/style-budget" element={<StyleBudget />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>
