@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useProject } from "@/contexts/ProjectContext";
 
 const styles = [
   { name: "Modern", desc: "Clean lines and contemporary finishes" },
@@ -24,10 +25,22 @@ const budgetLevels = [
 const finishes = ["Chrome", "Matte Black", "Brushed Nickel", "Brass", "Mixed / Open"];
 
 const StyleBudget = () => {
-  const [selectedStyle, setSelectedStyle] = useState("");
-  const [budget, setBudget] = useState("");
-  const [budgetLevel, setBudgetLevel] = useState("");
-  const [finish, setFinish] = useState("");
+  const { project, updateProject, markStepComplete } = useProject();
+  const navigate = useNavigate();
+  const prefs = project.style_preferences;
+
+  const [selectedStyle, setSelectedStyle] = useState(prefs.style || "");
+  const [budget, setBudget] = useState(prefs.budget || "");
+  const [budgetLevel, setBudgetLevel] = useState(prefs.budget_level || "");
+  const [finish, setFinish] = useState(prefs.finish || "");
+
+  const handleContinue = () => {
+    updateProject({
+      style_preferences: { style: selectedStyle, budget, budget_level: budgetLevel, finish },
+    });
+    markStepComplete("style-budget");
+    navigate("/options");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -40,17 +53,9 @@ const StyleBudget = () => {
       </nav>
 
       <main className="pt-28 pb-20 px-6">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="max-w-3xl mx-auto"
-        >
-          {/* Header */}
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-3xl mx-auto">
           <div className="text-center mb-12">
-            <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
-              Choose Your Style and Budget
-            </h1>
+            <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Choose Your Style and Budget</h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
               Help BOBOX understand your design taste and budget range so we can generate better remodel options.
             </p>
@@ -65,25 +70,14 @@ const StyleBudget = () => {
               </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {styles.map((s) => (
-                  <button
-                    key={s.name}
-                    onClick={() => setSelectedStyle(s.name)}
+                  <button key={s.name} onClick={() => setSelectedStyle(s.name)}
                     className={`group text-left rounded-xl border-2 p-5 transition-all duration-200 ${
                       selectedStyle === s.name
                         ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
                         : "border-transparent bg-secondary/40 hover:bg-secondary/70 hover:border-primary/20"
-                    }`}
-                  >
-                    <p className={`text-sm font-semibold mb-1 ${
-                      selectedStyle === s.name ? "text-primary-foreground" : "text-foreground"
                     }`}>
-                      {s.name}
-                    </p>
-                    <p className={`text-xs leading-relaxed ${
-                      selectedStyle === s.name ? "text-primary-foreground/80" : "text-muted-foreground"
-                    }`}>
-                      {s.desc}
-                    </p>
+                    <p className={`text-sm font-semibold mb-1 ${selectedStyle === s.name ? "text-primary-foreground" : "text-foreground"}`}>{s.name}</p>
+                    <p className={`text-xs leading-relaxed ${selectedStyle === s.name ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{s.desc}</p>
                   </button>
                 ))}
               </div>
@@ -95,45 +89,25 @@ const StyleBudget = () => {
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">Budget Preference</p>
                 <p className="text-sm text-muted-foreground">Set a target and choose your comfort level.</p>
               </div>
-
               <div className="space-y-2 max-w-xs">
                 <Label htmlFor="budget" className="text-sm font-medium text-foreground">
                   Target Budget <span className="text-muted-foreground font-normal">(optional)</span>
                 </Label>
                 <div className="relative">
                   <span className="absolute left-4 top-1/2 -translate-y-1/2 text-muted-foreground text-base">$</span>
-                  <Input
-                    id="budget"
-                    type="number"
-                    placeholder="15,000"
-                    value={budget}
-                    onChange={(e) => setBudget(e.target.value)}
-                    className="h-12 text-base pl-8"
-                  />
+                  <Input id="budget" type="number" placeholder="15,000" value={budget} onChange={(e) => setBudget(e.target.value)} className="h-12 text-base pl-8" />
                 </div>
               </div>
-
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                 {budgetLevels.map((b) => (
-                  <button
-                    key={b.name}
-                    onClick={() => setBudgetLevel(b.name)}
+                  <button key={b.name} onClick={() => setBudgetLevel(b.name)}
                     className={`text-left rounded-xl border-2 p-5 transition-all duration-200 ${
                       budgetLevel === b.name
                         ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
                         : "border-transparent bg-secondary/40 hover:bg-secondary/70 hover:border-primary/20"
-                    }`}
-                  >
-                    <p className={`text-sm font-semibold mb-1 ${
-                      budgetLevel === b.name ? "text-primary-foreground" : "text-foreground"
                     }`}>
-                      {b.name}
-                    </p>
-                    <p className={`text-xs leading-relaxed ${
-                      budgetLevel === b.name ? "text-primary-foreground/80" : "text-muted-foreground"
-                    }`}>
-                      {b.desc}
-                    </p>
+                    <p className={`text-sm font-semibold mb-1 ${budgetLevel === b.name ? "text-primary-foreground" : "text-foreground"}`}>{b.name}</p>
+                    <p className={`text-xs leading-relaxed ${budgetLevel === b.name ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{b.desc}</p>
                   </button>
                 ))}
               </div>
@@ -147,15 +121,12 @@ const StyleBudget = () => {
               </div>
               <div className="flex flex-wrap gap-3">
                 {finishes.map((f) => (
-                  <button
-                    key={f}
-                    onClick={() => setFinish(f)}
+                  <button key={f} onClick={() => setFinish(f)}
                     className={`rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-200 ${
                       finish === f
                         ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
                         : "border-transparent bg-secondary/40 text-muted-foreground hover:bg-secondary/70 hover:text-foreground"
-                    }`}
-                  >
+                    }`}>
                     {f}
                   </button>
                 ))}
@@ -164,8 +135,8 @@ const StyleBudget = () => {
 
             {/* Actions */}
             <div className="pt-4 flex flex-col sm:flex-row items-center gap-5">
-              <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
-                <Link to="/options">Generate Remodel Options</Link>
+              <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
+                Generate Remodel Options
               </Button>
               <Link to="/dimensions" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ArrowLeft className="h-3.5 w-3.5" /> Back to Dimensions

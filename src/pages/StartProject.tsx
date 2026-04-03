@@ -1,21 +1,36 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { useProject } from "@/contexts/ProjectContext";
 
 const bathroomTypes = ["Primary Bathroom", "Guest Bathroom", "Powder Room", "Other"];
 const propertyTypes = ["House", "Condo", "Apartment", "Other"];
 const styleOptions = ["Modern", "Spa", "Traditional", "Minimal", "Luxury", "Transitional"];
 
 const StartProject = () => {
-  const [projectName, setProjectName] = useState("");
-  const [bathroomType, setBathroomType] = useState("");
-  const [propertyType, setPropertyType] = useState("");
-  const [budget, setBudget] = useState("");
-  const [style, setStyle] = useState("");
+  const { project, updateProject, markStepComplete } = useProject();
+  const navigate = useNavigate();
+
+  const [projectName, setProjectName] = useState(project.name === "Untitled Project" ? "" : project.name);
+  const [bathroomType, setBathroomType] = useState(project.bathroom_type);
+  const [propertyType, setPropertyType] = useState(project.property_type);
+  const [budget, setBudget] = useState(project.style_preferences.budget || "");
+  const [style, setStyle] = useState(project.style_preferences.style || "");
+
+  const handleContinue = () => {
+    updateProject({
+      name: projectName || "Untitled Project",
+      bathroom_type: bathroomType,
+      property_type: propertyType,
+      style_preferences: { ...project.style_preferences, budget, style },
+    });
+    markStepComplete("start");
+    navigate("/upload");
+  };
 
   return (
     <div className="min-h-screen bg-background">
@@ -147,9 +162,9 @@ const StartProject = () => {
               <Button
                 size="lg"
                 className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg"
-                asChild
+                onClick={handleContinue}
               >
-                <Link to="/upload">Continue</Link>
+                Continue
               </Button>
               <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Save and finish later

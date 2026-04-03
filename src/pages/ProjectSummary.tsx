@@ -135,7 +135,10 @@ const ProjectSummary = () => (
             <Link to="/subcontractors">Continue to Subcontractors</Link>
           </Button>
           <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg"
-            onClick={() => toast.success("Project saved", { description: "You can return to this project anytime." })}
+            onClick={() => {
+              const { saveProject } = useProject();
+              saveProject();
+            }}
           >
             Save Project
           </Button>
