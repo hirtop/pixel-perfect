@@ -125,6 +125,9 @@ const ProjectSummary = () => {
               <p className="text-xs text-muted-foreground leading-relaxed pt-1">
                 Final totals may vary based on selections, labor, and site conditions.
               </p>
+              <p className="text-[10px] text-muted-foreground/60 leading-relaxed">
+                Your progress is automatically saved on this device as you go.
+              </p>
             </div>
           </div>
 
