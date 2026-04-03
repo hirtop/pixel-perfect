@@ -214,8 +214,8 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast.success("Progress saved on this device", {
-          description: "Create an account to save across devices and keep your project safe.",
+        toast.success("Your progress is saved on this device", {
+          description: "Sign in anytime to sync your project across devices.",
         });
         setIsSaving(false);
         return;
