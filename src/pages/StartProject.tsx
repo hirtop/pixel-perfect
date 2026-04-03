@@ -69,10 +69,10 @@ const StartProject = () => {
                   <button
                     key={type}
                     onClick={() => setBathroomType(type)}
-                    className={`rounded-lg border-2 px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                    className={`rounded-lg border-2 px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                       bathroomType === type
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                        : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                        ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
+                        : "border-transparent bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
                     }`}
                   >
                     {type}
@@ -89,10 +89,10 @@ const StartProject = () => {
                   <button
                     key={type}
                     onClick={() => setPropertyType(type)}
-                    className={`rounded-lg border-2 px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                    className={`rounded-lg border-2 px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                       propertyType === type
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                        : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                        ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
+                        : "border-transparent bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
                     }`}
                   >
                     {type}
@@ -127,10 +127,10 @@ const StartProject = () => {
                   <button
                     key={s}
                     onClick={() => setStyle(s)}
-                    className={`rounded-full border-2 px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
+                    className={`rounded-full border-2 px-5 py-2.5 text-sm font-semibold transition-all duration-200 ${
                       style === s
-                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
-                        : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
+                        ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
+                        : "border-transparent bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
                     }`}
                   >
                     {s}
