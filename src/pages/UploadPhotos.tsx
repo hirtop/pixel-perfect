@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Upload, ImagePlus, X, ArrowLeft } from "lucide-react";
+import { Upload, ImagePlus, X, ArrowLeft, ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -33,11 +33,17 @@ const UploadPhotos = () => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
   };
 
+  const existingCount = project.photos.metadata.length;
+  const hasNewFiles = files.length > 0;
+
   const handleContinue = () => {
-    const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
-    updateProject({
-      photos: { metadata, notes },
-    });
+    // Only update metadata if user added new files; otherwise preserve existing
+    if (hasNewFiles) {
+      const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
+      updateProject({ photos: { metadata, notes } });
+    } else {
+      updateProject({ photos: { ...project.photos, notes } });
+    }
     markStepComplete("upload");
     navigate("/dimensions");
   };
@@ -69,6 +75,19 @@ const UploadPhotos = () => {
           </div>
 
           <div className="space-y-8">
+            {/* Saved photo indicator */}
+            {!hasNewFiles && existingCount > 0 && (
+              <div className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-4 flex items-center gap-3">
+                <ImageIcon className="h-5 w-5 text-primary flex-shrink-0" />
+                <div>
+                  <p className="text-sm font-medium text-foreground">
+                    {existingCount} photo{existingCount !== 1 ? "s" : ""} saved to this project
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Upload new photos below to replace them, or continue with your current set.</p>
+                </div>
+              </div>
+            )}
+
             {/* Dropzone */}
             <div
               onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
@@ -108,7 +127,7 @@ const UploadPhotos = () => {
             </div>
 
             {/* Thumbnails */}
-            {files.length > 0 && (
+            {hasNewFiles && (
               <div className="space-y-3">
                 <p className="text-sm font-medium text-foreground">
                   {files.length} photo{files.length !== 1 ? "s" : ""} added
@@ -134,13 +153,6 @@ const UploadPhotos = () => {
                     </button>
                   )}
                 </div>
-              </div>
-            )}
-
-            {/* Saved photo count indicator */}
-            {files.length === 0 && project.photos.metadata.length > 0 && (
-              <div className="rounded-lg bg-secondary/40 px-4 py-3 text-sm text-muted-foreground">
-                {project.photos.metadata.length} photo{project.photos.metadata.length !== 1 ? "s" : ""} previously saved to this project.
               </div>
             )}
 

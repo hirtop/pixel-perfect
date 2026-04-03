@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, ChevronUp } from "lucide-react";
@@ -101,13 +101,14 @@ const baseShipping = 650;
 const CustomizeOption = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
+  const isInitialMount = useRef(true);
 
   // Restore from context if previously saved
   const savedCats = project.customizations.categories;
   const [categories, setCategories] = useState<Category[]>(
     savedCats && Array.isArray(savedCats) && savedCats.length > 0
       ? initialCategories.map((ic) => {
-          const saved = (savedCats as Array<{ name: string; selected: string; price: number }>).find((s) => s.name === ic.name);
+          const saved = savedCats.find((s) => s.name === ic.name);
           return saved ? { ...ic, selected: saved.selected, price: saved.price } : ic;
         })
       : initialCategories
@@ -131,13 +132,19 @@ const CustomizeOption = () => {
     toast.success(`${alt.name} selected`, { description: `${catName} updated in your package` });
   };
 
-  // Persist customizations on changes
+  // Persist customizations on changes, skip initial mount
   useEffect(() => {
+    if (isInitialMount.current) {
+      isInitialMount.current = false;
+      return;
+    }
     const simplified = categories.map((c) => ({ name: c.name, selected: c.selected, price: c.price }));
     updateProject({ customizations: { categories: simplified } });
-  }, [categories, updateProject]);
+  }, [categories]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleContinue = () => {
+    const simplified = categories.map((c) => ({ name: c.name, selected: c.selected, price: c.price }));
+    updateProject({ customizations: { categories: simplified } });
     markStepComplete("customize");
     navigate("/workflow");
   };
@@ -155,7 +162,7 @@ const CustomizeOption = () => {
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </Link>
-          <Link to="/package/balanced" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <Link to={`/package/${project.selected_package.tier || "balanced"}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Package Detail
           </Link>
         </div>
