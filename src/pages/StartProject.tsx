@@ -89,9 +89,9 @@ const StartProject = () => {
                   <button
                     key={type}
                     onClick={() => setPropertyType(type)}
-                    className={`rounded-lg border px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                    className={`rounded-lg border-2 px-4 py-3 text-sm font-medium transition-all duration-200 ${
                       propertyType === type
-                        ? "border-primary bg-primary/10 text-primary"
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
                         : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
                     }`}
                   >
