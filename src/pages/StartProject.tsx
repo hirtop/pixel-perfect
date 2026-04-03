@@ -23,12 +23,12 @@ const StartProject = () => {
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
-            BOBOX
+            BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </Link>
         </div>
       </nav>
 
-      <main className="pt-32 pb-24 px-6">
+      <main className="pt-28 pb-20 px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -36,7 +36,7 @@ const StartProject = () => {
           className="max-w-2xl mx-auto"
         >
           {/* Header */}
-          <div className="text-center mb-14">
+          <div className="text-center mb-10">
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
               Start Your Bathroom Project
             </h1>
@@ -46,7 +46,7 @@ const StartProject = () => {
           </div>
 
           {/* Form */}
-          <div className="space-y-10">
+          <div className="space-y-8">
             {/* Project Name */}
             <div className="space-y-2">
               <Label htmlFor="project-name" className="text-sm font-medium text-foreground">
@@ -69,9 +69,9 @@ const StartProject = () => {
                   <button
                     key={type}
                     onClick={() => setBathroomType(type)}
-                    className={`rounded-lg border px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                    className={`rounded-lg border-2 px-4 py-3 text-sm font-medium transition-all duration-200 ${
                       bathroomType === type
-                        ? "border-primary bg-primary/10 text-primary"
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
                         : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
                     }`}
                   >
@@ -89,9 +89,9 @@ const StartProject = () => {
                   <button
                     key={type}
                     onClick={() => setPropertyType(type)}
-                    className={`rounded-lg border px-4 py-3 text-sm font-medium transition-all duration-200 ${
+                    className={`rounded-lg border-2 px-4 py-3 text-sm font-medium transition-all duration-200 ${
                       propertyType === type
-                        ? "border-primary bg-primary/10 text-primary"
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
                         : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
                     }`}
                   >
@@ -127,9 +127,9 @@ const StartProject = () => {
                   <button
                     key={s}
                     onClick={() => setStyle(s)}
-                    className={`rounded-full border px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
+                    className={`rounded-full border-2 px-5 py-2.5 text-sm font-medium transition-all duration-200 ${
                       style === s
-                        ? "border-primary bg-primary text-primary-foreground"
+                        ? "border-primary bg-primary text-primary-foreground shadow-sm"
                         : "border-border bg-card text-muted-foreground hover:border-primary/40 hover:text-foreground"
                     }`}
                   >
@@ -140,7 +140,7 @@ const StartProject = () => {
             </div>
 
             {/* Actions */}
-            <div className="pt-6 flex flex-col sm:flex-row items-center gap-4">
+            <div className="pt-4 flex flex-col sm:flex-row items-center gap-5">
               <Button
                 size="lg"
                 className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg"
