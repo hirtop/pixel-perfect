@@ -114,7 +114,7 @@ export default function LandingPage() {
             height={1080}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-foreground/80 via-foreground/50 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-r from-foreground/70 via-foreground/40 to-transparent" />
         </div>
         <div className="relative container mx-auto px-6 py-32 md:py-44">
           <motion.div
