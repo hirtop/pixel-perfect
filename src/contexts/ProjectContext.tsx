@@ -257,8 +257,8 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         if (data) setProject((prev) => ({ ...prev, id: data.id }));
       }
 
-      toast.success("Project saved", {
-        description: "Your progress has been saved.",
+      toast.success("Project saved to your account", {
+        description: "Your progress is backed up and ready when you return.",
       });
     } catch (err) {
       console.error("Save error:", err);
