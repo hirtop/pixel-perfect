@@ -166,8 +166,8 @@ const StyleBudget = () => {
               <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
                 <Link to="/options">Generate Remodel Options</Link>
               </Button>
-              <Link to="/dimensions" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Back
+              <Link to="/dimensions" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <ArrowLeft className="h-3.5 w-3.5" /> Back to Dimensions
               </Link>
             </div>
           </div>

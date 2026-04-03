@@ -173,8 +173,8 @@ const Dimensions = () => {
               <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
                 <Link to="/style-budget">Continue</Link>
               </Button>
-              <Link to="/upload" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Back
+              <Link to="/upload" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <ArrowLeft className="h-3.5 w-3.5" /> Back to Photos
               </Link>
             </div>
           </div>
