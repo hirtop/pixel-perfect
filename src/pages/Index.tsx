@@ -98,16 +98,16 @@ export default function LandingPage() {
               custom={0}
               className="font-heading text-4xl md:text-6xl leading-tight text-primary-foreground mb-6"
             >
-              Your dream bathroom,{" "}
-              <span className="text-accent">planned in minutes</span>
+              Turn your bathroom into a{" "}
+              <span className="text-accent">shoppable remodel plan</span>
             </motion.h1>
             <motion.p
               variants={fadeUp}
               custom={1}
               className="text-lg md:text-xl text-primary-foreground/80 mb-8 font-body leading-relaxed"
             >
-              Scan your room. Compare remodel options. Shop with confidence.
-              AI-powered packages with live budgets — no guesswork.
+              Scan your room. Compare three curated packages. Swap products
+              with live budget updates — no guesswork, no surprises.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex gap-4">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8">
