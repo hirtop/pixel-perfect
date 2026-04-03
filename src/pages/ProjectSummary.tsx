@@ -37,7 +37,10 @@ const workflowPoints = [
   "Ready for next planning steps",
 ];
 
-const ProjectSummary = () => (
+const ProjectSummary = () => {
+  const { saveProject, isSaving } = useProject();
+
+  return (
   <div className="min-h-screen bg-background">
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
