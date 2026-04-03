@@ -115,6 +115,7 @@ const CustomizeOption = () => {
       )
     );
     setExpandedCategory(null);
+    toast.success(`${alt.name} selected`, { description: `${catName} updated in your package` });
   };
 
   const toggleExpand = (name: string) => {

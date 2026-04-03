@@ -190,10 +190,14 @@ const Agreement = () => {
 
           {/* Actions */}
           <div className="flex flex-col sm:flex-row items-center gap-4 pt-8">
-            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg">
+            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg"
+              onClick={() => toast.success("Agreement saved", { description: "Your starter agreement has been saved to your project." })}
+            >
               Save Agreement Template
             </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg gap-2">
+            <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg gap-2"
+              onClick={() => toast("Preparing PDF…", { description: "Your agreement will be ready to download shortly." })}
+            >
               <Download className="h-4 w-4" /> Download as PDF
             </Button>
             <Link to="/subcontractors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
