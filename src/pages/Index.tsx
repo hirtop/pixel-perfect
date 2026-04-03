@@ -136,7 +136,7 @@ export default function LandingPage() {
             <motion.p
               variants={fadeUp}
               custom={1}
-              className="text-lg md:text-xl text-primary-foreground/80 mb-10 font-body leading-relaxed max-w-md"
+              className="text-lg md:text-xl text-primary-foreground/80 mb-10 font-body leading-relaxed max-w-lg"
             >
               BOBOX Remodel helps you turn a bathroom photo into visual remodel
               packages with live budgets, real product suggestions, and a simple
