@@ -4,6 +4,7 @@ import { Check, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import balancedImg from "@/assets/package-balanced.jpg";
+import { useProject } from "@/contexts/ProjectContext";
 
 const summaryFields = [
   { label: "Project Name", value: "Main Bathroom Remodel" },
