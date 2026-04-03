@@ -1,7 +1,7 @@
 import { useState, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Upload, ImagePlus, X } from "lucide-react";
+import { Upload, ImagePlus, X, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -155,8 +155,8 @@ const UploadPhotos = () => {
               <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
                 <Link to="/dimensions">Continue</Link>
               </Button>
-              <Link to="/start" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-                Back
+              <Link to="/start" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+                <ArrowLeft className="h-3.5 w-3.5" /> Back to Project Setup
               </Link>
             </div>
 

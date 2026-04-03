@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { Check } from "lucide-react";
+import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import budgetImg from "@/assets/package-budget.jpg";
 import balancedImg from "@/assets/package-balanced.jpg";
@@ -41,8 +41,8 @@ const RemodelOptions = () => (
         <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
           BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
         </Link>
-        <Link to="/style-budget" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-          Back
+        <Link to="/style-budget" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <ArrowLeft className="h-3.5 w-3.5" /> Back to Style & Budget
         </Link>
       </div>
     </nav>

@@ -89,9 +89,9 @@ export default function LandingPage() {
     <div className="min-h-screen bg-background">
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="container mx-auto flex items-center justify-between py-4 px-6">
-          <span className="font-heading text-2xl tracking-tight text-foreground">
-            BOBOX<span className="text-primary"> Remodel</span>
+        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 h-16">
+          <span className="font-heading text-xl tracking-tight text-foreground">
+            BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </span>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
             <a href="#how" className="hover:text-foreground transition-colors">How It Works</a>
