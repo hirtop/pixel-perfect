@@ -14,7 +14,57 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      projects: {
+        Row: {
+          agreement_data: Json | null
+          bathroom_type: string | null
+          created_at: string
+          customizations: Json | null
+          dimensions: Json | null
+          id: string
+          name: string
+          property_type: string | null
+          selected_package: Json | null
+          status: string
+          style_preferences: Json | null
+          updated_at: string
+          user_id: string
+          workflow_progress: Json | null
+        }
+        Insert: {
+          agreement_data?: Json | null
+          bathroom_type?: string | null
+          created_at?: string
+          customizations?: Json | null
+          dimensions?: Json | null
+          id?: string
+          name?: string
+          property_type?: string | null
+          selected_package?: Json | null
+          status?: string
+          style_preferences?: Json | null
+          updated_at?: string
+          user_id: string
+          workflow_progress?: Json | null
+        }
+        Update: {
+          agreement_data?: Json | null
+          bathroom_type?: string | null
+          created_at?: string
+          customizations?: Json | null
+          dimensions?: Json | null
+          id?: string
+          name?: string
+          property_type?: string | null
+          selected_package?: Json | null
+          status?: string
+          style_preferences?: Json | null
+          updated_at?: string
+          user_id?: string
+          workflow_progress?: Json | null
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
