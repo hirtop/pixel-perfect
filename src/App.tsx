@@ -9,6 +9,7 @@ import UploadPhotos from "./pages/UploadPhotos.tsx";
 import Dimensions from "./pages/Dimensions.tsx";
 import StyleBudget from "./pages/StyleBudget.tsx";
 import RemodelOptions from "./pages/RemodelOptions.tsx";
+import PackageDetail from "./pages/PackageDetail.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -26,6 +27,7 @@ const App = () => (
           <Route path="/dimensions" element={<Dimensions />} />
           <Route path="/style-budget" element={<StyleBudget />} />
           <Route path="/options" element={<RemodelOptions />} />
+          <Route path="/package/:id" element={<PackageDetail />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

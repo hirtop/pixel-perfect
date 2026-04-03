@@ -147,8 +147,9 @@ const RemodelOptions = () => (
                     pkg.featured ? "" : "bg-secondary text-foreground hover:bg-secondary/80"
                   }`}
                   variant={pkg.featured ? "default" : "secondary"}
+                  asChild
                 >
-                  View Option
+                  <Link to={`/package/${pkg.name.toLowerCase()}`}>View Option</Link>
                 </Button>
               </div>
             </motion.div>
