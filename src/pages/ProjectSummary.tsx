@@ -4,6 +4,7 @@ import { Check, ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import balancedImg from "@/assets/package-balanced.jpg";
+import { useProject } from "@/contexts/ProjectContext";
 
 const summaryFields = [
   { label: "Project Name", value: "Main Bathroom Remodel" },
@@ -36,7 +37,10 @@ const workflowPoints = [
   "Ready for next planning steps",
 ];
 
-const ProjectSummary = () => (
+const ProjectSummary = () => {
+  const { saveProject, isSaving } = useProject();
+
+  return (
   <div className="min-h-screen bg-background">
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
       <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
@@ -134,9 +138,10 @@ const ProjectSummary = () => (
             <Link to="/subcontractors">Continue to Subcontractors</Link>
           </Button>
           <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg"
-            onClick={() => toast.success("Project saved", { description: "You can return to this project anytime." })}
+            onClick={() => saveProject()}
+            disabled={isSaving}
           >
-            Save Project
+            {isSaving ? "Saving…" : "Save Project"}
           </Button>
           <Link to="/workflow" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Back to Workflow
@@ -145,6 +150,7 @@ const ProjectSummary = () => (
       </motion.div>
     </main>
   </div>
-);
+  );
+};
 
 export default ProjectSummary;
