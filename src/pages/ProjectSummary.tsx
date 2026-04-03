@@ -138,12 +138,10 @@ const ProjectSummary = () => {
             <Link to="/subcontractors">Continue to Subcontractors</Link>
           </Button>
           <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg"
-            onClick={() => {
-              const { saveProject } = useProject();
-              saveProject();
-            }}
+            onClick={() => saveProject()}
+            disabled={isSaving}
           >
-            Save Project
+            {isSaving ? "Saving…" : "Save Project"}
           </Button>
           <Link to="/workflow" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
             Back to Workflow
@@ -152,6 +150,7 @@ const ProjectSummary = () => {
       </motion.div>
     </main>
   </div>
-);
+  );
+};
 
 export default ProjectSummary;
