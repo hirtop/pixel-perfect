@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useProject } from "@/contexts/ProjectContext";
 
 const steps = [
   { title: "Planning and measurements", desc: "Confirm layout, finalize selections, and verify all dimensions before work begins.", product: null },
@@ -17,90 +18,75 @@ const steps = [
   { title: "Final accessories and cleanup", desc: "Add mirrors, towel bars, lighting trim, and give everything a final clean.", product: "Your selected mirror and lighting finish the space" },
 ];
 
-const Workflow = () => (
-  <div className="min-h-screen bg-background">
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-      <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
-        <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
-          BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
-        </Link>
-        <Link to="/customize/balanced" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-          <ArrowLeft className="h-3.5 w-3.5" /> Back to Customization
-        </Link>
-      </div>
-    </nav>
+const Workflow = () => {
+  const { markStepComplete } = useProject();
+  const navigate = useNavigate();
 
-    <main className="pt-28 pb-20 px-6">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="max-w-2xl mx-auto"
-      >
-        {/* Header */}
-        <div className="text-center mb-14">
-          <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">Your Project</p>
-          <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
-            Typical Remodel Workflow
-          </h1>
-          <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-            Here's how a bathroom remodel like this usually comes together, from demolition to final finishing touches.
-          </p>
-        </div>
+  const handleContinue = () => {
+    markStepComplete("workflow");
+    navigate("/summary");
+  };
 
-        {/* Timeline */}
-        <div className="relative">
-          {/* Vertical line */}
-          <div className="absolute left-[19px] top-2 bottom-2 w-px bg-border" />
-
-          <div className="space-y-0">
-            {steps.map((step, i) => (
-              <motion.div
-                key={step.title}
-                initial={{ opacity: 0, x: -10 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.06, duration: 0.4 }}
-                className="relative flex gap-5 pb-8 last:pb-0"
-              >
-                {/* Dot */}
-                <div className="relative z-10 flex-shrink-0">
-                  <div className={`w-[39px] h-[39px] rounded-full flex items-center justify-center text-xs font-semibold ${
-                    step.product
-                      ? "bg-primary text-primary-foreground"
-                      : "bg-secondary text-muted-foreground border border-border"
-                  }`}>
-                    {i + 1}
-                  </div>
-                </div>
-
-                {/* Content */}
-                <div className="pt-1.5 min-w-0">
-                  <p className="text-sm font-semibold text-foreground">{step.title}</p>
-                  <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{step.desc}</p>
-                  {step.product && (
-                    <p className="text-xs text-primary font-medium mt-2 flex items-center gap-1.5">
-                      <span className="inline-block w-1 h-1 rounded-full bg-primary" />
-                      {step.product}
-                    </p>
-                  )}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-
-        {/* Actions */}
-        <div className="pt-12 flex flex-col sm:flex-row items-center gap-5">
-          <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
-            <Link to="/summary">Continue to Project Summary</Link>
-          </Button>
-          <Link to="/customize/balanced" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-            Back to Customization
+  return (
+    <div className="min-h-screen bg-background">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
+          <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
+            BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
+          </Link>
+          <Link to="/customize/balanced" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <ArrowLeft className="h-3.5 w-3.5" /> Back to Customization
           </Link>
         </div>
-      </motion.div>
-    </main>
-  </div>
-);
+      </nav>
+
+      <main className="pt-28 pb-20 px-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-2xl mx-auto">
+          <div className="text-center mb-14">
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">Your Project</p>
+            <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Typical Remodel Workflow</h1>
+            <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
+              Here's how a bathroom remodel like this usually comes together, from demolition to final finishing touches.
+            </p>
+          </div>
+
+          <div className="relative">
+            <div className="absolute left-[19px] top-2 bottom-2 w-px bg-border" />
+            <div className="space-y-0">
+              {steps.map((step, i) => (
+                <motion.div key={step.title} initial={{ opacity: 0, x: -10 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: i * 0.06, duration: 0.4 }} className="relative flex gap-5 pb-8 last:pb-0">
+                  <div className="relative z-10 flex-shrink-0">
+                    <div className={`w-[39px] h-[39px] rounded-full flex items-center justify-center text-xs font-semibold ${step.product ? "bg-primary text-primary-foreground" : "bg-secondary text-muted-foreground border border-border"}`}>
+                      {i + 1}
+                    </div>
+                  </div>
+                  <div className="pt-1.5 min-w-0">
+                    <p className="text-sm font-semibold text-foreground">{step.title}</p>
+                    <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{step.desc}</p>
+                    {step.product && (
+                      <p className="text-xs text-primary font-medium mt-2 flex items-center gap-1.5">
+                        <span className="inline-block w-1 h-1 rounded-full bg-primary" />
+                        {step.product}
+                      </p>
+                    )}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+
+          <div className="pt-12 flex flex-col sm:flex-row items-center gap-5">
+            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
+              Continue to Project Summary
+            </Button>
+            <Link to="/customize/balanced" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Back to Customization
+            </Link>
+          </div>
+        </motion.div>
+      </main>
+    </div>
+  );
+};
 
 export default Workflow;
