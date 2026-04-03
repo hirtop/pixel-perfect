@@ -46,7 +46,7 @@ const StartProject = () => {
           </div>
 
           {/* Form */}
-          <div className="space-y-10">
+          <div className="space-y-8">
             {/* Project Name */}
             <div className="space-y-2">
               <Label htmlFor="project-name" className="text-sm font-medium text-foreground">
