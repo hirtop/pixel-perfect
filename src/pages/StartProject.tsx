@@ -144,8 +144,9 @@ const StartProject = () => {
               <Button
                 size="lg"
                 className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg"
+                asChild
               >
-                Continue
+                <Link to="/upload">Continue</Link>
               </Button>
               <button className="text-sm text-muted-foreground hover:text-foreground transition-colors">
                 Save and finish later
