@@ -1,7 +1,7 @@
-import { useState, useCallback } from "react";
-import { motion } from "framer-motion";
+import { useState, useCallback, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Upload, ImagePlus, X, ArrowLeft, ImageIcon } from "lucide-react";
+import { Upload, ImagePlus, X, ArrowLeft, ImageIcon, FileImage } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -12,8 +12,16 @@ const UploadPhotos = () => {
   const navigate = useNavigate();
 
   const [files, setFiles] = useState<File[]>([]);
+  const [previews, setPreviews] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const [notes, setNotes] = useState(project.photos.notes || "");
+
+  // Generate preview URLs when files change
+  useEffect(() => {
+    const urls = files.map((f) => URL.createObjectURL(f));
+    setPreviews(urls);
+    return () => urls.forEach((url) => URL.revokeObjectURL(url));
+  }, [files]);
 
   const handleFiles = (incoming: FileList | null) => {
     if (!incoming) return;
@@ -37,7 +45,6 @@ const UploadPhotos = () => {
   const hasNewFiles = files.length > 0;
 
   const handleContinue = () => {
-    // Only update metadata if user added new files; otherwise preserve existing
     if (hasNewFiles) {
       const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
       updateProject({ photos: { metadata, notes } });
@@ -46,6 +53,11 @@ const UploadPhotos = () => {
     }
     markStepComplete("upload");
     navigate("/dimensions");
+  };
+
+  const formatSize = (bytes: number) => {
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   return (
@@ -75,15 +87,26 @@ const UploadPhotos = () => {
           </div>
 
           <div className="space-y-8">
-            {/* Saved photo indicator */}
+            {/* Saved photo indicator — shown when returning with previously saved metadata but no new files */}
             {!hasNewFiles && existingCount > 0 && (
-              <div className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-4 flex items-center gap-3">
-                <ImageIcon className="h-5 w-5 text-primary flex-shrink-0" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">
-                    {existingCount} photo{existingCount !== 1 ? "s" : ""} saved to this project
-                  </p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Upload new photos below to replace them, or continue with your current set.</p>
+              <div className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <ImageIcon className="h-5 w-5 text-primary flex-shrink-0" />
+                  <div>
+                    <p className="text-sm font-medium text-foreground">
+                      {existingCount} photo{existingCount !== 1 ? "s" : ""} saved to this project
+                    </p>
+                    <p className="text-xs text-muted-foreground mt-0.5">Upload new photos below to replace them, or continue with your current set.</p>
+                  </div>
+                </div>
+                {/* Show saved file names as visual reference */}
+                <div className="grid grid-cols-4 gap-2">
+                  {project.photos.metadata.map((meta, i) => (
+                    <div key={i} className="rounded-lg bg-secondary/60 border border-border aspect-square flex flex-col items-center justify-center gap-1.5 p-2">
+                      <FileImage className="h-5 w-5 text-muted-foreground" />
+                      <span className="text-[10px] text-muted-foreground truncate w-full text-center leading-tight">{meta.name}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -126,35 +149,67 @@ const UploadPhotos = () => {
               </div>
             </div>
 
-            {/* Thumbnails */}
-            {hasNewFiles && (
-              <div className="space-y-3">
-                <p className="text-sm font-medium text-foreground">
-                  {files.length} photo{files.length !== 1 ? "s" : ""} added
-                </p>
-                <div className="grid grid-cols-4 gap-3">
-                  {files.map((file, i) => (
-                    <div key={i} className="relative group rounded-lg overflow-hidden aspect-square bg-secondary">
-                      <img src={URL.createObjectURL(file)} alt={file.name} className="w-full h-full object-cover" />
-                      <button
-                        onClick={(e) => { e.stopPropagation(); removeFile(i); }}
-                        className="absolute top-1.5 right-1.5 rounded-full bg-foreground/70 p-1 text-background opacity-0 group-hover:opacity-100 transition-opacity"
+            {/* Thumbnail previews */}
+            <AnimatePresence>
+              {hasNewFiles && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: -8 }}
+                  transition={{ duration: 0.3 }}
+                  className="space-y-3"
+                >
+                  <p className="text-sm font-medium text-foreground">
+                    {files.length} photo{files.length !== 1 ? "s" : ""} ready
+                  </p>
+                  <div className="grid grid-cols-4 gap-3">
+                    {files.map((file, i) => (
+                      <motion.div
+                        key={`${file.name}-${i}`}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.9 }}
+                        transition={{ duration: 0.2, delay: i * 0.05 }}
+                        className="relative group rounded-xl overflow-hidden aspect-square bg-secondary border border-border shadow-sm"
                       >
-                        <X className="h-3 w-3" />
-                      </button>
-                    </div>
-                  ))}
-                  {files.length < 8 && (
-                    <button
-                      onClick={() => document.getElementById("file-input")?.click()}
-                      className="rounded-lg border-2 border-dashed border-border aspect-square flex flex-col items-center justify-center text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors"
-                    >
-                      <ImagePlus className="h-5 w-5" />
-                    </button>
-                  )}
-                </div>
-              </div>
-            )}
+                        {previews[i] && (
+                          <img
+                            src={previews[i]}
+                            alt={file.name}
+                            className="w-full h-full object-cover"
+                          />
+                        )}
+                        {/* Hover overlay with file info */}
+                        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-200" />
+                        <button
+                          onClick={(e) => { e.stopPropagation(); removeFile(i); }}
+                          className="absolute top-2 right-2 rounded-full bg-foreground/70 p-1 text-background opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                          aria-label={`Remove ${file.name}`}
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
+                        <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5 bg-gradient-to-t from-foreground/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150">
+                          <p className="text-[10px] text-background truncate">{file.name}</p>
+                          <p className="text-[9px] text-background/70">{formatSize(file.size)}</p>
+                        </div>
+                      </motion.div>
+                    ))}
+                    {files.length < 8 && (
+                      <motion.button
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.15 }}
+                        onClick={() => document.getElementById("file-input")?.click()}
+                        className="rounded-xl border-2 border-dashed border-border aspect-square flex flex-col items-center justify-center gap-1.5 text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors"
+                      >
+                        <ImagePlus className="h-5 w-5" />
+                        <span className="text-[10px]">Add more</span>
+                      </motion.button>
+                    )}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             {/* Notes */}
             <div className="space-y-2">
