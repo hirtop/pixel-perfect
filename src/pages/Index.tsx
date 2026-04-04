@@ -100,9 +100,12 @@ export default function LandingPage() {
             <a href="#why" className="hover:text-foreground transition-colors">Why BOBOX</a>
             <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
           </div>
-          <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-            <Link to="/start">Start Your Bathroom Project</Link>
-          </Button>
+          <div className="flex items-center gap-3">
+            <AccountMenu />
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
+              <Link to="/start">Start Your Bathroom Project</Link>
+            </Button>
+          </div>
         </div>
       </nav>
 

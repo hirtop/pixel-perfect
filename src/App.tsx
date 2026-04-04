@@ -3,6 +3,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
+import { AuthProvider } from "@/hooks/useAuth";
 import { ProjectProvider } from "@/contexts/ProjectContext";
 import Index from "./pages/Index.tsx";
 import StartProject from "./pages/StartProject.tsx";
@@ -16,6 +17,7 @@ import Workflow from "./pages/Workflow.tsx";
 import ProjectSummary from "./pages/ProjectSummary.tsx";
 import Subcontractors from "./pages/Subcontractors.tsx";
 import Agreement from "./pages/Agreement.tsx";
+import Auth from "./pages/Auth.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -23,28 +25,31 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <ProjectProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/start" element={<StartProject />} />
-            <Route path="/upload" element={<UploadPhotos />} />
-            <Route path="/dimensions" element={<Dimensions />} />
-            <Route path="/style-budget" element={<StyleBudget />} />
-            <Route path="/options" element={<RemodelOptions />} />
-            <Route path="/package/:id" element={<PackageDetail />} />
-            <Route path="/customize/:id" element={<CustomizeOption />} />
-            <Route path="/workflow" element={<Workflow />} />
-            <Route path="/summary" element={<ProjectSummary />} />
-            <Route path="/subcontractors" element={<Subcontractors />} />
-            <Route path="/agreement" element={<Agreement />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
-      </ProjectProvider>
+      <AuthProvider>
+        <ProjectProvider>
+          <Toaster />
+          <Sonner />
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/start" element={<StartProject />} />
+              <Route path="/upload" element={<UploadPhotos />} />
+              <Route path="/dimensions" element={<Dimensions />} />
+              <Route path="/style-budget" element={<StyleBudget />} />
+              <Route path="/options" element={<RemodelOptions />} />
+              <Route path="/package/:id" element={<PackageDetail />} />
+              <Route path="/customize/:id" element={<CustomizeOption />} />
+              <Route path="/workflow" element={<Workflow />} />
+              <Route path="/summary" element={<ProjectSummary />} />
+              <Route path="/subcontractors" element={<Subcontractors />} />
+              <Route path="/agreement" element={<Agreement />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </ProjectProvider>
+      </AuthProvider>
     </TooltipProvider>
   </QueryClientProvider>
 );
