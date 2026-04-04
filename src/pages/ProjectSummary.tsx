@@ -2,8 +2,10 @@ import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import AccountMenu from "@/components/AccountMenu";
 import balancedImg from "@/assets/package-balanced.jpg";
 import { useProject } from "@/contexts/ProjectContext";
+import { useAuth } from "@/hooks/useAuth";
 
 const baseLaborRate = 5800;
 const baseShipping = 650;
@@ -26,6 +28,8 @@ const workflowPoints = [
 
 const ProjectSummary = () => {
   const { project, saveProject, markStepComplete, isSaving } = useProject();
+
+  const { user } = useAuth();
 
   // Derive dynamic summary fields from context
   const summaryFields = [
@@ -73,9 +77,12 @@ const ProjectSummary = () => {
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </Link>
-          <Link to="/workflow" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Workflow
-          </Link>
+          <div className="flex items-center gap-4">
+            <AccountMenu />
+            <Link to="/workflow" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <ArrowLeft className="h-3.5 w-3.5" /> Back to Workflow
+            </Link>
+          </div>
         </div>
       </nav>
 
@@ -126,7 +133,9 @@ const ProjectSummary = () => {
                 Final totals may vary based on selections, labor, and site conditions.
               </p>
               <p className="text-[10px] text-muted-foreground/60 leading-relaxed">
-                Your progress is automatically saved on this device. Create an account to access it anywhere.
+                {user
+                  ? "Your project is saved to your BOBOX account and available across devices."
+                  : "Your progress is saved on this device. Sign in to access it anywhere."}
               </p>
             </div>
           </div>
@@ -163,8 +172,13 @@ const ProjectSummary = () => {
               onClick={handleSave}
               disabled={isSaving}
             >
-              {isSaving ? "Saving…" : "Save Project"}
+              {isSaving ? "Saving…" : user ? "Save to Account" : "Save Project"}
             </Button>
+            {!user && (
+              <Button size="lg" variant="ghost" className="w-full sm:w-auto px-6 h-12 text-sm" asChild>
+                <Link to="/auth">Sign in for cross-device save</Link>
+              </Button>
+            )}
             <Link to="/workflow" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Back to Workflow
             </Link>

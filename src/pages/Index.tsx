@@ -2,6 +2,7 @@ import { motion, type Variants } from "framer-motion";
 import { Camera, Layers, DollarSign, TrendingUp, ShoppingBag, ListChecks, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import AccountMenu from "@/components/AccountMenu";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
@@ -99,9 +100,12 @@ export default function LandingPage() {
             <a href="#why" className="hover:text-foreground transition-colors">Why BOBOX</a>
             <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
           </div>
-          <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-            <Link to="/start">Start Your Bathroom Project</Link>
-          </Button>
+          <div className="flex items-center gap-3">
+            <AccountMenu />
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
+              <Link to="/start">Start Your Bathroom Project</Link>
+            </Button>
+          </div>
         </div>
       </nav>
 
