@@ -11,6 +11,7 @@ import {
   balancedAlternatives,
   formatPrice,
   getBathroomInsights,
+  CUSTOMIZABLE_CATEGORIES,
   type ProductCategory,
   type ProductAlternative,
 } from "@/data/products";
@@ -39,18 +40,14 @@ interface Category {
   spec?: string;
   finish?: string;
   alternatives: Alternative[];
-  /** Current labor delta for this category vs default */
   laborDelta: number;
   laborNote?: string;
-  /** Base price of the default product (for reference) */
   basePrice: number;
 }
 
-const CUSTOMIZE_CATEGORIES: ProductCategory[] = ["Vanity", "Faucet", "Tile", "Mirror"];
-
 const buildInitialCategories = (): Category[] =>
   balancedProducts
-    .filter((p) => CUSTOMIZE_CATEGORIES.includes(p.category))
+    .filter((p) => CUSTOMIZABLE_CATEGORIES.includes(p.category))
     .map((product) => {
       const alts: ProductAlternative[] = balancedAlternatives[product.category] || [];
       return {
@@ -81,7 +78,7 @@ const buildInitialCategories = (): Category[] =>
     });
 
 const BASE_LABOR = 5800;
-const BASE_SHIPPING = 650;
+const SHIPPING_ESTIMATE = 600;
 
 const CustomizeOption = () => {
   const { project, updateProject, markStepComplete } = useProject();
@@ -103,14 +100,11 @@ const CustomizeOption = () => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>("Vanity");
   const [lastSwapNote, setLastSwapNote] = useState<string | null>(null);
 
-  // Compute totals — labor now changes based on product swaps
   const materialsTotal = categories.reduce((sum, c) => sum + c.price, 0);
   const laborAdjustment = categories.reduce((sum, c) => sum + c.laborDelta, 0);
   const laborTotal = BASE_LABOR + laborAdjustment;
-  const shippingTotal = BASE_SHIPPING;
-  const projectTotal = materialsTotal + laborTotal + shippingTotal;
+  const projectTotal = materialsTotal + laborTotal + SHIPPING_ESTIMATE;
 
-  // Budget range check (balanced tier)
   const budgetLevel = project.style_preferences?.budget_level || "Balanced";
   const budgetCeilings: Record<string, number> = { Budget: 12000, Balanced: 19000, Premium: 32000 };
   const ceiling = budgetCeilings[budgetLevel] || 19000;
@@ -124,13 +118,13 @@ const CustomizeOption = () => {
               ...c,
               selected: alt.name,
               reason: alt.desc,
-              price: alt.price,          // absolute price, not cumulative
+              price: alt.price,
               vendor: alt.vendor,
               image: alt.image,
               tag: alt.tag,
               spec: alt.spec,
               finish: alt.finish,
-              laborDelta: alt.laborDelta, // absolute labor delta
+              laborDelta: alt.laborDelta,
               laborNote: alt.laborNote,
             }
           : c
@@ -138,19 +132,14 @@ const CustomizeOption = () => {
     );
     setExpandedCategory(null);
     setLastSwapNote(alt.laborNote || null);
-    toast.success(`${alt.name} selected`, { description: `${catName} updated in your package` });
+    toast.success(`${alt.name} selected`, { description: `${catName} updated` });
   };
 
-  // Reset a category back to default
   const resetToDefault = (catName: string) => {
     const base = initialCategories.find((c) => c.name === catName);
     if (!base) return;
     setCategories((prev) =>
-      prev.map((c) =>
-        c.name === catName
-          ? { ...base }
-          : c
-      )
+      prev.map((c) => (c.name === catName ? { ...base } : c))
     );
     setLastSwapNote(null);
     toast.success(`${catName} reset to default`);
@@ -202,14 +191,15 @@ const CustomizeOption = () => {
             <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{project.selected_package.name || "Balanced"} Package</p>
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">Customize Your Selections</h1>
             <p className="text-muted-foreground text-base max-w-lg leading-relaxed">
-              Compare real products, swap finishes, and watch your budget update live.
+              Swap products below and see how each change affects your estimate.
             </p>
           </div>
 
-          {/* Compact insights */}
-          <div className="mb-8">
-            <BathroomInsights insights={insights} compact />
-          </div>
+          {insights.length > 0 && (
+            <div className="mb-8">
+              <BathroomInsights insights={insights} compact />
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
             {/* Product cards */}
@@ -220,7 +210,6 @@ const CustomizeOption = () => {
                 const priceDiff = cat.price - cat.basePrice;
                 return (
                   <div key={cat.name} className={`rounded-xl border-2 transition-all duration-200 ${isExpanded ? "border-primary/40 bg-card" : "border-border bg-card"}`}>
-                    {/* Selected product header */}
                     <div className="flex items-start gap-4 p-5">
                       {cat.image ? (
                         <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-secondary">
@@ -238,7 +227,7 @@ const CustomizeOption = () => {
                             <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5">{cat.tag}</span>
                           )}
                           {isSwapped && (
-                            <span className="text-[10px] font-medium bg-secondary text-muted-foreground rounded-full px-2 py-0.5">Swapped</span>
+                            <span className="text-[10px] font-medium bg-secondary text-muted-foreground rounded-full px-2 py-0.5">Changed</span>
                           )}
                         </div>
                         <p className="text-sm font-medium text-foreground truncate">{cat.selected}</p>
@@ -258,7 +247,7 @@ const CustomizeOption = () => {
                           <span className="text-sm font-semibold text-foreground whitespace-nowrap">{fmt(cat.price)}</span>
                           {priceDiff !== 0 && (
                             <p className={`text-[10px] font-medium ${priceDiff > 0 ? "text-destructive" : "text-primary"}`}>
-                              {priceDiff > 0 ? "+" : ""}{fmt(priceDiff)} vs default
+                              {priceDiff > 0 ? "+" : ""}{fmt(priceDiff)}
                             </p>
                           )}
                         </div>
@@ -275,7 +264,6 @@ const CustomizeOption = () => {
                       </div>
                     </div>
 
-                    {/* Alternatives panel */}
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
@@ -296,11 +284,9 @@ const CustomizeOption = () => {
                                       </div>
                                     )}
                                     <div className="flex-1">
-                                      <div className="flex items-center gap-1.5 mb-1">
-                                        {alt.tag && (
-                                          <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5">{alt.tag}</span>
-                                        )}
-                                      </div>
+                                      {alt.tag && (
+                                        <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5 inline-block mb-1">{alt.tag}</span>
+                                      )}
                                       <p className="text-sm font-medium text-foreground leading-snug">{alt.name}</p>
                                       <p className="text-xs text-muted-foreground mt-0.5">{alt.vendor}</p>
                                       <p className="text-xs text-muted-foreground mt-1">{alt.desc}</p>
@@ -316,7 +302,7 @@ const CustomizeOption = () => {
                                           <p className="text-[10px] text-muted-foreground mt-0.5">
                                             {materialDiff !== 0 && <span className={materialDiff > 0 ? "text-destructive" : "text-primary"}>{materialDiff > 0 ? "+" : ""}{fmt(materialDiff)} material</span>}
                                             {materialDiff !== 0 && alt.laborDelta !== 0 && " · "}
-                                            {alt.laborDelta !== 0 && <span className="text-destructive">+{fmt(alt.laborDelta)} labor</span>}
+                                            {alt.laborDelta > 0 && <span className="text-destructive">+{fmt(alt.laborDelta)} labor</span>}
                                           </p>
                                         )}
                                       </div>
@@ -341,24 +327,24 @@ const CustomizeOption = () => {
             <div className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
                 <div className="rounded-xl border border-border bg-card p-6 space-y-4">
-                  <h3 className="font-heading text-lg text-foreground">Live Budget</h3>
+                  <h3 className="font-heading text-lg text-foreground">Estimate</h3>
                   <div className="space-y-2.5 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Materials</span>
+                      <span className="text-muted-foreground">Materials (4 items)</span>
                       <span className="font-medium text-foreground">{fmt(materialsTotal)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Est. Labor</span>
                       <div className="text-right">
                         <span className="font-medium text-foreground">{fmt(laborTotal)}</span>
-                        {laborAdjustment !== 0 && (
-                          <p className="text-[10px] text-destructive">+{fmt(laborAdjustment)} from swaps</p>
+                        {laborAdjustment > 0 && (
+                          <p className="text-[10px] text-destructive">+{fmt(laborAdjustment)} from install complexity</p>
                         )}
                       </div>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Shipping / Delivery</span>
-                      <span className="font-medium text-foreground">{fmt(shippingTotal)}</span>
+                      <span className="text-muted-foreground">Shipping (est.)</span>
+                      <span className="font-medium text-foreground">~{fmt(SHIPPING_ESTIMATE)}</span>
                     </div>
                     <div className="h-px bg-border" />
                     <div className="flex justify-between">
@@ -377,34 +363,30 @@ const CustomizeOption = () => {
                         exit={{ opacity: 0, y: -4 }}
                         className="rounded-lg bg-secondary/50 border border-border px-3 py-2.5"
                       >
-                        <p className="text-xs text-muted-foreground leading-relaxed">
-                          <span className="font-medium text-foreground">Why: </span>
-                          {lastSwapNote}
-                        </p>
+                        <p className="text-xs text-muted-foreground leading-relaxed">{lastSwapNote}</p>
                       </motion.div>
                     )}
                   </AnimatePresence>
 
-                  {/* Budget status */}
                   {isOverBudget ? (
                     <div className="flex items-center gap-2 text-xs">
                       <AlertTriangle className="h-3.5 w-3.5 text-destructive" />
-                      <span className="text-destructive font-medium">Above {budgetLevel} range ceiling ({fmt(ceiling)})</span>
+                      <span className="text-destructive font-medium">Above {budgetLevel} range ({fmt(ceiling)})</span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-2 text-xs">
                       <Check className="h-3.5 w-3.5 text-primary" />
-                      <span className="text-primary font-medium">Within {budgetLevel} budget range</span>
+                      <span className="text-primary font-medium">Within {budgetLevel} range</span>
                     </div>
                   )}
 
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    Estimates based on national averages. Final pricing varies by contractor and region.
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                    This covers the 4 products above only. Lighting, toilet, and shower hardware are included in the package but not shown here. Actual costs depend on your contractor and region.
                   </p>
                 </div>
 
                 <Button size="lg" className="w-full h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
-                  Continue with This Package
+                  Continue with These Selections
                 </Button>
               </div>
             </div>

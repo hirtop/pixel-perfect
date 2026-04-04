@@ -16,6 +16,9 @@ export const PRODUCT_CATEGORIES = [
 
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 
+/** The 4 categories users can actively customize */
+export const CUSTOMIZABLE_CATEGORIES: ProductCategory[] = ["Vanity", "Tile", "Faucet", "Mirror"];
+
 // ─── Product Type ───────────────────────────────────────────────────
 
 export interface Product {
@@ -37,8 +40,10 @@ export interface Product {
 
 // ─── Helpers ────────────────────────────────────────────────────────
 
-export const formatPrice = (dollars: number) =>
-  `$${dollars.toLocaleString()}`;
+export const formatPrice = (dollars: number) => {
+  if (dollars < 0) return `-$${Math.abs(dollars).toLocaleString()}`;
+  return `$${dollars.toLocaleString()}`;
+};
 
 // ─── Product images ─────────────────────────────────────────────────
 import vanityImg from "@/assets/products/vanity-balanced.jpg";
@@ -60,11 +65,11 @@ import mirrorAlt2Img from "@/assets/products/mirror-alt2.jpg";
 export const balancedProducts: Product[] = [
   {
     id: "bal-vanity-01",
-    name: "Floating Oak Vanity with Quartz Top",
+    name: '48" Floating Vanity with Quartz Top',
     category: "Vanity",
-    vendor: "Stonewood Home",
+    vendor: "Home Decorators Collection",
     price: 1850,
-    description: "Wall-mounted to keep floor visible — makes compact baths feel larger",
+    description: "Wall-mounted to keep floor visible — helps compact baths feel larger",
     finish: "Natural Oak / White Quartz",
     image: vanityImg,
     tag: "Recommended",
@@ -74,9 +79,9 @@ export const balancedProducts: Product[] = [
     id: "bal-tile-01",
     name: "Large-Format Porcelain in Warm Gray",
     category: "Tile",
-    vendor: "Centura Surfaces",
+    vendor: "Daltile",
     price: 2200,
-    description: "Fewer grout lines = easier cleaning and a more seamless wall look",
+    description: "Fewer grout lines means easier cleaning and a more seamless look",
     finish: "Warm Gray Matte",
     image: tileImg,
     tag: "Best Value",
@@ -88,28 +93,28 @@ export const balancedProducts: Product[] = [
     category: "Faucet",
     vendor: "Delta",
     price: 385,
-    description: "Minimal profile pairs with any vanity; ceramic cartridge rated 500K cycles",
+    description: "Minimal profile with ceramic cartridge rated for 500K cycles",
     finish: "Brushed Nickel",
     image: faucetImg,
     spec: "Single-hole mount, ceramic disc valve, 1.2 GPM WaterSense",
   },
   {
     id: "bal-lighting-01",
-    name: "Lyric Dual Wall Sconces",
+    name: "Dual Wall Sconces — Frosted Glass",
     category: "Lighting",
-    vendor: "Visual Comfort",
+    vendor: "Kichler",
     price: 520,
-    description: "Flanking sconces eliminate under-eye shadows that overhead lights create",
+    description: "Flanking sconces reduce under-eye shadows from overhead lighting",
     finish: "Brushed Nickel",
-    spec: "Dimmable LED, 2700K warm white, ADA-compliant projection",
+    spec: "Dimmable LED, 2700K warm white",
   },
   {
     id: "bal-mirror-01",
-    name: "Frameless Rectangular Mirror with Shelf",
+    name: '36" Frameless Mirror with Shelf',
     category: "Mirror",
-    vendor: "Restoration Modern",
+    vendor: "Glacier Bay",
     price: 340,
-    description: "Tempered glass with polished edge — shelf holds everyday essentials",
+    description: "Tempered glass with polished edge — shelf holds everyday items",
     image: mirrorImg,
     spec: '36" W × 28" H, ½" tempered glass, 4" integrated shelf',
   },
@@ -119,8 +124,8 @@ export const balancedProducts: Product[] = [
     category: "Toilet",
     vendor: "TOTO",
     price: 650,
-    description: "Tornado flush uses 1.28 GPF — saves ~4,000 gal/year over older models",
-    spec: 'ADA comfort height, CEFIONTECT glaze, 12" rough-in',
+    description: "1.28 GPF Tornado flush — saves ~4,000 gal/year vs older toilets",
+    spec: 'Comfort height, CEFIONTECT glaze, 12" rough-in',
   },
   {
     id: "bal-shower-01",
@@ -128,9 +133,9 @@ export const balancedProducts: Product[] = [
     category: "Shower / Tub Hardware",
     vendor: "Moen",
     price: 460,
-    description: "Magnetic dock keeps handheld in place — no sagging bracket over time",
+    description: "Magnetic dock keeps handheld in place — no sagging bracket",
     finish: "Brushed Nickel",
-    spec: '8" rain head + handheld wand, 2.5 GPM, connects to standard ½" arm',
+    spec: '8" rain head + handheld wand, 2.5 GPM',
   },
 ];
 
@@ -147,9 +152,9 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
   Vanity: [
     {
       id: "alt-vanity-01",
-      name: "Hampton 36\" Shaker Vanity",
+      name: '36" Shaker Vanity with Integrated Sink',
       category: "Vanity",
-      vendor: "Home Decorators Collection",
+      vendor: "Glacier Bay",
       price: 1420,
       description: "Freestanding with integrated ceramic sink — no separate top to seal",
       finish: "White",
@@ -161,11 +166,11 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
     },
     {
       id: "alt-vanity-02",
-      name: "Mid-Century 48\" Double-Drawer Vanity",
+      name: '48" Double-Drawer Vanity — Walnut',
       category: "Vanity",
       vendor: "West Elm",
       price: 2380,
-      description: "Dovetail walnut drawers add storage depth without widening footprint",
+      description: "Dovetail walnut drawers with extra storage depth",
       finish: "Walnut / White Quartz",
       image: vanityAlt2Img,
       laborDelta: 0,
@@ -175,7 +180,7 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
     },
     {
       id: "alt-vanity-03",
-      name: "Modway 30\" Wall-Mounted Vanity",
+      name: '30" Wall-Mounted Vanity',
       category: "Vanity",
       vendor: "AllModern",
       price: 1280,
@@ -191,46 +196,46 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
   Tile: [
     {
       id: "alt-tile-01",
-      name: "Classic 3×6 Subway Tile",
+      name: '3×6" Subway Tile — Glossy White',
       category: "Tile",
       vendor: "Daltile",
       price: 1400,
-      description: "Timeless pattern, widely available for easy future repairs",
+      description: "Classic pattern, widely available for easy future repairs",
       finish: "Glossy White",
       image: tileAlt1Img,
       laborDelta: 150,
       tag: "Budget Pick",
-      spec: '3" × 6" ceramic, ~85 sq ft, ⅛" grout joint recommended',
-      laborNote: "Smaller tiles = more grout lines — adds ~$150 labor",
+      spec: '3" × 6" ceramic, ~85 sq ft',
+      laborNote: "Smaller tiles mean more grout lines — adds ~$150 labor",
     },
     {
       id: "alt-tile-02",
-      name: "Carrara Hex Marble Mosaic",
+      name: '2" Hex Marble Mosaic — Carrara',
       category: "Tile",
       vendor: "Ann Sacks",
       price: 3200,
-      description: "Natural veining makes each installation unique — sealing required annually",
+      description: "Natural stone with unique veining — requires annual sealing",
       finish: "Honed Carrara White",
       image: tileAlt2Img,
       laborDelta: 450,
       tag: "Premium Pick",
       spec: '2" hex mosaic on mesh backing, ~85 sq ft',
-      laborNote: "Mosaic patterns require precision setting — adds ~$450 labor",
+      laborNote: "Mosaic setting is precision work — adds ~$450 labor",
     },
   ],
   Faucet: [
     {
       id: "alt-faucet-01",
-      name: "Purist 8\" Widespread Faucet",
+      name: 'Purist 8" Widespread Faucet',
       category: "Faucet",
       vendor: "Kohler",
       price: 520,
-      description: "Three-hole spread requires wider counter punch — check vanity compatibility",
+      description: "Three-hole spread — check that your vanity top supports 8\" centers",
       finish: "Brushed Nickel",
       image: faucetAlt1Img,
       laborDelta: 120,
       spec: '8" center spread, ceramic disc valves, 1.2 GPM',
-      laborNote: "Wider spread may need vanity top re-drill — adds ~$120 labor",
+      laborNote: "Wider spread may need vanity top re-drill — adds ~$120",
     },
     {
       id: "alt-faucet-02",
@@ -238,46 +243,46 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
       category: "Faucet",
       vendor: "Brizo",
       price: 485,
-      description: "Pull-down sprayer adds utility — matte black is fingerprint-resistant",
+      description: "Pull-down sprayer adds utility; matte black resists fingerprints",
       finish: "Matte Black",
       image: faucetAlt2Img,
       laborDelta: 0,
       tag: "Trending",
-      spec: "Single-hole, pull-down sprayer, MagneDock",
+      spec: "Single-hole, pull-down sprayer",
       laborNote: "Same single-hole mount — material cost change only",
     },
   ],
   Lighting: [
     {
       id: "alt-lighting-01",
-      name: "Integrity 36\" LED Vanity Bar",
+      name: '36" LED Vanity Bar',
       category: "Lighting",
       vendor: "Kichler",
       price: 370,
-      description: "Single bar fixture replaces dual sconces with even horizontal wash",
+      description: "Single bar fixture with even horizontal wash",
       finish: "Chrome",
       laborDelta: 0,
-      spec: '36" wide, 3000K, dimmable, 1700 lumens',
-      laborNote: "Simple swap — same junction box and wiring",
+      spec: '36" wide, 3000K, dimmable',
+      laborNote: "Same wiring — simple swap",
     },
     {
       id: "alt-lighting-02",
-      name: "Otis Brass Pendant Sconces (Pair)",
+      name: "Brass Pendant Sconces (Pair)",
       category: "Lighting",
       vendor: "Schoolhouse Electric",
       price: 810,
-      description: "Cast brass with exposed bulb — adds warmth in modern or transitional baths",
+      description: "Cast brass with exposed bulb — warm accent lighting",
       finish: "Antique Brass",
       laborDelta: 180,
       tag: "Designer Pick",
-      spec: '8" shade diameter, E26 base, pair included',
-      laborNote: "May need junction box repositioning — adds ~$180 labor",
+      spec: '8" shade, E26 base, pair included',
+      laborNote: "May need junction box repositioning — adds ~$180",
     },
   ],
   Mirror: [
     {
       id: "alt-mirror-01",
-      name: "Gerald 30\" Round Brass Mirror",
+      name: '30" Round Brass-Framed Mirror',
       category: "Mirror",
       vendor: "CB2",
       price: 430,
@@ -286,21 +291,21 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
       image: mirrorAlt1Img,
       laborDelta: 0,
       tag: "Trending",
-      spec: '30" diameter, solid brass frame, D-ring mount',
-      laborNote: "Simple wall hang — no labor impact",
+      spec: '30" diameter, solid brass frame',
+      laborNote: "Simple wall hang — no labor change",
     },
     {
       id: "alt-mirror-02",
-      name: "M-Series 30\" Recessed Medicine Cabinet",
+      name: '30" Recessed Medicine Cabinet',
       category: "Mirror",
       vendor: "Robern",
       price: 640,
-      description: "Mirror-front hides 4\" deep storage — keeps counter clutter-free",
+      description: "Mirror-front hides 4\" of storage — keeps counter clear",
       image: mirrorAlt2Img,
       laborDelta: 350,
-      tag: "Editor's Choice",
+      tag: "Most Storage",
       spec: '30" W × 26" H × 4" D, recessed mount, slow-close hinges',
-      laborNote: "Recessed install requires wall cavity cut — adds ~$350 labor",
+      laborNote: "Recessed install requires wall cavity cut — adds ~$350",
     },
   ],
   Toilet: [
@@ -310,11 +315,11 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
       category: "Toilet",
       vendor: "Duravit",
       price: 1050,
-      description: "Exposes floor for easy cleaning — requires in-wall carrier frame",
+      description: "Wall-hung for easy floor cleaning — requires in-wall carrier",
       laborDelta: 800,
       tag: "Premium Pick",
-      spec: "In-wall carrier required, Rimless flush, 1.28 GPF",
-      laborNote: "In-wall carrier frame adds ~$800 labor (framing + tile patching)",
+      spec: "In-wall carrier required, 1.28 GPF",
+      laborNote: "In-wall carrier adds ~$800 labor (framing + patching)",
     },
     {
       id: "alt-toilet-02",
@@ -325,7 +330,7 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
       description: "Compact round bowl saves 2\" depth in tight layouts",
       laborDelta: 0,
       tag: "Budget Pick",
-      spec: "Round front, 1.28 GPF, 12\" rough-in, EverClean surface",
+      spec: '1.28 GPF, 12" rough-in, EverClean surface',
       laborNote: "Direct swap on existing flange — no added labor",
     },
   ],
@@ -336,7 +341,7 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
       category: "Shower / Tub Hardware",
       vendor: "Moen",
       price: 180,
-      description: "Fixed-mount, no-frills reliability — easy DIY swap",
+      description: "Fixed-mount, straightforward — threads onto existing arm",
       finish: "Chrome",
       laborDelta: 0,
       spec: '6" fixed head, 1.75 GPM WaterSense',
@@ -344,16 +349,16 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
     },
     {
       id: "alt-shower-02",
-      name: "Grohtherm SmartControl Shower System",
+      name: "Grohtherm Thermostatic Shower System",
       category: "Shower / Tub Hardware",
       vendor: "Grohe",
       price: 1120,
-      description: "Thermostatic valve maintains temp within ±2°F — prevents scalding",
+      description: "Maintains temp within ±2°F — prevents scalding",
       finish: "Brushed Nickel",
       laborDelta: 550,
       tag: "Premium Pick",
-      spec: "Thermostatic valve + 10\" rain head, ½\" connections",
-      laborNote: "Thermostatic valve requires dedicated rough-in — adds ~$550 labor",
+      spec: "Thermostatic valve + 10\" rain head",
+      laborNote: "Thermostatic valve requires dedicated rough-in — adds ~$550",
     },
   ],
 };
@@ -383,56 +388,46 @@ export function getBathroomInsights(project: {
   const width = Number(project.dimensions?.width_ft) || 0;
   const length = Number(project.dimensions?.length_ft) || 0;
   const sqft = width && length ? width * length : 0;
-  const style = project.style_preferences?.style || "";
-  const budget = project.style_preferences?.budget_level || "Balanced";
   const finish = project.style_preferences?.finish || "";
-  const photoCount = project.photos?.metadata?.length || 0;
+  const hasBathroomType = bathroomType.length > 0;
 
-  // Layout insight — specific to bathroom type
+  // Layout insight — only show if user actually provided bathroom type
   if (bathroomType.toLowerCase().includes("full")) {
-    insights.push({ icon: "layout", label: "Full bath with tub/shower combo", detail: "Keeping existing tub position avoids $2,000+ in plumbing relocation" });
+    insights.push({ icon: "layout", label: "Full bath with tub/shower combo", detail: "Keeping existing tub avoids $2,000+ in plumbing relocation" });
   } else if (bathroomType.toLowerCase().includes("half") || bathroomType.toLowerCase().includes("powder")) {
-    insights.push({ icon: "layout", label: "Powder room — vanity + toilet only", detail: "No wet-area tile needed, which lowers material and labor scope" });
+    insights.push({ icon: "layout", label: "Powder room — vanity + toilet only", detail: "No wet-area tile needed — lowers material and labor scope" });
   } else if (bathroomType.toLowerCase().includes("primary") || bathroomType.toLowerCase().includes("master")) {
-    insights.push({ icon: "layout", label: "Primary bath — likely dual fixtures", detail: "Double vanity and separate shower stall assumed for product sizing" });
-  } else {
-    insights.push({ icon: "layout", label: "Standard single-vanity layout", detail: "One sink, one mirror — products sized for single-fixture footprint" });
+    insights.push({ icon: "layout", label: "Primary bath — likely dual fixtures", detail: "Products sized for double vanity and separate shower" });
+  } else if (hasBathroomType) {
+    insights.push({ icon: "layout", label: "Single-vanity layout", detail: "Products sized for one sink, one mirror footprint" });
   }
 
-  // Size insight with remodel-relevant detail
+  // Size insight — only show if dimensions were provided
   if (sqft > 0) {
     if (sqft < 40) {
-      insights.push({ icon: "scope", label: `~${sqft} sq ft — compact bath`, detail: "Prioritizing wall-mount and space-saving products to avoid crowding" });
+      insights.push({ icon: "scope", label: `~${sqft} sq ft — compact bath`, detail: "Space-saving products prioritized to avoid crowding" });
     } else if (sqft < 70) {
-      insights.push({ icon: "scope", label: `~${sqft} sq ft — standard size`, detail: "Room fits a 48\" vanity and standard tub/shower — no layout constraints" });
+      insights.push({ icon: "scope", label: `~${sqft} sq ft — standard size`, detail: 'Fits a 48" vanity and standard tub/shower — no layout constraints' });
     } else {
-      insights.push({ icon: "scope", label: `~${sqft} sq ft — spacious layout`, detail: "Extra room opens options like a freestanding tub or double vanity upgrade" });
+      insights.push({ icon: "scope", label: `~${sqft} sq ft — spacious layout`, detail: "Room for upgrades like a double vanity or freestanding tub" });
     }
   }
 
-  // Finish / style insight — actionable, not fluffy
+  // Finish insight — only show if user selected one
   if (finish) {
-    insights.push({ icon: "style", label: `${finish} finish direction`, detail: `All hardware, faucets, and lighting matched to ${finish.toLowerCase()} for a coordinated look` });
-  } else if (style) {
-    insights.push({ icon: "style", label: `${style} design direction`, detail: `Product finishes and profiles selected to complement a ${style.toLowerCase()} aesthetic` });
-  } else {
-    insights.push({ icon: "style", label: "Brushed nickel finish assumed", detail: "Most versatile finish — pairs with warm and cool palettes. Change anytime in Style & Budget." });
+    insights.push({ icon: "style", label: `${finish} finish selected`, detail: "Faucet, lighting, and hardware coordinated to this finish" });
   }
 
-  // Photo insight — specific about what photos enable
-  if (photoCount > 0) {
-    insights.push({ icon: "fixture", label: `${photoCount} room photo${photoCount > 1 ? "s" : ""} reviewed`, detail: "Existing fixture positions and finish tones factored into product matches" });
-  }
-
-  return insights.slice(0, 4);
+  // Only return insights we can actually justify
+  return insights;
 }
 
 // ─── Package fit reasons ────────────────────────────────────────────
 
 export const packageFitReasons: Record<string, string> = {
-  Budget: "Preserves your existing plumbing footprint and refreshes all visible surfaces — least disruption, fastest install.",
-  Balanced: "Upgrades fixtures and finishes without moving plumbing — brightens the space while keeping labor costs predictable.",
-  Premium: "Full material upgrade with designer-grade finishes and optional layout changes — maximum visual transformation.",
+  Budget: "Refreshes all visible surfaces on your existing plumbing — least disruption, fastest install.",
+  Balanced: "Upgrades materials and finishes without moving plumbing — keeps labor costs predictable.",
+  Premium: "Designer-grade materials with flexibility to change the layout if needed.",
 };
 
 // ─── Package tier pricing ───────────────────────────────────────────
@@ -447,18 +442,18 @@ export const packagePricing: Record<string, {
     materialRange: "$4,200 – $5,800",
     laborRange: "$3,500 – $5,200",
     projectRange: "$8,500 – $12,000",
-    description: "A focused refresh — new vanity, updated tile, modern fixtures — without moving any plumbing or altering the layout.",
+    description: "New vanity, updated tile, modern fixtures — all on existing plumbing. No layout changes.",
   },
   Balanced: {
     materialRange: "$7,500 – $10,200",
     laborRange: "$5,000 – $7,500",
     projectRange: "$14,000 – $19,000",
-    description: "Quality materials and coordinated finishes that transform how the room looks and feels, while keeping plumbing in place.",
+    description: "Better materials and coordinated finishes that noticeably upgrade how the room looks and feels. Plumbing stays in place.",
   },
   Premium: {
     materialRange: "$13,000 – $18,500",
     laborRange: "$7,500 – $11,500",
     projectRange: "$22,000 – $32,000",
-    description: "Designer-grade materials with flexibility to relocate fixtures, add niches, or upgrade to freestanding tub and frameless glass.",
+    description: "Designer-grade materials with the option to relocate fixtures, add niches, or change the tub/shower layout.",
   },
 };
