@@ -31,11 +31,39 @@ const UploadPhotos = () => {
   const [dragging, setDragging] = useState(false);
   const [notes, setNotes] = useState(project.photos.notes || "");
 
-  // Generate preview URLs
+  // Generate preview URLs — HEIC files may not be previewable in all browsers
   useEffect(() => {
-    const urls = files.map((f) => URL.createObjectURL(f));
-    setPreviews(urls);
-    return () => urls.forEach((url) => URL.revokeObjectURL(url));
+    let cancelled = false;
+    const urls: string[] = [];
+
+    const generate = async () => {
+      const result: string[] = [];
+      for (const f of files) {
+        const url = URL.createObjectURL(f);
+        // Test if the browser can actually decode this image
+        const canPreview = await new Promise<boolean>((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+          img.src = url;
+        });
+        if (canPreview) {
+          urls.push(url);
+          result.push(url);
+        } else {
+          // Revoke unusable URL, push empty string as fallback marker
+          URL.revokeObjectURL(url);
+          result.push("");
+        }
+      }
+      if (!cancelled) setPreviews(result);
+    };
+
+    generate();
+    return () => {
+      cancelled = true;
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
   }, [files]);
 
   const addFiles = useCallback((incoming: FileList | File[]) => {
