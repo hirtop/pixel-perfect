@@ -172,8 +172,13 @@ const ProjectSummary = () => {
               onClick={handleSave}
               disabled={isSaving}
             >
-              {isSaving ? "Saving…" : "Save Project"}
+              {isSaving ? "Saving…" : user ? "Save to Account" : "Save Project"}
             </Button>
+            {!user && (
+              <Button size="lg" variant="ghost" className="w-full sm:w-auto px-6 h-12 text-sm" asChild>
+                <Link to="/auth">Sign in for cross-device save</Link>
+              </Button>
+            )}
             <Link to="/workflow" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Back to Workflow
             </Link>
