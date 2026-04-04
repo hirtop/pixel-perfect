@@ -336,11 +336,19 @@ const CustomizeOption = () => {
                   <h3 className="font-heading text-lg text-foreground">Estimate</h3>
                   <div className="space-y-2.5 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Materials (4 items)</span>
+                      <span className="text-muted-foreground">Your selections (4 items)</span>
+                      <span className="font-medium text-foreground">{fmt(customizableMaterials)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Other included items (3)</span>
+                      <span className="font-medium text-muted-foreground">{fmt(OTHER_ITEMS_TOTAL)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">All materials</span>
                       <span className="font-medium text-foreground">{fmt(materialsTotal)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Est. Labor</span>
+                      <span className="text-muted-foreground">Est. labor</span>
                       <div className="text-right">
                         <span className="font-medium text-foreground">{fmt(laborTotal)}</span>
                         {laborAdjustment > 0 && (
@@ -387,7 +395,7 @@ const CustomizeOption = () => {
                   )}
 
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
-                    This covers the 4 products above only. Lighting, toilet, and shower hardware are included in the package but not shown here. Actual costs depend on your contractor and region.
+                    Actual costs depend on your contractor and region. Lighting, toilet, and shower hardware are included at default pricing.
                   </p>
                 </div>
 
