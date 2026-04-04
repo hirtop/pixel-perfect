@@ -155,6 +155,7 @@ export default function LandingPage() {
                 size="lg"
                 variant="outline"
                 className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8"
+                onClick={() => document.getElementById("transform")?.scrollIntoView({ behavior: "smooth", block: "start" })}
               >
                 See a Sample Remodel
               </Button>
