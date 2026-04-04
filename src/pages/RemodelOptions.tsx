@@ -13,10 +13,10 @@ const packages = [
   {
     name: "Budget",
     image: budgetImg,
-    summary: "New vanity, updated tile, and modern fixtures — all on existing plumbing. No layout changes.",
+    summary: "Replace the vanity, re-tile, and update fixtures — all on existing plumbing in about a week.",
     highlights: [
-      "New vanity & sink on existing plumbing",
-      "Ceramic tile — floor and tub surround",
+      "New vanity & sink — no plumbing changes",
+      "Ceramic tile on floor and tub surround",
       "Updated faucet, lighting, and mirror",
       "Typically 5–7 day install",
     ],
@@ -26,7 +26,7 @@ const packages = [
   {
     name: "Balanced",
     image: balancedImg,
-    summary: "Better materials and coordinated finishes that noticeably upgrade the room. Plumbing stays in place.",
+    summary: "Step up to quartz, porcelain, and coordinated hardware for a room that looks and feels meaningfully different.",
     highlights: [
       "Floating vanity with quartz countertop",
       "Large-format porcelain tile",
@@ -40,7 +40,7 @@ const packages = [
   {
     name: "Premium",
     image: premiumImg,
-    summary: "Designer-grade materials with the option to relocate fixtures or change the tub/shower layout.",
+    summary: "Natural stone, designer hardware, and the flexibility to rethink the layout — not just the finishes.",
     highlights: [
       "Custom vanity with natural stone top",
       "Natural stone or designer tile",
