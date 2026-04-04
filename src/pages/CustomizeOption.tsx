@@ -105,7 +105,7 @@ const CustomizeOption = () => {
     setExpandedCategory((prev) => (prev === name ? null : name));
   };
 
-  const fmt = (n: number) => `$${n.toLocaleString()}`;
+  const fmt = formatPrice;
 
   return (
     <div className="min-h-screen bg-background">
