@@ -3,7 +3,8 @@ import { Link } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
-import { balancedProducts, PRODUCT_CATEGORIES } from "@/data/products";
+import { balancedProducts, PRODUCT_CATEGORIES, getBathroomInsights, packageFitReasons } from "@/data/products";
+import BathroomInsights from "@/components/BathroomInsights";
 import balancedImg from "@/assets/package-balanced.jpg";
 import budgetImg from "@/assets/package-budget.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
@@ -14,22 +15,19 @@ const defaultCategories = PRODUCT_CATEGORIES.map((cat) => {
     name: cat,
     item: product?.name ?? cat,
     reason: product?.description ?? "",
+    vendor: product?.vendor ?? "",
+    price: product?.price ?? 0,
   };
 });
-
-const whyFits = [
-  "Balances quality materials with a realistic budget range",
-  "Matches a modern, spa-inspired design direction",
-  "Works well for everyday functionality and long-term value",
-];
 
 const PackageDetail = () => {
   const { project } = useProject();
   const pkgName = project.selected_package.name || "Balanced";
   const finishDir = project.style_preferences.finish || "Brushed Nickel";
   const budgetComfort = project.style_preferences.budget_level || "Balanced";
+  const insights = getBathroomInsights(project);
+  const fitReason = packageFitReasons[pkgName] || packageFitReasons.Balanced;
 
-  // Use customized categories if available, otherwise defaults
   const categories = project.customizations.categories && project.customizations.categories.length > 0
     ? defaultCategories.map((dc) => {
         const custom = project.customizations.categories!.find((c) => c.name === dc.name);
@@ -57,6 +55,11 @@ const PackageDetail = () => {
           transition={{ duration: 0.5 }}
           className="max-w-6xl mx-auto"
         >
+          {/* Bathroom insights — compact on detail page */}
+          <div className="mb-8">
+            <BathroomInsights insights={insights} compact />
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             <div className="space-y-3">
               <div className="rounded-2xl overflow-hidden aspect-[4/3]">
@@ -78,6 +81,15 @@ const PackageDetail = () => {
                 <p className="text-muted-foreground text-base leading-relaxed max-w-md">
                   A polished mix of quality, function, and style tailored to your bathroom.
                 </p>
+              </div>
+
+              {/* Why this fits */}
+              <div className="flex items-start gap-2.5 rounded-lg bg-primary/5 border border-primary/10 px-4 py-3">
+                <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-medium text-foreground">{fitReason}</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Personalized based on your uploaded room and preferences</p>
+                </div>
               </div>
 
               <div className="rounded-xl border border-border bg-secondary/30 p-6 space-y-3 text-sm">
@@ -127,27 +139,15 @@ const PackageDetail = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {categories.map((cat) => (
                 <div key={cat.name} className="rounded-xl border border-border bg-card p-5 space-y-2">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-primary">{cat.name}</p>
+                  <div className="flex items-center justify-between">
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">{cat.name}</p>
+                    {cat.vendor && <span className="text-[10px] text-muted-foreground">{cat.vendor}</span>}
+                  </div>
                   <p className="text-sm font-medium text-foreground">{cat.item}</p>
                   <p className="text-xs text-muted-foreground leading-relaxed">{cat.reason}</p>
                 </div>
               ))}
             </div>
-          </section>
-
-          <section className="max-w-2xl">
-            <div className="mb-5">
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">Fit Summary</p>
-              <h2 className="font-heading text-2xl text-foreground">Why this package fits</h2>
-            </div>
-            <ul className="space-y-3">
-              {whyFits.map((point) => (
-                <li key={point} className="flex items-start gap-3 text-sm text-muted-foreground">
-                  <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                  <span>{point}</span>
-                </li>
-              ))}
-            </ul>
           </section>
         </motion.div>
       </main>
