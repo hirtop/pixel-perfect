@@ -29,6 +29,8 @@ const workflowPoints = [
 const ProjectSummary = () => {
   const { project, saveProject, markStepComplete, isSaving } = useProject();
 
+  const { user } = useAuth();
+
   // Derive dynamic summary fields from context
   const summaryFields = [
     { label: "Project Name", value: project.name || "Untitled Project" },
