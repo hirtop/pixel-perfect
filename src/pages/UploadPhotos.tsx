@@ -267,12 +267,20 @@ const UploadPhotos = () => {
                         transition={{ duration: 0.2, delay: i * 0.05 }}
                         className="relative group rounded-xl overflow-hidden aspect-square bg-secondary border border-border shadow-sm"
                       >
-                        {previews[i] && (
+                        {previews[i] ? (
                           <img
                             src={previews[i]}
                             alt={file.name}
                             className="w-full h-full object-cover"
                           />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 bg-secondary p-2">
+                            <FileImage className="h-6 w-6 text-muted-foreground" />
+                            <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide">
+                              {file.name.split('.').pop()}
+                            </span>
+                            <span className="text-[9px] text-muted-foreground truncate w-full text-center">{file.name}</span>
+                          </div>
                         )}
                         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-200" />
                         <button
