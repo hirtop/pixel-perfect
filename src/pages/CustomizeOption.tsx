@@ -80,6 +80,11 @@ const buildInitialCategories = (): Category[] =>
 const BASE_LABOR = 5800;
 const SHIPPING_ESTIMATE = 600;
 
+/** Cost of the 3 non-customizable items (Lighting + Toilet + Shower/Tub Hardware) */
+const OTHER_ITEMS_TOTAL = balancedProducts
+  .filter((p) => !CUSTOMIZABLE_CATEGORIES.includes(p.category))
+  .reduce((sum, p) => sum + p.price, 0);
+
 const CustomizeOption = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
@@ -100,7 +105,8 @@ const CustomizeOption = () => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>("Vanity");
   const [lastSwapNote, setLastSwapNote] = useState<string | null>(null);
 
-  const materialsTotal = categories.reduce((sum, c) => sum + c.price, 0);
+  const customizableMaterials = categories.reduce((sum, c) => sum + c.price, 0);
+  const materialsTotal = customizableMaterials + OTHER_ITEMS_TOTAL;
   const laborAdjustment = categories.reduce((sum, c) => sum + c.laborDelta, 0);
   const laborTotal = BASE_LABOR + laborAdjustment;
   const projectTotal = materialsTotal + laborTotal + SHIPPING_ESTIMATE;
