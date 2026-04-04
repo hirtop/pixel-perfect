@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
+import { getBathroomInsights, packageFitReasons } from "@/data/products";
+import BathroomInsights from "@/components/BathroomInsights";
 import budgetImg from "@/assets/package-budget.jpg";
 import balancedImg from "@/assets/package-balanced.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
@@ -15,6 +17,7 @@ const packages = [
     materialRange: "$4,200 – $5,800",
     projectRange: "$8,500 – $12,000",
     highlights: ["Vanity & sink", "Ceramic tile", "Chrome faucet", "Updated lighting"],
+    fit: packageFitReasons.Budget,
   },
   {
     name: "Balanced",
@@ -24,6 +27,7 @@ const packages = [
     projectRange: "$14,000 – $19,000",
     highlights: ["Floating vanity", "Porcelain tile", "Brushed nickel fixtures", "Sconce lighting"],
     featured: true,
+    fit: packageFitReasons.Balanced,
   },
   {
     name: "Premium",
@@ -32,12 +36,14 @@ const packages = [
     materialRange: "$13,000 – $18,500",
     projectRange: "$22,000 – $32,000",
     highlights: ["Custom vanity", "Natural stone tile", "Brass fixtures", "Designer lighting"],
+    fit: packageFitReasons.Premium,
   },
 ];
 
 const RemodelOptions = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
+  const insights = getBathroomInsights(project);
 
   const selectPackage = (pkgName: string) => {
     updateProject({
@@ -70,8 +76,13 @@ const RemodelOptions = () => {
           <div className="text-center mb-8">
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Your Remodel Options</h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-              Here are three curated remodel directions based on your space, style, and budget preferences.
+              Three curated directions based on your space, style, and budget.
             </p>
+          </div>
+
+          {/* Bathroom Insights */}
+          <div className="mb-8 max-w-3xl mx-auto">
+            <BathroomInsights insights={insights} />
           </div>
 
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 rounded-xl bg-secondary/40 border border-border px-6 py-4 mb-12 text-sm">
@@ -125,6 +136,13 @@ const RemodelOptions = () => {
                       <h2 className="font-heading text-xl text-foreground mb-1">{pkg.name}</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
                     </div>
+
+                    {/* Why this fits */}
+                    <div className="flex items-start gap-2 rounded-lg bg-primary/5 border border-primary/10 px-3 py-2.5">
+                      <Check className="h-3.5 w-3.5 text-primary flex-shrink-0 mt-0.5" />
+                      <p className="text-xs text-foreground leading-relaxed">{pkg.fit}</p>
+                    </div>
+
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Materials</span>

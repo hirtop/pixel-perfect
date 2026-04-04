@@ -1,14 +1,16 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, ChevronUp } from "lucide-react";
+import { ArrowLeft, Check, ChevronUp, ExternalLink } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
+import BathroomInsights from "@/components/BathroomInsights";
 import {
   balancedProducts,
   balancedAlternatives,
   formatPrice,
+  getBathroomInsights,
   type ProductCategory,
   type ProductAlternative,
 } from "@/data/products";
@@ -18,6 +20,13 @@ interface Alternative {
   desc: string;
   impact: string;
   impactValue: number;
+  vendor: string;
+  finish?: string;
+  image?: string;
+  tag?: string;
+  spec?: string;
+  laborNote?: string;
+  price: number;
 }
 
 interface Category {
@@ -25,27 +34,51 @@ interface Category {
   selected: string;
   reason: string;
   price: number;
+  vendor: string;
+  image?: string;
+  tag?: string;
+  spec?: string;
+  finish?: string;
   alternatives: Alternative[];
+  /** Current labor note after swap */
+  laborNote?: string;
 }
 
 const formatImpact = (v: number) =>
   v > 0 ? `+ $${v.toLocaleString()}` : v < 0 ? `- $${Math.abs(v).toLocaleString()}` : "No change";
 
-const initialCategories: Category[] = balancedProducts.map((product) => {
-  const alts: ProductAlternative[] = balancedAlternatives[product.category] || [];
-  return {
-    name: product.category,
-    selected: product.name,
-    reason: product.description,
-    price: product.price,
-    alternatives: alts.map((a) => ({
-      name: a.name,
-      desc: a.description,
-      impact: formatImpact(a.priceImpact),
-      impactValue: a.priceImpact,
-    })),
-  };
-});
+const CUSTOMIZE_CATEGORIES: ProductCategory[] = ["Vanity", "Faucet", "Tile", "Mirror"];
+
+const buildInitialCategories = (): Category[] =>
+  balancedProducts
+    .filter((p) => CUSTOMIZE_CATEGORIES.includes(p.category))
+    .map((product) => {
+      const alts: ProductAlternative[] = balancedAlternatives[product.category] || [];
+      return {
+        name: product.category,
+        selected: product.name,
+        reason: product.description,
+        price: product.price,
+        vendor: product.vendor,
+        image: product.image,
+        tag: product.tag,
+        spec: product.spec,
+        finish: product.finish,
+        alternatives: alts.map((a) => ({
+          name: a.name,
+          desc: a.description,
+          impact: formatImpact(a.priceImpact),
+          impactValue: a.priceImpact,
+          vendor: a.vendor,
+          finish: a.finish,
+          image: a.image,
+          tag: a.tag,
+          spec: a.spec,
+          laborNote: a.laborNote,
+          price: a.price,
+        })),
+      };
+    });
 
 const baseLaborRate = 5800;
 const baseShipping = 650;
@@ -54,8 +87,10 @@ const CustomizeOption = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
   const isInitialMount = useRef(true);
+  const insights = getBathroomInsights(project);
 
-  // Restore from context if previously saved
+  const initialCategories = useMemo(buildInitialCategories, []);
+
   const savedCats = project.customizations.categories;
   const [categories, setCategories] = useState<Category[]>(
     savedCats && Array.isArray(savedCats) && savedCats.length > 0
@@ -66,6 +101,7 @@ const CustomizeOption = () => {
       : initialCategories
   );
   const [expandedCategory, setExpandedCategory] = useState<string | null>("Vanity");
+  const [lastSwapNote, setLastSwapNote] = useState<string | null>(null);
 
   const materialsTotal = categories.reduce((sum, c) => sum + c.price, 0);
   const laborTotal = baseLaborRate;
@@ -76,15 +112,26 @@ const CustomizeOption = () => {
     setCategories((prev) =>
       prev.map((c) =>
         c.name === catName
-          ? { ...c, selected: alt.name, reason: alt.desc, price: c.price + alt.impactValue }
+          ? {
+              ...c,
+              selected: alt.name,
+              reason: alt.desc,
+              price: c.price + alt.impactValue,
+              vendor: alt.vendor,
+              image: alt.image,
+              tag: alt.tag,
+              spec: alt.spec,
+              finish: alt.finish,
+              laborNote: alt.laborNote,
+            }
           : c
       )
     );
     setExpandedCategory(null);
+    setLastSwapNote(alt.laborNote || null);
     toast.success(`${alt.name} selected`, { description: `${catName} updated in your package` });
   };
 
-  // Persist customizations on changes, skip initial mount
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;
@@ -127,34 +174,66 @@ const CustomizeOption = () => {
           transition={{ duration: 0.5 }}
           className="max-w-6xl mx-auto"
         >
-          <div className="mb-10">
+          <div className="mb-8">
             <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{project.selected_package.name || "Balanced"} Package</p>
-            <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">Customize This Option</h1>
+            <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">Customize Your Selections</h1>
             <p className="text-muted-foreground text-base max-w-lg leading-relaxed">
-              Refine your package by exploring product alternatives and watching your budget update in real time.
+              Compare real products, swap finishes, and watch your budget update live.
             </p>
           </div>
 
+          {/* Compact insights */}
+          <div className="mb-8">
+            <BathroomInsights insights={insights} compact />
+          </div>
+
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Product cards */}
             <div className="lg:col-span-2 space-y-4">
               {categories.map((cat) => {
                 const isExpanded = expandedCategory === cat.name;
                 return (
                   <div key={cat.name} className={`rounded-xl border-2 transition-all duration-200 ${isExpanded ? "border-primary/40 bg-card" : "border-border bg-card"}`}>
-                    <div className="flex items-center justify-between p-5">
+                    {/* Selected product header */}
+                    <div className="flex items-start gap-4 p-5">
+                      {/* Product image */}
+                      {cat.image ? (
+                        <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-secondary">
+                          <img src={cat.image} alt={cat.selected} className="w-full h-full object-cover" width={640} height={512} loading="lazy" />
+                        </div>
+                      ) : (
+                        <div className="w-20 h-16 rounded-lg bg-secondary flex items-center justify-center flex-shrink-0">
+                          <span className="text-[10px] text-muted-foreground font-medium">{cat.name}</span>
+                        </div>
+                      )}
                       <div className="flex-1 min-w-0">
-                        <p className="text-xs font-semibold uppercase tracking-wider text-primary mb-1">{cat.name}</p>
+                        <div className="flex items-center gap-2 mb-0.5">
+                          <p className="text-xs font-semibold uppercase tracking-wider text-primary">{cat.name}</p>
+                          {cat.tag && (
+                            <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5">{cat.tag}</span>
+                          )}
+                        </div>
                         <p className="text-sm font-medium text-foreground truncate">{cat.selected}</p>
-                        <p className="text-xs text-muted-foreground mt-0.5">{cat.reason}</p>
+                        <div className="flex items-center gap-2 mt-0.5">
+                          <span className="text-xs text-muted-foreground">{cat.vendor}</span>
+                          {cat.finish && (
+                            <>
+                              <span className="text-muted-foreground">·</span>
+                              <span className="text-xs text-muted-foreground">{cat.finish}</span>
+                            </>
+                          )}
+                        </div>
+                        {cat.spec && <p className="text-[11px] text-muted-foreground mt-1">{cat.spec}</p>}
                       </div>
-                      <div className="flex items-center gap-3 ml-4">
-                        <span className="text-sm font-medium text-foreground whitespace-nowrap">{fmt(cat.price)}</span>
+                      <div className="flex items-center gap-3 ml-4 flex-shrink-0">
+                        <span className="text-sm font-semibold text-foreground whitespace-nowrap">{fmt(cat.price)}</span>
                         <Button variant="outline" size="sm" className="text-xs h-8 px-3 rounded-lg" onClick={() => toggleExpand(cat.name)}>
                           {isExpanded ? <><ChevronUp className="h-3 w-3 mr-1" /> Close</> : <>Change</>}
                         </Button>
                       </div>
                     </div>
 
+                    {/* Alternatives panel */}
                     <AnimatePresence>
                       {isExpanded && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
@@ -163,16 +242,36 @@ const CustomizeOption = () => {
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                               {cat.alternatives.map((alt) => (
                                 <div key={alt.name} className="rounded-xl border border-border bg-secondary/20 p-4 flex flex-col gap-3 hover:border-primary/30 transition-colors">
-                                  <div className="w-full aspect-[3/2] rounded-lg bg-secondary flex items-center justify-center">
-                                    <span className="text-xs text-muted-foreground font-medium tracking-wide">{cat.name}</span>
-                                  </div>
+                                  {/* Alt product image */}
+                                  {alt.image ? (
+                                    <div className="w-full aspect-[3/2] rounded-lg overflow-hidden bg-secondary">
+                                      <img src={alt.image} alt={alt.name} className="w-full h-full object-cover" width={640} height={512} loading="lazy" />
+                                    </div>
+                                  ) : (
+                                    <div className="w-full aspect-[3/2] rounded-lg bg-secondary flex items-center justify-center">
+                                      <span className="text-xs text-muted-foreground font-medium tracking-wide">{cat.name}</span>
+                                    </div>
+                                  )}
                                   <div className="flex-1">
+                                    <div className="flex items-center gap-1.5 mb-1">
+                                      {alt.tag && (
+                                        <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5">{alt.tag}</span>
+                                      )}
+                                    </div>
                                     <p className="text-sm font-medium text-foreground leading-snug">{alt.name}</p>
+                                    <p className="text-xs text-muted-foreground mt-0.5">{alt.vendor}</p>
                                     <p className="text-xs text-muted-foreground mt-1">{alt.desc}</p>
+                                    {alt.finish && (
+                                      <p className="text-[11px] text-muted-foreground mt-1">Finish: {alt.finish}</p>
+                                    )}
+                                    {alt.spec && (
+                                      <p className="text-[11px] text-muted-foreground">{alt.spec}</p>
+                                    )}
+                                    <p className="text-sm font-semibold text-foreground mt-2">{fmt(alt.price)}</p>
                                   </div>
                                   <div className="flex items-center justify-between pt-1">
-                                    <span className={`text-xs font-semibold ${alt.impactValue > 0 ? "text-accent" : alt.impactValue < 0 ? "text-primary" : "text-muted-foreground"}`}>{alt.impact}</span>
-                                    <Button size="sm" className="text-xs h-8 px-4 rounded-lg" onClick={() => selectAlternative(cat.name, alt)}>Select This Option</Button>
+                                    <span className={`text-xs font-semibold ${alt.impactValue > 0 ? "text-destructive" : alt.impactValue < 0 ? "text-primary" : "text-muted-foreground"}`}>{alt.impact}</span>
+                                    <Button size="sm" className="text-xs h-8 px-4 rounded-lg" onClick={() => selectAlternative(cat.name, alt)}>Select</Button>
                                   </div>
                                 </div>
                               ))}
@@ -186,17 +285,49 @@ const CustomizeOption = () => {
               })}
             </div>
 
+            {/* Budget panel */}
             <div className="lg:col-span-1">
               <div className="lg:sticky lg:top-24 space-y-6">
                 <div className="rounded-xl border border-border bg-card p-6 space-y-4">
                   <h3 className="font-heading text-lg text-foreground">Live Budget</h3>
                   <div className="space-y-2.5 text-sm">
-                    <div className="flex justify-between"><span className="text-muted-foreground">Materials</span><span className="font-medium text-foreground">{fmt(materialsTotal)}</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">Est. Labor</span><span className="font-medium text-foreground">{fmt(laborTotal)}</span></div>
-                    <div className="flex justify-between"><span className="text-muted-foreground">Shipping / Fees</span><span className="font-medium text-foreground">{fmt(shippingTotal)}</span></div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Materials</span>
+                      <span className="font-medium text-foreground">{fmt(materialsTotal)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Est. Labor</span>
+                      <span className="font-medium text-foreground">{fmt(laborTotal)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Shipping / Delivery</span>
+                      <span className="font-medium text-foreground">{fmt(shippingTotal)}</span>
+                    </div>
                     <div className="h-px bg-border" />
-                    <div className="flex justify-between"><span className="font-semibold text-foreground">Est. Total</span><span className="font-bold text-foreground text-base">{fmt(projectTotal)}</span></div>
+                    <div className="flex justify-between">
+                      <span className="font-semibold text-foreground">Est. Total</span>
+                      <span className="font-bold text-foreground text-base">{fmt(projectTotal)}</span>
+                    </div>
                   </div>
+
+                  {/* Cost change explanation */}
+                  <AnimatePresence mode="wait">
+                    {lastSwapNote && (
+                      <motion.div
+                        key={lastSwapNote}
+                        initial={{ opacity: 0, y: 4 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: -4 }}
+                        className="rounded-lg bg-secondary/50 border border-border px-3 py-2.5"
+                      >
+                        <p className="text-xs text-muted-foreground leading-relaxed">
+                          <span className="font-medium text-foreground">Why the estimate changed: </span>
+                          {lastSwapNote}
+                        </p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+
                   <p className="text-xs text-muted-foreground leading-relaxed">Totals update as you compare and swap products.</p>
                   <div className="flex items-center gap-2 text-xs">
                     <Check className="h-3.5 w-3.5 text-primary" />
