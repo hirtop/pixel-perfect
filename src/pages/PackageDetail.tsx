@@ -3,11 +3,17 @@ import { Link } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
-import { balancedProducts, PRODUCT_CATEGORIES, getBathroomInsights, packageFitReasons } from "@/data/products";
+import { balancedProducts, PRODUCT_CATEGORIES, getBathroomInsights, packageFitReasons, packagePricing } from "@/data/products";
 import BathroomInsights from "@/components/BathroomInsights";
 import balancedImg from "@/assets/package-balanced.jpg";
 import budgetImg from "@/assets/package-budget.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
+
+const tierImages: Record<string, string> = {
+  budget: budgetImg,
+  balanced: balancedImg,
+  premium: premiumImg,
+};
 
 const defaultCategories = PRODUCT_CATEGORIES.map((cat) => {
   const product = balancedProducts.find((p) => p.category === cat);
@@ -23,10 +29,13 @@ const defaultCategories = PRODUCT_CATEGORIES.map((cat) => {
 const PackageDetail = () => {
   const { project } = useProject();
   const pkgName = project.selected_package.name || "Balanced";
+  const pkgTier = project.selected_package.tier || "balanced";
   const finishDir = project.style_preferences.finish || "Brushed Nickel";
   const budgetComfort = project.style_preferences.budget_level || "Balanced";
   const insights = getBathroomInsights(project);
   const fitReason = packageFitReasons[pkgName] || packageFitReasons.Balanced;
+  const pricing = packagePricing[pkgName] || packagePricing.Balanced;
+  const heroImg = tierImages[pkgTier] || balancedImg;
 
   const categories = project.customizations.categories && project.customizations.categories.length > 0
     ? defaultCategories.map((dc) => {
@@ -63,14 +72,17 @@ const PackageDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             <div className="space-y-3">
               <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-                <img src={balancedImg} alt={`${pkgName} bathroom remodel`} className="w-full h-full object-cover" width={800} height={600} />
+                <img src={heroImg} alt={`${pkgName} bathroom remodel`} className="w-full h-full object-cover" width={800} height={600} />
               </div>
               <div className="grid grid-cols-3 gap-3">
-                {[balancedImg, budgetImg, premiumImg].map((src, i) => (
-                  <div key={i} className={`rounded-lg overflow-hidden aspect-[4/3] border-2 transition-colors ${i === 0 ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"}`}>
-                    <img src={src} alt="" className="w-full h-full object-cover" width={800} height={600} loading="lazy" />
-                  </div>
-                ))}
+                {[budgetImg, balancedImg, premiumImg].map((src, i) => {
+                  const isActive = src === heroImg;
+                  return (
+                    <div key={i} className={`rounded-lg overflow-hidden aspect-[4/3] border-2 transition-colors ${isActive ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"}`}>
+                      <img src={src} alt="" className="w-full h-full object-cover" width={800} height={600} loading="lazy" />
+                    </div>
+                  );
+                })}
               </div>
             </div>
 
@@ -79,7 +91,7 @@ const PackageDetail = () => {
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{pkgName} Package</p>
                 <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">{pkgName}</h1>
                 <p className="text-muted-foreground text-base leading-relaxed max-w-md">
-                  A polished mix of quality, function, and style tailored to your bathroom.
+                  {pricing.description}
                 </p>
               </div>
 
@@ -88,26 +100,26 @@ const PackageDetail = () => {
                 <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                 <div>
                   <p className="text-sm font-medium text-foreground">{fitReason}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Personalized based on your uploaded room and preferences</p>
+                  <p className="text-xs text-muted-foreground mt-0.5">Based on your uploaded room, dimensions, and preferences</p>
                 </div>
               </div>
 
               <div className="rounded-xl border border-border bg-secondary/30 p-6 space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Materials</span>
-                  <span className="font-medium text-foreground">$7,500 – $10,200</span>
+                  <span className="font-medium text-foreground">{pricing.materialRange}</span>
                 </div>
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">Estimated Labor</span>
-                  <span className="font-medium text-foreground">$5,000 – $7,500</span>
+                  <span className="font-medium text-foreground">{pricing.laborRange}</span>
                 </div>
                 <div className="h-px bg-border" />
                 <div className="flex justify-between">
                   <span className="text-foreground font-semibold">Est. Project Total</span>
-                  <span className="font-bold text-foreground">$14,000 – $19,000</span>
+                  <span className="font-bold text-foreground">{pricing.projectRange}</span>
                 </div>
                 <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Budget Comfort</span>
+                  <span className="text-muted-foreground">Your Budget Comfort</span>
                   <span className="font-medium text-primary">{budgetComfort}</span>
                 </div>
                 <div className="flex justify-between text-xs">
@@ -117,12 +129,12 @@ const PackageDetail = () => {
               </div>
 
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Final totals may vary based on selections, labor, and site conditions.
+                Estimates based on national averages. Final totals vary by contractor, region, and site conditions.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button size="lg" className="h-12 px-8 text-base font-semibold rounded-lg" asChild>
-                  <Link to={`/customize/${(project.selected_package.tier || "balanced")}`}>Customize This Option</Link>
+                  <Link to={`/customize/${pkgTier}`}>Customize This Option</Link>
                 </Button>
                 <Button size="lg" variant="secondary" className="h-12 px-8 text-base rounded-lg" asChild>
                   <Link to="/options">Compare Other Packages</Link>

@@ -3,7 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
-import { getBathroomInsights, packageFitReasons } from "@/data/products";
+import { getBathroomInsights, packageFitReasons, packagePricing } from "@/data/products";
 import BathroomInsights from "@/components/BathroomInsights";
 import budgetImg from "@/assets/package-budget.jpg";
 import balancedImg from "@/assets/package-balanced.jpg";
@@ -13,30 +13,42 @@ const packages = [
   {
     name: "Budget",
     image: budgetImg,
-    summary: "A smart refresh focused on value and essential upgrades",
-    materialRange: "$4,200 – $5,800",
-    projectRange: "$8,500 – $12,000",
-    highlights: ["Vanity & sink", "Ceramic tile", "Chrome faucet", "Updated lighting"],
+    summary: "Refresh all visible surfaces and fixtures without moving plumbing or altering the layout.",
+    highlights: [
+      "New vanity & sink on existing plumbing",
+      "Ceramic tile — floor and tub surround",
+      "Updated faucet, lighting, and mirror",
+      "Fastest install — typically 5–7 days",
+    ],
     fit: packageFitReasons.Budget,
+    pricing: packagePricing.Budget,
   },
   {
     name: "Balanced",
     image: balancedImg,
-    summary: "A polished mix of quality, function, and style",
-    materialRange: "$7,500 – $10,200",
-    projectRange: "$14,000 – $19,000",
-    highlights: ["Floating vanity", "Porcelain tile", "Brushed nickel fixtures", "Sconce lighting"],
+    summary: "Upgrade materials and finishes for a noticeably brighter, more modern bathroom — plumbing stays in place.",
+    highlights: [
+      "Floating vanity with quartz countertop",
+      "Large-format porcelain tile (fewer grout lines)",
+      "Coordinated brushed nickel fixtures",
+      "Dual wall sconces for even lighting",
+    ],
     featured: true,
     fit: packageFitReasons.Balanced,
+    pricing: packagePricing.Balanced,
   },
   {
     name: "Premium",
     image: premiumImg,
-    summary: "An elevated design direction with more finish flexibility",
-    materialRange: "$13,000 – $18,500",
-    projectRange: "$22,000 – $32,000",
-    highlights: ["Custom vanity", "Natural stone tile", "Brass fixtures", "Designer lighting"],
+    summary: "Designer-grade materials with the option to move fixtures, add niches, or upgrade the tub/shower layout.",
+    highlights: [
+      "Custom vanity with natural stone top",
+      "Natural stone or designer tile",
+      "Brass or matte black fixtures throughout",
+      "Layout changes and custom details available",
+    ],
     fit: packageFitReasons.Premium,
+    pricing: packagePricing.Premium,
   },
 ];
 
@@ -146,11 +158,11 @@ const RemodelOptions = () => {
                     <div className="space-y-1 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Materials</span>
-                        <span className="font-medium text-foreground">{pkg.materialRange}</span>
+                        <span className="font-medium text-foreground">{pkg.pricing.materialRange}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Est. Project</span>
-                        <span className="font-semibold text-foreground">{pkg.projectRange}</span>
+                        <span className="font-semibold text-foreground">{pkg.pricing.projectRange}</span>
                       </div>
                     </div>
                     <ul className="space-y-1.5">
