@@ -120,7 +120,7 @@ export const balancedProducts: Product[] = [
     vendor: "TOTO",
     price: 650,
     description: "Tornado flush uses 1.28 GPF — saves ~4,000 gal/year over older models",
-    spec: "ADA comfort height,?"CEFIONTECT glaze, 12\" rough-in",
+    spec: 'ADA comfort height, CEFIONTECT glaze, 12" rough-in',
   },
   {
     id: "bal-shower-01",
