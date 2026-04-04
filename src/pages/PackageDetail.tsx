@@ -3,19 +3,19 @@ import { Link } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
+import { balancedProducts, PRODUCT_CATEGORIES } from "@/data/products";
 import balancedImg from "@/assets/package-balanced.jpg";
 import budgetImg from "@/assets/package-budget.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
 
-const defaultCategories = [
-  { name: "Vanity", item: "Floating oak vanity with quartz top", reason: "Adds warmth while keeping the room feeling open" },
-  { name: "Tile", item: "Large-format porcelain in warm gray", reason: "Low-maintenance with a refined, modern feel" },
-  { name: "Faucet", item: "Single-handle brushed nickel faucet", reason: "Clean lines that complement the vanity hardware" },
-  { name: "Lighting", item: "Dual wall sconces, frosted glass", reason: "Even, flattering light without harsh overhead glare" },
-  { name: "Mirror", item: "Frameless rectangular mirror with shelf ledge", reason: "Keeps the space feeling open and minimal" },
-  { name: "Toilet", item: "Elongated comfort-height toilet", reason: "Modern profile with easy-clean features" },
-  { name: "Shower / Tub Hardware", item: "Rain showerhead with handheld combo", reason: "Spa-like feel without a full fixture overhaul" },
-];
+const defaultCategories = PRODUCT_CATEGORIES.map((cat) => {
+  const product = balancedProducts.find((p) => p.category === cat);
+  return {
+    name: cat,
+    item: product?.name ?? cat,
+    reason: product?.description ?? "",
+  };
+});
 
 const whyFits = [
   "Balances quality materials with a realistic budget range",

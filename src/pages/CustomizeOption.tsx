@@ -5,6 +5,13 @@ import { ArrowLeft, Check, ChevronUp } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
+import {
+  balancedProducts,
+  balancedAlternatives,
+  formatPrice,
+  type ProductCategory,
+  type ProductAlternative,
+} from "@/data/products";
 
 interface Alternative {
   name: string;
@@ -21,79 +28,24 @@ interface Category {
   alternatives: Alternative[];
 }
 
-const initialCategories: Category[] = [
-  {
-    name: "Vanity",
-    selected: "Floating oak vanity with quartz top",
-    reason: "Adds warmth while keeping the room feeling open",
-    price: 1850,
-    alternatives: [
-      { name: "White shaker vanity with integrated sink", desc: "Classic look, easy to clean", impact: "- $200", impactValue: -200 },
-      { name: "Walnut double-drawer vanity", desc: "Rich tone with extra storage", impact: "+ $450", impactValue: 450 },
-      { name: "Minimal wall-mounted vanity", desc: "Ultra-clean, space-saving profile", impact: "- $350", impactValue: -350 },
-    ],
-  },
-  {
-    name: "Tile",
-    selected: "Large-format porcelain in warm gray",
-    reason: "Low-maintenance with a refined, modern feel",
-    price: 2200,
-    alternatives: [
-      { name: "Subway tile in soft white", desc: "Timeless and budget-friendly", impact: "- $400", impactValue: -400 },
-      { name: "Natural marble mosaic accent", desc: "Luxurious focal point", impact: "+ $800", impactValue: 800 },
-    ],
-  },
-  {
-    name: "Faucet",
-    selected: "Single-handle brushed nickel faucet",
-    reason: "Clean lines that complement the vanity hardware",
-    price: 380,
-    alternatives: [
-      { name: "Widespread brushed nickel faucet", desc: "Traditional spread, same finish", impact: "+ $120", impactValue: 120 },
-      { name: "Matte black single-handle faucet", desc: "Bold contrast, modern edge", impact: "No change", impactValue: 0 },
-    ],
-  },
-  {
-    name: "Lighting",
-    selected: "Dual wall sconces, frosted glass",
-    reason: "Even, flattering light without harsh overhead glare",
-    price: 520,
-    alternatives: [
-      { name: "LED vanity light bar", desc: "Bright, even illumination", impact: "- $150", impactValue: -150 },
-      { name: "Brass pendant sconces", desc: "Warm accent lighting", impact: "+ $280", impactValue: 280 },
-    ],
-  },
-  {
-    name: "Mirror",
-    selected: "Frameless rectangular mirror with shelf ledge",
-    reason: "Keeps the space feeling open and minimal",
-    price: 340,
-    alternatives: [
-      { name: "Round brass-framed mirror", desc: "Soft shape, warm accent", impact: "+ $90", impactValue: 90 },
-      { name: "Medicine cabinet with mirror front", desc: "Hidden storage, clean look", impact: "+ $180", impactValue: 180 },
-    ],
-  },
-  {
-    name: "Toilet",
-    selected: "Elongated comfort-height toilet",
-    reason: "Modern profile with easy-clean features",
-    price: 650,
-    alternatives: [
-      { name: "Wall-hung toilet", desc: "Sleek, easy to clean underneath", impact: "+ $400", impactValue: 400 },
-      { name: "Standard round-front toilet", desc: "Compact and budget-friendly", impact: "- $200", impactValue: -200 },
-    ],
-  },
-  {
-    name: "Shower / Tub Hardware",
-    selected: "Rain showerhead with handheld combo",
-    reason: "Spa-like feel without a full fixture overhaul",
-    price: 460,
-    alternatives: [
-      { name: "Standard single showerhead", desc: "Simple and reliable", impact: "- $180", impactValue: -180 },
-      { name: "Thermostatic shower system", desc: "Precise temp control, premium feel", impact: "+ $550", impactValue: 550 },
-    ],
-  },
-];
+const formatImpact = (v: number) =>
+  v > 0 ? `+ $${v.toLocaleString()}` : v < 0 ? `- $${Math.abs(v).toLocaleString()}` : "No change";
+
+const initialCategories: Category[] = balancedProducts.map((product) => {
+  const alts: ProductAlternative[] = balancedAlternatives[product.category] || [];
+  return {
+    name: product.category,
+    selected: product.name,
+    reason: product.description,
+    price: product.price,
+    alternatives: alts.map((a) => ({
+      name: a.name,
+      desc: a.description,
+      impact: formatImpact(a.priceImpact),
+      impactValue: a.priceImpact,
+    })),
+  };
+});
 
 const baseLaborRate = 5800;
 const baseShipping = 650;
