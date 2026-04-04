@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, ChevronUp, ExternalLink } from "lucide-react";
+import { ArrowLeft, Check, ChevronUp, AlertTriangle } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
@@ -18,8 +18,6 @@ import {
 interface Alternative {
   name: string;
   desc: string;
-  impact: string;
-  impactValue: number;
   vendor: string;
   finish?: string;
   image?: string;
@@ -27,6 +25,7 @@ interface Alternative {
   spec?: string;
   laborNote?: string;
   price: number;
+  laborDelta: number;
 }
 
 interface Category {
@@ -40,12 +39,12 @@ interface Category {
   spec?: string;
   finish?: string;
   alternatives: Alternative[];
-  /** Current labor note after swap */
+  /** Current labor delta for this category vs default */
+  laborDelta: number;
   laborNote?: string;
+  /** Base price of the default product (for reference) */
+  basePrice: number;
 }
-
-const formatImpact = (v: number) =>
-  v > 0 ? `+ $${v.toLocaleString()}` : v < 0 ? `- $${Math.abs(v).toLocaleString()}` : "No change";
 
 const CUSTOMIZE_CATEGORIES: ProductCategory[] = ["Vanity", "Faucet", "Tile", "Mirror"];
 
@@ -59,16 +58,16 @@ const buildInitialCategories = (): Category[] =>
         selected: product.name,
         reason: product.description,
         price: product.price,
+        basePrice: product.price,
         vendor: product.vendor,
         image: product.image,
         tag: product.tag,
         spec: product.spec,
         finish: product.finish,
+        laborDelta: 0,
         alternatives: alts.map((a) => ({
           name: a.name,
           desc: a.description,
-          impact: formatImpact(a.priceImpact),
-          impactValue: a.priceImpact,
           vendor: a.vendor,
           finish: a.finish,
           image: a.image,
@@ -76,12 +75,13 @@ const buildInitialCategories = (): Category[] =>
           spec: a.spec,
           laborNote: a.laborNote,
           price: a.price,
+          laborDelta: a.laborDelta,
         })),
       };
     });
 
-const baseLaborRate = 5800;
-const baseShipping = 650;
+const BASE_LABOR = 5800;
+const BASE_SHIPPING = 650;
 
 const CustomizeOption = () => {
   const { project, updateProject, markStepComplete } = useProject();
@@ -103,10 +103,18 @@ const CustomizeOption = () => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>("Vanity");
   const [lastSwapNote, setLastSwapNote] = useState<string | null>(null);
 
+  // Compute totals — labor now changes based on product swaps
   const materialsTotal = categories.reduce((sum, c) => sum + c.price, 0);
-  const laborTotal = baseLaborRate;
-  const shippingTotal = baseShipping;
+  const laborAdjustment = categories.reduce((sum, c) => sum + c.laborDelta, 0);
+  const laborTotal = BASE_LABOR + laborAdjustment;
+  const shippingTotal = BASE_SHIPPING;
   const projectTotal = materialsTotal + laborTotal + shippingTotal;
+
+  // Budget range check (balanced tier)
+  const budgetLevel = project.style_preferences?.budget_level || "Balanced";
+  const budgetCeilings: Record<string, number> = { Budget: 12000, Balanced: 19000, Premium: 32000 };
+  const ceiling = budgetCeilings[budgetLevel] || 19000;
+  const isOverBudget = projectTotal > ceiling;
 
   const selectAlternative = (catName: string, alt: Alternative) => {
     setCategories((prev) =>
@@ -116,12 +124,13 @@ const CustomizeOption = () => {
               ...c,
               selected: alt.name,
               reason: alt.desc,
-              price: c.price + alt.impactValue,
+              price: alt.price,          // absolute price, not cumulative
               vendor: alt.vendor,
               image: alt.image,
               tag: alt.tag,
               spec: alt.spec,
               finish: alt.finish,
+              laborDelta: alt.laborDelta, // absolute labor delta
               laborNote: alt.laborNote,
             }
           : c
@@ -130,6 +139,21 @@ const CustomizeOption = () => {
     setExpandedCategory(null);
     setLastSwapNote(alt.laborNote || null);
     toast.success(`${alt.name} selected`, { description: `${catName} updated in your package` });
+  };
+
+  // Reset a category back to default
+  const resetToDefault = (catName: string) => {
+    const base = initialCategories.find((c) => c.name === catName);
+    if (!base) return;
+    setCategories((prev) =>
+      prev.map((c) =>
+        c.name === catName
+          ? { ...base }
+          : c
+      )
+    );
+    setLastSwapNote(null);
+    toast.success(`${catName} reset to default`);
   };
 
   useEffect(() => {
@@ -192,11 +216,12 @@ const CustomizeOption = () => {
             <div className="lg:col-span-2 space-y-4">
               {categories.map((cat) => {
                 const isExpanded = expandedCategory === cat.name;
+                const isSwapped = cat.selected !== initialCategories.find((ic) => ic.name === cat.name)?.selected;
+                const priceDiff = cat.price - cat.basePrice;
                 return (
                   <div key={cat.name} className={`rounded-xl border-2 transition-all duration-200 ${isExpanded ? "border-primary/40 bg-card" : "border-border bg-card"}`}>
                     {/* Selected product header */}
                     <div className="flex items-start gap-4 p-5">
-                      {/* Product image */}
                       {cat.image ? (
                         <div className="w-20 h-16 rounded-lg overflow-hidden flex-shrink-0 bg-secondary">
                           <img src={cat.image} alt={cat.selected} className="w-full h-full object-cover" width={640} height={512} loading="lazy" />
@@ -212,6 +237,9 @@ const CustomizeOption = () => {
                           {cat.tag && (
                             <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5">{cat.tag}</span>
                           )}
+                          {isSwapped && (
+                            <span className="text-[10px] font-medium bg-secondary text-muted-foreground rounded-full px-2 py-0.5">Swapped</span>
+                          )}
                         </div>
                         <p className="text-sm font-medium text-foreground truncate">{cat.selected}</p>
                         <div className="flex items-center gap-2 mt-0.5">
@@ -226,10 +254,24 @@ const CustomizeOption = () => {
                         {cat.spec && <p className="text-[11px] text-muted-foreground mt-1">{cat.spec}</p>}
                       </div>
                       <div className="flex items-center gap-3 ml-4 flex-shrink-0">
-                        <span className="text-sm font-semibold text-foreground whitespace-nowrap">{fmt(cat.price)}</span>
-                        <Button variant="outline" size="sm" className="text-xs h-8 px-3 rounded-lg" onClick={() => toggleExpand(cat.name)}>
-                          {isExpanded ? <><ChevronUp className="h-3 w-3 mr-1" /> Close</> : <>Change</>}
-                        </Button>
+                        <div className="text-right">
+                          <span className="text-sm font-semibold text-foreground whitespace-nowrap">{fmt(cat.price)}</span>
+                          {priceDiff !== 0 && (
+                            <p className={`text-[10px] font-medium ${priceDiff > 0 ? "text-destructive" : "text-primary"}`}>
+                              {priceDiff > 0 ? "+" : ""}{fmt(priceDiff)} vs default
+                            </p>
+                          )}
+                        </div>
+                        <div className="flex flex-col gap-1">
+                          <Button variant="outline" size="sm" className="text-xs h-8 px-3 rounded-lg" onClick={() => toggleExpand(cat.name)}>
+                            {isExpanded ? <><ChevronUp className="h-3 w-3 mr-1" /> Close</> : <>Change</>}
+                          </Button>
+                          {isSwapped && (
+                            <button onClick={() => resetToDefault(cat.name)} className="text-[10px] text-muted-foreground hover:text-foreground transition-colors">
+                              Reset
+                            </button>
+                          )}
+                        </div>
                       </div>
                     </div>
 
@@ -240,41 +282,51 @@ const CustomizeOption = () => {
                           <div className="border-t border-border px-5 pb-5 pt-4 space-y-4">
                             <p className="text-sm font-medium text-foreground">Compare {cat.name} Options</p>
                             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                              {cat.alternatives.map((alt) => (
-                                <div key={alt.name} className="rounded-xl border border-border bg-secondary/20 p-4 flex flex-col gap-3 hover:border-primary/30 transition-colors">
-                                  {/* Alt product image */}
-                                  {alt.image ? (
-                                    <div className="w-full aspect-[3/2] rounded-lg overflow-hidden bg-secondary">
-                                      <img src={alt.image} alt={alt.name} className="w-full h-full object-cover" width={640} height={512} loading="lazy" />
-                                    </div>
-                                  ) : (
-                                    <div className="w-full aspect-[3/2] rounded-lg bg-secondary flex items-center justify-center">
-                                      <span className="text-xs text-muted-foreground font-medium tracking-wide">{cat.name}</span>
-                                    </div>
-                                  )}
-                                  <div className="flex-1">
-                                    <div className="flex items-center gap-1.5 mb-1">
-                                      {alt.tag && (
-                                        <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5">{alt.tag}</span>
+                              {cat.alternatives.map((alt) => {
+                                const materialDiff = alt.price - cat.basePrice;
+                                return (
+                                  <div key={alt.name} className="rounded-xl border border-border bg-secondary/20 p-4 flex flex-col gap-3 hover:border-primary/30 transition-colors">
+                                    {alt.image ? (
+                                      <div className="w-full aspect-[3/2] rounded-lg overflow-hidden bg-secondary">
+                                        <img src={alt.image} alt={alt.name} className="w-full h-full object-cover" width={640} height={512} loading="lazy" />
+                                      </div>
+                                    ) : (
+                                      <div className="w-full aspect-[3/2] rounded-lg bg-secondary flex items-center justify-center">
+                                        <span className="text-xs text-muted-foreground font-medium tracking-wide">{cat.name}</span>
+                                      </div>
+                                    )}
+                                    <div className="flex-1">
+                                      <div className="flex items-center gap-1.5 mb-1">
+                                        {alt.tag && (
+                                          <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5">{alt.tag}</span>
+                                        )}
+                                      </div>
+                                      <p className="text-sm font-medium text-foreground leading-snug">{alt.name}</p>
+                                      <p className="text-xs text-muted-foreground mt-0.5">{alt.vendor}</p>
+                                      <p className="text-xs text-muted-foreground mt-1">{alt.desc}</p>
+                                      {alt.finish && (
+                                        <p className="text-[11px] text-muted-foreground mt-1">Finish: {alt.finish}</p>
                                       )}
+                                      {alt.spec && (
+                                        <p className="text-[11px] text-muted-foreground">{alt.spec}</p>
+                                      )}
+                                      <div className="mt-2">
+                                        <p className="text-sm font-semibold text-foreground">{fmt(alt.price)}</p>
+                                        {(materialDiff !== 0 || alt.laborDelta !== 0) && (
+                                          <p className="text-[10px] text-muted-foreground mt-0.5">
+                                            {materialDiff !== 0 && <span className={materialDiff > 0 ? "text-destructive" : "text-primary"}>{materialDiff > 0 ? "+" : ""}{fmt(materialDiff)} material</span>}
+                                            {materialDiff !== 0 && alt.laborDelta !== 0 && " · "}
+                                            {alt.laborDelta !== 0 && <span className="text-destructive">+{fmt(alt.laborDelta)} labor</span>}
+                                          </p>
+                                        )}
+                                      </div>
                                     </div>
-                                    <p className="text-sm font-medium text-foreground leading-snug">{alt.name}</p>
-                                    <p className="text-xs text-muted-foreground mt-0.5">{alt.vendor}</p>
-                                    <p className="text-xs text-muted-foreground mt-1">{alt.desc}</p>
-                                    {alt.finish && (
-                                      <p className="text-[11px] text-muted-foreground mt-1">Finish: {alt.finish}</p>
-                                    )}
-                                    {alt.spec && (
-                                      <p className="text-[11px] text-muted-foreground">{alt.spec}</p>
-                                    )}
-                                    <p className="text-sm font-semibold text-foreground mt-2">{fmt(alt.price)}</p>
+                                    <div className="pt-1">
+                                      <Button size="sm" className="w-full text-xs h-8 px-4 rounded-lg" onClick={() => selectAlternative(cat.name, alt)}>Select</Button>
+                                    </div>
                                   </div>
-                                  <div className="flex items-center justify-between pt-1">
-                                    <span className={`text-xs font-semibold ${alt.impactValue > 0 ? "text-destructive" : alt.impactValue < 0 ? "text-primary" : "text-muted-foreground"}`}>{alt.impact}</span>
-                                    <Button size="sm" className="text-xs h-8 px-4 rounded-lg" onClick={() => selectAlternative(cat.name, alt)}>Select</Button>
-                                  </div>
-                                </div>
-                              ))}
+                                );
+                              })}
                             </div>
                           </div>
                         </motion.div>
@@ -297,7 +349,12 @@ const CustomizeOption = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Est. Labor</span>
-                      <span className="font-medium text-foreground">{fmt(laborTotal)}</span>
+                      <div className="text-right">
+                        <span className="font-medium text-foreground">{fmt(laborTotal)}</span>
+                        {laborAdjustment !== 0 && (
+                          <p className="text-[10px] text-destructive">+{fmt(laborAdjustment)} from swaps</p>
+                        )}
+                      </div>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Shipping / Delivery</span>
@@ -321,18 +378,29 @@ const CustomizeOption = () => {
                         className="rounded-lg bg-secondary/50 border border-border px-3 py-2.5"
                       >
                         <p className="text-xs text-muted-foreground leading-relaxed">
-                          <span className="font-medium text-foreground">Why the estimate changed: </span>
+                          <span className="font-medium text-foreground">Why: </span>
                           {lastSwapNote}
                         </p>
                       </motion.div>
                     )}
                   </AnimatePresence>
 
-                  <p className="text-xs text-muted-foreground leading-relaxed">Totals update as you compare and swap products.</p>
-                  <div className="flex items-center gap-2 text-xs">
-                    <Check className="h-3.5 w-3.5 text-primary" />
-                    <span className="text-primary font-medium">Within your selected budget range</span>
-                  </div>
+                  {/* Budget status */}
+                  {isOverBudget ? (
+                    <div className="flex items-center gap-2 text-xs">
+                      <AlertTriangle className="h-3.5 w-3.5 text-destructive" />
+                      <span className="text-destructive font-medium">Above {budgetLevel} range ceiling ({fmt(ceiling)})</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center gap-2 text-xs">
+                      <Check className="h-3.5 w-3.5 text-primary" />
+                      <span className="text-primary font-medium">Within {budgetLevel} budget range</span>
+                    </div>
+                  )}
+
+                  <p className="text-xs text-muted-foreground leading-relaxed">
+                    Estimates based on national averages. Final pricing varies by contractor and region.
+                  </p>
                 </div>
 
                 <Button size="lg" className="w-full h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
