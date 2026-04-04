@@ -133,7 +133,9 @@ const ProjectSummary = () => {
                 Final totals may vary based on selections, labor, and site conditions.
               </p>
               <p className="text-[10px] text-muted-foreground/60 leading-relaxed">
-                Your progress is automatically saved on this device. Create an account to access it anywhere.
+                {user
+                  ? "Your project is saved to your BOBOX account and available across devices."
+                  : "Your progress is saved on this device. Sign in to access it anywhere."}
               </p>
             </div>
           </div>
