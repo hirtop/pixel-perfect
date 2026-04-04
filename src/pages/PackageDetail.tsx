@@ -15,7 +15,6 @@ const tierImages: Record<string, string> = {
   premium: premiumImg,
 };
 
-/** Show the 4 customizable categories with product details, plus list remaining categories as included */
 const customizableDefaults = balancedProducts
   .filter((p) => CUSTOMIZABLE_CATEGORIES.includes(p.category))
   .map((product) => ({
@@ -38,7 +37,6 @@ const PackageDetail = () => {
   const pkgName = project.selected_package.name || "Balanced";
   const pkgTier = project.selected_package.tier || "balanced";
   const finishDir = project.style_preferences.finish || "";
-  const budgetComfort = project.style_preferences.budget_level || "Balanced";
   const insights = getBathroomInsights(project);
   const fitReason = packageFitReasons[pkgName] || packageFitReasons.Balanced;
   const pricing = packagePricing[pkgName] || packagePricing.Balanced;
@@ -78,26 +76,16 @@ const PackageDetail = () => {
           )}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
-            <div className="space-y-3">
+            <div>
               <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-                <img src={heroImg} alt={`${pkgName} bathroom remodel`} className="w-full h-full object-cover" width={800} height={600} />
-              </div>
-              <div className="grid grid-cols-3 gap-3">
-                {[budgetImg, balancedImg, premiumImg].map((src, i) => {
-                  const isActive = src === heroImg;
-                  return (
-                    <div key={i} className={`rounded-lg overflow-hidden aspect-[4/3] border-2 transition-colors ${isActive ? "border-primary" : "border-transparent opacity-60 hover:opacity-100"}`}>
-                      <img src={src} alt="" className="w-full h-full object-cover" width={800} height={600} loading="lazy" />
-                    </div>
-                  );
-                })}
+                <img src={heroImg} alt={`${pkgName} package bathroom remodel`} className="w-full h-full object-cover" width={800} height={600} />
               </div>
             </div>
 
             <div className="flex flex-col justify-center space-y-6">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{pkgName} Package</p>
-                <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">{pkgName}</h1>
+                <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">{pkgName} Remodel</h1>
                 <p className="text-muted-foreground text-base leading-relaxed max-w-md">
                   {pricing.description}
                 </p>
@@ -111,7 +99,7 @@ const PackageDetail = () => {
 
               <div className="rounded-xl border border-border bg-secondary/30 p-6 space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Materials</span>
+                  <span className="text-muted-foreground">Materials (all 7 items)</span>
                   <span className="font-medium text-foreground">{pricing.materialRange}</span>
                 </div>
                 <div className="flex justify-between">
@@ -170,7 +158,7 @@ const PackageDetail = () => {
           <section className="mb-16">
             <div className="mb-4">
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Also Included</p>
-              <p className="text-sm text-muted-foreground">These items are part of every package. Customization options coming soon.</p>
+              <p className="text-sm text-muted-foreground">Included in every package. Not yet swappable — we're adding more options soon.</p>
             </div>
             <div className="flex flex-wrap gap-3">
               {otherIncluded.map((item) => (
