@@ -234,6 +234,7 @@ export const balancedAlternatives: Record<ProductCategory, ProductAlternative[]>
       finish: "Brushed Nickel",
       image: faucetAlt1Img,
       laborDelta: 120,
+      tag: "Upgrade",
       spec: '8" center spread, ceramic disc valves, 1.2 GPM',
       laborNote: "Wider spread may need vanity top re-drill — adds ~$120",
     },

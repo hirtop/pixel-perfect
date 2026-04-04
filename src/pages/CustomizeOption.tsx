@@ -80,6 +80,11 @@ const buildInitialCategories = (): Category[] =>
 const BASE_LABOR = 5800;
 const SHIPPING_ESTIMATE = 600;
 
+/** Cost of the 3 non-customizable items (Lighting + Toilet + Shower/Tub Hardware) */
+const OTHER_ITEMS_TOTAL = balancedProducts
+  .filter((p) => !CUSTOMIZABLE_CATEGORIES.includes(p.category))
+  .reduce((sum, p) => sum + p.price, 0);
+
 const CustomizeOption = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
@@ -100,7 +105,8 @@ const CustomizeOption = () => {
   const [expandedCategory, setExpandedCategory] = useState<string | null>("Vanity");
   const [lastSwapNote, setLastSwapNote] = useState<string | null>(null);
 
-  const materialsTotal = categories.reduce((sum, c) => sum + c.price, 0);
+  const customizableMaterials = categories.reduce((sum, c) => sum + c.price, 0);
+  const materialsTotal = customizableMaterials + OTHER_ITEMS_TOTAL;
   const laborAdjustment = categories.reduce((sum, c) => sum + c.laborDelta, 0);
   const laborTotal = BASE_LABOR + laborAdjustment;
   const projectTotal = materialsTotal + laborTotal + SHIPPING_ESTIMATE;
@@ -330,11 +336,19 @@ const CustomizeOption = () => {
                   <h3 className="font-heading text-lg text-foreground">Estimate</h3>
                   <div className="space-y-2.5 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Materials (4 items)</span>
+                      <span className="text-muted-foreground">Your selections (4 items)</span>
+                      <span className="font-medium text-foreground">{fmt(customizableMaterials)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">Other included items (3)</span>
+                      <span className="font-medium text-muted-foreground">{fmt(OTHER_ITEMS_TOTAL)}</span>
+                    </div>
+                    <div className="flex justify-between">
+                      <span className="text-muted-foreground">All materials</span>
                       <span className="font-medium text-foreground">{fmt(materialsTotal)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Est. Labor</span>
+                      <span className="text-muted-foreground">Est. labor</span>
                       <div className="text-right">
                         <span className="font-medium text-foreground">{fmt(laborTotal)}</span>
                         {laborAdjustment > 0 && (
@@ -381,7 +395,7 @@ const CustomizeOption = () => {
                   )}
 
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
-                    This covers the 4 products above only. Lighting, toilet, and shower hardware are included in the package but not shown here. Actual costs depend on your contractor and region.
+                    Actual costs depend on your contractor and region. Lighting, toilet, and shower hardware are included at default pricing.
                   </p>
                 </div>
 

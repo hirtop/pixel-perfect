@@ -39,7 +39,7 @@ const BathroomInsights = ({ insights, compact = false }: Props) => {
     <div className="rounded-xl border border-border bg-secondary/30 p-6 space-y-4">
       <div>
         <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">Based on Your Bathroom</p>
-        <p className="text-sm text-muted-foreground">Here's what we inferred from your space, photos, and preferences.</p>
+        <p className="text-sm text-muted-foreground">Based on the room details you provided.</p>
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {insights.map((ins) => {
