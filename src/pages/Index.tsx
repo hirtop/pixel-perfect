@@ -2,6 +2,7 @@ import { motion, type Variants } from "framer-motion";
 import { Camera, Layers, DollarSign, TrendingUp, ShoppingBag, ListChecks, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import AccountMenu from "@/components/AccountMenu";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
