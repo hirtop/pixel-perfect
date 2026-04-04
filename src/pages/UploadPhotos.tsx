@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from "react";
+import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { Upload, ImagePlus, X, ArrowLeft, ImageIcon, FileImage } from "lucide-react";
@@ -6,40 +6,109 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useProject } from "@/contexts/ProjectContext";
+import { toast } from "sonner";
+
+const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|heic)$/i;
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/heic"];
+const MAX_FILES = 8;
+
+function isAcceptedFile(file: File): boolean {
+  return ACCEPTED_TYPES.includes(file.type) || ACCEPTED_EXTENSIONS.test(file.name);
+}
+
+function formatSize(bytes: number) {
+  if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
+  return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+}
 
 const UploadPhotos = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [files, setFiles] = useState<File[]>([]);
   const [previews, setPreviews] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const [notes, setNotes] = useState(project.photos.notes || "");
 
-  // Generate preview URLs when files change
+  // Generate preview URLs
   useEffect(() => {
     const urls = files.map((f) => URL.createObjectURL(f));
     setPreviews(urls);
     return () => urls.forEach((url) => URL.revokeObjectURL(url));
   }, [files]);
 
-  const handleFiles = (incoming: FileList | null) => {
-    if (!incoming) return;
-    const accepted = Array.from(incoming).filter((f) =>
-      ["image/jpeg", "image/png", "image/heic"].includes(f.type) || f.name.match(/\.(jpg|jpeg|png|heic)$/i)
-    );
-    setFiles((prev) => [...prev, ...accepted].slice(0, 8));
-  };
+  const addFiles = useCallback((incoming: FileList | File[]) => {
+    const fileArray = Array.from(incoming);
+    const accepted: File[] = [];
+    let rejected = 0;
+
+    fileArray.forEach((f) => {
+      if (isAcceptedFile(f)) {
+        accepted.push(f);
+      } else {
+        rejected++;
+      }
+    });
+
+    if (rejected > 0) {
+      toast.error(`${rejected} file${rejected > 1 ? "s" : ""} not supported`, {
+        description: "Only JPG, PNG, and HEIC photos are accepted.",
+      });
+    }
+
+    if (accepted.length === 0) return;
+
+    setFiles((prev) => {
+      const combined = [...prev, ...accepted];
+      if (combined.length > MAX_FILES) {
+        toast.info(`Maximum ${MAX_FILES} photos allowed`, {
+          description: `Only the first ${MAX_FILES} photos were kept.`,
+        });
+        return combined.slice(0, MAX_FILES);
+      }
+      return combined;
+    });
+  }, []);
+
+  // Drag-and-drop handlers
+  const handleDragOver = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragging(true);
+  }, []);
+
+  const handleDragLeave = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragging(false);
+  }, []);
 
   const handleDrop = useCallback((e: React.DragEvent) => {
     e.preventDefault();
+    e.stopPropagation();
     setDragging(false);
-    handleFiles(e.dataTransfer.files);
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      addFiles(e.dataTransfer.files);
+    }
+  }, [addFiles]);
+
+  // File input handler
+  const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      addFiles(e.target.files);
+    }
+    // Reset so same file can be re-selected
+    e.target.value = "";
+  }, [addFiles]);
+
+  const openFilePicker = useCallback(() => {
+    fileInputRef.current?.click();
   }, []);
 
-  const removeFile = (index: number) => {
+  const removeFile = useCallback((index: number) => {
     setFiles((prev) => prev.filter((_, i) => i !== index));
-  };
+  }, []);
 
   const existingCount = project.photos.metadata.length;
   const hasNewFiles = files.length > 0;
@@ -53,11 +122,6 @@ const UploadPhotos = () => {
     }
     markStepComplete("upload");
     navigate("/dimensions");
-  };
-
-  const formatSize = (bytes: number) => {
-    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(0)} KB`;
-    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
   };
 
   return (
@@ -87,7 +151,7 @@ const UploadPhotos = () => {
           </div>
 
           <div className="space-y-8">
-            {/* Saved photo indicator — shown when returning with previously saved metadata but no new files */}
+            {/* Saved photo indicator */}
             {!hasNewFiles && existingCount > 0 && (
               <div className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-4">
                 <div className="flex items-center gap-3 mb-3">
@@ -99,7 +163,6 @@ const UploadPhotos = () => {
                     <p className="text-xs text-muted-foreground mt-0.5">Upload new photos below to replace them, or continue with your current set.</p>
                   </div>
                 </div>
-                {/* Show saved file names as visual reference */}
                 <div className="grid grid-cols-4 gap-2">
                   {project.photos.metadata.map((meta, i) => (
                     <div key={i} className="rounded-lg bg-secondary/60 border border-border aspect-square flex flex-col items-center justify-center gap-1.5 p-2">
@@ -111,32 +174,36 @@ const UploadPhotos = () => {
               </div>
             )}
 
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              multiple
+              accept=".jpg,.jpeg,.png,.heic"
+              className="hidden"
+              onChange={handleFileInput}
+            />
+
             {/* Dropzone */}
             <div
-              onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
-              onDragLeave={() => setDragging(false)}
+              onDragOver={handleDragOver}
+              onDragLeave={handleDragLeave}
               onDrop={handleDrop}
-              onClick={() => document.getElementById("file-input")?.click()}
+              onClick={openFilePicker}
               className={`relative cursor-pointer rounded-xl border-2 border-dashed p-12 md:p-16 text-center transition-all duration-200 ${
                 dragging
-                  ? "border-primary bg-primary/5"
+                  ? "border-primary bg-primary/5 scale-[1.01]"
                   : "border-border bg-secondary/30 hover:border-primary/40 hover:bg-secondary/50"
               }`}
             >
-              <input
-                id="file-input"
-                type="file"
-                multiple
-                accept=".jpg,.jpeg,.png,.heic"
-                className="hidden"
-                onChange={(e) => handleFiles(e.target.files)}
-              />
               <div className="flex flex-col items-center gap-3">
                 <div className={`rounded-full p-4 transition-colors duration-200 ${dragging ? "bg-primary/10" : "bg-secondary"}`}>
                   <Upload className={`h-7 w-7 transition-colors duration-200 ${dragging ? "text-primary" : "text-muted-foreground"}`} />
                 </div>
                 <div>
-                  <p className="text-foreground font-medium text-base">Drag and drop your bathroom photos here</p>
+                  <p className="text-foreground font-medium text-base">
+                    {dragging ? "Drop your photos here" : "Drag and drop your bathroom photos here"}
+                  </p>
                   <p className="text-muted-foreground text-sm mt-1">
                     or <span className="text-primary font-medium">browse files</span> from your device
                   </p>
@@ -165,7 +232,7 @@ const UploadPhotos = () => {
                   <div className="grid grid-cols-4 gap-3">
                     {files.map((file, i) => (
                       <motion.div
-                        key={`${file.name}-${i}`}
+                        key={`${file.name}-${file.size}-${i}`}
                         initial={{ opacity: 0, scale: 0.9 }}
                         animate={{ opacity: 1, scale: 1 }}
                         exit={{ opacity: 0, scale: 0.9 }}
@@ -179,9 +246,9 @@ const UploadPhotos = () => {
                             className="w-full h-full object-cover"
                           />
                         )}
-                        {/* Hover overlay with file info */}
                         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-200" />
                         <button
+                          type="button"
                           onClick={(e) => { e.stopPropagation(); removeFile(i); }}
                           className="absolute top-2 right-2 rounded-full bg-foreground/70 p-1 text-background opacity-0 group-hover:opacity-100 transition-opacity duration-150"
                           aria-label={`Remove ${file.name}`}
@@ -194,12 +261,13 @@ const UploadPhotos = () => {
                         </div>
                       </motion.div>
                     ))}
-                    {files.length < 8 && (
+                    {files.length < MAX_FILES && (
                       <motion.button
+                        type="button"
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.15 }}
-                        onClick={() => document.getElementById("file-input")?.click()}
+                        onClick={(e) => { e.stopPropagation(); openFilePicker(); }}
                         className="rounded-xl border-2 border-dashed border-border aspect-square flex flex-col items-center justify-center gap-1.5 text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors"
                       >
                         <ImagePlus className="h-5 w-5" />
