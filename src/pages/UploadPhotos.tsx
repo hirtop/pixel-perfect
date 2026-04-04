@@ -31,11 +31,39 @@ const UploadPhotos = () => {
   const [dragging, setDragging] = useState(false);
   const [notes, setNotes] = useState(project.photos.notes || "");
 
-  // Generate preview URLs
+  // Generate preview URLs — HEIC files may not be previewable in all browsers
   useEffect(() => {
-    const urls = files.map((f) => URL.createObjectURL(f));
-    setPreviews(urls);
-    return () => urls.forEach((url) => URL.revokeObjectURL(url));
+    let cancelled = false;
+    const urls: string[] = [];
+
+    const generate = async () => {
+      const result: string[] = [];
+      for (const f of files) {
+        const url = URL.createObjectURL(f);
+        // Test if the browser can actually decode this image
+        const canPreview = await new Promise<boolean>((resolve) => {
+          const img = new Image();
+          img.onload = () => resolve(true);
+          img.onerror = () => resolve(false);
+          img.src = url;
+        });
+        if (canPreview) {
+          urls.push(url);
+          result.push(url);
+        } else {
+          // Revoke unusable URL, push empty string as fallback marker
+          URL.revokeObjectURL(url);
+          result.push("");
+        }
+      }
+      if (!cancelled) setPreviews(result);
+    };
+
+    generate();
+    return () => {
+      cancelled = true;
+      urls.forEach((url) => URL.revokeObjectURL(url));
+    };
   }, [files]);
 
   const addFiles = useCallback((incoming: FileList | File[]) => {
@@ -239,12 +267,20 @@ const UploadPhotos = () => {
                         transition={{ duration: 0.2, delay: i * 0.05 }}
                         className="relative group rounded-xl overflow-hidden aspect-square bg-secondary border border-border shadow-sm"
                       >
-                        {previews[i] && (
+                        {previews[i] ? (
                           <img
                             src={previews[i]}
                             alt={file.name}
                             className="w-full h-full object-cover"
                           />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 bg-secondary p-2">
+                            <FileImage className="h-6 w-6 text-muted-foreground" />
+                            <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide">
+                              {file.name.split('.').pop()}
+                            </span>
+                            <span className="text-[9px] text-muted-foreground truncate w-full text-center">{file.name}</span>
+                          </div>
                         )}
                         <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-200" />
                         <button
