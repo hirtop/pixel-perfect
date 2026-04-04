@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
-import { balancedProducts, PRODUCT_CATEGORIES, getBathroomInsights, packageFitReasons, packagePricing } from "@/data/products";
+import { balancedProducts, CUSTOMIZABLE_CATEGORIES, getBathroomInsights, packageFitReasons, packagePricing } from "@/data/products";
 import BathroomInsights from "@/components/BathroomInsights";
 import balancedImg from "@/assets/package-balanced.jpg";
 import budgetImg from "@/assets/package-budget.jpg";
@@ -15,22 +15,29 @@ const tierImages: Record<string, string> = {
   premium: premiumImg,
 };
 
-const defaultCategories = PRODUCT_CATEGORIES.map((cat) => {
-  const product = balancedProducts.find((p) => p.category === cat);
-  return {
-    name: cat,
-    item: product?.name ?? cat,
-    reason: product?.description ?? "",
-    vendor: product?.vendor ?? "",
-    price: product?.price ?? 0,
-  };
-});
+/** Show the 4 customizable categories with product details, plus list remaining categories as included */
+const customizableDefaults = balancedProducts
+  .filter((p) => CUSTOMIZABLE_CATEGORIES.includes(p.category))
+  .map((product) => ({
+    name: product.category,
+    item: product.name,
+    reason: product.description,
+    vendor: product.vendor,
+  }));
+
+const otherIncluded = balancedProducts
+  .filter((p) => !CUSTOMIZABLE_CATEGORIES.includes(p.category))
+  .map((product) => ({
+    name: product.category,
+    item: product.name,
+    vendor: product.vendor,
+  }));
 
 const PackageDetail = () => {
   const { project } = useProject();
   const pkgName = project.selected_package.name || "Balanced";
   const pkgTier = project.selected_package.tier || "balanced";
-  const finishDir = project.style_preferences.finish || "Brushed Nickel";
+  const finishDir = project.style_preferences.finish || "";
   const budgetComfort = project.style_preferences.budget_level || "Balanced";
   const insights = getBathroomInsights(project);
   const fitReason = packageFitReasons[pkgName] || packageFitReasons.Balanced;
@@ -38,11 +45,11 @@ const PackageDetail = () => {
   const heroImg = tierImages[pkgTier] || balancedImg;
 
   const categories = project.customizations.categories && project.customizations.categories.length > 0
-    ? defaultCategories.map((dc) => {
+    ? customizableDefaults.map((dc) => {
         const custom = project.customizations.categories!.find((c) => c.name === dc.name);
         return custom ? { ...dc, item: custom.selected } : dc;
       })
-    : defaultCategories;
+    : customizableDefaults;
 
   return (
     <div className="min-h-screen bg-background">
@@ -64,10 +71,11 @@ const PackageDetail = () => {
           transition={{ duration: 0.5 }}
           className="max-w-6xl mx-auto"
         >
-          {/* Bathroom insights — compact on detail page */}
-          <div className="mb-8">
-            <BathroomInsights insights={insights} compact />
-          </div>
+          {insights.length > 0 && (
+            <div className="mb-8">
+              <BathroomInsights insights={insights} compact />
+            </div>
+          )}
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             <div className="space-y-3">
@@ -98,10 +106,7 @@ const PackageDetail = () => {
               {/* Why this fits */}
               <div className="flex items-start gap-2.5 rounded-lg bg-primary/5 border border-primary/10 px-4 py-3">
                 <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="text-sm font-medium text-foreground">{fitReason}</p>
-                  <p className="text-xs text-muted-foreground mt-0.5">Based on your uploaded room, dimensions, and preferences</p>
-                </div>
+                <p className="text-sm font-medium text-foreground">{fitReason}</p>
               </div>
 
               <div className="rounded-xl border border-border bg-secondary/30 p-6 space-y-3 text-sm">
@@ -110,7 +115,7 @@ const PackageDetail = () => {
                   <span className="font-medium text-foreground">{pricing.materialRange}</span>
                 </div>
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Estimated Labor</span>
+                  <span className="text-muted-foreground">Est. Labor</span>
                   <span className="font-medium text-foreground">{pricing.laborRange}</span>
                 </div>
                 <div className="h-px bg-border" />
@@ -118,18 +123,16 @@ const PackageDetail = () => {
                   <span className="text-foreground font-semibold">Est. Project Total</span>
                   <span className="font-bold text-foreground">{pricing.projectRange}</span>
                 </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Your Budget Comfort</span>
-                  <span className="font-medium text-primary">{budgetComfort}</span>
-                </div>
-                <div className="flex justify-between text-xs">
-                  <span className="text-muted-foreground">Finish Direction</span>
-                  <span className="font-medium text-foreground">{finishDir}</span>
-                </div>
+                {finishDir && (
+                  <div className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">Finish Direction</span>
+                    <span className="font-medium text-foreground">{finishDir}</span>
+                  </div>
+                )}
               </div>
 
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Estimates based on national averages. Final totals vary by contractor, region, and site conditions.
+                Ranges based on national averages. Actual costs depend on your contractor, region, and site conditions.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
@@ -137,18 +140,19 @@ const PackageDetail = () => {
                   <Link to={`/customize/${pkgTier}`}>Customize This Option</Link>
                 </Button>
                 <Button size="lg" variant="secondary" className="h-12 px-8 text-base rounded-lg" asChild>
-                  <Link to="/options">Compare Other Packages</Link>
+                  <Link to="/options">Compare Other Options</Link>
                 </Button>
               </div>
             </div>
           </div>
 
-          <section className="mb-16">
+          {/* Customizable categories */}
+          <section className="mb-12">
             <div className="mb-6">
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">What's Included</p>
-              <h2 className="font-heading text-2xl text-foreground">Included in this package</h2>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">Customizable</p>
+              <h2 className="font-heading text-2xl text-foreground">Products you can swap</h2>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {categories.map((cat) => (
                 <div key={cat.name} className="rounded-xl border border-border bg-card p-5 space-y-2">
                   <div className="flex items-center justify-between">
@@ -157,6 +161,23 @@ const PackageDetail = () => {
                   </div>
                   <p className="text-sm font-medium text-foreground">{cat.item}</p>
                   <p className="text-xs text-muted-foreground leading-relaxed">{cat.reason}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Other included items */}
+          <section className="mb-16">
+            <div className="mb-4">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Also Included</p>
+              <p className="text-sm text-muted-foreground">These items are part of every package. Customization options coming soon.</p>
+            </div>
+            <div className="flex flex-wrap gap-3">
+              {otherIncluded.map((item) => (
+                <div key={item.name} className="rounded-lg border border-border bg-card px-4 py-3 space-y-0.5">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.name}</p>
+                  <p className="text-sm text-foreground">{item.item}</p>
+                  <p className="text-[10px] text-muted-foreground">{item.vendor}</p>
                 </div>
               ))}
             </div>

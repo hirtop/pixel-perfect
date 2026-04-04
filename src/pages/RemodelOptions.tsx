@@ -13,12 +13,12 @@ const packages = [
   {
     name: "Budget",
     image: budgetImg,
-    summary: "Refresh all visible surfaces and fixtures without moving plumbing or altering the layout.",
+    summary: "New vanity, updated tile, and modern fixtures — all on existing plumbing. No layout changes.",
     highlights: [
       "New vanity & sink on existing plumbing",
       "Ceramic tile — floor and tub surround",
       "Updated faucet, lighting, and mirror",
-      "Fastest install — typically 5–7 days",
+      "Typically 5–7 day install",
     ],
     fit: packageFitReasons.Budget,
     pricing: packagePricing.Budget,
@@ -26,10 +26,10 @@ const packages = [
   {
     name: "Balanced",
     image: balancedImg,
-    summary: "Upgrade materials and finishes for a noticeably brighter, more modern bathroom — plumbing stays in place.",
+    summary: "Better materials and coordinated finishes that noticeably upgrade the room. Plumbing stays in place.",
     highlights: [
       "Floating vanity with quartz countertop",
-      "Large-format porcelain tile (fewer grout lines)",
+      "Large-format porcelain tile",
       "Coordinated brushed nickel fixtures",
       "Dual wall sconces for even lighting",
     ],
@@ -40,12 +40,12 @@ const packages = [
   {
     name: "Premium",
     image: premiumImg,
-    summary: "Designer-grade materials with the option to move fixtures, add niches, or upgrade the tub/shower layout.",
+    summary: "Designer-grade materials with the option to relocate fixtures or change the tub/shower layout.",
     highlights: [
       "Custom vanity with natural stone top",
       "Natural stone or designer tile",
-      "Brass or matte black fixtures throughout",
-      "Layout changes and custom details available",
+      "Brass or matte black fixtures",
+      "Layout modifications available",
     ],
     fit: packageFitReasons.Premium,
     pricing: packagePricing.Premium,
@@ -88,14 +88,15 @@ const RemodelOptions = () => {
           <div className="text-center mb-8">
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Your Remodel Options</h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-              Three curated directions based on your space, style, and budget.
+              Three directions based on your space and budget.
             </p>
           </div>
 
-          {/* Bathroom Insights */}
-          <div className="mb-8 max-w-3xl mx-auto">
-            <BathroomInsights insights={insights} />
-          </div>
+          {insights.length > 0 && (
+            <div className="mb-8 max-w-3xl mx-auto">
+              <BathroomInsights insights={insights} />
+            </div>
+          )}
 
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 rounded-xl bg-secondary/40 border border-border px-6 py-4 mb-12 text-sm">
             <div>
@@ -107,11 +108,15 @@ const RemodelOptions = () => {
               <span className="text-muted-foreground">Project Range </span>
               <span className="font-semibold text-foreground">$8,500 – $32,000</span>
             </div>
-            <span className="hidden sm:block w-px h-4 bg-border" />
-            <div>
-              <span className="text-muted-foreground">Preference </span>
-              <span className="font-semibold text-primary">{project.style_preferences.budget_level || "Balanced"}</span>
-            </div>
+            {project.style_preferences.budget_level && (
+              <>
+                <span className="hidden sm:block w-px h-4 bg-border" />
+                <div>
+                  <span className="text-muted-foreground">Your Preference </span>
+                  <span className="font-semibold text-primary">{project.style_preferences.budget_level}</span>
+                </div>
+              </>
+            )}
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -134,7 +139,7 @@ const RemodelOptions = () => {
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img src={pkg.image} alt={`${pkg.name} bathroom remodel`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width={800} height={600} loading={i === 0 ? undefined : "lazy"} />
                     {pkg.featured && !isSelected && (
-                      <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">Recommended</div>
+                      <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">Most Popular</div>
                     )}
                     {isSelected && (
                       <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
@@ -149,7 +154,6 @@ const RemodelOptions = () => {
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
                     </div>
 
-                    {/* Why this fits */}
                     <div className="flex items-start gap-2 rounded-lg bg-primary/5 border border-primary/10 px-3 py-2.5">
                       <Check className="h-3.5 w-3.5 text-primary flex-shrink-0 mt-0.5" />
                       <p className="text-xs text-foreground leading-relaxed">{pkg.fit}</p>
@@ -187,6 +191,10 @@ const RemodelOptions = () => {
               );
             })}
           </div>
+
+          <p className="text-center text-xs text-muted-foreground mt-8 max-w-md mx-auto">
+            All ranges are estimates based on national averages. Actual costs depend on your contractor, region, and site conditions.
+          </p>
         </motion.div>
       </main>
     </div>
