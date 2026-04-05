@@ -7,11 +7,23 @@
 
 import type { ProductCategory } from "./products";
 
-// ─── Existing images (Balanced tier only for now) ───────────────────
+// ─── Product images ─────────────────────────────────────────────────
+// Budget defaults
+import vanityBudgetImg from "@/assets/products/vanity-budget.jpg";
+import faucetBudgetImg from "@/assets/products/faucet-budget.jpg";
+import tileBudgetImg from "@/assets/products/tile-budget.jpg";
+import mirrorBudgetImg from "@/assets/products/mirror-budget.jpg";
+// Balanced defaults
 import vanityImg from "@/assets/products/vanity-balanced.jpg";
-import tileImg from "@/assets/products/tile-balanced.jpg";
 import faucetImg from "@/assets/products/faucet-balanced.jpg";
+import tileImg from "@/assets/products/tile-balanced.jpg";
 import mirrorImg from "@/assets/products/mirror-balanced.jpg";
+// Premium defaults
+import vanityPremiumImg from "@/assets/products/vanity-premium.jpg";
+import faucetPremiumImg from "@/assets/products/faucet-premium.jpg";
+import tilePremiumImg from "@/assets/products/tile-premium.jpg";
+import mirrorPremiumImg from "@/assets/products/mirror-premium.jpg";
+// Balanced alternatives (existing)
 import vanityAlt1Img from "@/assets/products/vanity-alt1.jpg";
 import vanityAlt2Img from "@/assets/products/vanity-alt2.jpg";
 import vanityAlt3Img from "@/assets/products/vanity-alt3.jpg";
