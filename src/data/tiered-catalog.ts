@@ -23,16 +23,25 @@ import vanityPremiumImg from "@/assets/products/vanity-premium.jpg";
 import faucetPremiumImg from "@/assets/products/faucet-premium.jpg";
 import tilePremiumImg from "@/assets/products/tile-premium.jpg";
 import mirrorPremiumImg from "@/assets/products/mirror-premium.jpg";
+// Budget alternatives
+import vanityBudgetAltImg from "@/assets/products/vanity-budget-alt.jpg";
+import faucetBudgetAltImg from "@/assets/products/faucet-budget-alt.jpg";
+import tileBudgetAltImg from "@/assets/products/tile-budget-alt.jpg";
+import mirrorBudgetAltImg from "@/assets/products/mirror-budget-alt.jpg";
 // Balanced alternatives (existing)
 import vanityAlt1Img from "@/assets/products/vanity-alt1.jpg";
 import vanityAlt2Img from "@/assets/products/vanity-alt2.jpg";
-import vanityAlt3Img from "@/assets/products/vanity-alt3.jpg";
 import tileAlt1Img from "@/assets/products/tile-alt1.jpg";
 import tileAlt2Img from "@/assets/products/tile-alt2.jpg";
 import faucetAlt1Img from "@/assets/products/faucet-alt1.jpg";
 import faucetAlt2Img from "@/assets/products/faucet-alt2.jpg";
 import mirrorAlt1Img from "@/assets/products/mirror-alt1.jpg";
 import mirrorAlt2Img from "@/assets/products/mirror-alt2.jpg";
+// Premium alternatives
+import vanityPremiumAltImg from "@/assets/products/vanity-premium-alt.jpg";
+import faucetPremiumAltImg from "@/assets/products/faucet-premium-alt.jpg";
+import tilePremiumAltImg from "@/assets/products/tile-premium-alt.jpg";
+import mirrorPremiumAltImg from "@/assets/products/mirror-premium-alt.jpg";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
