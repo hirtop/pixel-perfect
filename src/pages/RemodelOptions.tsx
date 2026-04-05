@@ -101,12 +101,12 @@ const RemodelOptions = () => {
           <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 rounded-xl bg-secondary/40 border border-border px-6 py-4 mb-12 text-sm">
             <div>
               <span className="text-muted-foreground">Materials Range </span>
-              <span className="font-semibold text-foreground">$4,200 – $18,500</span>
+              <span className="font-semibold text-foreground">$3,000 – $18,000</span>
             </div>
             <span className="hidden sm:block w-px h-4 bg-border" />
             <div>
               <span className="text-muted-foreground">Project Range </span>
-              <span className="font-semibold text-foreground">$8,500 – $32,000</span>
+              <span className="font-semibold text-foreground">$8,000 – $32,000</span>
             </div>
             {project.style_preferences.budget_level && (
               <>
