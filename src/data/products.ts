@@ -112,20 +112,20 @@ export const packagePricing: Record<string, {
   description: string;
 }> = {
   Budget: {
-    materialRange: "$4,200 – $5,800",
-    laborRange: "$3,500 – $5,200",
-    projectRange: "$8,500 – $12,000",
+    materialRange: "$3,000 – $5,500",
+    laborRange: "$4,000 – $5,500",
+    projectRange: "$8,000 – $12,000",
     description: "New vanity, updated tile, modern fixtures — all on existing plumbing. No layout changes.",
   },
   Balanced: {
-    materialRange: "$7,500 – $10,200",
-    laborRange: "$5,000 – $7,500",
-    projectRange: "$14,000 – $19,000",
+    materialRange: "$6,000 – $10,000",
+    laborRange: "$6,000 – $8,000",
+    projectRange: "$13,000 – $19,000",
     description: "Better materials and coordinated finishes that noticeably upgrade how the room looks and feels. Plumbing stays in place.",
   },
   Premium: {
-    materialRange: "$13,000 – $18,500",
-    laborRange: "$7,500 – $11,500",
+    materialRange: "$11,000 – $18,000",
+    laborRange: "$8,500 – $12,000",
     projectRange: "$22,000 – $32,000",
     description: "Designer-grade materials with the option to relocate fixtures, add niches, or change the tub/shower layout.",
   },
