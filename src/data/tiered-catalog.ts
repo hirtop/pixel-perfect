@@ -23,16 +23,25 @@ import vanityPremiumImg from "@/assets/products/vanity-premium.jpg";
 import faucetPremiumImg from "@/assets/products/faucet-premium.jpg";
 import tilePremiumImg from "@/assets/products/tile-premium.jpg";
 import mirrorPremiumImg from "@/assets/products/mirror-premium.jpg";
+// Budget alternatives
+import vanityBudgetAltImg from "@/assets/products/vanity-budget-alt.jpg";
+import faucetBudgetAltImg from "@/assets/products/faucet-budget-alt.jpg";
+import tileBudgetAltImg from "@/assets/products/tile-budget-alt.jpg";
+import mirrorBudgetAltImg from "@/assets/products/mirror-budget-alt.jpg";
 // Balanced alternatives (existing)
 import vanityAlt1Img from "@/assets/products/vanity-alt1.jpg";
 import vanityAlt2Img from "@/assets/products/vanity-alt2.jpg";
-import vanityAlt3Img from "@/assets/products/vanity-alt3.jpg";
 import tileAlt1Img from "@/assets/products/tile-alt1.jpg";
 import tileAlt2Img from "@/assets/products/tile-alt2.jpg";
 import faucetAlt1Img from "@/assets/products/faucet-alt1.jpg";
 import faucetAlt2Img from "@/assets/products/faucet-alt2.jpg";
 import mirrorAlt1Img from "@/assets/products/mirror-alt1.jpg";
 import mirrorAlt2Img from "@/assets/products/mirror-alt2.jpg";
+// Premium alternatives
+import vanityPremiumAltImg from "@/assets/products/vanity-premium-alt.jpg";
+import faucetPremiumAltImg from "@/assets/products/faucet-premium-alt.jpg";
+import tilePremiumAltImg from "@/assets/products/tile-premium-alt.jpg";
+import mirrorPremiumAltImg from "@/assets/products/mirror-premium-alt.jpg";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -131,6 +140,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Compact with integrated ceramic sink — no separate top to seal",
     finish: "Gray",
     spec: '30" W × 19" D, integrated ceramic basin, single door + shelf',
+    image: vanityBudgetAltImg,
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
@@ -238,6 +248,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Furniture-grade walnut with exposed legs — reads more like a console than a cabinet",
     finish: "Natural Walnut / White Marble",
     spec: '48" W × 22" D, tapered legs, single-hole pre-drill',
+    image: vanityPremiumAltImg,
     isDefault: false,
     laborDelta: 0,
     tag: "Designer Pick",
@@ -287,6 +298,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Basic single-handle — gets the job done, easy to replace",
     finish: "Chrome",
     spec: "Single-hole mount, brass body, 1.2 GPM",
+    image: faucetBudgetAltImg,
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
@@ -367,6 +379,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Frees up counter space — spout comes from the wall, not the vanity",
     finish: "Polished Nickel",
     spec: "Wall-mount, ceramic disc valve, 1.2 GPM, requires in-wall rough-in",
+    image: faucetPremiumAltImg,
     isDefault: false,
     laborDelta: 280,
     laborNote: "Wall-mount requires in-wall valve rough-in — adds ~$280",
@@ -418,6 +431,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Classic pattern, easy to source for repairs — smaller format adds ~$150 in labor",
     finish: "Glossy White",
     spec: '3" × 6" ceramic, ~85 sq ft',
+    image: tileBudgetAltImg,
     isDefault: false,
     laborDelta: 150,
     laborNote: "Smaller tiles mean more grout lines — adds ~$150 labor",
@@ -514,6 +528,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Classic marble hex — timeless pattern with natural stone depth",
     finish: "Honed Carrara White",
     spec: '2" hex mosaic on mesh backing, ~85 sq ft',
+    image: tilePremiumAltImg,
     isDefault: false,
     laborDelta: 450,
     laborNote: "Mosaic setting is precision work — adds ~$450 labor",
@@ -580,6 +595,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Beveled edge catches light — slightly more refined than frameless",
     finish: "Beveled Edge",
     spec: '36" W × 28" H, 1" bevel, D-ring mount',
+    image: mirrorBudgetAltImg,
     isDefault: false,
     laborDelta: 0,
   },
@@ -659,6 +675,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Oversized round with unlacquered brass that develops a living patina",
     finish: "Unlacquered Brass",
     spec: '40" diameter, solid brass frame, French cleat mount',
+    image: mirrorPremiumAltImg,
     isDefault: false,
     laborDelta: 0,
     tag: "Designer Pick",
