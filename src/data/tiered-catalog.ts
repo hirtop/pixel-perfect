@@ -7,11 +7,23 @@
 
 import type { ProductCategory } from "./products";
 
-// ─── Existing images (Balanced tier only for now) ───────────────────
+// ─── Product images ─────────────────────────────────────────────────
+// Budget defaults
+import vanityBudgetImg from "@/assets/products/vanity-budget.jpg";
+import faucetBudgetImg from "@/assets/products/faucet-budget.jpg";
+import tileBudgetImg from "@/assets/products/tile-budget.jpg";
+import mirrorBudgetImg from "@/assets/products/mirror-budget.jpg";
+// Balanced defaults
 import vanityImg from "@/assets/products/vanity-balanced.jpg";
-import tileImg from "@/assets/products/tile-balanced.jpg";
 import faucetImg from "@/assets/products/faucet-balanced.jpg";
+import tileImg from "@/assets/products/tile-balanced.jpg";
 import mirrorImg from "@/assets/products/mirror-balanced.jpg";
+// Premium defaults
+import vanityPremiumImg from "@/assets/products/vanity-premium.jpg";
+import faucetPremiumImg from "@/assets/products/faucet-premium.jpg";
+import tilePremiumImg from "@/assets/products/tile-premium.jpg";
+import mirrorPremiumImg from "@/assets/products/mirror-premium.jpg";
+// Balanced alternatives (existing)
 import vanityAlt1Img from "@/assets/products/vanity-alt1.jpg";
 import vanityAlt2Img from "@/assets/products/vanity-alt2.jpg";
 import vanityAlt3Img from "@/assets/products/vanity-alt3.jpg";
@@ -104,6 +116,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Solid wood frame with pre-mounted cultured marble top — ready to connect",
     finish: "White",
     spec: '36" W × 21" D, soft-close doors, pre-drilled for single-hole faucet',
+    image: vanityBudgetImg,
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -194,6 +207,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Solid white oak with Carrara marble top — fits primary baths with double sinks",
     finish: "White Oak / Carrara Marble",
     spec: '60" W × 22" D, dual sinks, soft-close, wall-mount hardware included',
+    image: vanityPremiumImg,
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -245,6 +259,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Reliable single-handle with LifeShine finish — resists tarnish and corrosion",
     finish: "Chrome",
     spec: "Single-hole mount, Moen cartridge, 1.2 GPM WaterSense",
+    image: faucetBudgetImg,
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -336,6 +351,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Traditional widespread with cross handles — solid brass throughout",
     finish: "Satin Nickel",
     spec: '8" widespread, ceramic disc, 1.2 GPM',
+    image: faucetPremiumImg,
     isDefault: true,
     laborDelta: 120,
     laborNote: "Widespread needs 3-hole vanity top — adds ~$120 if drilling required",
@@ -387,6 +403,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Mid-size format balances fewer grout lines with easy handling",
     finish: "Matte Light Gray",
     spec: '12" × 24" ceramic, ~85 sq ft coverage, rated for wet areas',
+    image: tileBudgetImg,
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -480,6 +497,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Hand-cut Moroccan tile — each piece has unique color variation and texture",
     finish: "Weathered White (varies)",
     spec: '4" × 4" hand-cut, ~85 sq ft, slight size variation is expected',
+    image: tilePremiumImg,
     isDefault: true,
     laborDelta: 500,
     laborNote: "Hand-cut tiles require careful layout and more setting time — adds ~$500",
@@ -534,6 +552,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Polished-edge frameless — clean look, simple wall mount",
     finish: "Polished Edge",
     spec: '30" W × 24" H, ¼" tempered glass, French cleat mount',
+    image: mirrorBudgetImg,
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -624,6 +643,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Edge-lit LED with defogger — no separate vanity light needed above",
     finish: "Frameless / LED Surround",
     spec: '36" W × 30" H, dimmable 3000K LED, built-in defogger, hardwired',
+    image: mirrorPremiumImg,
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
