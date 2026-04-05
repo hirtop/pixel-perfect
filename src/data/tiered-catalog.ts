@@ -47,9 +47,9 @@ export interface TieredProduct {
 // ─── Tier base labor (before product-specific deltas) ───────────────
 
 export const TIER_BASE_LABOR: Record<ProductTier, number> = {
-  Budget: 3500,
-  Balanced: 5500,
-  Premium: 8500,
+  Budget: 4500,
+  Balanced: 6500,
+  Premium: 9000,
 };
 
 export const SHIPPING_ESTIMATE = 600;
