@@ -3,7 +3,15 @@ import { Link } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
-import { balancedProducts, CUSTOMIZABLE_CATEGORIES, getBathroomInsights, packageFitReasons, packagePricing } from "@/data/products";
+import {
+  getBathroomInsights,
+  packageFitReasons,
+  packagePricing,
+  getTierDefaults,
+  STATIC_ITEMS,
+  CUSTOMIZABLE_CATEGORIES,
+  type ProductTier,
+} from "@/data/products";
 import BathroomInsights from "@/components/BathroomInsights";
 import balancedImg from "@/assets/package-balanced.jpg";
 import budgetImg from "@/assets/package-budget.jpg";
@@ -15,39 +23,41 @@ const tierImages: Record<string, string> = {
   premium: premiumImg,
 };
 
-const customizableDefaults = balancedProducts
-  .filter((p) => CUSTOMIZABLE_CATEGORIES.includes(p.category))
-  .map((product) => ({
-    name: product.category,
-    item: product.name,
-    reason: product.description,
-    vendor: product.vendor,
-  }));
-
-const otherIncluded = balancedProducts
-  .filter((p) => !CUSTOMIZABLE_CATEGORIES.includes(p.category))
-  .map((product) => ({
-    name: product.category,
-    item: product.name,
-    vendor: product.vendor,
-  }));
+const tierNameMap: Record<string, ProductTier> = {
+  budget: "Budget",
+  balanced: "Balanced",
+  premium: "Premium",
+};
 
 const PackageDetail = () => {
   const { project } = useProject();
   const pkgName = project.selected_package.name || "Balanced";
   const pkgTier = project.selected_package.tier || "balanced";
+  const tier: ProductTier = tierNameMap[pkgTier] || "Balanced";
   const finishDir = project.style_preferences.finish || "";
   const insights = getBathroomInsights(project);
   const fitReason = packageFitReasons[pkgName] || packageFitReasons.Balanced;
   const pricing = packagePricing[pkgName] || packagePricing.Balanced;
   const heroImg = tierImages[pkgTier] || balancedImg;
 
-  const categories = project.customizations.categories && project.customizations.categories.length > 0
-    ? customizableDefaults.map((dc) => {
-        const custom = project.customizations.categories!.find((c) => c.name === dc.name);
-        return custom ? { ...dc, item: custom.selected } : dc;
-      })
-    : customizableDefaults;
+  // Pull tier-specific defaults for customizable categories
+  const tierDefaults = getTierDefaults(tier);
+
+  // Merge with any saved customizations
+  const customizableProducts = tierDefaults
+    .filter((p) => CUSTOMIZABLE_CATEGORIES.includes(p.category))
+    .map((product) => {
+      const custom = project.customizations.categories?.find((c) => c.name === product.category);
+      return {
+        category: product.category,
+        name: custom?.selected || product.name,
+        vendor: product.vendor,
+        description: product.description,
+      };
+    });
+
+  // Static (non-swappable) items for this tier
+  const staticItems = STATIC_ITEMS[tier];
 
   return (
     <div className="min-h-screen bg-background">
@@ -91,7 +101,6 @@ const PackageDetail = () => {
                 </p>
               </div>
 
-              {/* Why this fits */}
               <div className="flex items-start gap-2.5 rounded-lg bg-primary/5 border border-primary/10 px-4 py-3">
                 <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
                 <p className="text-sm font-medium text-foreground">{fitReason}</p>
@@ -141,14 +150,14 @@ const PackageDetail = () => {
               <h2 className="font-heading text-2xl text-foreground">Products you can swap</h2>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-              {categories.map((cat) => (
-                <div key={cat.name} className="rounded-xl border border-border bg-card p-5 space-y-2">
+              {customizableProducts.map((item) => (
+                <div key={item.category} className="rounded-xl border border-border bg-card p-5 space-y-2">
                   <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">{cat.name}</p>
-                    {cat.vendor && <span className="text-[10px] text-muted-foreground">{cat.vendor}</span>}
+                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">{item.category}</p>
+                    <span className="text-[10px] text-muted-foreground">{item.vendor}</span>
                   </div>
-                  <p className="text-sm font-medium text-foreground">{cat.item}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{cat.reason}</p>
+                  <p className="text-sm font-medium text-foreground">{item.name}</p>
+                  <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
                 </div>
               ))}
             </div>
@@ -161,10 +170,10 @@ const PackageDetail = () => {
               <p className="text-sm text-muted-foreground">Included in every package. Not yet swappable — we're adding more options soon.</p>
             </div>
             <div className="flex flex-wrap gap-3">
-              {otherIncluded.map((item) => (
-                <div key={item.name} className="rounded-lg border border-border bg-card px-4 py-3 space-y-0.5">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.name}</p>
-                  <p className="text-sm text-foreground">{item.item}</p>
+              {staticItems.map((item) => (
+                <div key={item.category} className="rounded-lg border border-border bg-card px-4 py-3 space-y-0.5">
+                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.category}</p>
+                  <p className="text-sm text-foreground">{item.name}</p>
                   <p className="text-[10px] text-muted-foreground">{item.vendor}</p>
                 </div>
               ))}

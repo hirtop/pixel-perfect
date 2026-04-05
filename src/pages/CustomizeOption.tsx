@@ -7,24 +7,31 @@ import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 import BathroomInsights from "@/components/BathroomInsights";
 import {
-  balancedProducts,
-  balancedAlternatives,
   formatPrice,
   getBathroomInsights,
   CUSTOMIZABLE_CATEGORIES,
-  type ProductCategory,
-  type ProductAlternative,
+  getTierDefaults,
+  getTierAlternatives,
+  getStaticItemsTotal,
+  TIER_BASE_LABOR,
+  SHIPPING_ESTIMATE,
+  type ProductTier,
+  type TieredProduct,
 } from "@/data/products";
 
+// ─── Local types for component state ────────────────────────────────
+
 interface Alternative {
+  id: string;
   name: string;
   desc: string;
   vendor: string;
-  finish?: string;
+  finish: string;
   image?: string;
   tag?: string;
   spec?: string;
   laborNote?: string;
+  disclaimer?: string;
   price: number;
   laborDelta: number;
 }
@@ -32,6 +39,7 @@ interface Alternative {
 interface Category {
   name: string;
   selected: string;
+  selectedId: string;
   reason: string;
   price: number;
   vendor: string;
@@ -39,20 +47,29 @@ interface Category {
   tag?: string;
   spec?: string;
   finish?: string;
+  disclaimer?: string;
   alternatives: Alternative[];
   laborDelta: number;
   laborNote?: string;
   basePrice: number;
 }
 
-const buildInitialCategories = (): Category[] =>
-  balancedProducts
+const tierNameMap: Record<string, ProductTier> = {
+  budget: "Budget",
+  balanced: "Balanced",
+  premium: "Premium",
+};
+
+const buildCategoriesForTier = (tier: ProductTier): Category[] => {
+  const defaults = getTierDefaults(tier);
+  return defaults
     .filter((p) => CUSTOMIZABLE_CATEGORIES.includes(p.category))
     .map((product) => {
-      const alts: ProductAlternative[] = balancedAlternatives[product.category] || [];
+      const alts = getTierAlternatives(tier, product.category);
       return {
         name: product.category,
         selected: product.name,
+        selectedId: product.id,
         reason: product.description,
         price: product.price,
         basePrice: product.price,
@@ -61,8 +78,10 @@ const buildInitialCategories = (): Category[] =>
         tag: product.tag,
         spec: product.spec,
         finish: product.finish,
+        disclaimer: product.disclaimer,
         laborDelta: 0,
         alternatives: alts.map((a) => ({
+          id: a.id,
           name: a.name,
           desc: a.description,
           vendor: a.vendor,
@@ -71,19 +90,15 @@ const buildInitialCategories = (): Category[] =>
           tag: a.tag,
           spec: a.spec,
           laborNote: a.laborNote,
+          disclaimer: a.disclaimer,
           price: a.price,
           laborDelta: a.laborDelta,
         })),
       };
     });
+};
 
-const BASE_LABOR = 5800;
-const SHIPPING_ESTIMATE = 600;
-
-/** Cost of the 3 non-customizable items (Lighting + Toilet + Shower/Tub Hardware) */
-const OTHER_ITEMS_TOTAL = balancedProducts
-  .filter((p) => !CUSTOMIZABLE_CATEGORIES.includes(p.category))
-  .reduce((sum, p) => sum + p.price, 0);
+const budgetCeilings: Record<string, number> = { Budget: 12000, Balanced: 19000, Premium: 32000 };
 
 const CustomizeOption = () => {
   const { project, updateProject, markStepComplete } = useProject();
@@ -91,7 +106,14 @@ const CustomizeOption = () => {
   const isInitialMount = useRef(true);
   const insights = getBathroomInsights(project);
 
-  const initialCategories = useMemo(buildInitialCategories, []);
+  const budgetLevel = project.style_preferences?.budget_level || "Balanced";
+  const pkgTier = project.selected_package.tier || "balanced";
+  const tier: ProductTier = tierNameMap[pkgTier] || "Balanced";
+
+  const initialCategories = useMemo(() => buildCategoriesForTier(tier), [tier]);
+
+  const otherItemsTotal = useMemo(() => getStaticItemsTotal(tier), [tier]);
+  const baseLaborForTier = TIER_BASE_LABOR[tier];
 
   const savedCats = project.customizations.categories;
   const [categories, setCategories] = useState<Category[]>(
@@ -106,14 +128,12 @@ const CustomizeOption = () => {
   const [lastSwapNote, setLastSwapNote] = useState<string | null>(null);
 
   const customizableMaterials = categories.reduce((sum, c) => sum + c.price, 0);
-  const materialsTotal = customizableMaterials + OTHER_ITEMS_TOTAL;
+  const materialsTotal = customizableMaterials + otherItemsTotal;
   const laborAdjustment = categories.reduce((sum, c) => sum + c.laborDelta, 0);
-  const laborTotal = BASE_LABOR + laborAdjustment;
+  const laborTotal = baseLaborForTier + laborAdjustment;
   const projectTotal = materialsTotal + laborTotal + SHIPPING_ESTIMATE;
 
-  const budgetLevel = project.style_preferences?.budget_level || "Balanced";
-  const budgetCeilings: Record<string, number> = { Budget: 12000, Balanced: 19000, Premium: 32000 };
-  const ceiling = budgetCeilings[budgetLevel] || 19000;
+  const ceiling = budgetCeilings[budgetLevel] || budgetCeilings[tier] || 19000;
   const isOverBudget = projectTotal > ceiling;
 
   const selectAlternative = (catName: string, alt: Alternative) => {
@@ -123,6 +143,7 @@ const CustomizeOption = () => {
           ? {
               ...c,
               selected: alt.name,
+              selectedId: alt.id,
               reason: alt.desc,
               price: alt.price,
               vendor: alt.vendor,
@@ -130,6 +151,7 @@ const CustomizeOption = () => {
               tag: alt.tag,
               spec: alt.spec,
               finish: alt.finish,
+              disclaimer: alt.disclaimer,
               laborDelta: alt.laborDelta,
               laborNote: alt.laborNote,
             }
@@ -180,7 +202,7 @@ const CustomizeOption = () => {
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </Link>
-          <Link to={`/package/${project.selected_package.tier || "balanced"}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+          <Link to={`/package/${pkgTier}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
             <ArrowLeft className="h-3.5 w-3.5" /> Back to Package Detail
           </Link>
         </div>
@@ -194,7 +216,7 @@ const CustomizeOption = () => {
           className="max-w-6xl mx-auto"
         >
           <div className="mb-8">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{project.selected_package.name || "Balanced"} Package</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{tier} Package</p>
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">Customize Your Selections</h1>
             <p className="text-muted-foreground text-base max-w-lg leading-relaxed">
               Swap products below and see how each change affects your estimate.
@@ -247,6 +269,7 @@ const CustomizeOption = () => {
                           )}
                         </div>
                         {cat.spec && <p className="text-[11px] text-muted-foreground mt-1">{cat.spec}</p>}
+                        {cat.disclaimer && <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-1">{cat.disclaimer}</p>}
                       </div>
                       <div className="flex items-center gap-3 ml-4 flex-shrink-0">
                         <div className="text-right">
@@ -275,11 +298,11 @@ const CustomizeOption = () => {
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
                           <div className="border-t border-border px-5 pb-5 pt-4 space-y-4">
                             <p className="text-sm font-medium text-foreground">Compare {cat.name} Options</p>
-                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               {cat.alternatives.map((alt) => {
                                 const materialDiff = alt.price - cat.basePrice;
                                 return (
-                                  <div key={alt.name} className="rounded-xl border border-border bg-secondary/20 p-4 flex flex-col gap-3 hover:border-primary/30 transition-colors">
+                                  <div key={alt.id} className="rounded-xl border border-border bg-secondary/20 p-4 flex flex-col gap-3 hover:border-primary/30 transition-colors">
                                     {alt.image ? (
                                       <div className="w-full aspect-[3/2] rounded-lg overflow-hidden bg-secondary">
                                         <img src={alt.image} alt={alt.name} className="w-full h-full object-cover" width={640} height={512} loading="lazy" />
@@ -301,6 +324,9 @@ const CustomizeOption = () => {
                                       )}
                                       {alt.spec && (
                                         <p className="text-[11px] text-muted-foreground">{alt.spec}</p>
+                                      )}
+                                      {alt.disclaimer && (
+                                        <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-1">{alt.disclaimer}</p>
                                       )}
                                       <div className="mt-2">
                                         <p className="text-sm font-semibold text-foreground">{fmt(alt.price)}</p>
@@ -341,7 +367,7 @@ const CustomizeOption = () => {
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">Other included items (3)</span>
-                      <span className="font-medium text-muted-foreground">{fmt(OTHER_ITEMS_TOTAL)}</span>
+                      <span className="font-medium text-muted-foreground">{fmt(otherItemsTotal)}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-muted-foreground">All materials</span>

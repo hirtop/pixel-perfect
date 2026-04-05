@@ -1,16 +1,18 @@
 ---
 name: Product data model
-description: Shared Product type, standard categories, curated mock data with images, bathroom insights engine, and package fit reasons in src/data/products.ts
+description: Tiered catalog (36 products), TieredProduct type, tier-aware helpers, static items per tier, same-tier swapping
 type: feature
 ---
-- `src/data/products.ts` — canonical product types, mock data, and inference helpers
-- `Product` interface: id, name, category, vendor, price, description, finish, image, link, disclaimer, tag, spec
-- `ProductAlternative` extends Product with priceImpact and laborNote
-- 7 standard categories: Vanity, Tile, Faucet, Lighting, Mirror, Toilet, Shower / Tub Hardware
-- Customize screen focuses on 4 categories: Vanity, Faucet, Tile, Mirror
-- Product images in src/assets/products/ — generated for balanced defaults + all alternatives
-- `getBathroomInsights()` — generates believable analysis from project data (layout, size, style, budget, photos)
-- `packageFitReasons` — per-package personalized microcopy
-- `BathroomInsights` component in src/components/BathroomInsights.tsx — full and compact variants
-- Vendors use real-sounding brand names (Delta, Kohler, West Elm, Ann Sacks, etc.)
+- `src/data/tiered-catalog.ts` — 36-product catalog (4 categories × 3 tiers × 3 products each)
+- `src/data/products.ts` — core types, formatPrice, getBathroomInsights, packagePricing, re-exports from tiered-catalog
+- `TieredProduct` interface: id, name, category, tier, vendor, price, description, finish, spec, image?, isDefault, laborDelta, laborNote?, tag?, disclaimer?
+- `ProductTier` = "Budget" | "Balanced" | "Premium"
+- 4 customizable categories: Vanity, Tile, Faucet, Mirror
+- 3 static (non-swappable) items per tier: Lighting, Toilet, Shower/Tub Hardware — defined in STATIC_ITEMS
+- Tier base labor: Budget $3,500 / Balanced $5,500 / Premium $8,500
+- Shipping estimate: $600 flat
+- Helpers: getTierDefaults(), getTierAlternatives(), getStaticItemsTotal(), computeLaborTotal()
+- Same-tier swapping only at MVP
+- Tags: "Recommended" (defaults), "Budget Pick" (Budget only), "Value Pick" / "Upgrade" (Balanced/Premium), "Trending", "Designer Pick", "Modern Pick", "Classic Pick", "Most Storage"
+- Budget/Balanced images exist in src/assets/products/; Budget and Premium products have no images yet (show placeholder)
 - Prices are in USD dollars (not cents)
