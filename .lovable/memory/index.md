@@ -7,5 +7,5 @@ ProjectContext manages flow state; pages wire into it via useProject hook.
 Do not redesign existing UI screens. Keep changes lightweight and MVP-oriented.
 
 ## Memories
-- [Data model](mem://features/data-model) — Projects table schema with JSONB columns for all remodel data
-- [Product data](mem://features/product-data) — Shared Product type, standard categories, curated mock data in src/data/products.ts
+- [Data model](mem://features/data-model) — Single projects table with JSONB columns for dimensions, style, package, customizations, workflow, agreement
+- [Product data](mem://features/product-data) — Tiered catalog (36 products), TieredProduct type, tier-aware helpers, static items per tier, same-tier swapping
