@@ -3,8 +3,10 @@ import { supabase } from "@/integrations/supabase/client";
 import type { User, Session } from "@supabase/supabase-js";
 
 interface SignUpResult {
+  status: "success" | "duplicate" | "rate_limited" | "disabled" | "error";
   error: Error | null;
-  data?: { user: User | null };
+  user: User | null;
+  message?: string;
 }
 
 interface AuthContextType {
@@ -40,8 +42,59 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signUp = async (email: string, password: string): Promise<SignUpResult> => {
-    const { data, error } = await supabase.auth.signUp({ email, password });
-    return { error: error as Error | null, data: data ? { user: data.user as User | null } : undefined };
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: `${window.location.origin}/auth`,
+      },
+    });
+
+    if (error) {
+      const authError = error as Error & { code?: string; status?: number };
+
+      if (authError.code === "over_email_send_rate_limit" || authError.status === 429) {
+        return {
+          status: "rate_limited",
+          error: authError,
+          user: null,
+          message: authError.message,
+        };
+      }
+
+      if (/signups not allowed/i.test(authError.message)) {
+        return {
+          status: "disabled",
+          error: authError,
+          user: null,
+          message: authError.message,
+        };
+      }
+
+      return {
+        status: "error",
+        error: authError,
+        user: null,
+        message: authError.message,
+      };
+    }
+
+    const user = data.user as User | null;
+    const identitiesLength = Array.isArray(user?.identities) ? user.identities.length : null;
+
+    if (user && !data.session && identitiesLength === 0) {
+      return {
+        status: "duplicate",
+        error: null,
+        user,
+      };
+    }
+
+    return {
+      status: "success",
+      error: null,
+      user,
+    };
   };
 
   const signIn = async (email: string, password: string) => {
