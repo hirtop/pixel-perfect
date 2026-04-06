@@ -28,10 +28,22 @@ export default function Auth() {
     setLoading(true);
     try {
       if (mode === "signup") {
-        const { error } = await signUp(email, password);
-        if (error) throw error;
-        toast.success("Check your email to confirm your account", {
-          description: "We sent you a verification link.",
+        const result = await signUp(email, password);
+        if (result.error) throw result.error;
+
+        // Detect repeated signup: Supabase returns 200 with empty identities
+        // for an already-registered email when email confirmation is enabled.
+        const user = result.data?.user;
+        if (user && (!user.identities || user.identities.length === 0)) {
+          toast.info("An account with this email already exists.", {
+            description: "Try signing in instead, or check your inbox for a previous verification link.",
+          });
+          setMode("signin");
+          return;
+        }
+
+        toast.success("Verification email sent!", {
+          description: "Check your inbox and click the link to activate your account.",
         });
       } else {
         const { error } = await signIn(email, password);
