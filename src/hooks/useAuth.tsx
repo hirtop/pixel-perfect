@@ -85,25 +85,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const identitiesLength = Array.isArray(user?.identities) ? user.identities.length : null;
 
     // Duplicate detection: user existed before this signup call
-    if (user && !data.session && (identitiesLength === 0 || (user.created_at && user.created_at < preSignupTime))) {
-      const isVerified = !!user.email_confirmed_at;
-
-      if (isVerified) {
-        // Confirmed-email duplicate — account fully exists
-        return {
-          status: "duplicate",
-          error: null,
-          user,
-          // No extra message → Auth.tsx switches to sign-in mode
-        };
-      }
-
-      // Unconfirmed-email duplicate — Supabase re-sends verification
+    // Supabase returns identities:[] for any repeated signup (obfuscated response).
+    // We cannot distinguish verified vs unverified due to enumeration protection.
+    if (user && !data.session && identitiesLength === 0) {
       return {
         status: "duplicate",
         error: null,
         user,
-        message: "This email was already registered but not yet verified. We re-sent the verification link — please check your inbox (and spam folder).",
       };
     }
 
