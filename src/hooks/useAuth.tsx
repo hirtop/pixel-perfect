@@ -42,6 +42,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }, []);
 
   const signUp = async (email: string, password: string): Promise<SignUpResult> => {
+    const preSignupTime = new Date().toISOString();
+
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
@@ -82,11 +84,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const user = data.user as User | null;
     const identitiesLength = Array.isArray(user?.identities) ? user.identities.length : null;
 
+    // Confirmed-email duplicate: Supabase returns a fake user with zero identities
     if (user && !data.session && identitiesLength === 0) {
       return {
         status: "duplicate",
         error: null,
         user,
+      };
+    }
+
+    // Unconfirmed-email duplicate: user already existed before this request.
+    // Supabase re-sends a confirmation but returns identities.length === 1,
+    // so we compare created_at against a timestamp taken before the call.
+    if (user && !data.session && user.created_at && user.created_at < preSignupTime) {
+      return {
+        status: "duplicate",
+        error: null,
+        user,
+        message: "This email was already registered but not yet verified. We re-sent the verification link — please check your inbox (and spam folder).",
       };
     }
 
