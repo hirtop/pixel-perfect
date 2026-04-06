@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Check, ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
@@ -28,10 +28,9 @@ const workflowPoints = [
 
 const ProjectSummary = () => {
   const { project, saveProject, markStepComplete, isSaving } = useProject();
-
   const { user } = useAuth();
+  const navigate = useNavigate();
 
-  // Derive dynamic summary fields from context
   const summaryFields = [
     { label: "Project Name", value: project.name || "Untitled Project" },
     { label: "Selected Package", value: project.selected_package.name || "Not yet selected" },
@@ -41,7 +40,6 @@ const ProjectSummary = () => {
     { label: "Bathroom Type", value: project.bathroom_type || "Not yet selected" },
   ];
 
-  // Use customizations if available
   const packageItems = project.customizations.categories && project.customizations.categories.length > 0
     ? defaultPackageItems.map((dp) => {
         const custom = project.customizations.categories!.find((c) => c.name === dp.name || c.name === "Shower / Tub Hardware");
@@ -52,7 +50,6 @@ const ProjectSummary = () => {
       })
     : defaultPackageItems;
 
-  // Calculate dynamic totals
   const materialsTotal = project.customizations.categories && project.customizations.categories.length > 0
     ? project.customizations.categories.reduce((sum, c) => sum + c.price, 0)
     : 8400;
@@ -68,6 +65,12 @@ const ProjectSummary = () => {
   const handleSave = async () => {
     markStepComplete("summary");
     await saveProject();
+  };
+
+  const handleContinue = async () => {
+    markStepComplete("summary");
+    await saveProject();
+    navigate("/subcontractors");
   };
 
   return (
@@ -165,8 +168,8 @@ const ProjectSummary = () => {
           </section>
 
           <div className="flex flex-col sm:flex-row items-center gap-4">
-            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" asChild>
-              <Link to="/subcontractors">Continue to Subcontractors</Link>
+            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleContinue} disabled={isSaving}>
+              Continue to Subcontractors
             </Button>
             <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg"
               onClick={handleSave}
