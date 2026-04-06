@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
@@ -20,6 +20,20 @@ const StartProject = () => {
   const [propertyType, setPropertyType] = useState(project.property_type);
   const [budget, setBudget] = useState(project.style_preferences.budget || "");
   const [style, setStyle] = useState(project.style_preferences.style || "");
+
+  useEffect(() => {
+    setProjectName(project.name === "Untitled Project" ? "" : project.name);
+    setBathroomType(project.bathroom_type);
+    setPropertyType(project.property_type);
+    setBudget(project.style_preferences.budget || "");
+    setStyle(project.style_preferences.style || "");
+  }, [
+    project.name,
+    project.bathroom_type,
+    project.property_type,
+    project.style_preferences.budget,
+    project.style_preferences.style,
+  ]);
 
   const syncToContext = () => {
     updateProject({
