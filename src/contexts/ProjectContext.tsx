@@ -135,6 +135,14 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         },
       };
     });
+    // Auto-save to backend after state update settles
+    setTimeout(() => {
+      supabase.auth.getUser().then(({ data: { user } }) => {
+        if (user) {
+          saveProjectInternal();
+        }
+      });
+    }, 100);
   }, []);
 
   const loadLatestProject = useCallback(async () => {
