@@ -30,10 +30,18 @@ export default function Auth() {
       if (mode === "signup") {
         const result = await signUp(email, password);
         if (result.status === "duplicate") {
-          toast.info("An account with this email already exists.", {
-            description: "Try signing in instead, or check your inbox for a previous verification link.",
-          });
-          setMode("signin");
+          if (result.message) {
+            // Unconfirmed duplicate — verification re-sent
+            toast.info("We already have this email on file.", {
+              description: result.message,
+            });
+          } else {
+            // Confirmed duplicate — switch to sign-in
+            toast.info("An account with this email already exists.", {
+              description: "Try signing in instead.",
+            });
+            setMode("signin");
+          }
           return;
         }
 
