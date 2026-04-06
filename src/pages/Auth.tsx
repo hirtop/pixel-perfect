@@ -63,8 +63,8 @@ export default function Auth() {
           throw result.error ?? new Error(result.message || "Something went wrong");
         }
 
-        toast.success("Verification email sent!", {
-          description: "Check your inbox and click the link to activate your account before signing in.",
+        toast.success("Account created — verification email requested.", {
+          description: "Check your inbox (and spam/junk folder). If nothing arrives within a few minutes, the email system may still be setting up.",
         });
       } else {
         const { error } = await signIn(email, password);
