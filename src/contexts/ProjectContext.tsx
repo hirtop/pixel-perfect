@@ -136,7 +136,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   }, [setProjectState]);
 
   const saveProjectInternal = useCallback(async (silent = false, projectOverride?: ProjectData) => {
-    const current = projectOverride ?? projectRef.current;
+    let current = projectOverride ?? projectRef.current;
     setIsSaving(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -169,13 +169,55 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         }),
       };
 
-      if (current.id) {
-        const { error } = await supabase
+      const syncProjectId = (id: string) => {
+        if (current.id === id) return;
+        const nextProject = { ...current, id };
+        current = nextProject;
+        setProjectState(nextProject);
+      };
+
+      const updateProjectRow = async (targetId: string) => {
+        const { data, error } = await supabase
           .from("projects")
           .update(payload)
-          .eq("id", current.id);
+          .eq("id", targetId)
+          .eq("user_id", user.id)
+          .select("id");
+
         if (error) throw error;
-      } else {
+        return data?.[0]?.id ?? null;
+      };
+
+      const findLatestProjectId = async () => {
+        const { data, error } = await supabase
+          .from("projects")
+          .select("id")
+          .eq("user_id", user.id)
+          .order("updated_at", { ascending: false })
+          .limit(1);
+
+        if (error) throw error;
+        return data?.[0]?.id ?? null;
+      };
+
+      let persistedId: string | null = null;
+
+      if (current.id) {
+        persistedId = await updateProjectRow(current.id);
+      }
+
+      if (!persistedId) {
+        const latestProjectId = await findLatestProjectId();
+
+        if (latestProjectId) {
+          persistedId = await updateProjectRow(latestProjectId);
+          if (persistedId) {
+            syncProjectId(persistedId);
+          }
+        }
+      }
+
+      if (!persistedId) {
         const { data, error } = await supabase
           .from("projects")
           .insert(payload)
@@ -183,8 +225,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
           .single();
         if (error) throw error;
         if (data) {
-          const nextProject = { ...current, id: data.id };
-          setProjectState(nextProject);
+          syncProjectId(data.id);
         }
       }
 
@@ -267,8 +308,11 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         };
 
         setProjectState(loadedProject);
-        setIsLoaded(true);
+      } else if (projectRef.current.id) {
+        setProjectState({ ...projectRef.current, id: undefined });
       }
+
+      setIsLoaded(true);
     } catch (err) {
       console.error("Load error:", err);
     } finally {
