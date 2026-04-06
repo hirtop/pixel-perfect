@@ -264,18 +264,22 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     void saveProjectInternal(true, nextProject);
   }, [saveProjectInternal, setProjectState]);
 
-  const loadLatestProject = useCallback(async () => {
+  const loadLatestProject = useCallback(async (knownUserId?: string) => {
     setIsLoading(true);
     try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
+      let userId = knownUserId;
+      if (!userId) {
+        const { data: { user } } = await supabase.auth.getUser();
+        userId = user?.id;
+      }
+      if (!userId) {
         return;
       }
 
       const { data, error } = await supabase
         .from("projects")
         .select("*")
-        .eq("user_id", user.id)
+        .eq("user_id", userId)
         .order("updated_at", { ascending: false })
         .limit(1)
         .maybeSingle();
@@ -321,16 +325,14 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   }, [setProjectState]);
 
   useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN") {
-        void loadLatestProject();
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === "SIGNED_IN" || event === "TOKEN_REFRESHED" || event === "INITIAL_SESSION") {
+        if (session?.user) {
+          void loadLatestProject(session.user.id);
+        }
       } else if (event === "SIGNED_OUT") {
         resetProject();
       }
-    });
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) void loadLatestProject();
     });
 
     return () => subscription.unsubscribe();
