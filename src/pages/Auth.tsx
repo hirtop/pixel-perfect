@@ -29,12 +29,7 @@ export default function Auth() {
     try {
       if (mode === "signup") {
         const result = await signUp(email, password);
-        if (result.error) throw result.error;
-
-        // Detect repeated signup: Supabase returns 200 with empty identities
-        // for an already-registered email when email confirmation is enabled.
-        const user = result.data?.user;
-        if (user && (!user.identities || user.identities.length === 0)) {
+        if (result.status === "duplicate") {
           toast.info("An account with this email already exists.", {
             description: "Try signing in instead, or check your inbox for a previous verification link.",
           });
@@ -42,8 +37,26 @@ export default function Auth() {
           return;
         }
 
+        if (result.status === "rate_limited") {
+          toast.error("We couldn't send another verification email yet.", {
+            description: result.message || "Please wait a minute before trying again.",
+          });
+          return;
+        }
+
+        if (result.status === "disabled") {
+          toast.error("Account creation is currently unavailable.", {
+            description: result.message || "Please try again later.",
+          });
+          return;
+        }
+
+        if (result.status !== "success") {
+          throw result.error ?? new Error(result.message || "Something went wrong");
+        }
+
         toast.success("Verification email sent!", {
-          description: "Check your inbox and click the link to activate your account.",
+          description: "Check your inbox and click the link to activate your account before signing in.",
         });
       } else {
         const { error } = await signIn(email, password);
