@@ -122,6 +122,76 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     try { localStorage.removeItem(LOCAL_STORAGE_KEY); } catch { /* ignore */ }
   }, []);
 
+  const saveProjectInternal = useCallback(async (silent = false) => {
+    const current = projectRef.current;
+    setIsSaving(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        if (!silent) {
+          toast.success("Your progress is saved on this device", {
+            description: "Sign in anytime to sync your project across devices.",
+          });
+        }
+        setIsSaving(false);
+        return;
+      }
+
+      const toJson = (v: unknown) => JSON.parse(JSON.stringify(v));
+
+      const payload = {
+        user_id: user.id,
+        name: current.name,
+        status: current.status,
+        bathroom_type: current.bathroom_type || null,
+        property_type: current.property_type || null,
+        dimensions: toJson(current.dimensions),
+        style_preferences: toJson(current.style_preferences),
+        selected_package: toJson(current.selected_package),
+        customizations: toJson(current.customizations),
+        workflow_progress: toJson(current.workflow_progress),
+        agreement_data: toJson({
+          ...current.agreement_data,
+          subcontractor_interactions: current.subcontractor_interactions,
+          photos: current.photos,
+        }),
+      };
+
+      if (current.id) {
+        const { error } = await supabase
+          .from("projects")
+          .update(payload)
+          .eq("id", current.id);
+        if (error) throw error;
+      } else {
+        const { data, error } = await supabase
+          .from("projects")
+          .insert(payload)
+          .select("id")
+          .single();
+        if (error) throw error;
+        if (data) setProject((prev) => ({ ...prev, id: data.id }));
+      }
+
+      if (!silent) {
+        toast.success("Project saved to your account", {
+          description: "Your progress is backed up and ready when you return.",
+        });
+      }
+    } catch (err) {
+      console.error("Save error:", err);
+      if (!silent) {
+        toast.error("Couldn't save project", {
+          description: "Please try again.",
+        });
+      }
+    } finally {
+      setIsSaving(false);
+    }
+  }, []);
+
+  const saveProject = useCallback(() => saveProjectInternal(false), [saveProjectInternal]);
+
   const markStepComplete = useCallback((step: string) => {
     setProject((prev) => {
       const completed = prev.workflow_progress.completed_steps;
@@ -135,7 +205,9 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         },
       };
     });
-  }, []);
+    // Auto-save silently to backend after state update
+    setTimeout(() => saveProjectInternal(true), 100);
+  }, [saveProjectInternal]);
 
   const loadLatestProject = useCallback(async () => {
     setIsLoading(true);
@@ -157,12 +229,10 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
       if (error) throw error;
 
       if (data) {
-        // Extract photos and subcontractor_interactions from agreement_data blob (where save stores them)
         const agreementBlob = (data.agreement_data as Record<string, unknown>) || {};
         const photosFromBlob = agreementBlob.photos as ProjectData["photos"] | undefined;
         const subInteractionsFromBlob = agreementBlob.subcontractor_interactions as SubcontractorInteraction[] | undefined;
 
-        // Clean agreement_data by removing the extracted fields
         const cleanAgreement = { ...agreementBlob };
         delete cleanAgreement.photos;
         delete cleanAgreement.subcontractor_interactions;
@@ -207,68 +277,6 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
 
     return () => subscription.unsubscribe();
   }, [loadLatestProject, resetProject]);
-
-  const saveProject = useCallback(async () => {
-    const current = projectRef.current;
-    setIsSaving(true);
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        toast.success("Your progress is saved on this device", {
-          description: "Sign in anytime to sync your project across devices.",
-        });
-        setIsSaving(false);
-        return;
-      }
-
-      const toJson = (v: unknown) => JSON.parse(JSON.stringify(v));
-
-      const payload = {
-        user_id: user.id,
-        name: current.name,
-        status: current.status,
-        bathroom_type: current.bathroom_type || null,
-        property_type: current.property_type || null,
-        dimensions: toJson(current.dimensions),
-        style_preferences: toJson(current.style_preferences),
-        selected_package: toJson(current.selected_package),
-        customizations: toJson(current.customizations),
-        workflow_progress: toJson(current.workflow_progress),
-        agreement_data: toJson({
-          ...current.agreement_data,
-          subcontractor_interactions: current.subcontractor_interactions,
-          photos: current.photos,
-        }),
-      };
-
-      if (current.id) {
-        const { error } = await supabase
-          .from("projects")
-          .update(payload)
-          .eq("id", current.id);
-        if (error) throw error;
-      } else {
-        const { data, error } = await supabase
-          .from("projects")
-          .insert(payload)
-          .select("id")
-          .single();
-        if (error) throw error;
-        if (data) setProject((prev) => ({ ...prev, id: data.id }));
-      }
-
-      toast.success("Project saved to your account", {
-        description: "Your progress is backed up and ready when you return.",
-      });
-    } catch (err) {
-      console.error("Save error:", err);
-      toast.error("Couldn't save project", {
-        description: "Please try again.",
-      });
-    } finally {
-      setIsSaving(false);
-    }
-  }, []);
 
   return (
     <ProjectContext.Provider value={{ project, updateProject, saveProject, loadLatestProject, resetProject, markStepComplete, isSaving, isLoading, isLoaded }}>
