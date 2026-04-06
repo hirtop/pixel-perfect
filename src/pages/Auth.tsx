@@ -65,6 +65,18 @@ export default function Auth() {
         navigate("/start");
       }
     } catch (err: any) {
+      if (err?.code === "email_not_confirmed") {
+        toast.error("Please verify your email before signing in.", {
+          description: "Use the verification link from your inbox, or sign up again later to request a new one.",
+        });
+        return;
+      }
+
+      if (err?.code === "invalid_credentials") {
+        toast.error("Incorrect email or password.");
+        return;
+      }
+
       toast.error(err.message || "Something went wrong");
     } finally {
       setLoading(false);
