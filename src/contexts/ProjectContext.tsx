@@ -96,7 +96,9 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     try {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
       if (stored) return { ...defaultProject, ...JSON.parse(stored) };
-    } catch { /* ignore */ }
+    } catch {
+      /* ignore */
+    }
     return defaultProject;
   });
   const [isSaving, setIsSaving] = useState(false);
@@ -105,25 +107,36 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   const projectRef = useRef(project);
   projectRef.current = project;
 
-  // Auto-persist to localStorage on every state change
+  const setProjectState = useCallback((nextProject: ProjectData) => {
+    projectRef.current = nextProject;
+    setProject(nextProject);
+  }, []);
+
   useEffect(() => {
     try {
       localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(project));
-    } catch { /* ignore quota errors */ }
+    } catch {
+      /* ignore quota errors */
+    }
   }, [project]);
 
   const updateProject = useCallback((updates: Partial<ProjectData>) => {
-    setProject((prev) => ({ ...prev, ...updates }));
-  }, []);
+    const nextProject = { ...projectRef.current, ...updates };
+    setProjectState(nextProject);
+  }, [setProjectState]);
 
   const resetProject = useCallback(() => {
-    setProject(defaultProject);
+    setProjectState(defaultProject);
     setIsLoaded(false);
-    try { localStorage.removeItem(LOCAL_STORAGE_KEY); } catch { /* ignore */ }
-  }, []);
+    try {
+      localStorage.removeItem(LOCAL_STORAGE_KEY);
+    } catch {
+      /* ignore */
+    }
+  }, [setProjectState]);
 
-  const saveProjectInternal = useCallback(async (silent = false) => {
-    const current = projectRef.current;
+  const saveProjectInternal = useCallback(async (silent = false, projectOverride?: ProjectData) => {
+    const current = projectOverride ?? projectRef.current;
     setIsSaving(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
@@ -133,7 +146,6 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
             description: "Sign in anytime to sync your project across devices.",
           });
         }
-        setIsSaving(false);
         return;
       }
 
@@ -170,7 +182,10 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
           .select("id")
           .single();
         if (error) throw error;
-        if (data) setProject((prev) => ({ ...prev, id: data.id }));
+        if (data) {
+          const nextProject = { ...current, id: data.id };
+          setProjectState(nextProject);
+        }
       }
 
       if (!silent) {
@@ -188,33 +203,31 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsSaving(false);
     }
-  }, []);
+  }, [setProjectState]);
 
   const saveProject = useCallback(() => saveProjectInternal(false), [saveProjectInternal]);
 
   const markStepComplete = useCallback((step: string) => {
-    setProject((prev) => {
-      const completed = prev.workflow_progress.completed_steps;
-      if (completed.includes(step)) return prev;
-      return {
-        ...prev,
-        status: "in_progress" as const,
-        workflow_progress: {
-          current_step: step,
-          completed_steps: [...completed, step],
-        },
-      };
-    });
-    // Auto-save silently to backend after state update
-    setTimeout(() => saveProjectInternal(true), 100);
-  }, [saveProjectInternal]);
+    const current = projectRef.current;
+    const completed = current.workflow_progress.completed_steps;
+    const nextProject: ProjectData = {
+      ...current,
+      status: "in_progress",
+      workflow_progress: {
+        current_step: step,
+        completed_steps: completed.includes(step) ? completed : [...completed, step],
+      },
+    };
+
+    setProjectState(nextProject);
+    void saveProjectInternal(true, nextProject);
+  }, [saveProjectInternal, setProjectState]);
 
   const loadLatestProject = useCallback(async () => {
     setIsLoading(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        setIsLoading(false);
         return;
       }
 
@@ -237,7 +250,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         delete cleanAgreement.photos;
         delete cleanAgreement.subcontractor_interactions;
 
-        setProject({
+        const loadedProject: ProjectData = {
           id: data.id,
           name: data.name,
           status: data.status as ProjectData["status"],
@@ -251,7 +264,9 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
           workflow_progress: (data.workflow_progress as ProjectData["workflow_progress"]) || { current_step: "start", completed_steps: [] },
           subcontractor_interactions: subInteractionsFromBlob || [],
           agreement_data: cleanAgreement,
-        });
+        };
+
+        setProjectState(loadedProject);
         setIsLoaded(true);
       }
     } catch (err) {
@@ -259,20 +274,19 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [setProjectState]);
 
-  // Auto-load on auth change
   useEffect(() => {
     const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
       if (event === "SIGNED_IN") {
-        loadLatestProject();
+        void loadLatestProject();
       } else if (event === "SIGNED_OUT") {
         resetProject();
       }
     });
 
     supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) loadLatestProject();
+      if (session) void loadLatestProject();
     });
 
     return () => subscription.unsubscribe();
