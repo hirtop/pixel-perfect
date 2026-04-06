@@ -209,6 +209,75 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     setTimeout(() => saveProjectInternal(true), 100);
   }, [saveProjectInternal]);
 
+  const loadLatestProject = useCallback(async () => {
+    setIsLoading(true);
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        setIsLoading(false);
+        return;
+      }
+
+      const { data, error } = await supabase
+        .from("projects")
+        .select("*")
+        .eq("user_id", user.id)
+        .order("updated_at", { ascending: false })
+        .limit(1)
+        .maybeSingle();
+
+      if (error) throw error;
+
+      if (data) {
+        const agreementBlob = (data.agreement_data as Record<string, unknown>) || {};
+        const photosFromBlob = agreementBlob.photos as ProjectData["photos"] | undefined;
+        const subInteractionsFromBlob = agreementBlob.subcontractor_interactions as SubcontractorInteraction[] | undefined;
+
+        const cleanAgreement = { ...agreementBlob };
+        delete cleanAgreement.photos;
+        delete cleanAgreement.subcontractor_interactions;
+
+        setProject({
+          id: data.id,
+          name: data.name,
+          status: data.status as ProjectData["status"],
+          bathroom_type: data.bathroom_type || "",
+          property_type: data.property_type || "",
+          photos: photosFromBlob || { metadata: [], notes: "" },
+          dimensions: (data.dimensions as ProjectData["dimensions"]) || {},
+          style_preferences: (data.style_preferences as ProjectData["style_preferences"]) || {},
+          selected_package: (data.selected_package as ProjectData["selected_package"]) || {},
+          customizations: (data.customizations as ProjectData["customizations"]) || {},
+          workflow_progress: (data.workflow_progress as ProjectData["workflow_progress"]) || { current_step: "start", completed_steps: [] },
+          subcontractor_interactions: subInteractionsFromBlob || [],
+          agreement_data: cleanAgreement,
+        });
+        setIsLoaded(true);
+      }
+    } catch (err) {
+      console.error("Load error:", err);
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
+  // Auto-load on auth change
+  useEffect(() => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
+      if (event === "SIGNED_IN") {
+        loadLatestProject();
+      } else if (event === "SIGNED_OUT") {
+        resetProject();
+      }
+    });
+
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) loadLatestProject();
+    });
+
+    return () => subscription.unsubscribe();
+  }, [loadLatestProject, resetProject]);
+
   return (
     <ProjectContext.Provider value={{ project, updateProject, saveProject, loadLatestProject, resetProject, markStepComplete, isSaving, isLoading, isLoaded }}>
       {children}
