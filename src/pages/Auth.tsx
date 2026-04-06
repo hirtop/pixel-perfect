@@ -30,19 +30,11 @@ export default function Auth() {
       if (mode === "signup") {
         const result = await signUp(email, password);
         if (result.status === "duplicate") {
-          if (result.message) {
-            // Unconfirmed duplicate — verification re-sent
-            toast.info("We already have this email on file.", {
-              description: result.message,
-            });
-          } else {
-            // Confirmed duplicate — switch to sign-in
-            toast.warning("This email is already registered.", {
-              description: "Please sign in with your password, or use Forgot Password if you need to reset it.",
-              duration: 6000,
-            });
-            setMode("signin");
-          }
+          toast.warning("This email is already registered.", {
+            description: "Please sign in with your password, or use Forgot Password if you need to reset it.",
+            duration: 6000,
+          });
+          setMode("signin");
           return;
         }
 
