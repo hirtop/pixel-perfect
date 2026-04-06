@@ -122,109 +122,17 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     try { localStorage.removeItem(LOCAL_STORAGE_KEY); } catch { /* ignore */ }
   }, []);
 
-  const markStepComplete = useCallback((step: string) => {
-    setProject((prev) => {
-      const completed = prev.workflow_progress.completed_steps;
-      if (completed.includes(step)) return prev;
-      return {
-        ...prev,
-        status: "in_progress" as const,
-        workflow_progress: {
-          current_step: step,
-          completed_steps: [...completed, step],
-        },
-      };
-    });
-    // Auto-save to backend after state update settles
-    setTimeout(() => {
-      supabase.auth.getUser().then(({ data: { user } }) => {
-        if (user) {
-          saveProjectInternal();
-        }
-      });
-    }, 100);
-  }, []);
-
-  const loadLatestProject = useCallback(async () => {
-    setIsLoading(true);
-    try {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (!user) {
-        setIsLoading(false);
-        return;
-      }
-
-      const { data, error } = await supabase
-        .from("projects")
-        .select("*")
-        .eq("user_id", user.id)
-        .order("updated_at", { ascending: false })
-        .limit(1)
-        .maybeSingle();
-
-      if (error) throw error;
-
-      if (data) {
-        // Extract photos and subcontractor_interactions from agreement_data blob (where save stores them)
-        const agreementBlob = (data.agreement_data as Record<string, unknown>) || {};
-        const photosFromBlob = agreementBlob.photos as ProjectData["photos"] | undefined;
-        const subInteractionsFromBlob = agreementBlob.subcontractor_interactions as SubcontractorInteraction[] | undefined;
-
-        // Clean agreement_data by removing the extracted fields
-        const cleanAgreement = { ...agreementBlob };
-        delete cleanAgreement.photos;
-        delete cleanAgreement.subcontractor_interactions;
-
-        setProject({
-          id: data.id,
-          name: data.name,
-          status: data.status as ProjectData["status"],
-          bathroom_type: data.bathroom_type || "",
-          property_type: data.property_type || "",
-          photos: photosFromBlob || { metadata: [], notes: "" },
-          dimensions: (data.dimensions as ProjectData["dimensions"]) || {},
-          style_preferences: (data.style_preferences as ProjectData["style_preferences"]) || {},
-          selected_package: (data.selected_package as ProjectData["selected_package"]) || {},
-          customizations: (data.customizations as ProjectData["customizations"]) || {},
-          workflow_progress: (data.workflow_progress as ProjectData["workflow_progress"]) || { current_step: "start", completed_steps: [] },
-          subcontractor_interactions: subInteractionsFromBlob || [],
-          agreement_data: cleanAgreement,
-        });
-        setIsLoaded(true);
-      }
-    } catch (err) {
-      console.error("Load error:", err);
-    } finally {
-      setIsLoading(false);
-    }
-  }, []);
-
-  // Auto-load on auth change
-  useEffect(() => {
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event) => {
-      if (event === "SIGNED_IN") {
-        loadLatestProject();
-      } else if (event === "SIGNED_OUT") {
-        resetProject();
-      }
-    });
-
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      if (session) loadLatestProject();
-    });
-
-    return () => subscription.unsubscribe();
-  }, [loadLatestProject, resetProject]);
-
-  const saveProject = useCallback(async () => {
+  const saveProjectInternal = useCallback(async (silent = false) => {
     const current = projectRef.current;
     setIsSaving(true);
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) {
-        toast.success("Your progress is saved on this device", {
-          description: "Sign in anytime to sync your project across devices.",
-        });
+        if (!silent) {
+          toast.success("Your progress is saved on this device", {
+            description: "Sign in anytime to sync your project across devices.",
+          });
+        }
         setIsSaving(false);
         return;
       }
@@ -265,18 +173,41 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         if (data) setProject((prev) => ({ ...prev, id: data.id }));
       }
 
-      toast.success("Project saved to your account", {
-        description: "Your progress is backed up and ready when you return.",
-      });
+      if (!silent) {
+        toast.success("Project saved to your account", {
+          description: "Your progress is backed up and ready when you return.",
+        });
+      }
     } catch (err) {
       console.error("Save error:", err);
-      toast.error("Couldn't save project", {
-        description: "Please try again.",
-      });
+      if (!silent) {
+        toast.error("Couldn't save project", {
+          description: "Please try again.",
+        });
+      }
     } finally {
       setIsSaving(false);
     }
   }, []);
+
+  const saveProject = useCallback(() => saveProjectInternal(false), [saveProjectInternal]);
+
+  const markStepComplete = useCallback((step: string) => {
+    setProject((prev) => {
+      const completed = prev.workflow_progress.completed_steps;
+      if (completed.includes(step)) return prev;
+      return {
+        ...prev,
+        status: "in_progress" as const,
+        workflow_progress: {
+          current_step: step,
+          completed_steps: [...completed, step],
+        },
+      };
+    });
+    // Auto-save silently to backend after state update
+    setTimeout(() => saveProjectInternal(true), 100);
+  }, [saveProjectInternal]);
 
   return (
     <ProjectContext.Provider value={{ project, updateProject, saveProject, loadLatestProject, resetProject, markStepComplete, isSaving, isLoading, isLoaded }}>
