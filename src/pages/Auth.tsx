@@ -37,8 +37,9 @@ export default function Auth() {
             });
           } else {
             // Confirmed duplicate — switch to sign-in
-            toast.info("An account with this email already exists.", {
-              description: "Try signing in instead.",
+            toast.warning("This email is already registered.", {
+              description: "Please sign in with your password, or use Forgot Password if you need to reset it.",
+              duration: 6000,
             });
             setMode("signin");
           }

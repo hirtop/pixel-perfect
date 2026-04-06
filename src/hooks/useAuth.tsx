@@ -84,19 +84,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const user = data.user as User | null;
     const identitiesLength = Array.isArray(user?.identities) ? user.identities.length : null;
 
-    // Confirmed-email duplicate: Supabase returns a fake user with zero identities
-    if (user && !data.session && identitiesLength === 0) {
-      return {
-        status: "duplicate",
-        error: null,
-        user,
-      };
-    }
+    // Duplicate detection: user existed before this signup call
+    if (user && !data.session && (identitiesLength === 0 || (user.created_at && user.created_at < preSignupTime))) {
+      const isVerified = !!user.email_confirmed_at;
 
-    // Unconfirmed-email duplicate: user already existed before this request.
-    // Supabase re-sends a confirmation but returns identities.length === 1,
-    // so we compare created_at against a timestamp taken before the call.
-    if (user && !data.session && user.created_at && user.created_at < preSignupTime) {
+      if (isVerified) {
+        // Confirmed-email duplicate — account fully exists
+        return {
+          status: "duplicate",
+          error: null,
+          user,
+          // No extra message → Auth.tsx switches to sign-in mode
+        };
+      }
+
+      // Unconfirmed-email duplicate — Supabase re-sends verification
       return {
         status: "duplicate",
         error: null,
