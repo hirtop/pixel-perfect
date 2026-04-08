@@ -3,10 +3,13 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 export interface PhotoMeta {
+  id?: string;
   name: string;
   size: number;
   type: string;
   storage_path?: string;
+  preview_url?: string;
+  upload_status?: "uploaded" | "preview_only" | "upload_failed";
 }
 
 export interface SubcontractorInteraction {
