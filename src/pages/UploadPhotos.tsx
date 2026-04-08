@@ -410,10 +410,13 @@ const UploadPhotos = () => {
                   </p>
                 </div>
                 <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                  <span>JPG, PNG, HEIC</span>
+                  <span>JPG, PNG, HEIC accepted</span>
                   <span className="w-px h-3 bg-border" />
                   <span>Upload 3–8 photos for best results</span>
                 </div>
+                <p className="mt-2 text-[11px] text-muted-foreground/70 max-w-xs mx-auto leading-relaxed">
+                  HEIC photos from iPhone are accepted but may not preview correctly. For best results, use JPG or PNG.
+                </p>
               </div>
             </div>
 
