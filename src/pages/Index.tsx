@@ -88,6 +88,16 @@ const plans = [
 ];
 
 export default function LandingPage() {
+  const { user } = useAuth();
+  const { project, isLoaded, resetProject } = useProject();
+
+  const hasSavedProject = Boolean(user && isLoaded && project.id);
+
+  const ctaText = hasSavedProject ? "Resume Your Bathroom Project" : "Start Your Bathroom Project";
+  const ctaRoute = hasSavedProject
+    ? (project.workflow_progress?.current_step === "start" ? "/start" : `/${project.workflow_progress?.current_step || "start"}`)
+    : "/start";
+
   return (
     <div className="min-h-screen bg-background">
       {/* Nav */}
