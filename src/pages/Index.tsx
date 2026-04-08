@@ -115,7 +115,7 @@ export default function LandingPage() {
           <div className="flex items-center gap-3">
             <AccountMenu />
             <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-              <Link to="/start">Start Your Bathroom Project</Link>
+              <Link to={ctaRoute}>{hasSavedProject ? "Resume Project" : "Start Your Bathroom Project"}</Link>
             </Button>
           </div>
         </div>
