@@ -84,31 +84,47 @@ const Agreement = () => {
     toast("Preparing PDF…", { description: "Rendering your agreement." });
 
     try {
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        useCORS: true,
-        logging: false,
-        backgroundColor: "#ffffff",
-      });
+      // Apply print-safe styles before capture
+      const printClass = "pdf-print-mode";
+      element.classList.add(printClass);
 
-      const imgData = canvas.toDataURL("image/png");
-      const imgWidth = 210; // A4 mm
-      const pageHeight = 297;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const sections = Array.from(
+        element.querySelectorAll("[data-pdf-section]")
+      ) as HTMLElement[];
 
-      const pdf = new jsPDF("p", "mm", "a4");
-      let heightLeft = imgHeight;
-      let position = 0;
+      const A4_WIDTH_MM = 210;
+      const A4_HEIGHT_MM = 297;
+      const MARGIN_MM = 12;
+      const CONTENT_WIDTH_MM = A4_WIDTH_MM - MARGIN_MM * 2;
+      const SECTION_GAP_MM = 3;
 
-      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      const pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
+      let currentY = MARGIN_MM;
 
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
+      for (const section of sections) {
+        const canvas = await html2canvas(section, {
+          scale: 2,
+          useCORS: true,
+          logging: false,
+          backgroundColor: "#ffffff",
+        });
+
+        const scaleFactor = CONTENT_WIDTH_MM / (canvas.width / 2);
+        const heightMM = (canvas.height / 2) * scaleFactor;
+        const remaining = A4_HEIGHT_MM - MARGIN_MM - currentY;
+
+        if (heightMM > remaining && currentY > MARGIN_MM) {
+          pdf.addPage();
+          currentY = MARGIN_MM;
+        }
+
+        const imgData = canvas.toDataURL("image/png");
+        pdf.addImage(imgData, "PNG", MARGIN_MM, currentY, CONTENT_WIDTH_MM, heightMM);
+        currentY += heightMM + SECTION_GAP_MM;
       }
+
+      // Remove print styles
+      element.classList.remove(printClass);
 
       pdf.save("bobox-remodel-agreement.pdf");
       toast.success("PDF downloaded successfully!");
