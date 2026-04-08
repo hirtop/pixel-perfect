@@ -91,14 +91,15 @@ const plans = [
 ];
 
 export default function LandingPage() {
-  const { user } = useAuth();
-  const { project, isLoaded, resetProject } = useProject();
-  const { projects, deleteProject } = useUserProjects();
+  const { user, loading: authLoading } = useAuth();
+  const { resetProject } = useProject();
+  const { projects, loading: projectsLoading, deleteProject } = useUserProjects();
   const navigate = useNavigate();
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const projectCount = projects.length;
-  const hasSavedProject = Boolean(user && isLoaded && projectCount > 0);
+  const isProjectStateLoading = Boolean(user) && (authLoading || projectsLoading);
+  const hasSavedProject = Boolean(user && !isProjectStateLoading && projectCount > 0);
   const hasMultiple = projectCount > 1;
 
   const singleProject = projectCount === 1 ? projects[0] : null;
@@ -107,6 +108,10 @@ export default function LandingPage() {
     : "/start";
 
   const handlePrimaryCta = () => {
+    if (isProjectStateLoading) {
+      return;
+    }
+
     if (!hasSavedProject) {
       navigate("/start");
     } else if (hasMultiple) {
@@ -116,17 +121,21 @@ export default function LandingPage() {
     }
   };
 
-  const ctaText = !hasSavedProject
-    ? "Start Your Bathroom Project"
-    : hasMultiple
-      ? "View Your Projects"
-      : "Resume Your Bathroom Project";
+  const ctaText = isProjectStateLoading
+    ? "Loading Your Projects..."
+    : !hasSavedProject
+      ? "Start Your Bathroom Project"
+      : hasMultiple
+        ? "View Your Projects"
+        : "Continue Your Project";
 
-  const navCtaText = !hasSavedProject
-    ? "Start Your Bathroom Project"
-    : hasMultiple
-      ? "Your Projects"
-      : "Resume Project";
+  const navCtaText = isProjectStateLoading
+    ? "Loading..."
+    : !hasSavedProject
+      ? "Start Your Bathroom Project"
+      : hasMultiple
+        ? "Your Projects"
+        : "Continue Your Project";
 
   return (
     <div className="min-h-screen bg-background">
@@ -144,7 +153,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <AccountMenu />
-            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={handlePrimaryCta}>
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
               {navCtaText}
             </Button>
           </div>
@@ -190,7 +199,7 @@ export default function LandingPage() {
               project plan.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta}>
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
                 {ctaText}
               </Button>
               {hasSavedProject ? (
