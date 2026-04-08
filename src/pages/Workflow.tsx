@@ -49,6 +49,10 @@ const Workflow = () => {
               Here's how a bathroom remodel like this usually comes together, from demolition to final finishing touches.
             </p>
           </div>
+          <div className="flex items-center gap-2 text-xs text-muted-foreground mb-10 justify-center">
+            <span className="inline-block w-2 h-2 rounded-full bg-primary" />
+            <span>Green notes show where your selected products affect the remodel process.</span>
+          </div>
 
           <div className="relative">
             <div className="absolute left-[19px] top-2 bottom-2 w-px bg-border" />
