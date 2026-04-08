@@ -13,6 +13,15 @@ const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|heic)$/i;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/heic"];
 const MAX_FILES = 8;
 
+type RestoredPhoto = {
+  name: string;
+  size: number;
+  type: string;
+  storage_path?: string;
+  imageUrl: string | null;
+  status: "loading" | "ready" | "missing_storage_path" | "sign_error" | "load_error";
+};
+
 function isAcceptedFile(file: File): boolean {
   return ACCEPTED_TYPES.includes(file.type) || ACCEPTED_EXTENSIONS.test(file.name);
 }
@@ -31,7 +40,7 @@ const UploadPhotos = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const [notes, setNotes] = useState(project.photos.notes || "");
-  const [restoredUrls, setRestoredUrls] = useState<string[]>([]);
+  const [restoredPhotos, setRestoredPhotos] = useState<RestoredPhoto[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
   // Sync notes when project loads from backend
@@ -39,33 +48,75 @@ const UploadPhotos = () => {
     setNotes(project.photos.notes || "");
   }, [project.photos.notes]);
 
-  // Generate signed URLs for previously uploaded photos
+  // Regenerate fresh signed URLs for previously uploaded photos on every restore
   useEffect(() => {
     const meta = project.photos.metadata;
     if (meta.length === 0 || files.length > 0) {
-      setRestoredUrls([]);
-      return;
-    }
-
-    const pathsToSign = meta.filter(m => m.storage_path).map(m => m.storage_path!);
-    if (pathsToSign.length === 0) {
-      setRestoredUrls([]);
+      setRestoredPhotos([]);
       return;
     }
 
     let cancelled = false;
+
+    setRestoredPhotos(
+      meta.map((photo) => ({
+        ...photo,
+        imageUrl: null,
+        status: photo.storage_path ? "loading" : "missing_storage_path",
+      })),
+    );
+
     (async () => {
-      const urls: string[] = [];
-      for (const path of pathsToSign) {
-        const { data, error } = await supabase.storage
-          .from("bathroom-photos")
-          .createSignedUrl(path, 3600);
-        urls.push(error ? "" : data.signedUrl);
+      const nextPhotos = await Promise.all(
+        meta.map(async (photo) => {
+          if (!photo.storage_path) {
+            return {
+              ...photo,
+              imageUrl: null,
+              status: "missing_storage_path" as const,
+            };
+          }
+
+          const { data, error } = await supabase.storage
+            .from("bathroom-photos")
+            .createSignedUrl(photo.storage_path, 3600);
+
+          if (error || !data?.signedUrl) {
+            console.error("Couldn't create thumbnail URL", {
+              storagePath: photo.storage_path,
+              error,
+            });
+
+            return {
+              ...photo,
+              imageUrl: null,
+              status: "sign_error" as const,
+            };
+          }
+
+          return {
+            ...photo,
+            imageUrl: data.signedUrl,
+            status: "ready" as const,
+          };
+        }),
+      );
+
+      if (!cancelled) {
+        setRestoredPhotos(nextPhotos);
       }
-      if (!cancelled) setRestoredUrls(urls);
     })();
+
     return () => { cancelled = true; };
   }, [project.photos.metadata, files.length]);
+
+  const markRestoredPhotoUnavailable = useCallback((index: number) => {
+    setRestoredPhotos((current) => current.map((photo, photoIndex) => (
+      photoIndex === index
+        ? { ...photo, imageUrl: null, status: "load_error" }
+        : photo
+    )));
+  }, []);
 
   // Generate preview URLs for new files
   useEffect(() => {
@@ -170,7 +221,6 @@ const UploadPhotos = () => {
   }, []);
 
   const existingCount = project.photos.metadata.length;
-  const hasExistingWithStorage = existingCount > 0 && project.photos.metadata.some(m => m.storage_path);
   const hasNewFiles = files.length > 0;
 
   const uploadFilesToStorage = async (filesToUpload: File[]): Promise<Array<{ name: string; size: number; type: string; storage_path: string }>> => {
@@ -271,24 +321,25 @@ const UploadPhotos = () => {
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-2">
-                  {project.photos.metadata.map((meta, i) => {
-                    const signedUrl = restoredUrls[i];
+                  {restoredPhotos.map((photo, i) => {
                     return (
                       <div key={i} className="rounded-lg border border-border aspect-square overflow-hidden bg-secondary/60">
-                        {signedUrl ? (
+                        {photo.imageUrl ? (
                           <img
-                            src={signedUrl}
-                            alt={meta.name}
+                            src={photo.imageUrl}
+                            alt={photo.name}
                             className="w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = 'none';
-                              (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
-                            }}
+                            onError={() => markRestoredPhotoUnavailable(i)}
                           />
                         ) : null}
-                        <div className={`flex flex-col items-center justify-center gap-1.5 p-2 w-full h-full ${signedUrl ? 'hidden' : ''}`}>
+                        <div className={`flex flex-col items-center justify-center gap-1.5 p-2 w-full h-full ${photo.imageUrl ? 'hidden' : ''}`}>
                           <FileImage className="h-5 w-5 text-muted-foreground" />
-                          <span className="text-[10px] text-muted-foreground truncate w-full text-center leading-tight">{meta.name}</span>
+                          <span className="text-[10px] font-medium text-foreground text-center leading-tight">
+                            Image unavailable
+                          </span>
+                          <span className="text-[10px] text-muted-foreground truncate w-full text-center leading-tight">
+                            {photo.name}
+                          </span>
                         </div>
                       </div>
                     );
