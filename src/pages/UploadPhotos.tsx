@@ -14,10 +14,13 @@ const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/heic"];
 const MAX_FILES = 8;
 
 type RestoredPhoto = {
+  id?: string;
   name: string;
   size: number;
   type: string;
   storage_path?: string;
+  preview_url?: string;
+  upload_status?: "uploaded" | "preview_only" | "upload_failed";
   imageUrl: string | null;
   status: "loading" | "ready" | "missing_storage_path" | "sign_error" | "load_error";
 };
@@ -72,8 +75,8 @@ const UploadPhotos = () => {
           if (!photo.storage_path) {
             return {
               ...photo,
-              imageUrl: null,
-              status: "missing_storage_path" as const,
+              imageUrl: photo.preview_url ?? null,
+              status: photo.preview_url ? ("ready" as const) : ("missing_storage_path" as const),
             };
           }
 
@@ -223,15 +226,16 @@ const UploadPhotos = () => {
   const existingCount = project.photos.metadata.length;
   const hasNewFiles = files.length > 0;
 
-  const uploadFilesToStorage = async (filesToUpload: File[]): Promise<Array<{ name: string; size: number; type: string; storage_path: string }>> => {
+  const uploadFilesToStorage = async (filesToUpload: File[]): Promise<Array<{ id: string; name: string; size: number; type: string; storage_path?: string; preview_url?: string; upload_status: "uploaded" | "preview_only" | "upload_failed" }>> => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Not authenticated");
 
-    const results: Array<{ name: string; size: number; type: string; storage_path: string }> = [];
+    const results: Array<{ id: string; name: string; size: number; type: string; storage_path?: string; preview_url?: string; upload_status: "uploaded" | "preview_only" | "upload_failed" }> = [];
 
-    for (const file of filesToUpload) {
+    for (const [index, file] of filesToUpload.entries()) {
       const ext = file.name.split('.').pop() || 'jpg';
       const storagePath = `${user.id}/${crypto.randomUUID()}.${ext}`;
+      const fallbackPreview = previews[index] || undefined;
 
       const { error } = await supabase.storage
         .from("bathroom-photos")
@@ -239,14 +243,24 @@ const UploadPhotos = () => {
 
       if (error) {
         console.error("Upload error for", file.name, error);
+        results.push({
+          id: crypto.randomUUID(),
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          preview_url: fallbackPreview,
+          upload_status: fallbackPreview ? "preview_only" : "upload_failed",
+        });
         continue;
       }
 
       results.push({
+        id: crypto.randomUUID(),
         name: file.name,
         size: file.size,
         type: file.type,
         storage_path: storagePath,
+        upload_status: "uploaded",
       });
     }
 
@@ -259,8 +273,14 @@ const UploadPhotos = () => {
       try {
         const uploaded = await uploadFilesToStorage(files);
         if (uploaded.length === 0 && files.length > 0) {
-          // All uploads failed — save metadata only as fallback
-          const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
+          const metadata = files.map((f, index) => ({
+            id: crypto.randomUUID(),
+            name: f.name,
+            size: f.size,
+            type: f.type,
+            preview_url: previews[index] || undefined,
+            upload_status: previews[index] ? "preview_only" as const : "upload_failed" as const,
+          }));
           updateProject({ photos: { metadata, notes } });
           toast.warning("Photos saved locally only", { description: "Upload to cloud failed. Your photos will appear on this device only." });
         } else {
@@ -268,7 +288,14 @@ const UploadPhotos = () => {
         }
       } catch (err) {
         console.error("Upload error:", err);
-        const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
+        const metadata = files.map((f, index) => ({
+          id: crypto.randomUUID(),
+          name: f.name,
+          size: f.size,
+          type: f.type,
+          preview_url: previews[index] || undefined,
+          upload_status: previews[index] ? "preview_only" as const : "upload_failed" as const,
+        }));
         updateProject({ photos: { metadata, notes } });
         toast.warning("Photos saved locally only");
       } finally {
