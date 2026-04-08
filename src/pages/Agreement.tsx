@@ -151,7 +151,7 @@ const Agreement = () => {
           </div>
 
           <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
-            <div className="rounded-2xl border border-border bg-card p-8 md:p-10 space-y-10 shadow-sm">
+            <div id="agreement-content" className="rounded-2xl border border-border bg-card p-8 md:p-10 space-y-10 shadow-sm">
 
               <Section title="Client Information">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -255,8 +255,8 @@ const Agreement = () => {
             <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleSave} disabled={isSaving}>
               {isSaving ? "Saving…" : "Save Agreement Template"}
             </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg gap-2" onClick={handleDownload}>
-              <Download className="h-4 w-4" /> Download as PDF
+            <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg gap-2" onClick={handleDownload} disabled={isGenerating}>
+              {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} {isGenerating ? "Generating…" : "Download as PDF"}
             </Button>
             <Link to="/subcontractors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Back to Subcontractors
