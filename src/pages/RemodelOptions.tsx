@@ -122,6 +122,7 @@ const RemodelOptions = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {packages.map((pkg, i) => {
               const isSelected = project.selected_package.name === pkg.name;
+              const isPreferred = !project.selected_package.name && project.style_preferences.budget_level?.toLowerCase().includes(pkg.name.toLowerCase());
               return (
                 <motion.div
                   key={pkg.name}
