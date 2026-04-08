@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Upload, ImagePlus, X, ArrowLeft, ImageIcon, FileImage, Loader2 } from "lucide-react";
+import { Upload, ImagePlus, X, ArrowLeft, ImageIcon, FileImage, Loader2, Home } from "lucide-react";
 import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -336,6 +336,9 @@ const UploadPhotos = () => {
         <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
+          </Link>
+          <Link to="/" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Home className="h-3.5 w-3.5" /> Home
           </Link>
         </div>
       </nav>
