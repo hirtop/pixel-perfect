@@ -14,6 +14,7 @@ import {
   getTierDefaults,
   getTierAlternatives,
   getStaticItemsTotal,
+  STATIC_ITEMS,
   TIER_BASE_LABOR,
   SHIPPING_ESTIMATE,
   type ProductTier,
