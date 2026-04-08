@@ -18,12 +18,16 @@ export function useUserProjects() {
   const { user } = useAuth();
   const [projects, setProjects] = useState<SavedProject[]>([]);
   const [loading, setLoading] = useState(false);
+  const [loadedUserId, setLoadedUserId] = useState<string | null>(null);
 
   const fetchProjects = useCallback(async () => {
     if (!user) {
       setProjects([]);
+      setLoadedUserId(null);
+      setLoading(false);
       return;
     }
+
     setLoading(true);
     try {
       const { data, error } = await supabase
@@ -39,8 +43,11 @@ export function useUserProjects() {
           workflow_progress: d.workflow_progress as SavedProject["workflow_progress"],
         }))
       );
+      setLoadedUserId(user.id);
     } catch (err) {
       console.error("Failed to fetch projects:", err);
+      setProjects([]);
+      setLoadedUserId(user.id);
     } finally {
       setLoading(false);
     }
@@ -59,5 +66,12 @@ export function useUserProjects() {
     []
   );
 
-  return { projects, loading, refetch: fetchProjects, deleteProject };
+  const isHydratingCurrentUser = Boolean(user) && loadedUserId !== user.id;
+
+  return {
+    projects,
+    loading: loading || isHydratingCurrentUser,
+    refetch: fetchProjects,
+    deleteProject,
+  };
 }

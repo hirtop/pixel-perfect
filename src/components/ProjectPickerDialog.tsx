@@ -53,18 +53,15 @@ interface Props {
 
 export default function ProjectPickerDialog({ open, onOpenChange, projects, onDelete }: Props) {
   const navigate = useNavigate();
-  const { resetProject, loadLatestProject } = useProject();
+  const { resetProject, loadProject } = useProject();
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
 
   const handleResume = async (project: SavedProject) => {
-    // Load this project into context by navigating; ProjectContext picks up latest
-    // For now we navigate to the project's current step
     onOpenChange(false);
     const step = project.workflow_progress?.current_step || "start";
     const route = step === "start" ? "/start" : `/${step}`;
-    // Reload project data
-    await loadLatestProject();
+    await loadProject(project.id);
     navigate(route);
   };
 
