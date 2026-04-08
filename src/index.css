@@ -86,3 +86,27 @@
     font-family: var(--font-heading);
   }
 }
+
+/* Print-safe styles for PDF export */
+.pdf-print-mode input,
+.pdf-print-mode textarea {
+  white-space: normal !important;
+  word-break: break-word !important;
+  overflow: visible !important;
+  height: auto !important;
+  min-height: auto !important;
+  max-height: none !important;
+  resize: none !important;
+  border: none !important;
+  background: transparent !important;
+  padding: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  font-size: 13px !important;
+  line-height: 1.5 !important;
+  color: #1a1a1a !important;
+}
+
+.pdf-print-mode [data-pdf-section] {
+  page-break-inside: avoid;
+}
