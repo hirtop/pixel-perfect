@@ -13,6 +13,18 @@ const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|heic)$/i;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/heic"];
 const MAX_FILES = 8;
 
+type RestoredPhoto = {
+  id?: string;
+  name: string;
+  size: number;
+  type: string;
+  storage_path?: string;
+  preview_url?: string;
+  upload_status?: "uploaded" | "preview_only" | "upload_failed";
+  imageUrl: string | null;
+  status: "loading" | "ready" | "missing_storage_path" | "sign_error" | "load_error";
+};
+
 function isAcceptedFile(file: File): boolean {
   return ACCEPTED_TYPES.includes(file.type) || ACCEPTED_EXTENSIONS.test(file.name);
 }
@@ -31,7 +43,7 @@ const UploadPhotos = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const [notes, setNotes] = useState(project.photos.notes || "");
-  const [restoredUrls, setRestoredUrls] = useState<string[]>([]);
+  const [restoredPhotos, setRestoredPhotos] = useState<RestoredPhoto[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
   // Sync notes when project loads from backend
@@ -39,33 +51,75 @@ const UploadPhotos = () => {
     setNotes(project.photos.notes || "");
   }, [project.photos.notes]);
 
-  // Generate signed URLs for previously uploaded photos
+  // Regenerate fresh signed URLs for previously uploaded photos on every restore
   useEffect(() => {
     const meta = project.photos.metadata;
     if (meta.length === 0 || files.length > 0) {
-      setRestoredUrls([]);
-      return;
-    }
-
-    const pathsToSign = meta.filter(m => m.storage_path).map(m => m.storage_path!);
-    if (pathsToSign.length === 0) {
-      setRestoredUrls([]);
+      setRestoredPhotos([]);
       return;
     }
 
     let cancelled = false;
+
+    setRestoredPhotos(
+      meta.map((photo) => ({
+        ...photo,
+        imageUrl: null,
+        status: photo.storage_path ? "loading" : "missing_storage_path",
+      })),
+    );
+
     (async () => {
-      const urls: string[] = [];
-      for (const path of pathsToSign) {
-        const { data, error } = await supabase.storage
-          .from("bathroom-photos")
-          .createSignedUrl(path, 3600);
-        urls.push(error ? "" : data.signedUrl);
+      const nextPhotos = await Promise.all(
+        meta.map(async (photo) => {
+          if (!photo.storage_path) {
+            return {
+              ...photo,
+              imageUrl: photo.preview_url ?? null,
+              status: photo.preview_url ? ("ready" as const) : ("missing_storage_path" as const),
+            };
+          }
+
+          const { data, error } = await supabase.storage
+            .from("bathroom-photos")
+            .createSignedUrl(photo.storage_path, 3600);
+
+          if (error || !data?.signedUrl) {
+            console.error("Couldn't create thumbnail URL", {
+              storagePath: photo.storage_path,
+              error,
+            });
+
+            return {
+              ...photo,
+              imageUrl: null,
+              status: "sign_error" as const,
+            };
+          }
+
+          return {
+            ...photo,
+            imageUrl: data.signedUrl,
+            status: "ready" as const,
+          };
+        }),
+      );
+
+      if (!cancelled) {
+        setRestoredPhotos(nextPhotos);
       }
-      if (!cancelled) setRestoredUrls(urls);
     })();
+
     return () => { cancelled = true; };
   }, [project.photos.metadata, files.length]);
+
+  const markRestoredPhotoUnavailable = useCallback((index: number) => {
+    setRestoredPhotos((current) => current.map((photo, photoIndex) => (
+      photoIndex === index
+        ? { ...photo, imageUrl: null, status: "load_error" }
+        : photo
+    )));
+  }, []);
 
   // Generate preview URLs for new files
   useEffect(() => {
@@ -170,18 +224,18 @@ const UploadPhotos = () => {
   }, []);
 
   const existingCount = project.photos.metadata.length;
-  const hasExistingWithStorage = existingCount > 0 && project.photos.metadata.some(m => m.storage_path);
   const hasNewFiles = files.length > 0;
 
-  const uploadFilesToStorage = async (filesToUpload: File[]): Promise<Array<{ name: string; size: number; type: string; storage_path: string }>> => {
+  const uploadFilesToStorage = async (filesToUpload: File[]): Promise<Array<{ id: string; name: string; size: number; type: string; storage_path?: string; preview_url?: string; upload_status: "uploaded" | "preview_only" | "upload_failed" }>> => {
     const { data: { user } } = await supabase.auth.getUser();
     if (!user) throw new Error("Not authenticated");
 
-    const results: Array<{ name: string; size: number; type: string; storage_path: string }> = [];
+    const results: Array<{ id: string; name: string; size: number; type: string; storage_path?: string; preview_url?: string; upload_status: "uploaded" | "preview_only" | "upload_failed" }> = [];
 
-    for (const file of filesToUpload) {
+    for (const [index, file] of filesToUpload.entries()) {
       const ext = file.name.split('.').pop() || 'jpg';
       const storagePath = `${user.id}/${crypto.randomUUID()}.${ext}`;
+      const fallbackPreview = previews[index] || undefined;
 
       const { error } = await supabase.storage
         .from("bathroom-photos")
@@ -189,14 +243,24 @@ const UploadPhotos = () => {
 
       if (error) {
         console.error("Upload error for", file.name, error);
+        results.push({
+          id: crypto.randomUUID(),
+          name: file.name,
+          size: file.size,
+          type: file.type,
+          preview_url: fallbackPreview,
+          upload_status: fallbackPreview ? "preview_only" : "upload_failed",
+        });
         continue;
       }
 
       results.push({
+        id: crypto.randomUUID(),
         name: file.name,
         size: file.size,
         type: file.type,
         storage_path: storagePath,
+        upload_status: "uploaded",
       });
     }
 
@@ -209,8 +273,14 @@ const UploadPhotos = () => {
       try {
         const uploaded = await uploadFilesToStorage(files);
         if (uploaded.length === 0 && files.length > 0) {
-          // All uploads failed — save metadata only as fallback
-          const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
+          const metadata = files.map((f, index) => ({
+            id: crypto.randomUUID(),
+            name: f.name,
+            size: f.size,
+            type: f.type,
+            preview_url: previews[index] || undefined,
+            upload_status: previews[index] ? "preview_only" as const : "upload_failed" as const,
+          }));
           updateProject({ photos: { metadata, notes } });
           toast.warning("Photos saved locally only", { description: "Upload to cloud failed. Your photos will appear on this device only." });
         } else {
@@ -218,7 +288,14 @@ const UploadPhotos = () => {
         }
       } catch (err) {
         console.error("Upload error:", err);
-        const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
+        const metadata = files.map((f, index) => ({
+          id: crypto.randomUUID(),
+          name: f.name,
+          size: f.size,
+          type: f.type,
+          preview_url: previews[index] || undefined,
+          upload_status: previews[index] ? "preview_only" as const : "upload_failed" as const,
+        }));
         updateProject({ photos: { metadata, notes } });
         toast.warning("Photos saved locally only");
       } finally {
@@ -271,24 +348,25 @@ const UploadPhotos = () => {
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-2">
-                  {project.photos.metadata.map((meta, i) => {
-                    const signedUrl = restoredUrls[i];
+                  {restoredPhotos.map((photo, i) => {
                     return (
                       <div key={i} className="rounded-lg border border-border aspect-square overflow-hidden bg-secondary/60">
-                        {signedUrl ? (
+                        {photo.imageUrl ? (
                           <img
-                            src={signedUrl}
-                            alt={meta.name}
+                            src={photo.imageUrl}
+                            alt={photo.name}
                             className="w-full h-full object-cover"
-                            onError={(e) => {
-                              (e.target as HTMLImageElement).style.display = 'none';
-                              (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
-                            }}
+                            onError={() => markRestoredPhotoUnavailable(i)}
                           />
                         ) : null}
-                        <div className={`flex flex-col items-center justify-center gap-1.5 p-2 w-full h-full ${signedUrl ? 'hidden' : ''}`}>
+                        <div className={`flex flex-col items-center justify-center gap-1.5 p-2 w-full h-full ${photo.imageUrl ? 'hidden' : ''}`}>
                           <FileImage className="h-5 w-5 text-muted-foreground" />
-                          <span className="text-[10px] text-muted-foreground truncate w-full text-center leading-tight">{meta.name}</span>
+                          <span className="text-[10px] font-medium text-foreground text-center leading-tight">
+                            Image unavailable
+                          </span>
+                          <span className="text-[10px] text-muted-foreground truncate w-full text-center leading-tight">
+                            {photo.name}
+                          </span>
                         </div>
                       </div>
                     );
