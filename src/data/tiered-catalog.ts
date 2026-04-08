@@ -841,7 +841,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-ftile-01",
     name: '12×12" Ceramic Floor Tile — Warm Beige',
-    category: "Floor Tile",
+    category: "Main Floor Tile",
     tier: "Budget",
     vendor: "MSI",
     price: 480,
@@ -855,7 +855,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-ftile-02",
     name: '12×24" Ceramic Floor Tile — Light Gray',
-    category: "Floor Tile",
+    category: "Main Floor Tile",
     tier: "Budget",
     vendor: "Daltile",
     price: 560,
@@ -868,7 +868,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-ftile-03",
     name: "Luxury Vinyl Plank — Wood Look",
-    category: "Floor Tile",
+    category: "Main Floor Tile",
     tier: "Budget",
     vendor: "LifeProof",
     price: 380,
@@ -885,7 +885,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-ftile-01",
     name: '12×24" Porcelain Floor Tile — Warm Gray',
-    category: "Floor Tile",
+    category: "Main Floor Tile",
     tier: "Balanced",
     vendor: "Daltile",
     price: 850,
@@ -899,7 +899,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-ftile-02",
     name: "Wood-Look Porcelain Plank — Oak",
-    category: "Floor Tile",
+    category: "Main Floor Tile",
     tier: "Balanced",
     vendor: "Marazzi",
     price: 780,
@@ -913,7 +913,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-ftile-03",
     name: "Encaustic-Look Patterned Floor Tile",
-    category: "Floor Tile",
+    category: "Main Floor Tile",
     tier: "Balanced",
     vendor: "Merola",
     price: 1100,
@@ -930,7 +930,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-ftile-01",
     name: '2" Hex Marble Mosaic — Carrara',
-    category: "Floor Tile",
+    category: "Main Floor Tile",
     tier: "Premium",
     vendor: "Ann Sacks",
     price: 1600,
@@ -946,7 +946,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-ftile-02",
     name: "Natural Stone Floor Tile — Limestone",
-    category: "Floor Tile",
+    category: "Main Floor Tile",
     tier: "Premium",
     vendor: "Walker Zanger",
     price: 1850,
@@ -961,7 +961,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-ftile-03",
     name: "Heated Porcelain Floor Tile — Large Format",
-    category: "Floor Tile",
+    category: "Main Floor Tile",
     tier: "Premium",
     vendor: "Daltile",
     price: 1400,
