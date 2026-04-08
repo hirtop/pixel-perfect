@@ -1,18 +1,17 @@
 ---
 name: Product data model
-description: Tiered catalog (36 products), TieredProduct type, tier-aware helpers, static items per tier, same-tier swapping
+description: Tiered catalog (108 products), 12 customizable categories, TieredProduct type, tier-aware helpers, static items per tier, same-tier swapping
 type: feature
 ---
-- `src/data/tiered-catalog.ts` — 36-product catalog (4 categories × 3 tiers × 3 products each)
-- `src/data/products.ts` — core types, formatPrice, getBathroomInsights, packagePricing, re-exports from tiered-catalog
+- `src/data/tiered-catalog.ts` — 108-product catalog (12 categories × 3 tiers × 3 products each)
+- `src/data/products.ts` — core types, formatPrice, getBathroomInsights, packagePricing, CATEGORY_GROUPS, re-exports from tiered-catalog
 - `TieredProduct` interface: id, name, category, tier, vendor, price, description, finish, spec, image?, isDefault, laborDelta, laborNote?, tag?, disclaimer?
 - `ProductTier` = "Budget" | "Balanced" | "Premium"
-- 4 customizable categories: Vanity, Tile, Faucet, Mirror
-- 3 static (non-swappable) items per tier: Lighting, Toilet, Shower/Tub Hardware — defined in STATIC_ITEMS
-- Tier base labor: Budget $3,500 / Balanced $5,500 / Premium $8,500
+- 12 customizable categories: Vanity, Sink, Faucet, Mirror, Shower Wall Tile, Floor Tile, Shower Glass, Shower Valve, Shower Trim, Tub, Tub Valve, Shower Niche
+- 2 static (non-swappable) items per tier: Lighting, Toilet — defined in STATIC_ITEMS
+- CATEGORY_GROUPS for UI grouping: "Vanity & Sink", "Shower", "Tub", "Flooring"
+- Tier base labor: Budget $4,500 / Balanced $6,500 / Premium $9,000
 - Shipping estimate: $600 flat
 - Helpers: getTierDefaults(), getTierAlternatives(), getStaticItemsTotal(), computeLaborTotal()
 - Same-tier swapping only at MVP
-- Tags: "Recommended" (defaults), "Budget Pick" (Budget only), "Value Pick" / "Upgrade" (Balanced/Premium), "Trending", "Designer Pick", "Modern Pick", "Classic Pick", "Most Storage"
-- Budget/Balanced images exist in src/assets/products/; Budget and Premium products have no images yet (show placeholder)
 - Prices are in USD dollars (not cents)

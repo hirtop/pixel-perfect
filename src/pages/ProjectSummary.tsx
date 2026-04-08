@@ -12,12 +12,19 @@ const baseShipping = 650;
 
 const defaultPackageItems = [
   { name: "Vanity", item: "Floating oak vanity with quartz top" },
-  { name: "Tile", item: "Large-format porcelain in warm gray" },
+  { name: "Sink", item: "Undermount rectangular sink" },
   { name: "Faucet", item: "Single-handle brushed nickel faucet" },
-  { name: "Lighting", item: "Dual wall sconces, frosted glass" },
   { name: "Mirror", item: "Frameless rectangular mirror with shelf ledge" },
+  { name: "Shower Wall Tile", item: "Large-format porcelain in warm gray" },
+  { name: "Floor Tile", item: "Porcelain floor tile" },
+  { name: "Shower Glass", item: "Semi-frameless hinged shower door" },
+  { name: "Shower Valve", item: "Thermostatic valve with volume control" },
+  { name: "Shower Trim", item: "Rain + handheld combo showerhead" },
+  { name: "Tub", item: "Freestanding acrylic tub" },
+  { name: "Tub Valve", item: "Thermostatic tub/shower valve" },
+  { name: "Shower Niche", item: "Tiled shower niche" },
+  { name: "Lighting", item: "Dual wall sconces, frosted glass" },
   { name: "Toilet", item: "Elongated comfort-height toilet" },
-  { name: "Shower / Tub", item: "Rain showerhead with handheld combo" },
 ];
 
 const workflowPoints = [
@@ -43,8 +50,8 @@ const ProjectSummary = () => {
 
   const packageItems = project.customizations.categories && project.customizations.categories.length > 0
     ? defaultPackageItems.map((dp) => {
-        const custom = project.customizations.categories!.find((c) => c.name === dp.name || c.name === "Shower / Tub Hardware");
-        if (custom && (custom.name === dp.name || (dp.name === "Shower / Tub" && custom.name === "Shower / Tub Hardware"))) {
+        const custom = project.customizations.categories!.find((c) => c.name === dp.name);
+        if (custom) {
           return { ...dp, item: custom.selected };
         }
         return dp;

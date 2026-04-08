@@ -10,9 +10,11 @@ import {
   formatPrice,
   getBathroomInsights,
   CUSTOMIZABLE_CATEGORIES,
+  CATEGORY_GROUPS,
   getTierDefaults,
   getTierAlternatives,
   getStaticItemsTotal,
+  STATIC_ITEMS,
   TIER_BASE_LABOR,
   SHIPPING_ESTIMATE,
   type ProductTier,
@@ -230,9 +232,16 @@ const CustomizeOption = () => {
           )}
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-            {/* Product cards */}
-            <div className="lg:col-span-2 space-y-4">
-              {categories.map((cat) => {
+            {/* Product cards — grouped by section */}
+            <div className="lg:col-span-2 space-y-8">
+              {CATEGORY_GROUPS.map((group) => {
+                const groupCats = categories.filter((c) => group.categories.includes(c.name as any));
+                if (groupCats.length === 0) return null;
+                return (
+                  <div key={group.label}>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-3">{group.label}</p>
+                    <div className="space-y-4">
+              {groupCats.map((cat) => {
                 const isExpanded = expandedCategory === cat.name;
                 const isSwapped = cat.selected !== initialCategories.find((ic) => ic.name === cat.name)?.selected;
                 const priceDiff = cat.price - cat.basePrice;
@@ -353,6 +362,10 @@ const CustomizeOption = () => {
                   </div>
                 );
               })}
+                    </div>
+                  </div>
+                );
+              })}
             </div>
 
             {/* Budget panel */}
@@ -362,11 +375,11 @@ const CustomizeOption = () => {
                   <h3 className="font-heading text-lg text-foreground">Estimate</h3>
                   <div className="space-y-2.5 text-sm">
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Your selections (4 items)</span>
+                      <span className="text-muted-foreground">Your selections ({categories.length} items)</span>
                       <span className="font-medium text-foreground">{fmt(customizableMaterials)}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-muted-foreground">Other included items (3)</span>
+                      <span className="text-muted-foreground">Other included items ({STATIC_ITEMS[tier].length})</span>
                       <span className="font-medium text-muted-foreground">{fmt(otherItemsTotal)}</span>
                     </div>
                     <div className="flex justify-between">
@@ -421,7 +434,7 @@ const CustomizeOption = () => {
                   )}
 
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
-                    Actual costs depend on your contractor and region. Lighting, toilet, and shower hardware are included at default pricing.
+                    Actual costs depend on your contractor and region. Lighting and toilet are included at default pricing.
                   </p>
                 </div>
 
