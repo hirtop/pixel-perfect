@@ -38,6 +38,7 @@ const ProjectSummary = () => {
     { label: "Finish Preference", value: project.style_preferences.finish || "Not yet selected" },
     { label: "Budget Comfort", value: project.style_preferences.budget_level || "Not yet selected" },
     { label: "Bathroom Type", value: project.bathroom_type || "Not yet selected" },
+    { label: "Bathing Setup", value: project.bathing_setup || "Not yet selected" },
   ];
 
   const packageItems = project.customizations.categories && project.customizations.categories.length > 0

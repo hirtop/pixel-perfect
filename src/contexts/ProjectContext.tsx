@@ -24,6 +24,7 @@ export interface ProjectData {
   status: "draft" | "in_progress" | "completed";
   bathroom_type: string;
   property_type: string;
+  bathing_setup: string;
   photos: {
     metadata: PhotoMeta[];
     notes: string;
@@ -69,6 +70,7 @@ const defaultProject: ProjectData = {
   status: "draft",
   bathroom_type: "",
   property_type: "",
+  bathing_setup: "",
   photos: { metadata: [], notes: "" },
   dimensions: {},
   style_preferences: {},
@@ -305,6 +307,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
           status: data.status as ProjectData["status"],
           bathroom_type: data.bathroom_type || "",
           property_type: data.property_type || "",
+        bathing_setup: (data as any).bathing_setup || ((data.dimensions as any)?.bathing_setup) || "",
           photos: photosFromBlob || { metadata: [], notes: "" },
           dimensions: (data.dimensions as ProjectData["dimensions"]) || {},
           style_preferences: (data.style_preferences as ProjectData["style_preferences"]) || {},
