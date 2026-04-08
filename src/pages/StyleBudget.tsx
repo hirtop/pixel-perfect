@@ -37,6 +37,8 @@ const StyleBudget = () => {
   const handleContinue = () => {
     updateProject({
       style_preferences: { style: selectedStyle, budget, budget_level: budgetLevel, finish },
+      selected_package: { name: undefined, tier: undefined },
+      customizations: {},
     });
     markStepComplete("style-budget");
     navigate("/options");
