@@ -2,6 +2,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { Upload, ImagePlus, X, ArrowLeft, ImageIcon, FileImage, Loader2 } from "lucide-react";
+import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
@@ -120,6 +121,27 @@ const UploadPhotos = () => {
         : photo
     )));
   }, []);
+
+  const removeRestoredPhoto = useCallback(async (index: number) => {
+    const photo = restoredPhotos[index];
+
+    // Delete from storage if a file exists
+    if (photo?.storage_path) {
+      const { error } = await supabase.storage
+        .from("bathroom-photos")
+        .remove([photo.storage_path]);
+      if (error) console.error("Storage delete error:", error);
+    }
+
+    // Update project context (removes from metadata array)
+    const updatedMetadata = project.photos.metadata.filter((_, i) => i !== index);
+    updateProject({ photos: { ...project.photos, metadata: updatedMetadata } });
+
+    // Update local restored list
+    setRestoredPhotos((current) => current.filter((_, i) => i !== index));
+
+    toast.success("Photo removed");
+  }, [restoredPhotos, project.photos, updateProject]);
 
   // Generate preview URLs for new files
   useEffect(() => {
@@ -347,10 +369,10 @@ const UploadPhotos = () => {
                     <p className="text-xs text-muted-foreground mt-0.5">Upload new photos below to replace them, or continue with your current set.</p>
                   </div>
                 </div>
-                <div className="grid grid-cols-4 gap-2">
+                <div className="grid grid-cols-4 gap-2 mt-1">
                   {restoredPhotos.map((photo, i) => {
                     return (
-                      <div key={i} className="rounded-lg border border-border aspect-square overflow-hidden bg-secondary/60">
+                      <div key={i} className="relative group rounded-lg border border-border aspect-square overflow-hidden bg-secondary/60">
                         {photo.imageUrl ? (
                           <img
                             src={photo.imageUrl}
@@ -368,6 +390,14 @@ const UploadPhotos = () => {
                             {photo.name}
                           </span>
                         </div>
+                        <button
+                          type="button"
+                          onClick={() => removeRestoredPhoto(i)}
+                          className="absolute top-1.5 right-1.5 rounded-full bg-foreground/70 p-1 text-background opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                          aria-label={`Remove ${photo.name}`}
+                        >
+                          <X className="h-3.5 w-3.5" />
+                        </button>
                       </div>
                     );
                   })}
