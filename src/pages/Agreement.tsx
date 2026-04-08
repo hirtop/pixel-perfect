@@ -12,7 +12,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { useProject } from "@/contexts/ProjectContext";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
-  <div className="space-y-4">
+  <div className="space-y-4" data-pdf-section>
     <h2 className="font-heading text-xl text-foreground border-b border-border pb-2">{title}</h2>
     {children}
   </div>
