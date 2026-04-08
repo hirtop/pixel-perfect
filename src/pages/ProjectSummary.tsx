@@ -50,8 +50,8 @@ const ProjectSummary = () => {
 
   const packageItems = project.customizations.categories && project.customizations.categories.length > 0
     ? defaultPackageItems.map((dp) => {
-        const custom = project.customizations.categories!.find((c) => c.name === dp.name || c.name === "Shower / Tub Hardware");
-        if (custom && (custom.name === dp.name || (dp.name === "Shower / Tub" && custom.name === "Shower / Tub Hardware"))) {
+        const custom = project.customizations.categories!.find((c) => c.name === dp.name);
+        if (custom) {
           return { ...dp, item: custom.selected };
         }
         return dp;
