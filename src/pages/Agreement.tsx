@@ -1,7 +1,9 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, AlertCircle, Download, Check } from "lucide-react";
+import { ArrowLeft, AlertCircle, Download, Check, Loader2 } from "lucide-react";
+import { jsPDF } from "jspdf";
+import html2canvas from "html2canvas";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -66,10 +68,56 @@ const Agreement = () => {
     await saveProject();
   };
 
-  const handleDownload = () => {
+  const [isGenerating, setIsGenerating] = useState(false);
+
+  const handleDownload = async () => {
     const data = gatherFormData();
     if (data) updateProject({ agreement_data: data });
-    toast("Preparing PDF…", { description: "Your agreement will be ready to download shortly." });
+
+    const element = document.getElementById("agreement-content");
+    if (!element) {
+      toast.error("Could not find agreement content to export.");
+      return;
+    }
+
+    setIsGenerating(true);
+    toast("Preparing PDF…", { description: "Rendering your agreement." });
+
+    try {
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        logging: false,
+        backgroundColor: "#ffffff",
+      });
+
+      const imgData = canvas.toDataURL("image/png");
+      const imgWidth = 210; // A4 mm
+      const pageHeight = 297;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      const pdf = new jsPDF("p", "mm", "a4");
+      let heightLeft = imgHeight;
+      let position = 0;
+
+      pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save("bobox-remodel-agreement.pdf");
+      toast.success("PDF downloaded successfully!");
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      toast.error("PDF generation failed. Please try again.");
+    } finally {
+      setIsGenerating(false);
+    }
   };
 
   return (
@@ -103,7 +151,7 @@ const Agreement = () => {
           </div>
 
           <form ref={formRef} onSubmit={(e) => e.preventDefault()}>
-            <div className="rounded-2xl border border-border bg-card p-8 md:p-10 space-y-10 shadow-sm">
+            <div id="agreement-content" className="rounded-2xl border border-border bg-card p-8 md:p-10 space-y-10 shadow-sm">
 
               <Section title="Client Information">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -207,8 +255,8 @@ const Agreement = () => {
             <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleSave} disabled={isSaving}>
               {isSaving ? "Saving…" : "Save Agreement Template"}
             </Button>
-            <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg gap-2" onClick={handleDownload}>
-              <Download className="h-4 w-4" /> Download as PDF
+            <Button size="lg" variant="outline" className="w-full sm:w-auto px-8 h-12 text-base rounded-lg gap-2" onClick={handleDownload} disabled={isGenerating}>
+              {isGenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Download className="h-4 w-4" />} {isGenerating ? "Generating…" : "Download as PDF"}
             </Button>
             <Link to="/subcontractors" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Back to Subcontractors
