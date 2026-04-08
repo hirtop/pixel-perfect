@@ -93,13 +93,40 @@ const plans = [
 export default function LandingPage() {
   const { user } = useAuth();
   const { project, isLoaded, resetProject } = useProject();
+  const { projects, deleteProject } = useUserProjects();
+  const navigate = useNavigate();
+  const [pickerOpen, setPickerOpen] = useState(false);
 
-  const hasSavedProject = Boolean(user && isLoaded && project.id);
+  const projectCount = projects.length;
+  const hasSavedProject = Boolean(user && isLoaded && projectCount > 0);
+  const hasMultiple = projectCount > 1;
 
-  const ctaText = hasSavedProject ? "Resume Your Bathroom Project" : "Start Your Bathroom Project";
-  const ctaRoute = hasSavedProject
-    ? (project.workflow_progress?.current_step === "start" ? "/start" : `/${project.workflow_progress?.current_step || "start"}`)
+  const singleProject = projectCount === 1 ? projects[0] : null;
+  const singleRoute = singleProject
+    ? (singleProject.workflow_progress?.current_step === "start" ? "/start" : `/${singleProject.workflow_progress?.current_step || "start"}`)
     : "/start";
+
+  const handlePrimaryCta = () => {
+    if (!hasSavedProject) {
+      navigate("/start");
+    } else if (hasMultiple) {
+      setPickerOpen(true);
+    } else {
+      navigate(singleRoute);
+    }
+  };
+
+  const ctaText = !hasSavedProject
+    ? "Start Your Bathroom Project"
+    : hasMultiple
+      ? "View Your Projects"
+      : "Resume Your Bathroom Project";
+
+  const navCtaText = !hasSavedProject
+    ? "Start Your Bathroom Project"
+    : hasMultiple
+      ? "Your Projects"
+      : "Resume Project";
 
   return (
     <div className="min-h-screen bg-background">
