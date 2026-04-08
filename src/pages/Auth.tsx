@@ -88,7 +88,7 @@ export default function Auth() {
         const { error } = await signIn(email, password);
         if (error) throw error;
         toast.success("Welcome back!");
-        navigate("/start");
+        navigate("/");
       }
     } catch (err: any) {
       if (err?.code === "email_not_confirmed") {
