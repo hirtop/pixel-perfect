@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { Camera, Layers, DollarSign, TrendingUp, ShoppingBag, ListChecks, Users, Plus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { useProject } from "@/contexts/ProjectContext";
+import { useUserProjects } from "@/hooks/useUserProjects";
+import ProjectPickerDialog from "@/components/ProjectPickerDialog";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
@@ -90,13 +93,40 @@ const plans = [
 export default function LandingPage() {
   const { user } = useAuth();
   const { project, isLoaded, resetProject } = useProject();
+  const { projects, deleteProject } = useUserProjects();
+  const navigate = useNavigate();
+  const [pickerOpen, setPickerOpen] = useState(false);
 
-  const hasSavedProject = Boolean(user && isLoaded && project.id);
+  const projectCount = projects.length;
+  const hasSavedProject = Boolean(user && isLoaded && projectCount > 0);
+  const hasMultiple = projectCount > 1;
 
-  const ctaText = hasSavedProject ? "Resume Your Bathroom Project" : "Start Your Bathroom Project";
-  const ctaRoute = hasSavedProject
-    ? (project.workflow_progress?.current_step === "start" ? "/start" : `/${project.workflow_progress?.current_step || "start"}`)
+  const singleProject = projectCount === 1 ? projects[0] : null;
+  const singleRoute = singleProject
+    ? (singleProject.workflow_progress?.current_step === "start" ? "/start" : `/${singleProject.workflow_progress?.current_step || "start"}`)
     : "/start";
+
+  const handlePrimaryCta = () => {
+    if (!hasSavedProject) {
+      navigate("/start");
+    } else if (hasMultiple) {
+      setPickerOpen(true);
+    } else {
+      navigate(singleRoute);
+    }
+  };
+
+  const ctaText = !hasSavedProject
+    ? "Start Your Bathroom Project"
+    : hasMultiple
+      ? "View Your Projects"
+      : "Resume Your Bathroom Project";
+
+  const navCtaText = !hasSavedProject
+    ? "Start Your Bathroom Project"
+    : hasMultiple
+      ? "Your Projects"
+      : "Resume Project";
 
   return (
     <div className="min-h-screen bg-background">
@@ -114,8 +144,8 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <AccountMenu />
-            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" asChild>
-              <Link to={ctaRoute}>{hasSavedProject ? "Resume Project" : "Start Your Bathroom Project"}</Link>
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={handlePrimaryCta}>
+              {navCtaText}
             </Button>
           </div>
         </div>
@@ -160,19 +190,17 @@ export default function LandingPage() {
               project plan.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" asChild>
-                <Link to={ctaRoute}>{ctaText}</Link>
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta}>
+                {ctaText}
               </Button>
               {hasSavedProject ? (
                 <Button
                   size="lg"
                   variant="outline"
                   className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8 gap-2"
-                  asChild
+                  onClick={() => { resetProject(); navigate("/start"); }}
                 >
-                  <Link to="/start" onClick={() => resetProject()}>
-                    <Plus className="h-4 w-4" /> Start a New Project
-                  </Link>
+                  <Plus className="h-4 w-4" /> Start a New Project
                 </Button>
               ) : (
                 <Button
@@ -381,6 +409,13 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      <ProjectPickerDialog
+        open={pickerOpen}
+        onOpenChange={setPickerOpen}
+        projects={projects}
+        onDelete={deleteProject}
+      />
     </div>
   );
 }
