@@ -190,19 +190,17 @@ export default function LandingPage() {
               project plan.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" asChild>
-                <Link to={ctaRoute}>{ctaText}</Link>
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta}>
+                {ctaText}
               </Button>
               {hasSavedProject ? (
                 <Button
                   size="lg"
                   variant="outline"
                   className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8 gap-2"
-                  asChild
+                  onClick={() => { resetProject(); navigate("/start"); }}
                 >
-                  <Link to="/start" onClick={() => resetProject()}>
-                    <Plus className="h-4 w-4" /> Start a New Project
-                  </Link>
+                  <Plus className="h-4 w-4" /> Start a New Project
                 </Button>
               ) : (
                 <Button
