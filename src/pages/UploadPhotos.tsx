@@ -1,11 +1,12 @@
 import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Upload, ImagePlus, X, ArrowLeft, ImageIcon, FileImage } from "lucide-react";
+import { Upload, ImagePlus, X, ArrowLeft, ImageIcon, FileImage, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useProject } from "@/contexts/ProjectContext";
+import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
 const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|heic)$/i;
@@ -30,8 +31,43 @@ const UploadPhotos = () => {
   const [previews, setPreviews] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const [notes, setNotes] = useState(project.photos.notes || "");
+  const [restoredUrls, setRestoredUrls] = useState<string[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
 
-  // Generate preview URLs — HEIC files may not be previewable in all browsers
+  // Sync notes when project loads from backend
+  useEffect(() => {
+    setNotes(project.photos.notes || "");
+  }, [project.photos.notes]);
+
+  // Generate signed URLs for previously uploaded photos
+  useEffect(() => {
+    const meta = project.photos.metadata;
+    if (meta.length === 0 || files.length > 0) {
+      setRestoredUrls([]);
+      return;
+    }
+
+    const pathsToSign = meta.filter(m => m.storage_path).map(m => m.storage_path!);
+    if (pathsToSign.length === 0) {
+      setRestoredUrls([]);
+      return;
+    }
+
+    let cancelled = false;
+    (async () => {
+      const urls: string[] = [];
+      for (const path of pathsToSign) {
+        const { data, error } = await supabase.storage
+          .from("bathroom-photos")
+          .createSignedUrl(path, 3600);
+        urls.push(error ? "" : data.signedUrl);
+      }
+      if (!cancelled) setRestoredUrls(urls);
+    })();
+    return () => { cancelled = true; };
+  }, [project.photos.metadata, files.length]);
+
+  // Generate preview URLs for new files
   useEffect(() => {
     let cancelled = false;
     const urls: string[] = [];
@@ -40,7 +76,6 @@ const UploadPhotos = () => {
       const result: string[] = [];
       for (const f of files) {
         const url = URL.createObjectURL(f);
-        // Test if the browser can actually decode this image
         const canPreview = await new Promise<boolean>((resolve) => {
           const img = new Image();
           img.onload = () => resolve(true);
@@ -51,7 +86,6 @@ const UploadPhotos = () => {
           urls.push(url);
           result.push(url);
         } else {
-          // Revoke unusable URL, push empty string as fallback marker
           URL.revokeObjectURL(url);
           result.push("");
         }
@@ -99,7 +133,6 @@ const UploadPhotos = () => {
     });
   }, []);
 
-  // Drag-and-drop handlers
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -121,12 +154,10 @@ const UploadPhotos = () => {
     }
   }, [addFiles]);
 
-  // File input handler
   const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
       addFiles(e.target.files);
     }
-    // Reset so same file can be re-selected
     e.target.value = "";
   }, [addFiles]);
 
@@ -139,12 +170,60 @@ const UploadPhotos = () => {
   }, []);
 
   const existingCount = project.photos.metadata.length;
+  const hasExistingWithStorage = existingCount > 0 && project.photos.metadata.some(m => m.storage_path);
   const hasNewFiles = files.length > 0;
 
-  const handleContinue = () => {
+  const uploadFilesToStorage = async (filesToUpload: File[]): Promise<Array<{ name: string; size: number; type: string; storage_path: string }>> => {
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) throw new Error("Not authenticated");
+
+    const results: Array<{ name: string; size: number; type: string; storage_path: string }> = [];
+
+    for (const file of filesToUpload) {
+      const ext = file.name.split('.').pop() || 'jpg';
+      const storagePath = `${user.id}/${crypto.randomUUID()}.${ext}`;
+
+      const { error } = await supabase.storage
+        .from("bathroom-photos")
+        .upload(storagePath, file, { contentType: file.type, upsert: true });
+
+      if (error) {
+        console.error("Upload error for", file.name, error);
+        continue;
+      }
+
+      results.push({
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        storage_path: storagePath,
+      });
+    }
+
+    return results;
+  };
+
+  const handleContinue = async () => {
     if (hasNewFiles) {
-      const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
-      updateProject({ photos: { metadata, notes } });
+      setIsUploading(true);
+      try {
+        const uploaded = await uploadFilesToStorage(files);
+        if (uploaded.length === 0 && files.length > 0) {
+          // All uploads failed — save metadata only as fallback
+          const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
+          updateProject({ photos: { metadata, notes } });
+          toast.warning("Photos saved locally only", { description: "Upload to cloud failed. Your photos will appear on this device only." });
+        } else {
+          updateProject({ photos: { metadata: uploaded, notes } });
+        }
+      } catch (err) {
+        console.error("Upload error:", err);
+        const metadata = files.map((f) => ({ name: f.name, size: f.size, type: f.type }));
+        updateProject({ photos: { metadata, notes } });
+        toast.warning("Photos saved locally only");
+      } finally {
+        setIsUploading(false);
+      }
     } else {
       updateProject({ photos: { ...project.photos, notes } });
     }
@@ -179,7 +258,7 @@ const UploadPhotos = () => {
           </div>
 
           <div className="space-y-8">
-            {/* Saved photo indicator */}
+            {/* Saved photo indicator with actual thumbnails */}
             {!hasNewFiles && existingCount > 0 && (
               <div className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-4">
                 <div className="flex items-center gap-3 mb-3">
@@ -192,12 +271,28 @@ const UploadPhotos = () => {
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-2">
-                  {project.photos.metadata.map((meta, i) => (
-                    <div key={i} className="rounded-lg bg-secondary/60 border border-border aspect-square flex flex-col items-center justify-center gap-1.5 p-2">
-                      <FileImage className="h-5 w-5 text-muted-foreground" />
-                      <span className="text-[10px] text-muted-foreground truncate w-full text-center leading-tight">{meta.name}</span>
-                    </div>
-                  ))}
+                  {project.photos.metadata.map((meta, i) => {
+                    const signedUrl = restoredUrls[i];
+                    return (
+                      <div key={i} className="rounded-lg border border-border aspect-square overflow-hidden bg-secondary/60">
+                        {signedUrl ? (
+                          <img
+                            src={signedUrl}
+                            alt={meta.name}
+                            className="w-full h-full object-cover"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).style.display = 'none';
+                              (e.target as HTMLImageElement).nextElementSibling?.classList.remove('hidden');
+                            }}
+                          />
+                        ) : null}
+                        <div className={`flex flex-col items-center justify-center gap-1.5 p-2 w-full h-full ${signedUrl ? 'hidden' : ''}`}>
+                          <FileImage className="h-5 w-5 text-muted-foreground" />
+                          <span className="text-[10px] text-muted-foreground truncate w-full text-center leading-tight">{meta.name}</span>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </div>
             )}
@@ -244,7 +339,7 @@ const UploadPhotos = () => {
               </div>
             </div>
 
-            {/* Thumbnail previews */}
+            {/* Thumbnail previews for new files */}
             <AnimatePresence>
               {hasNewFiles && (
                 <motion.div
@@ -331,8 +426,20 @@ const UploadPhotos = () => {
 
             {/* Actions */}
             <div className="pt-4 flex flex-col sm:flex-row items-center gap-5">
-              <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
-                Continue
+              <Button
+                size="lg"
+                className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg"
+                onClick={handleContinue}
+                disabled={isUploading}
+              >
+                {isUploading ? (
+                  <>
+                    <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                    Uploading…
+                  </>
+                ) : (
+                  "Continue"
+                )}
               </Button>
               <Link to="/start" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ArrowLeft className="h-3.5 w-3.5" /> Back to Project Setup
