@@ -409,6 +409,13 @@ export default function LandingPage() {
           </div>
         </div>
       </footer>
+
+      <ProjectPickerDialog
+        open={pickerOpen}
+        onOpenChange={setPickerOpen}
+        projects={projects}
+        onDelete={deleteProject}
+      />
     </div>
   );
 }
