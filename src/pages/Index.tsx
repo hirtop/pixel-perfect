@@ -159,18 +159,31 @@ export default function LandingPage() {
               packages with live budgets, real product suggestions, and a simple
               project plan.
             </motion.p>
-            <motion.div variants={fadeUp} custom={2} className="flex gap-4">
+            <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" asChild>
-                <Link to="/start">Start Your Bathroom Project</Link>
+                <Link to={ctaRoute}>{ctaText}</Link>
               </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8"
-                onClick={() => document.getElementById("transform")?.scrollIntoView({ behavior: "smooth", block: "start" })}
-              >
-                See a Sample Remodel
-              </Button>
+              {hasSavedProject ? (
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8 gap-2"
+                  asChild
+                >
+                  <Link to="/start" onClick={() => resetProject()}>
+                    <Plus className="h-4 w-4" /> Start a New Project
+                  </Link>
+                </Button>
+              ) : (
+                <Button
+                  size="lg"
+                  variant="outline"
+                  className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8"
+                  onClick={() => document.getElementById("transform")?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                >
+                  See a Sample Remodel
+                </Button>
+              )}
             </motion.div>
           </motion.div>
         </div>
