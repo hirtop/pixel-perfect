@@ -13,7 +13,9 @@ export const PRODUCT_CATEGORIES = [
   "Faucet",
   "Mirror",
   "Shower Wall Tile",
-  "Floor Tile",
+  "Shower Floor Tile",
+  "Main Floor Tile",
+  "Accent Tile",
   "Shower Glass",
   "Shower Valve",
   "Shower Trim",
@@ -33,7 +35,9 @@ export const CUSTOMIZABLE_CATEGORIES: ProductCategory[] = [
   "Faucet",
   "Mirror",
   "Shower Wall Tile",
-  "Floor Tile",
+  "Shower Floor Tile",
+  "Main Floor Tile",
+  "Accent Tile",
   "Shower Glass",
   "Shower Valve",
   "Shower Trim",
@@ -45,9 +49,9 @@ export const CUSTOMIZABLE_CATEGORIES: ProductCategory[] = [
 /** Visual groupings for the customize page */
 export const CATEGORY_GROUPS: { label: string; categories: ProductCategory[] }[] = [
   { label: "Vanity & Sink", categories: ["Vanity", "Sink", "Faucet", "Mirror"] },
-  { label: "Shower", categories: ["Shower Wall Tile", "Shower Glass", "Shower Valve", "Shower Trim", "Shower Niche"] },
+  { label: "Shower", categories: ["Shower Wall Tile", "Shower Floor Tile", "Shower Glass", "Shower Valve", "Shower Trim", "Shower Niche"] },
   { label: "Tub", categories: ["Tub", "Tub Valve"] },
-  { label: "Flooring", categories: ["Floor Tile"] },
+  { label: "Flooring & Accent", categories: ["Main Floor Tile", "Accent Tile"] },
 ];
 
 // ─── Formatting ─────────────────────────────────────────────────────

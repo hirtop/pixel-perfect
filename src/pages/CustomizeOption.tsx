@@ -260,6 +260,9 @@ const CustomizeOption = () => {
                       <div className="flex-1 min-w-0">
                         <div className="flex items-center gap-2 mb-0.5">
                           <p className="text-xs font-semibold uppercase tracking-wider text-primary">{cat.name}</p>
+                          {cat.name === "Accent Tile" && (
+                            <span className="text-[10px] font-medium bg-muted text-muted-foreground rounded-full px-2 py-0.5">Optional</span>
+                          )}
                           {cat.tag && (
                             <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5">{cat.tag}</span>
                           )}
