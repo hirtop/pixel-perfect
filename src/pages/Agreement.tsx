@@ -1,7 +1,7 @@
 import { useState, useRef, useCallback } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { ArrowLeft, AlertCircle, Download, Check, Loader2 } from "lucide-react";
+import { ArrowLeft, AlertCircle, Download, Check, Loader2, Home } from "lucide-react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { toast } from "sonner";
