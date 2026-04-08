@@ -98,7 +98,7 @@ export default function LandingPage() {
   const [pickerOpen, setPickerOpen] = useState(false);
 
   const projectCount = projects.length;
-  const isProjectStateLoading = Boolean(user) && (authLoading || projectsLoading);
+  const isProjectStateLoading = authLoading || (Boolean(user) && projectsLoading);
   const hasSavedProject = Boolean(user && !isProjectStateLoading && projectCount > 0);
   const hasMultiple = projectCount > 1;
 
@@ -113,6 +113,9 @@ export default function LandingPage() {
     }
 
     if (!hasSavedProject) {
+      if (user) {
+        resetProject();
+      }
       navigate("/start");
     } else if (hasMultiple) {
       setPickerOpen(true);

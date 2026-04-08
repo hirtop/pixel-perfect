@@ -15,12 +15,16 @@ export interface SavedProject {
 }
 
 export function useUserProjects() {
-  const { user } = useAuth();
+  const { user, loading: authLoading } = useAuth();
   const [projects, setProjects] = useState<SavedProject[]>([]);
   const [loading, setLoading] = useState(false);
   const [loadedUserId, setLoadedUserId] = useState<string | null>(null);
 
   const fetchProjects = useCallback(async () => {
+    if (authLoading) {
+      return;
+    }
+
     if (!user) {
       setProjects([]);
       setLoadedUserId(null);
@@ -51,11 +55,13 @@ export function useUserProjects() {
     } finally {
       setLoading(false);
     }
-  }, [user]);
+  }, [authLoading, user]);
 
   useEffect(() => {
-    fetchProjects();
-  }, [fetchProjects]);
+    if (!authLoading) {
+      void fetchProjects();
+    }
+  }, [authLoading, fetchProjects]);
 
   const deleteProject = useCallback(
     async (id: string) => {
@@ -70,7 +76,7 @@ export function useUserProjects() {
 
   return {
     projects,
-    loading: loading || isHydratingCurrentUser,
+    loading: authLoading || loading || isHydratingCurrentUser,
     refetch: fetchProjects,
     deleteProject,
   };
