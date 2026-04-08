@@ -9,6 +9,7 @@ import { useProject } from "@/contexts/ProjectContext";
 
 const bathroomTypes = ["Primary Bathroom", "Guest Bathroom", "Powder Room", "Other"];
 const propertyTypes = ["House", "Condo", "Apartment", "Other"];
+const bathingSetupOptions = ["Shower only", "Tub only", "Tub + shower", "Neither / powder room"];
 const styleOptions = ["Modern", "Spa", "Traditional", "Minimal", "Luxury", "Transitional"];
 
 const StartProject = () => {
@@ -20,6 +21,7 @@ const StartProject = () => {
   const [propertyType, setPropertyType] = useState(project.property_type);
   const [budget, setBudget] = useState(project.style_preferences.budget || "");
   const [style, setStyle] = useState(project.style_preferences.style || "");
+  const [bathingSetup, setBathingSetup] = useState(project.bathing_setup || "");
 
   useEffect(() => {
     setProjectName(project.name === "Untitled Project" ? "" : project.name);
@@ -27,12 +29,14 @@ const StartProject = () => {
     setPropertyType(project.property_type);
     setBudget(project.style_preferences.budget || "");
     setStyle(project.style_preferences.style || "");
+    setBathingSetup(project.bathing_setup || "");
   }, [
     project.name,
     project.bathroom_type,
     project.property_type,
     project.style_preferences.budget,
     project.style_preferences.style,
+    project.bathing_setup,
   ]);
 
   const syncToContext = () => {
@@ -40,6 +44,7 @@ const StartProject = () => {
       name: projectName || "Untitled Project",
       bathroom_type: bathroomType,
       property_type: propertyType,
+      bathing_setup: bathingSetup,
       style_preferences: { ...project.style_preferences, budget, style },
     });
   };
@@ -131,6 +136,25 @@ const StartProject = () => {
                     }`}
                   >
                     {type}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="space-y-3">
+              <Label className="text-sm font-medium text-foreground">Bathing Setup</Label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {bathingSetupOptions.map((option) => (
+                  <button
+                    key={option}
+                    onClick={() => setBathingSetup(option)}
+                    className={`rounded-lg border-2 px-4 py-3 text-sm font-semibold transition-all duration-200 ${
+                      bathingSetup === option
+                        ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
+                        : "border-transparent bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
+                    }`}
+                  >
+                    {option}
                   </button>
                 ))}
               </div>
