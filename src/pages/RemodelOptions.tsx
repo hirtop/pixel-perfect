@@ -122,6 +122,7 @@ const RemodelOptions = () => {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {packages.map((pkg, i) => {
               const isSelected = project.selected_package.name === pkg.name;
+              const isPreferred = !project.selected_package.name && project.style_preferences.budget_level?.toLowerCase().includes(pkg.name.toLowerCase());
               return (
                 <motion.div
                   key={pkg.name}
@@ -129,7 +130,7 @@ const RemodelOptions = () => {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.12, duration: 0.5 }}
                   className={`group rounded-2xl border-2 overflow-hidden transition-all duration-200 hover:shadow-lg ${
-                    isSelected
+                    isSelected || isPreferred
                       ? "border-primary shadow-md ring-2 ring-primary/20"
                       : pkg.featured
                         ? "border-primary shadow-md ring-1 ring-primary/10"
@@ -138,7 +139,7 @@ const RemodelOptions = () => {
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img src={pkg.image} alt={`${pkg.name} bathroom remodel`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width={800} height={600} loading={i === 0 ? undefined : "lazy"} />
-                    {isSelected ? (
+                    {(isSelected || isPreferred) ? (
                       <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
                         <Check className="h-3 w-3" /> Your Selection
                       </div>
