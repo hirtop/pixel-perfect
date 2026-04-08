@@ -6,6 +6,7 @@ export interface PhotoMeta {
   name: string;
   size: number;
   type: string;
+  storage_path?: string;
 }
 
 export interface SubcontractorInteraction {
