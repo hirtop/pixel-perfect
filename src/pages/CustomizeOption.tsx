@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Check, ChevronUp, AlertTriangle } from "lucide-react";
+import { ArrowLeft, Check, ChevronUp, AlertTriangle, Home } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
@@ -204,9 +204,14 @@ const CustomizeOption = () => {
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </Link>
-          <Link to={`/package/${pkgTier}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-            <ArrowLeft className="h-3.5 w-3.5" /> Back to Package Detail
-          </Link>
+          <div className="flex items-center gap-4">
+            <Link to={`/package/${pkgTier}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <ArrowLeft className="h-3.5 w-3.5" /> Back to Package Detail
+            </Link>
+            <Link to="/" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <Home className="h-3.5 w-3.5" /> Home
+            </Link>
+          </div>
         </div>
       </nav>
 

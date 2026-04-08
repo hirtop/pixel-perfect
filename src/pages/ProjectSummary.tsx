@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { Check, ArrowLeft } from "lucide-react";
+import { Check, ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import balancedImg from "@/assets/package-balanced.jpg";
@@ -94,6 +94,9 @@ const ProjectSummary = () => {
             <AccountMenu />
             <Link to="/workflow" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <ArrowLeft className="h-3.5 w-3.5" /> Back to Workflow
+            </Link>
+            <Link to="/" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <Home className="h-3.5 w-3.5" /> Home
             </Link>
           </div>
         </div>
