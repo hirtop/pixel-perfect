@@ -1,10 +1,13 @@
+import { useState } from "react";
 import { motion, type Variants } from "framer-motion";
 import { Camera, Layers, DollarSign, TrendingUp, ShoppingBag, ListChecks, Users, Plus } from "lucide-react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import { useAuth } from "@/hooks/useAuth";
 import { useProject } from "@/contexts/ProjectContext";
+import { useUserProjects } from "@/hooks/useUserProjects";
+import ProjectPickerDialog from "@/components/ProjectPickerDialog";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
