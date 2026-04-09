@@ -27,23 +27,12 @@ export type AgreementPrintData = {
   contractorSignDate: string;
 };
 
-const shellStyle: CSSProperties = {
-  width: "186mm",
-  minWidth: "186mm",
-  maxWidth: "186mm",
-  boxSizing: "border-box",
-  backgroundColor: "hsl(0 0% 100%)",
-  color: "hsl(var(--foreground))",
-  fontFamily: "var(--font-body)",
-  whiteSpace: "normal",
-  overflowWrap: "anywhere",
-  wordBreak: "break-word",
-  transform: "none",
-};
-
 const sectionStyle: CSSProperties = {
   width: "100%",
   maxWidth: "100%",
+  minWidth: 0,
+  boxSizing: "border-box",
+  overflow: "visible",
 };
 
 const twoColumnGridStyle: CSSProperties = {
@@ -52,6 +41,9 @@ const twoColumnGridStyle: CSSProperties = {
   gap: "12px 16px",
   width: "100%",
   maxWidth: "100%",
+  minWidth: 0,
+  boxSizing: "border-box",
+  overflow: "visible",
 };
 
 const threeColumnGridStyle: CSSProperties = {
@@ -60,6 +52,9 @@ const threeColumnGridStyle: CSSProperties = {
   gap: "12px 16px",
   width: "100%",
   maxWidth: "100%",
+  minWidth: 0,
+  boxSizing: "border-box",
+  overflow: "visible",
 };
 
 const labelStyle: CSSProperties = {
@@ -72,14 +67,18 @@ const labelStyle: CSSProperties = {
 };
 
 const valueStyle: CSSProperties = {
+  display: "block",
   width: "100%",
   maxWidth: "100%",
+  minWidth: 0,
   minHeight: "20px",
   fontSize: "13px",
   lineHeight: 1.6,
   whiteSpace: "pre-wrap",
   overflowWrap: "anywhere",
   wordBreak: "break-word",
+  boxSizing: "border-box",
+  overflow: "visible",
 };
 
 const blockStyle: CSSProperties = {
@@ -91,6 +90,7 @@ const blockStyle: CSSProperties = {
   padding: "12px 14px",
   boxSizing: "border-box",
   backgroundColor: "hsl(0 0% 100%)",
+  overflow: "visible",
 };
 
 const mutedBlockStyle: CSSProperties = {
@@ -136,10 +136,25 @@ const TextBlock = ({ label, value }: { label: string; value: string }) => (
   </div>
 );
 
-export const AgreementPrintDocument = ({ data }: { data: AgreementPrintData }) => {
+export const AgreementPrintDocument = ({ data, widthPx }: { data: AgreementPrintData; widthPx: number }) => {
+  const shellStyle: CSSProperties = {
+    width: `${widthPx}px`,
+    minWidth: `${widthPx}px`,
+    maxWidth: `${widthPx}px`,
+    boxSizing: "border-box",
+    backgroundColor: "hsl(0 0% 100%)",
+    color: "hsl(var(--foreground))",
+    fontFamily: "var(--font-body)",
+    whiteSpace: "normal",
+    overflowWrap: "anywhere",
+    wordBreak: "break-word",
+    transform: "none",
+    overflow: "visible",
+  };
+
   return (
     <article data-agreement-print-root style={shellStyle}>
-      <div style={{ width: "100%", maxWidth: "100%", padding: 0 }}>
+      <div style={{ width: "100%", maxWidth: "100%", minWidth: 0, padding: 0, boxSizing: "border-box", overflow: "visible" }}>
         <section data-pdf-section style={{ ...sectionStyle, marginBottom: "28px" }}>
           <div style={{ marginBottom: "18px" }}>
             <p style={{ ...labelStyle, color: "hsl(var(--primary))", marginBottom: "8px" }}>Document</p>
@@ -161,10 +176,15 @@ export const AgreementPrintDocument = ({ data }: { data: AgreementPrintData }) =
 
           <div
             style={{
+              width: "100%",
+              maxWidth: "100%",
+              minWidth: 0,
               border: "1px solid hsl(var(--accent) / 0.35)",
               borderRadius: "14px",
               padding: "14px 16px",
               backgroundColor: "hsl(var(--accent) / 0.08)",
+              boxSizing: "border-box",
+              overflow: "visible",
             }}
           >
             <p style={{ ...valueStyle, fontSize: "12px", color: "hsl(var(--muted-foreground))" }}>
@@ -173,7 +193,7 @@ export const AgreementPrintDocument = ({ data }: { data: AgreementPrintData }) =
           </div>
         </section>
 
-        <div style={{ display: "grid", gap: "28px", width: "100%", maxWidth: "100%" }}>
+        <div style={{ display: "grid", gap: "28px", width: "100%", maxWidth: "100%", minWidth: 0, overflow: "visible" }}>
           <Section title="Client Information">
             <div style={twoColumnGridStyle}>
               <FieldBlock label="Client Name" value={data.clientName} />
@@ -194,7 +214,7 @@ export const AgreementPrintDocument = ({ data }: { data: AgreementPrintData }) =
           </Section>
 
           <Section title="Scope of Work">
-            <div style={{ display: "grid", gap: "10px", width: "100%", maxWidth: "100%" }}>
+            <div style={{ display: "grid", gap: "10px", width: "100%", maxWidth: "100%", minWidth: 0, overflow: "visible" }}>
               {data.scopeItems.map((item, index) => (
                 <div
                   key={`${item}-${index}`}
@@ -214,7 +234,7 @@ export const AgreementPrintDocument = ({ data }: { data: AgreementPrintData }) =
           </Section>
 
           <Section title="Materials">
-            <div style={{ display: "grid", gap: "12px", width: "100%", maxWidth: "100%" }}>
+            <div style={{ display: "grid", gap: "12px", width: "100%", maxWidth: "100%", minWidth: 0, overflow: "visible" }}>
               <TextBlock label="Owner-Supplied Materials" value={data.ownerMaterials} />
               <TextBlock label="Contractor-Supplied Materials" value={data.contractorMaterials} />
             </div>
@@ -240,7 +260,7 @@ export const AgreementPrintDocument = ({ data }: { data: AgreementPrintData }) =
           </Section>
 
           <Section title="Cleanup and Warranty">
-            <div style={{ display: "grid", gap: "12px", width: "100%", maxWidth: "100%" }}>
+            <div style={{ display: "grid", gap: "12px", width: "100%", maxWidth: "100%", minWidth: 0, overflow: "visible" }}>
               <TextBlock label="Cleanup" value={data.cleanup} />
               <TextBlock label="Warranty" value={data.warranty} />
             </div>
@@ -248,13 +268,13 @@ export const AgreementPrintDocument = ({ data }: { data: AgreementPrintData }) =
 
           <Section title="Signatures">
             <div style={twoColumnGridStyle}>
-              <div style={{ width: "100%", maxWidth: "100%" }}>
+              <div style={{ width: "100%", maxWidth: "100%", minWidth: 0, overflow: "visible" }}>
                 <div style={signatureLineStyle} />
                 <FieldBlock label="Client Printed Name" value={data.clientPrintedName} />
                 <div style={{ height: "12px" }} />
                 <FieldBlock label="Client Signature Date" value={data.clientSignDate} />
               </div>
-              <div style={{ width: "100%", maxWidth: "100%" }}>
+              <div style={{ width: "100%", maxWidth: "100%", minWidth: 0, overflow: "visible" }}>
                 <div style={signatureLineStyle} />
                 <FieldBlock label="Contractor Printed Name" value={data.contractorPrintedName} />
                 <div style={{ height: "12px" }} />
@@ -269,3 +289,4 @@ export const AgreementPrintDocument = ({ data }: { data: AgreementPrintData }) =
 };
 
 export default AgreementPrintDocument;
+

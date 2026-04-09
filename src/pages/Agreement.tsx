@@ -209,21 +209,25 @@ const Agreement = () => {
       const marginMM = 12;
       const contentWidthMM = pageWidthMM - marginMM * 2;
       const sectionGapMM = 4;
+      const printWidthPx = Math.round((contentWidthMM / 25.4) * 96);
 
       printHost = document.createElement("div");
       Object.assign(printHost.style, {
         position: "fixed",
         top: "0",
         left: "-200vw",
-        width: `${contentWidthMM}mm`,
+        width: `${printWidthPx}px`,
+        minWidth: `${printWidthPx}px`,
+        maxWidth: `${printWidthPx}px`,
         opacity: "0",
         pointerEvents: "none",
         zIndex: "-1",
+        overflow: "visible",
       });
       document.body.appendChild(printHost);
 
       printRoot = createRoot(printHost);
-      printRoot.render(<AgreementPrintDocument data={printData} />);
+      printRoot.render(<AgreementPrintDocument data={printData} widthPx={printWidthPx} />);
 
       await document.fonts?.ready;
       await new Promise<void>((resolve) => {
@@ -250,8 +254,10 @@ const Agreement = () => {
           useCORS: true,
           logging: false,
           backgroundColor: "#ffffff",
-          width: printElement.scrollWidth,
-          windowWidth: printElement.scrollWidth,
+          width: printWidthPx,
+          windowWidth: printWidthPx,
+          scrollX: 0,
+          scrollY: 0,
         });
 
         currentY = addCanvasToPdf({
