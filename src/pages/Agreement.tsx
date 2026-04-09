@@ -1,10 +1,12 @@
 import { useState, useRef, useCallback } from "react";
+import { createRoot, type Root } from "react-dom/client";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, AlertCircle, Download, Check, Loader2, Home } from "lucide-react";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { toast } from "sonner";
+import AgreementPrintDocument, { type AgreementPrintData } from "@/components/agreement/AgreementPrintDocument";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -36,23 +38,101 @@ const scopeDefaults = [
   "Final accessories, mirror, lighting, and cleanup",
 ];
 
+type AgreementFormData = Record<string, unknown>;
+
+const toStringValue = (value: unknown, fallback = "") =>
+  typeof value === "string" ? value : fallback;
+
+const toStringArray = (value: unknown, fallback: string[] = []) =>
+  Array.isArray(value)
+    ? value.map((item) => String(item).trim()).filter(Boolean)
+    : fallback;
+
+const addCanvasToPdf = ({
+  canvas,
+  pdf,
+  currentY,
+  marginMM,
+  contentWidthMM,
+  pageHeightMM,
+}: {
+  canvas: HTMLCanvasElement;
+  pdf: jsPDF;
+  currentY: number;
+  marginMM: number;
+  contentWidthMM: number;
+  pageHeightMM: number;
+}) => {
+  const maxY = pageHeightMM - marginMM;
+  const contentHeightMM = pageHeightMM - marginMM * 2;
+  const fullHeightMM = (canvas.height * contentWidthMM) / canvas.width;
+  const remainingMM = maxY - currentY;
+
+  if (fullHeightMM <= remainingMM) {
+    pdf.addImage(canvas.toDataURL("image/png"), "PNG", marginMM, currentY, contentWidthMM, fullHeightMM);
+    return currentY + fullHeightMM;
+  }
+
+  if (fullHeightMM <= contentHeightMM) {
+    pdf.addPage();
+    pdf.addImage(canvas.toDataURL("image/png"), "PNG", marginMM, marginMM, contentWidthMM, fullHeightMM);
+    return marginMM + fullHeightMM;
+  }
+
+  let nextY = currentY;
+
+  if (remainingMM < 32) {
+    pdf.addPage();
+    nextY = marginMM;
+  }
+
+  let sourceY = 0;
+
+  while (sourceY < canvas.height) {
+    const availableHeightMM = maxY - nextY;
+    const availableHeightPx = Math.max(1, Math.floor((availableHeightMM * canvas.width) / contentWidthMM));
+    const sliceHeightPx = Math.min(availableHeightPx, canvas.height - sourceY);
+    const sliceCanvas = document.createElement("canvas");
+    const context = sliceCanvas.getContext("2d");
+
+    if (!context) {
+      throw new Error("Could not prepare the PDF export canvas.");
+    }
+
+    sliceCanvas.width = canvas.width;
+    sliceCanvas.height = sliceHeightPx;
+    context.drawImage(canvas, 0, sourceY, canvas.width, sliceHeightPx, 0, 0, canvas.width, sliceHeightPx);
+
+    const sliceHeightMM = (sliceHeightPx * contentWidthMM) / canvas.width;
+    pdf.addImage(sliceCanvas.toDataURL("image/png"), "PNG", marginMM, nextY, contentWidthMM, sliceHeightMM);
+
+    sourceY += sliceHeightPx;
+    nextY += sliceHeightMM;
+
+    if (sourceY < canvas.height) {
+      pdf.addPage();
+      nextY = marginMM;
+    }
+  }
+
+  return nextY;
+};
+
 const Agreement = () => {
   const { project, updateProject, saveProject, markStepComplete, isSaving } = useProject();
   const formRef = useRef<HTMLFormElement>(null);
 
-  // Seed from context or defaults
-  const saved = project.agreement_data as Record<string, string>;
+  const saved = (project.agreement_data ?? {}) as AgreementFormData;
   const [scopeItems] = useState(
-    (saved.scope_items as unknown as string[]) || scopeDefaults
+    toStringArray(saved.scope_items, scopeDefaults)
   );
 
   const gatherFormData = useCallback(() => {
     if (!formRef.current) return;
     const fd = new FormData(formRef.current);
-    const data: Record<string, unknown> = {};
+    const data: AgreementFormData = {};
     fd.forEach((v, k) => { data[k] = v; });
 
-    // Gather scope items from inputs
     const scopeInputs = formRef.current.querySelectorAll<HTMLInputElement>('[data-scope]');
     const items: string[] = [];
     scopeInputs.forEach((el) => items.push(el.value));
@@ -60,6 +140,48 @@ const Agreement = () => {
 
     return data;
   }, []);
+
+  const buildPrintData = useCallback((rawData: AgreementFormData): AgreementPrintData => ({
+    clientName: toStringValue(rawData.client_name),
+    projectAddress: toStringValue(rawData.project_address),
+    roomType: toStringValue(rawData.room_type, project.bathroom_type || "Primary Bathroom"),
+    projectName: toStringValue(rawData.project_name, project.name),
+    businessName: toStringValue(rawData.business_name),
+    tradeType: toStringValue(rawData.trade_type),
+    phone: toStringValue(rawData.phone),
+    email: toStringValue(rawData.email),
+    license: toStringValue(rawData.license),
+    scopeItems: toStringArray(rawData.scope_items, scopeDefaults),
+    ownerMaterials: toStringValue(
+      rawData.owner_materials,
+      `All fixture and finish materials as specified in the BOBOX ${project.selected_package?.name || "Balanced"} package (vanity, tile, faucet, lighting, mirror, toilet, shower hardware). Finish direction: ${project.style_preferences?.finish || "Brushed Nickel"}.`
+    ),
+    contractorMaterials: toStringValue(
+      rawData.contractor_materials,
+      "General construction materials including adhesives, grout, waterproofing membrane, backer board, fasteners, and other consumables required for installation."
+    ),
+    deposit: toStringValue(rawData.deposit, "30% upon signing"),
+    progress: toStringValue(rawData.progress, "40% at midpoint"),
+    finalPayment: toStringValue(rawData.final_payment, "30% upon completion"),
+    startDate: toStringValue(rawData.start_date),
+    endDate: toStringValue(rawData.end_date),
+    changeOrders: toStringValue(
+      rawData.change_orders,
+      "Any additional work, material changes, or modifications to the agreed scope must be documented in writing and approved by both parties before work proceeds. Change orders may affect the project timeline and total cost."
+    ),
+    cleanup: toStringValue(
+      rawData.cleanup,
+      "Contractor will remove all debris and leave the work area in broom-clean condition upon project completion."
+    ),
+    warranty: toStringValue(
+      rawData.warranty,
+      "Contractor warrants labor and workmanship for a period of one (1) year from the date of project completion. Manufacturer warranties on materials apply separately."
+    ),
+    clientPrintedName: toStringValue(rawData.client_printed_name),
+    clientSignDate: toStringValue(rawData.client_sign_date),
+    contractorPrintedName: toStringValue(rawData.contractor_printed_name),
+    contractorSignDate: toStringValue(rawData.contractor_sign_date),
+  }), [project]);
 
   const handleSave = async () => {
     const data = gatherFormData();
@@ -71,60 +193,85 @@ const Agreement = () => {
   const [isGenerating, setIsGenerating] = useState(false);
 
   const handleDownload = async () => {
-    const data = gatherFormData();
-    if (data) updateProject({ agreement_data: data });
-
-    const element = document.getElementById("agreement-content");
-    if (!element) {
-      toast.error("Could not find agreement content to export.");
-      return;
-    }
+    const rawData = gatherFormData() ?? saved;
+    updateProject({ agreement_data: rawData });
 
     setIsGenerating(true);
     toast("Preparing PDF…", { description: "Rendering your agreement." });
 
+    let printRoot: Root | null = null;
+    let printHost: HTMLDivElement | null = null;
+
     try {
-      // Apply print-safe styles before capture
-      const printClass = "pdf-print-mode";
-      element.classList.add(printClass);
+      const printData = buildPrintData(rawData);
+      const pageWidthMM = 210;
+      const pageHeightMM = 297;
+      const marginMM = 12;
+      const contentWidthMM = pageWidthMM - marginMM * 2;
+      const sectionGapMM = 4;
 
-      const sections = Array.from(
-        element.querySelectorAll("[data-pdf-section]")
-      ) as HTMLElement[];
+      printHost = document.createElement("div");
+      Object.assign(printHost.style, {
+        position: "fixed",
+        top: "0",
+        left: "-200vw",
+        width: `${contentWidthMM}mm`,
+        opacity: "0",
+        pointerEvents: "none",
+        zIndex: "-1",
+      });
+      document.body.appendChild(printHost);
 
-      const A4_WIDTH_MM = 210;
-      const A4_HEIGHT_MM = 297;
-      const MARGIN_MM = 12;
-      const CONTENT_WIDTH_MM = A4_WIDTH_MM - MARGIN_MM * 2;
-      const SECTION_GAP_MM = 3;
+      printRoot = createRoot(printHost);
+      printRoot.render(<AgreementPrintDocument data={printData} />);
+
+      await document.fonts?.ready;
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      });
+
+      const printElement = printHost.querySelector("[data-agreement-print-root]") as HTMLElement | null;
+      if (!printElement) {
+        throw new Error("Could not render the agreement print layout.");
+      }
+
+      const sections = Array.from(printElement.querySelectorAll<HTMLElement>("[data-pdf-section]"));
+      if (!sections.length) {
+        throw new Error("Could not find printable agreement sections.");
+      }
 
       const pdf = new jsPDF({ orientation: "p", unit: "mm", format: "a4" });
-      let currentY = MARGIN_MM;
+      let currentY = marginMM;
 
-      for (const section of sections) {
+      for (let index = 0; index < sections.length; index += 1) {
+        const section = sections[index];
         const canvas = await html2canvas(section, {
           scale: 2,
           useCORS: true,
           logging: false,
           backgroundColor: "#ffffff",
+          width: printElement.scrollWidth,
+          windowWidth: printElement.scrollWidth,
         });
 
-        const scaleFactor = CONTENT_WIDTH_MM / (canvas.width / 2);
-        const heightMM = (canvas.height / 2) * scaleFactor;
-        const remaining = A4_HEIGHT_MM - MARGIN_MM - currentY;
+        currentY = addCanvasToPdf({
+          canvas,
+          pdf,
+          currentY,
+          marginMM,
+          contentWidthMM,
+          pageHeightMM,
+        });
 
-        if (heightMM > remaining && currentY > MARGIN_MM) {
-          pdf.addPage();
-          currentY = MARGIN_MM;
+        if (index < sections.length - 1) {
+          if (currentY + sectionGapMM > pageHeightMM - marginMM) {
+            pdf.addPage();
+            currentY = marginMM;
+          } else {
+            currentY += sectionGapMM;
+          }
         }
-
-        const imgData = canvas.toDataURL("image/png");
-        pdf.addImage(imgData, "PNG", MARGIN_MM, currentY, CONTENT_WIDTH_MM, heightMM);
-        currentY += heightMM + SECTION_GAP_MM;
       }
-
-      // Remove print styles
-      element.classList.remove(printClass);
 
       pdf.save("bobox-remodel-agreement.pdf");
       toast.success("PDF downloaded successfully!");
@@ -132,6 +279,8 @@ const Agreement = () => {
       console.error("PDF generation failed:", err);
       toast.error("PDF generation failed. Please try again.");
     } finally {
+      printRoot?.unmount();
+      printHost?.remove();
       setIsGenerating(false);
     }
   };
