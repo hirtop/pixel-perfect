@@ -1,4 +1,5 @@
 import { useState } from "react";
+import ShoppingAssistantFab from "@/components/shopping-assistant/ShoppingAssistantFab";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Home } from "lucide-react";
@@ -155,6 +156,7 @@ const StyleBudget = () => {
           </div>
         </motion.div>
       </main>
+      <ShoppingAssistantFab />
     </div>
   );
 };

@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import ShoppingAssistantFab from "@/components/shopping-assistant/ShoppingAssistantFab";
 import { Link, useNavigate } from "react-router-dom";
 import { Check, ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -201,6 +202,7 @@ const ProjectSummary = () => {
           </div>
         </motion.div>
       </main>
+      <ShoppingAssistantFab />
     </div>
   );
 };
