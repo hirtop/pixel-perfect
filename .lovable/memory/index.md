@@ -9,4 +9,5 @@ After every fix, tell user: (1) preview-only or live, (2) whether publish needed
 
 ## Memories
 - [Data model](mem://features/data-model) — Projects table schema with JSONB columns for all remodel data
-- [Product data](mem://features/product-data) — 108-product catalog, 12 customizable categories, CATEGORY_GROUPS, tier helpers
+- [Product data](mem://features/product-data) — Tiered catalog types, tier helpers, zone-based tile system
+- [Internal catalog](mem://features/catalog) — catalog_products + project_saved_products tables for AI shopping assistant V1

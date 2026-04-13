@@ -14,6 +14,72 @@ export type Database = {
   }
   public: {
     Tables: {
+      catalog_products: {
+        Row: {
+          active: boolean
+          brand: string | null
+          category: string
+          compatibility_tags: string[] | null
+          created_at: string
+          depth: number | null
+          finish: string | null
+          height: number | null
+          id: string
+          image_url: string | null
+          install_notes: string | null
+          price: number | null
+          product_url: string | null
+          room_type: string
+          short_description: string | null
+          style_tags: string[] | null
+          title: string
+          updated_at: string
+          width: number | null
+        }
+        Insert: {
+          active?: boolean
+          brand?: string | null
+          category: string
+          compatibility_tags?: string[] | null
+          created_at?: string
+          depth?: number | null
+          finish?: string | null
+          height?: number | null
+          id?: string
+          image_url?: string | null
+          install_notes?: string | null
+          price?: number | null
+          product_url?: string | null
+          room_type?: string
+          short_description?: string | null
+          style_tags?: string[] | null
+          title: string
+          updated_at?: string
+          width?: number | null
+        }
+        Update: {
+          active?: boolean
+          brand?: string | null
+          category?: string
+          compatibility_tags?: string[] | null
+          created_at?: string
+          depth?: number | null
+          finish?: string | null
+          height?: number | null
+          id?: string
+          image_url?: string | null
+          install_notes?: string | null
+          price?: number | null
+          product_url?: string | null
+          room_type?: string
+          short_description?: string | null
+          style_tags?: string[] | null
+          title?: string
+          updated_at?: string
+          width?: number | null
+        }
+        Relationships: []
+      }
       email_send_log: {
         Row: {
           created_at: string
@@ -100,6 +166,54 @@ export type Database = {
           used_at?: string | null
         }
         Relationships: []
+      }
+      project_saved_products: {
+        Row: {
+          category: string
+          created_at: string
+          id: string
+          notes: string | null
+          product_id: string
+          project_id: string
+          source: string
+          updated_at: string
+        }
+        Insert: {
+          category: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          product_id: string
+          project_id: string
+          source?: string
+          updated_at?: string
+        }
+        Update: {
+          category?: string
+          created_at?: string
+          id?: string
+          notes?: string | null
+          product_id?: string
+          project_id?: string
+          source?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "project_saved_products_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "catalog_products"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "project_saved_products_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
       }
       projects: {
         Row: {
