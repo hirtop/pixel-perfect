@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { useShoppingAssistant } from "@/hooks/useShoppingAssistant";
 import { useProject } from "@/contexts/ProjectContext";
+import { useAuth } from "@/hooks/useAuth";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import ChatMessage from "./ChatMessage";
@@ -16,12 +17,21 @@ interface ShoppingAssistantProps {
 
 export default function ShoppingAssistant({ open, onOpenChange }: ShoppingAssistantProps) {
   const { project } = useProject();
+  const { user, loading: authLoading } = useAuth();
   const projectId = project.id;
-  const { messages, isLoading, sendMessage, clearChat } = useShoppingAssistant(projectId);
+  const {
+    messages,
+    isLoading,
+    sendMessage,
+    clearChat,
+    savedProducts,
+    refreshSavedProducts,
+  } = useShoppingAssistant(projectId);
   const [input, setInput] = useState("");
   const [isSaving, setIsSaving] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const savedProductIds = new Set(savedProducts.map((product) => product.product_id));
 
   useEffect(() => {
     if (scrollRef.current) {
@@ -49,10 +59,25 @@ export default function ShoppingAssistant({ open, onOpenChange }: ShoppingAssist
   };
 
   const handleSaveProduct = async (productId: string) => {
+    if (authLoading) return;
+
+    if (!user) {
+      toast.error("Please sign in to save products to your project.");
+      return;
+    }
+
     if (!project.id) {
       toast.error("Save your project first to add products.");
       return;
     }
+
+    if (savedProductIds.has(productId)) {
+      toast.info("Already saved to this project", {
+        description: "This product is already in your project.",
+      });
+      return;
+    }
+
     setIsSaving(true);
     try {
       const { error } = await supabase.rpc("save_product_to_project", {
@@ -62,6 +87,7 @@ export default function ShoppingAssistant({ open, onOpenChange }: ShoppingAssist
         p_notes: "Saved from AI Shopping Assistant",
       });
       if (error) throw error;
+      await refreshSavedProducts();
       toast.success("Product saved to your project!");
     } catch (err: unknown) {
       console.error("Save error:", err);
@@ -139,6 +165,7 @@ export default function ShoppingAssistant({ open, onOpenChange }: ShoppingAssist
                 message={msg}
                 onSaveProduct={project.id ? handleSaveProduct : undefined}
                 isSaving={isSaving}
+                savedProductIds={savedProductIds}
               />
             ))
           )}

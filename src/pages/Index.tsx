@@ -92,7 +92,7 @@ const plans = [
 
 export default function LandingPage() {
   const { user, loading: authLoading } = useAuth();
-  const { resetProject } = useProject();
+  const { resetProject, loadProject } = useProject();
   const { projects, loading: projectsLoading, deleteProject } = useUserProjects();
   const navigate = useNavigate();
   const [pickerOpen, setPickerOpen] = useState(false);
@@ -119,7 +119,7 @@ export default function LandingPage() {
     ? (stepToRoute[singleProject.workflow_progress?.current_step || "start"] ?? "/start")
     : "/start";
 
-  const handlePrimaryCta = () => {
+  const handlePrimaryCta = async () => {
     if (isProjectStateLoading) {
       return;
     }
@@ -132,6 +132,9 @@ export default function LandingPage() {
     } else if (hasMultiple) {
       setPickerOpen(true);
     } else {
+      if (singleProject) {
+        await loadProject(singleProject.id);
+      }
       navigate(singleRoute);
     }
   };
