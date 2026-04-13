@@ -11,3 +11,4 @@ After every fix, tell user: (1) preview-only or live, (2) whether publish needed
 - [Data model](mem://features/data-model) — Projects table schema with JSONB columns for all remodel data
 - [Product data](mem://features/product-data) — Tiered catalog types, tier helpers, zone-based tile system
 - [Internal catalog](mem://features/catalog) — catalog_products + project_saved_products tables for AI shopping assistant V1
+- [AI shopping assistant](mem://features/ai-assistant) — Edge function + UI for project-aware product recommendations from internal catalog
