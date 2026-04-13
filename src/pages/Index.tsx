@@ -102,9 +102,21 @@ export default function LandingPage() {
   const hasSavedProject = Boolean(user && !isProjectStateLoading && projectCount > 0);
   const hasMultiple = projectCount > 1;
 
+  const stepToRoute: Record<string, string> = {
+    start: "/start",
+    upload: "/upload",
+    dimensions: "/dimensions",
+    "style-budget": "/style-budget",
+    "package-select": "/options",
+    workflow: "/workflow",
+    summary: "/summary",
+    subcontractors: "/subcontractors",
+    agreement: "/agreement",
+  };
+
   const singleProject = projectCount === 1 ? projects[0] : null;
   const singleRoute = singleProject
-    ? (singleProject.workflow_progress?.current_step === "start" ? "/start" : `/${singleProject.workflow_progress?.current_step || "start"}`)
+    ? (stepToRoute[singleProject.workflow_progress?.current_step || "start"] ?? "/start")
     : "/start";
 
   const handlePrimaryCta = () => {
