@@ -55,6 +55,11 @@ export function useShoppingAssistant(projectId: string | undefined) {
 
   const makeId = () => `msg-${Date.now()}-${idCounter.current++}`;
 
+  const normalizeSavedProducts = (data: unknown): SavedProjectProduct[] => {
+    if (!Array.isArray(data)) return [];
+    return data as unknown as SavedProjectProduct[];
+  };
+
   const loadSavedProducts = useCallback(async () => {
     if (!projectId) {
       setSavedProducts([]);
@@ -75,7 +80,7 @@ export function useShoppingAssistant(projectId: string | undefined) {
       });
 
       if (error) throw error;
-      setSavedProducts(Array.isArray(data) ? (data as SavedProjectProduct[]) : []);
+      setSavedProducts(normalizeSavedProducts(data));
     } catch (err) {
       console.error("Failed to load saved project products:", err);
       setSavedProducts([]);
@@ -158,6 +163,7 @@ export function useShoppingAssistant(projectId: string | undefined) {
         };
 
         setMessages((prev) => [...prev, assistantMsg]);
+        await loadSavedProducts();
       } catch (err) {
         console.error("Shopping assistant error:", err);
         toast.error("Failed to reach the assistant. Please try again.");
@@ -165,7 +171,7 @@ export function useShoppingAssistant(projectId: string | undefined) {
         setIsLoading(false);
       }
     },
-    [messages, isLoading, projectId]
+    [loadSavedProducts, messages, isLoading, projectId]
   );
 
   const clearChat = useCallback(() => {
