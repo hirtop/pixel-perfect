@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef, useMemo } from "react";
+import ShoppingAssistantFab from "@/components/shopping-assistant/ShoppingAssistantFab";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Check, ChevronUp, AlertTriangle, Home } from "lucide-react";
@@ -454,6 +455,7 @@ const CustomizeOption = () => {
           </div>
         </motion.div>
       </main>
+      <ShoppingAssistantFab />
     </div>
   );
 };
