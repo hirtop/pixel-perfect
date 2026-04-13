@@ -303,6 +303,12 @@ export type Database = {
         Args: { payload: Json; queue_name: string }
         Returns: number
       }
+      get_catalog_product: { Args: { p_product_id: string }; Returns: Json }
+      get_project_context: { Args: { p_project_id: string }; Returns: Json }
+      list_saved_project_products: {
+        Args: { p_project_id: string }
+        Returns: Json
+      }
       move_to_dlq: {
         Args: {
           dlq_name: string
@@ -320,6 +326,16 @@ export type Database = {
           read_ct: number
         }[]
       }
+      save_product_to_project: {
+        Args: {
+          p_notes?: string
+          p_product_id: string
+          p_project_id: string
+          p_source?: string
+        }
+        Returns: Json
+      }
+      search_catalog_products: { Args: { filters?: Json }; Returns: Json }
     }
     Enums: {
       [_ in never]: never
