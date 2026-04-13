@@ -99,6 +99,17 @@ const ProjectContext = createContext<ProjectContextType | undefined>(undefined);
 export const ProjectProvider = ({ children }: { children: ReactNode }) => {
   const LOCAL_STORAGE_KEY = "bobox_project_draft";
 
+  const getStoredProjectId = useCallback(() => {
+    try {
+      const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
+      if (!stored) return undefined;
+      const parsed = JSON.parse(stored) as Partial<ProjectData>;
+      return parsed.id;
+    } catch {
+      return undefined;
+    }
+  }, []);
+
   const [project, setProject] = useState<ProjectData>(() => {
     try {
       const stored = localStorage.getItem(LOCAL_STORAGE_KEY);
@@ -293,6 +304,25 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         return;
       }
 
+      const preferredProjectId = projectRef.current.id || getStoredProjectId();
+
+      if (preferredProjectId) {
+        const { data: preferredProject, error: preferredError } = await supabase
+          .from("projects")
+          .select("*")
+          .eq("id", preferredProjectId)
+          .eq("user_id", userId)
+          .maybeSingle();
+
+        if (preferredError) throw preferredError;
+
+        if (preferredProject) {
+          setProjectState(buildProjectFromRow(preferredProject));
+          setIsLoaded(true);
+          return;
+        }
+      }
+
       const { data, error } = await supabase
         .from("projects")
         .select("*")
@@ -315,7 +345,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
     } finally {
       setIsLoading(false);
     }
-  }, [buildProjectFromRow, setProjectState]);
+  }, [buildProjectFromRow, getStoredProjectId, setProjectState]);
 
   const loadProject = useCallback(async (projectId: string) => {
     setIsLoading(true);

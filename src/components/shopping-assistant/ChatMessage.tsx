@@ -7,9 +7,10 @@ interface ChatMessageProps {
   message: ChatMessageType;
   onSaveProduct?: (productId: string) => void;
   isSaving?: boolean;
+  savedProductIds?: Set<string>;
 }
 
-export default function ChatMessage({ message, onSaveProduct, isSaving }: ChatMessageProps) {
+export default function ChatMessage({ message, onSaveProduct, isSaving, savedProductIds }: ChatMessageProps) {
   const isUser = message.role === "user";
 
   return (
@@ -43,6 +44,7 @@ export default function ChatMessage({ message, onSaveProduct, isSaving }: ChatMe
                 product={product}
                 onSave={onSaveProduct}
                 isSaving={isSaving}
+                isSaved={savedProductIds?.has(product.id)}
               />
             ))}
           </div>

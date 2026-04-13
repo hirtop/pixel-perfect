@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 
@@ -26,12 +26,72 @@ export interface CatalogProduct {
   compatibility_tags?: string[];
 }
 
+export interface SavedProjectProduct {
+  saved_id: string;
+  product_id: string;
+  category: string;
+  title: string;
+  brand: string;
+  price: number | null;
+  finish: string | null;
+  style_tags?: string[];
+  width?: number;
+  depth?: number;
+  height?: number;
+  image_url?: string;
+  short_description?: string;
+  compatibility_tags?: string[];
+  source: string;
+  notes?: string | null;
+  saved_at: string;
+}
+
 export function useShoppingAssistant(projectId: string | undefined) {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [savedProducts, setSavedProducts] = useState<SavedProjectProduct[]>([]);
+  const [isSavedProductsLoading, setIsSavedProductsLoading] = useState(false);
   const idCounter = useRef(0);
 
   const makeId = () => `msg-${Date.now()}-${idCounter.current++}`;
+
+  const normalizeSavedProducts = (data: unknown): SavedProjectProduct[] => {
+    if (!Array.isArray(data)) return [];
+    return data as unknown as SavedProjectProduct[];
+  };
+
+  const loadSavedProducts = useCallback(async () => {
+    if (!projectId) {
+      setSavedProducts([]);
+      setIsSavedProductsLoading(false);
+      return;
+    }
+
+    setIsSavedProductsLoading(true);
+    try {
+      const { data: sessionData } = await supabase.auth.getSession();
+      if (!sessionData.session) {
+        setSavedProducts([]);
+        return;
+      }
+
+      const { data, error } = await supabase.rpc("list_saved_project_products", {
+        p_project_id: projectId,
+      });
+
+      if (error) throw error;
+      setSavedProducts(normalizeSavedProducts(data));
+    } catch (err) {
+      console.error("Failed to load saved project products:", err);
+      setSavedProducts([]);
+    } finally {
+      setIsSavedProductsLoading(false);
+    }
+  }, [projectId]);
+
+  useEffect(() => {
+    void loadSavedProducts();
+  }, [loadSavedProducts]);
 
   const sendMessage = useCallback(
     async (input: string) => {
@@ -103,6 +163,7 @@ export function useShoppingAssistant(projectId: string | undefined) {
         };
 
         setMessages((prev) => [...prev, assistantMsg]);
+        await loadSavedProducts();
       } catch (err) {
         console.error("Shopping assistant error:", err);
         toast.error("Failed to reach the assistant. Please try again.");
@@ -110,12 +171,20 @@ export function useShoppingAssistant(projectId: string | undefined) {
         setIsLoading(false);
       }
     },
-    [messages, isLoading, projectId]
+    [loadSavedProducts, messages, isLoading, projectId]
   );
 
   const clearChat = useCallback(() => {
     setMessages([]);
   }, []);
 
-  return { messages, isLoading, sendMessage, clearChat };
+  return {
+    messages,
+    isLoading,
+    sendMessage,
+    clearChat,
+    savedProducts,
+    isSavedProductsLoading,
+    refreshSavedProducts: loadSavedProducts,
+  };
 }

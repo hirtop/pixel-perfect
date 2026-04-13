@@ -1,4 +1,4 @@
-import { Package, Ruler, Save } from "lucide-react";
+import { Check, Package, Ruler, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import type { CatalogProduct } from "@/hooks/useShoppingAssistant";
 
@@ -6,9 +6,10 @@ interface ProductCardProps {
   product: CatalogProduct;
   onSave?: (productId: string) => void;
   isSaving?: boolean;
+  isSaved?: boolean;
 }
 
-export default function ProductCard({ product, onSave, isSaving }: ProductCardProps) {
+export default function ProductCard({ product, onSave, isSaving, isSaved }: ProductCardProps) {
   const dims = [
     product.width && `${product.width}"W`,
     product.depth && `${product.depth}"D`,
@@ -62,14 +63,14 @@ export default function ProductCard({ product, onSave, isSaving }: ProductCardPr
 
       {onSave && (
         <Button
-          variant="outline"
+          variant={isSaved ? "secondary" : "outline"}
           size="sm"
           className="w-full h-7 text-xs"
           onClick={() => onSave(product.id)}
-          disabled={isSaving}
+          disabled={isSaving || isSaved}
         >
-          <Save className="h-3 w-3 mr-1" />
-          Save to Project
+          {isSaved ? <Check className="h-3 w-3 mr-1" /> : <Save className="h-3 w-3 mr-1" />}
+          {isSaved ? "Already Saved" : "Save to Project"}
         </Button>
       )}
     </div>
