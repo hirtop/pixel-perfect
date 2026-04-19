@@ -40,12 +40,11 @@ const UploadPhotos = () => {
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const [files, setFiles] = useState<File[]>([]);
-  const [previews, setPreviews] = useState<string[]>([]);
   const [dragging, setDragging] = useState(false);
   const [notes, setNotes] = useState(project.photos.notes || "");
   const [restoredPhotos, setRestoredPhotos] = useState<RestoredPhoto[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [pendingUploadCount, setPendingUploadCount] = useState(0);
 
   const notesRef = useRef(notes);
   notesRef.current = notes;
