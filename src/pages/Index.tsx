@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useProject } from "@/contexts/ProjectContext";
 import { useUserProjects } from "@/hooks/useUserProjects";
 import ProjectPickerDialog from "@/components/ProjectPickerDialog";
+import { resolveResumeRoute } from "@/lib/resumeRoute";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
