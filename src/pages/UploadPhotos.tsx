@@ -36,7 +36,7 @@ function formatSize(bytes: number) {
 }
 
 const UploadPhotos = () => {
-  const { project, updateProject, markStepComplete } = useProject();
+  const { project, updateProject, saveProject, markStepComplete } = useProject();
   const navigate = useNavigate();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -53,19 +53,37 @@ const UploadPhotos = () => {
   photosRef.current = project.photos;
   const userEditedRef = useRef(false);
   const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const latestPersistedNotesRef = useRef(project.photos.notes || "");
+  const saveInFlightRef = useRef<Promise<boolean> | null>(null);
 
   // Sync notes from backend ONLY if the user hasn't started editing locally.
   // Prevents in-progress edits from being clobbered by project reloads.
   useEffect(() => {
     if (userEditedRef.current) return;
+    latestPersistedNotesRef.current = project.photos.notes || "";
     setNotes(project.photos.notes || "");
   }, [project.photos.notes]);
 
-  const persistNotes = useCallback((value: string) => {
+  const persistNotes = useCallback(async (value: string) => {
     const current = photosRef.current;
-    if ((current.notes || "") === value) return;
-    updateProject({ photos: { ...current, notes: value } });
-  }, [updateProject]);
+    if (latestPersistedNotesRef.current === value && (current.notes || "") === value) return true;
+
+    const nextPhotos = { ...current, notes: value };
+    updateProject({ photos: nextPhotos });
+    latestPersistedNotesRef.current = value;
+
+    saveInFlightRef.current = saveProject({
+      silent: true,
+      projectOverride: { ...project, photos: nextPhotos },
+    });
+
+    const didSave = await saveInFlightRef.current;
+    if (!didSave) {
+      latestPersistedNotesRef.current = photosRef.current.notes || "";
+    }
+    saveInFlightRef.current = null;
+    return didSave;
+  }, [project, saveProject, updateProject]);
 
   const handleNotesChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -73,7 +91,7 @@ const UploadPhotos = () => {
     setNotes(value);
     if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
     autosaveTimerRef.current = setTimeout(() => {
-      persistNotes(value);
+      void persistNotes(value);
     }, 600);
   }, [persistNotes]);
 
@@ -82,7 +100,7 @@ const UploadPhotos = () => {
       clearTimeout(autosaveTimerRef.current);
       autosaveTimerRef.current = null;
     }
-    persistNotes(notesRef.current);
+    void persistNotes(notesRef.current);
   }, [persistNotes]);
 
   // Flush pending notes on unmount and before page unload/refresh.
@@ -92,7 +110,7 @@ const UploadPhotos = () => {
         clearTimeout(autosaveTimerRef.current);
         autosaveTimerRef.current = null;
       }
-      persistNotes(notesRef.current);
+      void persistNotes(notesRef.current);
     };
     window.addEventListener("beforeunload", flush);
     window.addEventListener("pagehide", flush);
