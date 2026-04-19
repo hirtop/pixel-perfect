@@ -2,13 +2,13 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { Upload, ImagePlus, X, ArrowLeft, ImageIcon, FileImage, Loader2, Home } from "lucide-react";
-import { Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { useProject } from "@/contexts/ProjectContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import type { PhotoMeta } from "@/contexts/ProjectContext";
 
 const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|heic)$/i;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/heic"];
@@ -43,20 +43,20 @@ const UploadPhotos = () => {
   const [dragging, setDragging] = useState(false);
   const [notes, setNotes] = useState(project.photos.notes || "");
   const [restoredPhotos, setRestoredPhotos] = useState<RestoredPhoto[]>([]);
-  const [isUploading, setIsUploading] = useState(false);
   const [pendingUploadCount, setPendingUploadCount] = useState(0);
 
   const notesRef = useRef(notes);
   notesRef.current = notes;
   const photosRef = useRef(project.photos);
   photosRef.current = project.photos;
+  const projectRef = useRef(project);
+  projectRef.current = project;
   const userEditedRef = useRef(false);
   const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latestPersistedNotesRef = useRef(project.photos.notes || "");
   const saveInFlightRef = useRef<Promise<boolean> | null>(null);
 
   // Sync notes from backend ONLY if the user hasn't started editing locally.
-  // Prevents in-progress edits from being clobbered by project reloads.
   useEffect(() => {
     if (userEditedRef.current) return;
     latestPersistedNotesRef.current = project.photos.notes || "";
@@ -73,7 +73,7 @@ const UploadPhotos = () => {
 
     saveInFlightRef.current = saveProject({
       silent: true,
-      projectOverride: { ...project, photos: nextPhotos },
+      projectOverride: { ...projectRef.current, photos: nextPhotos },
     });
 
     const didSave = await saveInFlightRef.current;
@@ -82,7 +82,7 @@ const UploadPhotos = () => {
     }
     saveInFlightRef.current = null;
     return didSave;
-  }, [project, saveProject, updateProject]);
+  }, [saveProject, updateProject]);
 
   const handleNotesChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
@@ -123,7 +123,7 @@ const UploadPhotos = () => {
   // Regenerate fresh signed URLs for previously uploaded photos on every restore
   useEffect(() => {
     const meta = project.photos.metadata;
-    if (meta.length === 0 || files.length > 0) {
+    if (meta.length === 0) {
       setRestoredPhotos([]);
       return;
     }
@@ -133,8 +133,8 @@ const UploadPhotos = () => {
     setRestoredPhotos(
       meta.map((photo) => ({
         ...photo,
-        imageUrl: null,
-        status: photo.storage_path ? "loading" : "missing_storage_path",
+        imageUrl: photo.preview_url ?? null,
+        status: photo.storage_path ? "loading" : photo.preview_url ? "ready" : "missing_storage_path",
       })),
     );
 
@@ -161,8 +161,8 @@ const UploadPhotos = () => {
 
             return {
               ...photo,
-              imageUrl: null,
-              status: "sign_error" as const,
+              imageUrl: photo.preview_url ?? null,
+              status: photo.preview_url ? ("ready" as const) : ("sign_error" as const),
             };
           }
 
@@ -180,7 +180,7 @@ const UploadPhotos = () => {
     })();
 
     return () => { cancelled = true; };
-  }, [project.photos.metadata, files.length]);
+  }, [project.photos.metadata]);
 
   const markRestoredPhotoUnavailable = useCallback((index: number) => {
     setRestoredPhotos((current) => current.map((photo, photoIndex) => (
@@ -193,7 +193,6 @@ const UploadPhotos = () => {
   const removeRestoredPhoto = useCallback(async (index: number) => {
     const photo = restoredPhotos[index];
 
-    // Delete from storage if a file exists
     if (photo?.storage_path) {
       const { error } = await supabase.storage
         .from("bathroom-photos")
@@ -201,50 +200,77 @@ const UploadPhotos = () => {
       if (error) console.error("Storage delete error:", error);
     }
 
-    // Update project context (removes from metadata array)
-    const updatedMetadata = project.photos.metadata.filter((_, i) => i !== index);
-    updateProject({ photos: { ...project.photos, metadata: updatedMetadata } });
-
-    // Update local restored list
+    const updatedMetadata = projectRef.current.photos.metadata.filter((_, i) => i !== index);
+    const nextPhotos = { ...projectRef.current.photos, metadata: updatedMetadata };
+    updateProject({ photos: nextPhotos });
     setRestoredPhotos((current) => current.filter((_, i) => i !== index));
 
+    void saveProject({
+      silent: true,
+      projectOverride: { ...projectRef.current, photos: nextPhotos },
+    });
+
     toast.success("Photo removed");
-  }, [restoredPhotos, project.photos, updateProject]);
+  }, [restoredPhotos, updateProject, saveProject]);
 
-  // Generate preview URLs for new files
-  useEffect(() => {
-    let cancelled = false;
-    const urls: string[] = [];
+  const generatePreviewDataUrl = (file: File): Promise<string | null> => {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : null);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(file);
+    });
+  };
 
-    const generate = async () => {
-      const result: string[] = [];
-      for (const f of files) {
-        const url = URL.createObjectURL(f);
-        const canPreview = await new Promise<boolean>((resolve) => {
-          const img = new Image();
-          img.onload = () => resolve(true);
-          img.onerror = () => resolve(false);
-          img.src = url;
-        });
-        if (canPreview) {
-          urls.push(url);
-          result.push(url);
-        } else {
-          URL.revokeObjectURL(url);
-          result.push("");
-        }
-      }
-      if (!cancelled) setPreviews(result);
+  const uploadAndPersistFile = useCallback(async (file: File): Promise<PhotoMeta | null> => {
+    const { data: { user } } = await supabase.auth.getUser();
+    const photoId = crypto.randomUUID();
+
+    // Generate preview as fallback (works even if user not signed in / upload fails)
+    const preview = await generatePreviewDataUrl(file);
+
+    if (!user) {
+      const meta: PhotoMeta = {
+        id: photoId,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        preview_url: preview ?? undefined,
+        upload_status: preview ? "preview_only" : "upload_failed",
+      };
+      return meta;
+    }
+
+    const ext = file.name.split('.').pop() || 'jpg';
+    const storagePath = `${user.id}/${crypto.randomUUID()}.${ext}`;
+
+    const { error } = await supabase.storage
+      .from("bathroom-photos")
+      .upload(storagePath, file, { contentType: file.type, upsert: true });
+
+    if (error) {
+      console.error("Upload error for", file.name, error);
+      return {
+        id: photoId,
+        name: file.name,
+        size: file.size,
+        type: file.type,
+        preview_url: preview ?? undefined,
+        upload_status: preview ? "preview_only" : "upload_failed",
+      };
+    }
+
+    return {
+      id: photoId,
+      name: file.name,
+      size: file.size,
+      type: file.type,
+      storage_path: storagePath,
+      upload_status: "uploaded",
     };
+  }, []);
 
-    generate();
-    return () => {
-      cancelled = true;
-      urls.forEach((url) => URL.revokeObjectURL(url));
-    };
-  }, [files]);
-
-  const addFiles = useCallback((incoming: FileList | File[]) => {
+  const addFiles = useCallback(async (incoming: FileList | File[]) => {
     const fileArray = Array.from(incoming);
     const accepted: File[] = [];
     let rejected = 0;
@@ -265,17 +291,60 @@ const UploadPhotos = () => {
 
     if (accepted.length === 0) return;
 
-    setFiles((prev) => {
-      const combined = [...prev, ...accepted];
-      if (combined.length > MAX_FILES) {
-        toast.info(`Maximum ${MAX_FILES} photos allowed`, {
-          description: `Only the first ${MAX_FILES} photos were kept.`,
+    const currentMeta = projectRef.current.photos.metadata;
+    const remainingSlots = Math.max(0, MAX_FILES - currentMeta.length);
+    if (remainingSlots === 0) {
+      toast.info(`Maximum ${MAX_FILES} photos allowed`);
+      return;
+    }
+
+    const toUpload = accepted.slice(0, remainingSlots);
+    if (accepted.length > remainingSlots) {
+      toast.info(`Maximum ${MAX_FILES} photos allowed`, {
+        description: `Only ${remainingSlots} more were added.`,
+      });
+    }
+
+    setPendingUploadCount((c) => c + toUpload.length);
+
+    let anyFailed = false;
+    let anyLocalOnly = false;
+
+    for (const file of toUpload) {
+      try {
+        const meta = await uploadAndPersistFile(file);
+        if (!meta) {
+          anyFailed = true;
+          continue;
+        }
+        if (meta.upload_status !== "uploaded") anyLocalOnly = true;
+
+        const nextMetadata = [...projectRef.current.photos.metadata, meta];
+        const nextPhotos = { ...projectRef.current.photos, metadata: nextMetadata };
+        updateProject({ photos: nextPhotos });
+
+        await saveProject({
+          silent: true,
+          projectOverride: { ...projectRef.current, photos: nextPhotos },
         });
-        return combined.slice(0, MAX_FILES);
+      } catch (err) {
+        console.error("Failed to upload file", file.name, err);
+        anyFailed = true;
+      } finally {
+        setPendingUploadCount((c) => Math.max(0, c - 1));
       }
-      return combined;
-    });
-  }, []);
+    }
+
+    if (anyFailed) {
+      toast.error("Some photos failed to upload", { description: "Please try again." });
+    } else if (anyLocalOnly) {
+      toast.warning("Photo saved locally only", {
+        description: "Sign in to back up your photos to your account.",
+      });
+    } else {
+      toast.success(`${toUpload.length} photo${toUpload.length !== 1 ? "s" : ""} uploaded`);
+    }
+  }, [updateProject, saveProject, uploadAndPersistFile]);
 
   const handleDragOver = useCallback((e: React.DragEvent) => {
     e.preventDefault();
@@ -294,13 +363,13 @@ const UploadPhotos = () => {
     e.stopPropagation();
     setDragging(false);
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
-      addFiles(e.dataTransfer.files);
+      void addFiles(e.dataTransfer.files);
     }
   }, [addFiles]);
 
   const handleFileInput = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      addFiles(e.target.files);
+      void addFiles(e.target.files);
     }
     e.target.value = "";
   }, [addFiles]);
@@ -309,91 +378,16 @@ const UploadPhotos = () => {
     fileInputRef.current?.click();
   }, []);
 
-  const removeFile = useCallback((index: number) => {
-    setFiles((prev) => prev.filter((_, i) => i !== index));
-  }, []);
-
   const existingCount = project.photos.metadata.length;
-  const hasNewFiles = files.length > 0;
-
-  const uploadFilesToStorage = async (filesToUpload: File[]): Promise<Array<{ id: string; name: string; size: number; type: string; storage_path?: string; preview_url?: string; upload_status: "uploaded" | "preview_only" | "upload_failed" }>> => {
-    const { data: { user } } = await supabase.auth.getUser();
-    if (!user) throw new Error("Not authenticated");
-
-    const results: Array<{ id: string; name: string; size: number; type: string; storage_path?: string; preview_url?: string; upload_status: "uploaded" | "preview_only" | "upload_failed" }> = [];
-
-    for (const [index, file] of filesToUpload.entries()) {
-      const ext = file.name.split('.').pop() || 'jpg';
-      const storagePath = `${user.id}/${crypto.randomUUID()}.${ext}`;
-      const fallbackPreview = previews[index] || undefined;
-
-      const { error } = await supabase.storage
-        .from("bathroom-photos")
-        .upload(storagePath, file, { contentType: file.type, upsert: true });
-
-      if (error) {
-        console.error("Upload error for", file.name, error);
-        results.push({
-          id: crypto.randomUUID(),
-          name: file.name,
-          size: file.size,
-          type: file.type,
-          preview_url: fallbackPreview,
-          upload_status: fallbackPreview ? "preview_only" : "upload_failed",
-        });
-        continue;
-      }
-
-      results.push({
-        id: crypto.randomUUID(),
-        name: file.name,
-        size: file.size,
-        type: file.type,
-        storage_path: storagePath,
-        upload_status: "uploaded",
-      });
-    }
-
-    return results;
-  };
+  const isUploading = pendingUploadCount > 0;
 
   const handleContinue = async () => {
-    if (hasNewFiles) {
-      setIsUploading(true);
-      try {
-        const uploaded = await uploadFilesToStorage(files);
-        if (uploaded.length === 0 && files.length > 0) {
-          const metadata = files.map((f, index) => ({
-            id: crypto.randomUUID(),
-            name: f.name,
-            size: f.size,
-            type: f.type,
-            preview_url: previews[index] || undefined,
-            upload_status: previews[index] ? "preview_only" as const : "upload_failed" as const,
-          }));
-          updateProject({ photos: { metadata, notes } });
-          toast.warning("Photos saved locally only", { description: "Upload to cloud failed. Your photos will appear on this device only." });
-        } else {
-          updateProject({ photos: { metadata: uploaded, notes } });
-        }
-      } catch (err) {
-        console.error("Upload error:", err);
-        const metadata = files.map((f, index) => ({
-          id: crypto.randomUUID(),
-          name: f.name,
-          size: f.size,
-          type: f.type,
-          preview_url: previews[index] || undefined,
-          upload_status: previews[index] ? "preview_only" as const : "upload_failed" as const,
-        }));
-        updateProject({ photos: { metadata, notes } });
-        toast.warning("Photos saved locally only");
-      } finally {
-        setIsUploading(false);
-      }
-    } else {
-      updateProject({ photos: { ...project.photos, notes } });
+    // Flush notes before navigation
+    if (autosaveTimerRef.current) {
+      clearTimeout(autosaveTimerRef.current);
+      autosaveTimerRef.current = null;
     }
+    await persistNotes(notesRef.current);
     markStepComplete("upload");
     navigate("/dimensions");
   };
@@ -428,55 +422,63 @@ const UploadPhotos = () => {
           </div>
 
           <div className="space-y-8">
-            {/* Saved photo indicator with actual thumbnails */}
-            {!hasNewFiles && existingCount > 0 && (
+            {/* Saved photos with thumbnails (persisted) */}
+            {existingCount > 0 && (
               <div className="rounded-xl border border-primary/20 bg-primary/5 px-5 py-4">
                 <div className="flex items-center gap-3 mb-3">
                   <ImageIcon className="h-5 w-5 text-primary flex-shrink-0" />
                   <div>
                     <p className="text-sm font-medium text-foreground">
-                      {existingCount} photo{existingCount !== 1 ? "s" : ""} saved to this project
+                      {existingCount} photo{existingCount !== 1 ? "s" : ""} ready
                     </p>
-                    <p className="text-xs text-muted-foreground mt-0.5">Upload new photos below to replace them, or continue with your current set.</p>
+                    <p className="text-xs text-muted-foreground mt-0.5">
+                      Saved to your project. Add more below or continue.
+                    </p>
                   </div>
                 </div>
                 <div className="grid grid-cols-4 gap-2 mt-1">
-                  {restoredPhotos.map((photo, i) => {
-                    return (
-                      <div key={i} className="relative group rounded-lg border border-border aspect-square overflow-hidden bg-secondary/60">
-                        {photo.imageUrl ? (
-                          <img
-                            src={photo.imageUrl}
-                            alt={photo.name}
-                            className="w-full h-full object-cover"
-                            onError={() => markRestoredPhotoUnavailable(i)}
-                          />
-                        ) : null}
-                        <div className={`flex flex-col items-center justify-center gap-1.5 p-2 w-full h-full ${photo.imageUrl ? 'hidden' : ''}`}>
-                          <FileImage className="h-5 w-5 text-muted-foreground" />
-                          <span className="text-[10px] font-medium text-foreground text-center leading-tight">
-                            Image unavailable
-                          </span>
-                          <span className="text-[10px] text-muted-foreground truncate w-full text-center leading-tight">
-                            {photo.name}
-                          </span>
-                        </div>
-                        <button
-                          type="button"
-                          onClick={() => removeRestoredPhoto(i)}
-                          className="absolute top-1.5 right-1.5 rounded-full bg-foreground/70 p-1 text-background opacity-0 group-hover:opacity-100 transition-opacity duration-150"
-                          aria-label={`Remove ${photo.name}`}
-                        >
-                          <X className="h-3.5 w-3.5" />
-                        </button>
+                  {restoredPhotos.map((photo, i) => (
+                    <div key={photo.id ?? i} className="relative group rounded-lg border border-border aspect-square overflow-hidden bg-secondary/60">
+                      {photo.imageUrl ? (
+                        <img
+                          src={photo.imageUrl}
+                          alt={photo.name}
+                          className="w-full h-full object-cover"
+                          onError={() => markRestoredPhotoUnavailable(i)}
+                        />
+                      ) : null}
+                      <div className={`flex flex-col items-center justify-center gap-1.5 p-2 w-full h-full ${photo.imageUrl ? 'hidden' : ''}`}>
+                        <FileImage className="h-5 w-5 text-muted-foreground" />
+                        <span className="text-[10px] font-medium text-foreground text-center leading-tight">
+                          {photo.status === "loading" ? "Loading…" : "Image unavailable"}
+                        </span>
+                        <span className="text-[10px] text-muted-foreground truncate w-full text-center leading-tight">
+                          {photo.name}
+                        </span>
+                        <span className="text-[9px] text-muted-foreground/80">
+                          {formatSize(photo.size)}
+                        </span>
                       </div>
-                    );
-                  })}
+                      <button
+                        type="button"
+                        onClick={() => removeRestoredPhoto(i)}
+                        className="absolute top-1.5 right-1.5 rounded-full bg-foreground/70 p-1 text-background opacity-0 group-hover:opacity-100 transition-opacity duration-150"
+                        aria-label={`Remove ${photo.name}`}
+                      >
+                        <X className="h-3.5 w-3.5" />
+                      </button>
+                    </div>
+                  ))}
+                  {Array.from({ length: pendingUploadCount }).map((_, i) => (
+                    <div key={`pending-${i}`} className="relative rounded-lg border border-dashed border-border aspect-square flex flex-col items-center justify-center gap-1.5 bg-secondary/40">
+                      <Loader2 className="h-5 w-5 text-muted-foreground animate-spin" />
+                      <span className="text-[10px] text-muted-foreground">Uploading…</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
 
-            {/* Hidden file input */}
             <input
               ref={fileInputRef}
               type="file"
@@ -500,15 +502,27 @@ const UploadPhotos = () => {
             >
               <div className="flex flex-col items-center gap-3">
                 <div className={`rounded-full p-4 transition-colors duration-200 ${dragging ? "bg-primary/10" : "bg-secondary"}`}>
-                  <Upload className={`h-7 w-7 transition-colors duration-200 ${dragging ? "text-primary" : "text-muted-foreground"}`} />
+                  {isUploading ? (
+                    <Loader2 className="h-7 w-7 text-primary animate-spin" />
+                  ) : (
+                    <Upload className={`h-7 w-7 transition-colors duration-200 ${dragging ? "text-primary" : "text-muted-foreground"}`} />
+                  )}
                 </div>
                 <div>
                   <p className="text-foreground font-medium text-base">
-                    {dragging ? "Drop your photos here" : "Drag and drop your bathroom photos here"}
+                    {isUploading
+                      ? `Uploading ${pendingUploadCount} photo${pendingUploadCount !== 1 ? "s" : ""}…`
+                      : dragging
+                        ? "Drop your photos here"
+                        : existingCount > 0
+                          ? "Add more bathroom photos"
+                          : "Drag and drop your bathroom photos here"}
                   </p>
-                  <p className="text-muted-foreground text-sm mt-1">
-                    or <span className="text-primary font-medium">browse files</span> from your device
-                  </p>
+                  {!isUploading && (
+                    <p className="text-muted-foreground text-sm mt-1">
+                      or <span className="text-primary font-medium">browse files</span> from your device
+                    </p>
+                  )}
                 </div>
                 <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
                   <span>JPG, PNG, HEIC accepted</span>
@@ -520,77 +534,6 @@ const UploadPhotos = () => {
                 </p>
               </div>
             </div>
-
-            {/* Thumbnail previews for new files */}
-            <AnimatePresence>
-              {hasNewFiles && (
-                <motion.div
-                  initial={{ opacity: 0, y: 12 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -8 }}
-                  transition={{ duration: 0.3 }}
-                  className="space-y-3"
-                >
-                  <p className="text-sm font-medium text-foreground">
-                    {files.length} photo{files.length !== 1 ? "s" : ""} ready
-                  </p>
-                  <div className="grid grid-cols-4 gap-3">
-                    {files.map((file, i) => (
-                      <motion.div
-                        key={`${file.name}-${file.size}-${i}`}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.9 }}
-                        transition={{ duration: 0.2, delay: i * 0.05 }}
-                        className="relative group rounded-xl overflow-hidden aspect-square bg-secondary border border-border shadow-sm"
-                      >
-                        {previews[i] ? (
-                          <img
-                            src={previews[i]}
-                            alt={file.name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 bg-secondary p-2">
-                            <FileImage className="h-6 w-6 text-muted-foreground" />
-                            <span className="text-[10px] text-muted-foreground font-medium uppercase tracking-wide">
-                              {file.name.split('.').pop()}
-                            </span>
-                            <span className="text-[9px] text-muted-foreground truncate w-full text-center">{file.name}</span>
-                          </div>
-                        )}
-                        <div className="absolute inset-0 bg-foreground/0 group-hover:bg-foreground/20 transition-colors duration-200" />
-                        <button
-                          type="button"
-                          onClick={(e) => { e.stopPropagation(); removeFile(i); }}
-                          className="absolute top-2 right-2 rounded-full bg-foreground/70 p-1 text-background opacity-0 group-hover:opacity-100 transition-opacity duration-150"
-                          aria-label={`Remove ${file.name}`}
-                        >
-                          <X className="h-3.5 w-3.5" />
-                        </button>
-                        <div className="absolute bottom-0 left-0 right-0 px-2 py-1.5 bg-gradient-to-t from-foreground/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-150">
-                          <p className="text-[10px] text-background truncate">{file.name}</p>
-                          <p className="text-[9px] text-background/70">{formatSize(file.size)}</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                    {files.length < MAX_FILES && (
-                      <motion.button
-                        type="button"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.15 }}
-                        onClick={(e) => { e.stopPropagation(); openFilePicker(); }}
-                        className="rounded-xl border-2 border-dashed border-border aspect-square flex flex-col items-center justify-center gap-1.5 text-muted-foreground hover:border-primary/40 hover:text-foreground transition-colors"
-                      >
-                        <ImagePlus className="h-5 w-5" />
-                        <span className="text-[10px]">Add more</span>
-                      </motion.button>
-                    )}
-                  </div>
-                </motion.div>
-              )}
-            </AnimatePresence>
 
             {/* Notes */}
             <div className="space-y-2">
