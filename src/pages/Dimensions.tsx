@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Home } from "lucide-react";
@@ -7,22 +7,63 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useProject } from "@/contexts/ProjectContext";
+import type { ProjectData } from "@/contexts/ProjectContext";
+
+type DimensionsState = {
+  width_ft: string;
+  width_in: string;
+  length_ft: string;
+  length_in: string;
+  height_ft: string;
+  height_in: string;
+  door_notes: string;
+  window_notes: string;
+  layout_notes: string;
+};
+
+const emptyDims: DimensionsState = {
+  width_ft: "",
+  width_in: "",
+  length_ft: "",
+  length_in: "",
+  height_ft: "",
+  height_in: "",
+  door_notes: "",
+  window_notes: "",
+  layout_notes: "",
+};
+
+const fromProject = (dims: ProjectData["dimensions"]): DimensionsState => ({
+  width_ft: dims.width_ft || "",
+  width_in: dims.width_in || "",
+  length_ft: dims.length_ft || "",
+  length_in: dims.length_in || "",
+  height_ft: dims.height_ft || "",
+  height_in: dims.height_in || "",
+  door_notes: dims.door_notes || "",
+  window_notes: dims.window_notes || "",
+  layout_notes: dims.layout_notes || "",
+});
+
+const dimsEqual = (a: DimensionsState, b: DimensionsState) =>
+  (Object.keys(a) as Array<keyof DimensionsState>).every((k) => a[k] === b[k]);
 
 const DimensionInput = ({
-  label, ftValue, inValue, onFtChange, onInChange,
+  label, ftValue, inValue, onFtChange, onInChange, onBlur,
 }: {
   label: string; ftValue: string; inValue: string;
   onFtChange: (v: string) => void; onInChange: (v: string) => void;
+  onBlur: () => void;
 }) => (
   <div className="space-y-2">
     <Label className="text-sm font-medium text-foreground">{label}</Label>
     <div className="flex items-center gap-2">
       <div className="relative flex-1">
-        <Input type="number" placeholder="0" value={ftValue} onChange={(e) => onFtChange(e.target.value)} className="h-12 text-base pr-10" />
+        <Input type="number" placeholder="0" value={ftValue} onChange={(e) => onFtChange(e.target.value)} onBlur={onBlur} className="h-12 text-base pr-10" />
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium">ft</span>
       </div>
       <div className="relative flex-1">
-        <Input type="number" placeholder="0" value={inValue} onChange={(e) => onInChange(e.target.value)} className="h-12 text-base pr-10" />
+        <Input type="number" placeholder="0" value={inValue} onChange={(e) => onInChange(e.target.value)} onBlur={onBlur} className="h-12 text-base pr-10" />
         <span className="absolute right-3 top-1/2 -translate-y-1/2 text-sm text-muted-foreground font-medium">in</span>
       </div>
     </div>
@@ -55,29 +96,113 @@ const FloorDiagram = () => (
 );
 
 const Dimensions = () => {
-  const { project, updateProject, markStepComplete } = useProject();
+  const { project, updateProject, saveProject, markStepComplete } = useProject();
   const navigate = useNavigate();
-  const dims = project.dimensions;
 
-  const [widthFt, setWidthFt] = useState(dims.width_ft || "");
-  const [widthIn, setWidthIn] = useState(dims.width_in || "");
-  const [lengthFt, setLengthFt] = useState(dims.length_ft || "");
-  const [lengthIn, setLengthIn] = useState(dims.length_in || "");
-  const [heightFt, setHeightFt] = useState(dims.height_ft || "");
-  const [heightIn, setHeightIn] = useState(dims.height_in || "");
-  const [doorNotes, setDoorNotes] = useState(dims.door_notes || "");
-  const [windowNotes, setWindowNotes] = useState(dims.window_notes || "");
-  const [layoutNotes, setLayoutNotes] = useState(dims.layout_notes || "");
+  const [dims, setDims] = useState<DimensionsState>(() => fromProject(project.dimensions));
 
-  const handleContinue = () => {
-    updateProject({
-      dimensions: {
-        width_ft: widthFt, width_in: widthIn,
-        length_ft: lengthFt, length_in: lengthIn,
-        height_ft: heightFt, height_in: heightIn,
-        door_notes: doorNotes, window_notes: windowNotes, layout_notes: layoutNotes,
-      },
-    });
+  const userEditedRef = useRef(false);
+  const dimsRef = useRef(dims);
+  dimsRef.current = dims;
+  const projectRef = useRef(project);
+  projectRef.current = project;
+  const latestPersistedRef = useRef<DimensionsState>(fromProject(project.dimensions));
+  const saveInFlightRef = useRef<Promise<boolean> | null>(null);
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Hydrate from project when it (re)loads — but never overwrite in-progress local edits.
+  useEffect(() => {
+    if (userEditedRef.current) return;
+    const next = fromProject(project.dimensions);
+    if (!dimsEqual(next, dimsRef.current)) {
+      setDims(next);
+      latestPersistedRef.current = next;
+    }
+  }, [project.dimensions]);
+
+  const persistDims = useCallback(
+    async (value: DimensionsState) => {
+      // Avoid redundant writes
+      if (dimsEqual(value, latestPersistedRef.current)) return;
+
+      // Wait for any in-flight save to settle to avoid races.
+      if (saveInFlightRef.current) {
+        try { await saveInFlightRef.current; } catch { /* ignore */ }
+      }
+
+      const nextDimensions = { ...projectRef.current.dimensions, ...value };
+      updateProject({ dimensions: nextDimensions });
+
+      const overrideProject: ProjectData = {
+        ...projectRef.current,
+        dimensions: nextDimensions,
+      };
+
+      saveInFlightRef.current = saveProject({ silent: true, projectOverride: overrideProject });
+      try {
+        const ok = await saveInFlightRef.current;
+        if (ok) latestPersistedRef.current = value;
+      } finally {
+        saveInFlightRef.current = null;
+      }
+    },
+    [saveProject, updateProject],
+  );
+
+  const scheduleSave = useCallback(
+    (value: DimensionsState) => {
+      if (debounceRef.current) clearTimeout(debounceRef.current);
+      debounceRef.current = setTimeout(() => {
+        void persistDims(value);
+      }, 600);
+    },
+    [persistDims],
+  );
+
+  const handleField = useCallback(
+    (key: keyof DimensionsState, value: string) => {
+      userEditedRef.current = true;
+      setDims((prev) => {
+        const next = { ...prev, [key]: value };
+        scheduleSave(next);
+        return next;
+      });
+    },
+    [scheduleSave],
+  );
+
+  const flushNow = useCallback(() => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+    void persistDims(dimsRef.current);
+  }, [persistDims]);
+
+  // Flush on tab hide / refresh / navigation away.
+  useEffect(() => {
+    const onBeforeUnload = () => { flushNow(); };
+    const onPageHide = () => { flushNow(); };
+    const onVisibility = () => {
+      if (document.visibilityState === "hidden") flushNow();
+    };
+    window.addEventListener("beforeunload", onBeforeUnload);
+    window.addEventListener("pagehide", onPageHide);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.removeEventListener("beforeunload", onBeforeUnload);
+      window.removeEventListener("pagehide", onPageHide);
+      document.removeEventListener("visibilitychange", onVisibility);
+      flushNow();
+    };
+  }, [flushNow]);
+
+  const handleContinue = async () => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+    await persistDims(dimsRef.current);
     markStepComplete("dimensions");
     navigate("/style-budget");
   };
@@ -113,9 +238,30 @@ const Dimensions = () => {
 
           <div className="space-y-8">
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <DimensionInput label="Room Width" ftValue={widthFt} inValue={widthIn} onFtChange={setWidthFt} onInChange={setWidthIn} />
-              <DimensionInput label="Room Length" ftValue={lengthFt} inValue={lengthIn} onFtChange={setLengthFt} onInChange={setLengthIn} />
-              <DimensionInput label="Ceiling Height" ftValue={heightFt} inValue={heightIn} onFtChange={setHeightFt} onInChange={setHeightIn} />
+              <DimensionInput
+                label="Room Width"
+                ftValue={dims.width_ft}
+                inValue={dims.width_in}
+                onFtChange={(v) => handleField("width_ft", v)}
+                onInChange={(v) => handleField("width_in", v)}
+                onBlur={flushNow}
+              />
+              <DimensionInput
+                label="Room Length"
+                ftValue={dims.length_ft}
+                inValue={dims.length_in}
+                onFtChange={(v) => handleField("length_ft", v)}
+                onInChange={(v) => handleField("length_in", v)}
+                onBlur={flushNow}
+              />
+              <DimensionInput
+                label="Ceiling Height"
+                ftValue={dims.height_ft}
+                inValue={dims.height_in}
+                onFtChange={(v) => handleField("height_ft", v)}
+                onInChange={(v) => handleField("height_in", v)}
+                onBlur={flushNow}
+              />
             </div>
 
             <div className="space-y-4 pt-2">
@@ -126,16 +272,34 @@ const Dimensions = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
                   <Label className="text-sm text-muted-foreground">Door location / notes</Label>
-                  <Input placeholder="e.g. door on the left wall" value={doorNotes} onChange={(e) => setDoorNotes(e.target.value)} className="h-11 text-sm" />
+                  <Input
+                    placeholder="e.g. door on the left wall"
+                    value={dims.door_notes}
+                    onChange={(e) => handleField("door_notes", e.target.value)}
+                    onBlur={flushNow}
+                    className="h-11 text-sm"
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label className="text-sm text-muted-foreground">Window notes</Label>
-                  <Input placeholder="e.g. one window above the tub" value={windowNotes} onChange={(e) => setWindowNotes(e.target.value)} className="h-11 text-sm" />
+                  <Input
+                    placeholder="e.g. one window above the tub"
+                    value={dims.window_notes}
+                    onChange={(e) => handleField("window_notes", e.target.value)}
+                    onBlur={flushNow}
+                    className="h-11 text-sm"
+                  />
                 </div>
               </div>
               <div className="space-y-2">
                 <Label className="text-sm text-muted-foreground">Awkward corners or layout details</Label>
-                <Textarea placeholder="e.g. small alcove behind the door, sloped ceiling on one side" value={layoutNotes} onChange={(e) => setLayoutNotes(e.target.value)} className="min-h-[80px] text-sm resize-none" />
+                <Textarea
+                  placeholder="e.g. small alcove behind the door, sloped ceiling on one side"
+                  value={dims.layout_notes}
+                  onChange={(e) => handleField("layout_notes", e.target.value)}
+                  onBlur={flushNow}
+                  className="min-h-[80px] text-sm resize-none"
+                />
               </div>
             </div>
 
