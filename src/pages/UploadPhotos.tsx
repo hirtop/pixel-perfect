@@ -584,7 +584,8 @@ const UploadPhotos = () => {
                 id="notes"
                 placeholder="Tell us anything important about this bathroom — what you want to keep, replace, or change."
                 value={notes}
-                onChange={(e) => setNotes(e.target.value)}
+                onChange={handleNotesChange}
+                onBlur={handleNotesBlur}
                 className="min-h-[100px] text-base resize-none"
               />
             </div>
