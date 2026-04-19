@@ -12,6 +12,10 @@ export interface SavedProject {
     current_step?: string;
     completed_steps?: string[];
   } | null;
+  selected_package: {
+    name?: string;
+    tier?: string;
+  } | null;
 }
 
 export function useUserProjects() {
@@ -36,7 +40,7 @@ export function useUserProjects() {
     try {
       const { data, error } = await supabase
         .from("projects")
-        .select("id, name, status, bathroom_type, updated_at, workflow_progress")
+        .select("id, name, status, bathroom_type, updated_at, workflow_progress, selected_package")
         .eq("user_id", user.id)
         .order("updated_at", { ascending: false });
 
@@ -45,6 +49,7 @@ export function useUserProjects() {
         (data ?? []).map((d) => ({
           ...d,
           workflow_progress: d.workflow_progress as SavedProject["workflow_progress"],
+          selected_package: (d.selected_package as SavedProject["selected_package"]) ?? null,
         }))
       );
       setLoadedUserId(user.id);

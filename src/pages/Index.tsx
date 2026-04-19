@@ -8,6 +8,7 @@ import { useAuth } from "@/hooks/useAuth";
 import { useProject } from "@/contexts/ProjectContext";
 import { useUserProjects } from "@/hooks/useUserProjects";
 import ProjectPickerDialog from "@/components/ProjectPickerDialog";
+import { resolveResumeRoute } from "@/lib/resumeRoute";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
@@ -102,21 +103,12 @@ export default function LandingPage() {
   const hasSavedProject = Boolean(user && !isProjectStateLoading && projectCount > 0);
   const hasMultiple = projectCount > 1;
 
-  const stepToRoute: Record<string, string> = {
-    start: "/start",
-    upload: "/upload",
-    dimensions: "/dimensions",
-    "style-budget": "/style-budget",
-    "package-select": "/options",
-    workflow: "/workflow",
-    summary: "/summary",
-    subcontractors: "/subcontractors",
-    agreement: "/agreement",
-  };
-
   const singleProject = projectCount === 1 ? projects[0] : null;
   const singleRoute = singleProject
-    ? (stepToRoute[singleProject.workflow_progress?.current_step || "start"] ?? "/start")
+    ? resolveResumeRoute({
+        step: singleProject.workflow_progress?.current_step,
+        tier: singleProject.selected_package?.tier,
+      })
     : "/start";
 
   const handlePrimaryCta = async () => {

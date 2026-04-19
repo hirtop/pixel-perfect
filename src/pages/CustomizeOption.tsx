@@ -113,6 +113,16 @@ const CustomizeOption = () => {
   const pkgTier = project.selected_package.tier || "balanced";
   const tier: ProductTier = tierNameMap[pkgTier] || "Balanced";
 
+  // Persist that the user has reached the customize step so resume
+  // returns them here directly (and not to /options or /package).
+  useEffect(() => {
+    if (project.selected_package?.tier) {
+      markStepComplete("customize");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project.selected_package?.tier]);
+
+
   const initialCategories = useMemo(() => buildCategoriesForTier(tier), [tier]);
 
   const otherItemsTotal = useMemo(() => getStaticItemsTotal(tier), [tier]);

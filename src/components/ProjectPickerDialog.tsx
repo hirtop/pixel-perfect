@@ -21,6 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 import type { SavedProject } from "@/hooks/useUserProjects";
+import { resolveResumeRoute } from "@/lib/resumeRoute";
 import { toast } from "sonner";
 
 const STEP_LABELS: Record<string, string> = {
@@ -30,25 +31,12 @@ const STEP_LABELS: Record<string, string> = {
   "style-budget": "Style & Budget",
   "package-select": "Remodel Options",
   options: "Remodel Options",
+  "package-detail": "Package Details",
   customize: "Customizing",
   workflow: "Workflow",
   summary: "Summary",
   subcontractors: "Subcontractors",
   agreement: "Agreement",
-};
-
-const STEP_TO_ROUTE: Record<string, string> = {
-  start: "/start",
-  upload: "/upload",
-  dimensions: "/dimensions",
-  "style-budget": "/style-budget",
-  "package-select": "/options",
-  options: "/options",
-  customize: "/options",
-  workflow: "/workflow",
-  summary: "/summary",
-  subcontractors: "/subcontractors",
-  agreement: "/agreement",
 };
 
 function formatDate(iso: string) {
@@ -74,8 +62,10 @@ export default function ProjectPickerDialog({ open, onOpenChange, projects, onDe
 
   const handleResume = async (project: SavedProject) => {
     onOpenChange(false);
-    const step = project.workflow_progress?.current_step || "start";
-    const route = STEP_TO_ROUTE[step] ?? "/start";
+    const route = resolveResumeRoute({
+      step: project.workflow_progress?.current_step,
+      tier: project.selected_package?.tier,
+    });
     await loadProject(project.id);
     navigate(route);
   };
