@@ -205,14 +205,12 @@ const Dimensions = () => {
   const handleField = useCallback(
     (key: keyof DimensionsState, value: string) => {
       userEditedRef.current = true;
-      setDims((prev) => {
-        const next = { ...prev, [key]: value };
-        dimsRef.current = next;
-        writeLocalDraft(next);
-        updateProject({ dimensions: { ...projectRef.current.dimensions, ...next } });
-        scheduleSave(next);
-        return next;
-      });
+      const next = { ...dimsRef.current, [key]: value };
+      dimsRef.current = next;
+      writeLocalDraft(next);
+      updateProject({ dimensions: { ...projectRef.current.dimensions, ...next } });
+      setDims(next);
+      scheduleSave(next);
     },
     [scheduleSave, updateProject, writeLocalDraft],
   );
