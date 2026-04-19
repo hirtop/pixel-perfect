@@ -31,7 +31,7 @@ const tierNameMap: Record<string, ProductTier> = {
 };
 
 const PackageDetail = () => {
-  const { project } = useProject();
+  const { project, markStepComplete } = useProject();
   const pkgName = project.selected_package.name || "Balanced";
   const pkgTier = project.selected_package.tier || "balanced";
   const tier: ProductTier = tierNameMap[pkgTier] || "Balanced";
@@ -40,6 +40,16 @@ const PackageDetail = () => {
   const fitReason = packageFitReasons[pkgName] || packageFitReasons.Balanced;
   const pricing = packagePricing[pkgName] || packagePricing.Balanced;
   const heroImg = tierImages[pkgTier] || balancedImg;
+
+  // Persist that the user has reached the package detail step so
+  // resume returns them here instead of jumping back to /options.
+  useEffect(() => {
+    if (project.selected_package?.tier) {
+      markStepComplete("package-detail");
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [project.selected_package?.tier]);
+
 
   // Pull tier-specific defaults for customizable categories
   const tierDefaults = getTierDefaults(tier);
