@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import ShoppingAssistantFab from "@/components/shopping-assistant/ShoppingAssistantFab";
 import { motion, AnimatePresence } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useParams, Navigate } from "react-router-dom";
 import { ArrowLeft, Check, ChevronUp, AlertTriangle, Home } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
@@ -103,24 +103,47 @@ const buildCategoriesForTier = (tier: ProductTier): Category[] => {
 
 const budgetCeilings: Record<string, number> = { Budget: 12000, Balanced: 19000, Premium: 32000 };
 
+const VALID_TIERS = new Set(["budget", "balanced", "premium"]);
+
 const CustomizeOption = () => {
-  const { project, updateProject, markStepComplete } = useProject();
+  const { project, updateProject, markStepComplete, isLoaded } = useProject();
   const navigate = useNavigate();
+  const { id: urlTierRaw } = useParams<{ id: string }>();
+  const urlTier = (urlTierRaw || "").toLowerCase();
+  const urlTierIsValid = VALID_TIERS.has(urlTier);
   const isInitialMount = useRef(true);
   const insights = getBathroomInsights(project);
 
   const budgetLevel = project.style_preferences?.budget_level || "Balanced";
-  const pkgTier = project.selected_package.tier || "balanced";
+  const savedTier = project.selected_package.tier?.toLowerCase();
+  // URL is the source of truth for which tier we are customizing.
+  const pkgTier = urlTierIsValid ? urlTier : (savedTier || "balanced");
   const tier: ProductTier = tierNameMap[pkgTier] || "Balanced";
 
-  // Persist that the user has reached the customize step so resume
-  // returns them here directly (and not to /options or /package).
+  // Sync URL tier into project state when it differs. Wait for hydration so
+  // we don't clobber a freshly loaded project with stale defaults.
   useEffect(() => {
-    if (project.selected_package?.tier) {
-      markStepComplete("customize");
+    if (!isLoaded) return;
+    if (!urlTierIsValid) return;
+    if (savedTier !== urlTier) {
+      updateProject({ selected_package: { name: tierNameMap[urlTier], tier: urlTier } });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project.selected_package?.tier]);
+  }, [isLoaded, urlTier, urlTierIsValid, savedTier]);
+
+  // Persist that the user has reached the customize step so resume returns
+  // them here. Wait for hydration to avoid overwriting backend load.
+  useEffect(() => {
+    if (!isLoaded) return;
+    if (!urlTierIsValid) return;
+    markStepComplete("customize");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded, urlTier, urlTierIsValid]);
+
+  // Defensive redirect for malformed URL (e.g. /customize/foo). Computed
+  // here, but the actual <Navigate> is rendered at the bottom of the
+  // component to keep all hook calls above any early returns.
+  const shouldRedirectInvalidUrl = isLoaded && !urlTierIsValid;
 
 
   const initialCategories = useMemo(() => buildCategoriesForTier(tier), [tier]);
@@ -207,6 +230,10 @@ const CustomizeOption = () => {
   };
 
   const fmt = formatPrice;
+
+  if (shouldRedirectInvalidUrl) {
+    return <Navigate to="/options" replace />;
+  }
 
   return (
     <div className="min-h-screen bg-background">
