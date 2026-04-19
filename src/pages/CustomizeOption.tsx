@@ -140,11 +140,10 @@ const CustomizeOption = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isLoaded, urlTier, urlTierIsValid]);
 
-  // Defensive redirect for malformed URL (e.g. /customize/foo). Only after
-  // hydration so we never bounce mid-load.
-  if (isLoaded && !urlTierIsValid) {
-    return <Navigate to="/options" replace />;
-  }
+  // Defensive redirect for malformed URL (e.g. /customize/foo). Computed
+  // here, but the actual <Navigate> is rendered at the bottom of the
+  // component to keep all hook calls above any early returns.
+  const shouldRedirectInvalidUrl = isLoaded && !urlTierIsValid;
 
 
   const initialCategories = useMemo(() => buildCategoriesForTier(tier), [tier]);
