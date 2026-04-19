@@ -84,7 +84,7 @@ const defaultProject: ProjectData = {
 interface ProjectContextType {
   project: ProjectData;
   updateProject: (updates: Partial<ProjectData>) => void;
-  saveProject: () => Promise<void>;
+  saveProject: (options?: { silent?: boolean; projectOverride?: ProjectData }) => Promise<boolean>;
   loadLatestProject: () => Promise<void>;
   loadProject: (projectId: string) => Promise<void>;
   resetProject: () => void;
@@ -192,7 +192,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
             description: "Sign in anytime to sync your project across devices.",
           });
         }
-        return;
+        return true;
       }
 
       const toJson = (v: unknown) => JSON.parse(JSON.stringify(v));
@@ -262,6 +262,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
           description: "Your progress is backed up and ready when you return.",
         });
       }
+      return true;
     } catch (err) {
       console.error("Save error:", err);
       if (!silent) {
@@ -269,12 +270,17 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
           description: "Please try again.",
         });
       }
+      return false;
     } finally {
       setIsSaving(false);
     }
   }, [setProjectState]);
 
-  const saveProject = useCallback(() => saveProjectInternal(false), [saveProjectInternal]);
+  const saveProject = useCallback(
+    (options?: { silent?: boolean; projectOverride?: ProjectData }) =>
+      saveProjectInternal(options?.silent ?? false, options?.projectOverride),
+    [saveProjectInternal],
+  );
 
   const markStepComplete = useCallback((step: string) => {
     const current = projectRef.current;
