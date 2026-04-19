@@ -119,6 +119,16 @@ const Dimensions = () => {
     }
   }, [draftStorageKey]);
 
+  const readLocalDraft = useCallback((): DimensionsState | null => {
+    try {
+      const stored = localStorage.getItem(draftStorageKey);
+      if (!stored) return null;
+      return { ...emptyDims, ...JSON.parse(stored) } as DimensionsState;
+    } catch {
+      return null;
+    }
+  }, [draftStorageKey]);
+
   const clearLocalDraft = useCallback(() => {
     try {
       localStorage.removeItem(draftStorageKey);
@@ -128,19 +138,14 @@ const Dimensions = () => {
   }, [draftStorageKey]);
 
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem(draftStorageKey);
-      if (!stored) return;
+    const draft = readLocalDraft();
+    if (!draft) return;
 
-      const draft = { ...emptyDims, ...JSON.parse(stored) } as DimensionsState;
-      userEditedRef.current = true;
-      setDims(draft);
-      dimsRef.current = draft;
-      updateProject({ dimensions: { ...project.dimensions, ...draft } });
-    } catch {
-      /* ignore invalid draft data */
-    }
-  }, [draftStorageKey, project.dimensions, updateProject]);
+    userEditedRef.current = true;
+    setDims(draft);
+    dimsRef.current = draft;
+    updateProject({ dimensions: { ...project.dimensions, ...draft } });
+  }, [project.dimensions, readLocalDraft, updateProject]);
 
   // Hydrate from project when it (re)loads — but never overwrite in-progress local edits.
   useEffect(() => {
@@ -175,13 +180,16 @@ const Dimensions = () => {
         const ok = await saveInFlightRef.current;
         if (ok) {
           latestPersistedRef.current = value;
-          clearLocalDraft();
+          const storedDraft = readLocalDraft();
+          if (storedDraft && dimsEqual(storedDraft, value)) {
+            clearLocalDraft();
+          }
         }
       } finally {
         saveInFlightRef.current = null;
       }
     },
-    [clearLocalDraft, saveProject, updateProject],
+    [clearLocalDraft, readLocalDraft, saveProject, updateProject],
   );
 
   const scheduleSave = useCallback(
