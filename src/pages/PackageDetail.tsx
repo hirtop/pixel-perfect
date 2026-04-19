@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useParams, Navigate } from "react-router-dom";
 import { Check, ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
@@ -30,25 +30,54 @@ const tierNameMap: Record<string, ProductTier> = {
   premium: "Premium",
 };
 
+const VALID_TIERS = new Set(["budget", "balanced", "premium"]);
+
 const PackageDetail = () => {
-  const { project, markStepComplete } = useProject();
-  const pkgName = project.selected_package.name || "Balanced";
-  const pkgTier = project.selected_package.tier || "balanced";
+  const { project, updateProject, markStepComplete, isLoaded } = useProject();
+  const { id: urlTierRaw } = useParams<{ id: string }>();
+  const urlTier = (urlTierRaw || "").toLowerCase();
+  const urlTierIsValid = VALID_TIERS.has(urlTier);
+
+  // URL is the source of truth for which tier to render. Fall back to saved
+  // package only when the URL is missing/invalid (defensive — should not happen
+  // because the route requires :id).
+  const savedTier = project.selected_package.tier?.toLowerCase();
+  const pkgTier = urlTierIsValid ? urlTier : (savedTier || "balanced");
   const tier: ProductTier = tierNameMap[pkgTier] || "Balanced";
+  const pkgName = tier; // capitalized name matches tier
+
   const finishDir = project.style_preferences.finish || "";
   const insights = getBathroomInsights(project);
   const fitReason = packageFitReasons[pkgName] || packageFitReasons.Balanced;
   const pricing = packagePricing[pkgName] || packagePricing.Balanced;
   const heroImg = tierImages[pkgTier] || balancedImg;
 
-  // Persist that the user has reached the package detail step so
-  // resume returns them here instead of jumping back to /options.
+  // Sync URL tier into project state when it differs from the saved tier.
+  // Wait for hydration to avoid clobbering an in-flight backend load with stale defaults.
   useEffect(() => {
-    if (project.selected_package?.tier) {
-      markStepComplete("package-detail");
+    if (!isLoaded) return;
+    if (!urlTierIsValid) return;
+    if (savedTier !== urlTier) {
+      updateProject({ selected_package: { name: tierNameMap[urlTier], tier: urlTier } });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [project.selected_package?.tier]);
+  }, [isLoaded, urlTier, urlTierIsValid, savedTier]);
+
+  // Persist that the user has reached the package detail step so resume
+  // returns them here. Wait for hydration so we don't overwrite a freshly
+  // loaded project with stale defaults.
+  useEffect(() => {
+    if (!isLoaded) return;
+    if (!urlTierIsValid) return;
+    markStepComplete("package-detail");
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isLoaded, urlTier, urlTierIsValid]);
+
+  // If the URL is malformed (e.g. /package/foo), send the user to options
+  // — but only after hydration so we don't bounce mid-load.
+  if (isLoaded && !urlTierIsValid) {
+    return <Navigate to="/options" replace />;
+  }
 
 
   // Pull tier-specific defaults for customizable categories
