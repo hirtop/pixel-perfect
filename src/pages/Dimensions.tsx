@@ -109,6 +109,38 @@ const Dimensions = () => {
   const latestPersistedRef = useRef<DimensionsState>(fromProject(project.dimensions));
   const saveInFlightRef = useRef<Promise<boolean> | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const draftStorageKey = `bobox_dimensions_draft_${project.id ?? "draft"}`;
+
+  const writeLocalDraft = useCallback((value: DimensionsState) => {
+    try {
+      localStorage.setItem(draftStorageKey, JSON.stringify(value));
+    } catch {
+      /* ignore storage errors */
+    }
+  }, [draftStorageKey]);
+
+  const clearLocalDraft = useCallback(() => {
+    try {
+      localStorage.removeItem(draftStorageKey);
+    } catch {
+      /* ignore storage errors */
+    }
+  }, [draftStorageKey]);
+
+  useEffect(() => {
+    try {
+      const stored = localStorage.getItem(draftStorageKey);
+      if (!stored) return;
+
+      const draft = { ...emptyDims, ...JSON.parse(stored) } as DimensionsState;
+      userEditedRef.current = true;
+      setDims(draft);
+      dimsRef.current = draft;
+      updateProject({ dimensions: { ...project.dimensions, ...draft } });
+    } catch {
+      /* ignore invalid draft data */
+    }
+  }, [draftStorageKey, project.dimensions, updateProject]);
 
   // Hydrate from project when it (re)loads — but never overwrite in-progress local edits.
   useEffect(() => {
@@ -141,12 +173,15 @@ const Dimensions = () => {
       saveInFlightRef.current = saveProject({ silent: true, projectOverride: overrideProject });
       try {
         const ok = await saveInFlightRef.current;
-        if (ok) latestPersistedRef.current = value;
+        if (ok) {
+          latestPersistedRef.current = value;
+          clearLocalDraft();
+        }
       } finally {
         saveInFlightRef.current = null;
       }
     },
-    [saveProject, updateProject],
+    [clearLocalDraft, saveProject, updateProject],
   );
 
   const scheduleSave = useCallback(
@@ -164,11 +199,14 @@ const Dimensions = () => {
       userEditedRef.current = true;
       setDims((prev) => {
         const next = { ...prev, [key]: value };
+        dimsRef.current = next;
+        writeLocalDraft(next);
+        updateProject({ dimensions: { ...projectRef.current.dimensions, ...next } });
         scheduleSave(next);
         return next;
       });
     },
-    [scheduleSave],
+    [scheduleSave, updateProject, writeLocalDraft],
   );
 
   const flushNow = useCallback(() => {
