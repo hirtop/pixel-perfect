@@ -47,10 +47,61 @@ const UploadPhotos = () => {
   const [restoredPhotos, setRestoredPhotos] = useState<RestoredPhoto[]>([]);
   const [isUploading, setIsUploading] = useState(false);
 
-  // Sync notes when project loads from backend
+  const notesRef = useRef(notes);
+  notesRef.current = notes;
+  const photosRef = useRef(project.photos);
+  photosRef.current = project.photos;
+  const userEditedRef = useRef(false);
+  const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  // Sync notes from backend ONLY if the user hasn't started editing locally.
+  // Prevents in-progress edits from being clobbered by project reloads.
   useEffect(() => {
+    if (userEditedRef.current) return;
     setNotes(project.photos.notes || "");
   }, [project.photos.notes]);
+
+  const persistNotes = useCallback((value: string) => {
+    const current = photosRef.current;
+    if ((current.notes || "") === value) return;
+    updateProject({ photos: { ...current, notes: value } });
+  }, [updateProject]);
+
+  const handleNotesChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const value = e.target.value;
+    userEditedRef.current = true;
+    setNotes(value);
+    if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+    autosaveTimerRef.current = setTimeout(() => {
+      persistNotes(value);
+    }, 600);
+  }, [persistNotes]);
+
+  const handleNotesBlur = useCallback(() => {
+    if (autosaveTimerRef.current) {
+      clearTimeout(autosaveTimerRef.current);
+      autosaveTimerRef.current = null;
+    }
+    persistNotes(notesRef.current);
+  }, [persistNotes]);
+
+  // Flush pending notes on unmount and before page unload/refresh.
+  useEffect(() => {
+    const flush = () => {
+      if (autosaveTimerRef.current) {
+        clearTimeout(autosaveTimerRef.current);
+        autosaveTimerRef.current = null;
+      }
+      persistNotes(notesRef.current);
+    };
+    window.addEventListener("beforeunload", flush);
+    window.addEventListener("pagehide", flush);
+    return () => {
+      window.removeEventListener("beforeunload", flush);
+      window.removeEventListener("pagehide", flush);
+      flush();
+    };
+  }, [persistNotes]);
 
   // Regenerate fresh signed URLs for previously uploaded photos on every restore
   useEffect(() => {
