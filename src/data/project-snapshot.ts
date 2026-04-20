@@ -121,6 +121,12 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
   else if (score <= 2) complexity = "Moderate";
   else complexity = "Complex";
 
+  // Powder room cap: footprint/tier alone can't push above Simple.
+  // Only a layout-change hint may lift it to Moderate. Never Complex.
+  if (isPowder) {
+    complexity = layoutChangeHinted ? "Moderate" : "Simple";
+  }
+
   const topReasons = conditionReasons.slice(0, 2);
   const complexityReason =
     complexity === "Simple"
