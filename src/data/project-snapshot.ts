@@ -90,10 +90,9 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
     conditionReasons.push("full bath with wet areas");
   }
 
-  if (hasTubShowerCombo) {
-    score += 1;
-    conditionReasons.push("tub and shower both in scope");
-  }
+  // Tub+shower combo is the standard American full bath — normal scope, not a
+  // complexity multiplier. Still surfaced as a cost driver below, but no score bump.
+
 
   if (sqft > 0 && sqft < 35) {
     score += 2;
