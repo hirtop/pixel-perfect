@@ -1,5 +1,10 @@
 import type { CSSProperties, ReactNode } from "react";
 
+export type AgreementReferencePhoto = {
+  name: string;
+  dataUrl: string;
+};
+
 export type AgreementPrintData = {
   clientName: string;
   projectAddress: string;
@@ -25,6 +30,8 @@ export type AgreementPrintData = {
   clientSignDate: string;
   contractorPrintedName: string;
   contractorSignDate: string;
+  referencePhotos?: AgreementReferencePhoto[];
+  homeownerNotes?: string;
 };
 
 const sectionStyle: CSSProperties = {
