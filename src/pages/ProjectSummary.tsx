@@ -158,14 +158,43 @@ const ProjectSummary = () => {
             </div>
           </div>
 
-          {(project.photos.metadata.length > 0 || project.photos.notes?.trim()) && (
-            <div className="mb-12">
-              <ReferencePhotos
-                metadata={project.photos.metadata}
-                notes={project.photos.notes}
-              />
-            </div>
-          )}
+          {(() => {
+            const photoMeta = project.photos?.metadata ?? [];
+            const photoNotes = project.photos?.notes ?? "";
+            const hasPhotos = photoMeta.length > 0;
+            const hasNotes = photoNotes.trim().length > 0;
+            if (!hasPhotos && !hasNotes) {
+              return (
+                <div className="mb-12">
+                  <section
+                    aria-label="Reference photos"
+                    className="rounded-2xl border border-dashed border-border bg-card/50 p-6 text-center"
+                  >
+                    <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">
+                      Site Reference
+                    </p>
+                    <h2 className="font-heading text-lg text-foreground mt-1">
+                      No reference photos yet
+                    </h2>
+                    <p className="text-xs text-muted-foreground mt-2 max-w-md mx-auto">
+                      Add bathroom photos to give your builders better context. They'll appear here, in your agreement PDF, and in subcontractor handoffs.
+                    </p>
+                    <Link
+                      to="/upload"
+                      className="inline-block mt-4 text-sm font-medium text-primary hover:underline"
+                    >
+                      Upload photos →
+                    </Link>
+                  </section>
+                </div>
+              );
+            }
+            return (
+              <div className="mb-12">
+                <ReferencePhotos metadata={photoMeta} notes={photoNotes} />
+              </div>
+            );
+          })()}
 
           <section className="mb-12">
             <h2 className="font-heading text-xl text-foreground mb-5">Your Selected Package Includes</h2>
