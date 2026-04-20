@@ -140,12 +140,12 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
   if (layoutChangeHinted) {
     allDrivers.push({
       label: "Plumbing relocation",
-      detail: "Moving a drain or supply line typically adds $1,500–$3,500 in plumbing + framing labor.",
+      detail: "Moving a drain or supply line typically adds meaningful plumbing and framing labor on top of the base scope.",
     });
   } else if (isFullBath || hasWetAreas) {
     allDrivers.push({
       label: "Plumbing layout",
-      detail: "Keeping fixtures on existing supply and drain lines is the single biggest cost lever.",
+      detail: "Keeping fixtures on existing supply and drain lines is one of the biggest cost levers in any bathroom remodel.",
     });
   }
 
@@ -153,17 +153,17 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
   if (hasTubShowerCombo) {
     allDrivers.push({
       label: "Tub + shower scope",
-      detail: "Two wet zones means more waterproofing membrane, pan work, and tile labor than one.",
+      detail: "Two wet zones means more waterproofing, pan work, and tile labor than a single shower or tub.",
     });
   } else if (hasShower || isFullBath) {
     allDrivers.push({
       label: "Shower waterproofing",
-      detail: "Pan, curb, and membrane work is hidden but drives 15–20% of wet-area cost.",
+      detail: "Pan, curb, and membrane work is hidden behind the tile but a notable share of wet-area labor.",
     });
   } else if (hasTub) {
     allDrivers.push({
       label: "Tub surround",
-      detail: "Tub deck, surround tile, and access panel work add labor beyond the tub itself.",
+      detail: "Tub deck, surround tile, and access panel work add labor beyond the tub fixture itself.",
     });
   }
 
@@ -211,12 +211,12 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
   if (preferredTier === "Premium") {
     allDrivers.push({
       label: "Designer fixture tier",
-      detail: "Premium faucets, lighting, and hardware swing $2k–$5k versus mid-tier equivalents.",
+      detail: "Premium faucets, lighting, and hardware carry a real premium over mid-tier equivalents.",
     });
   } else if (preferredTier === "Balanced") {
     allDrivers.push({
       label: "Coordinated finishes",
-      detail: "Matching mid-tier finishes across vanity, shower, and lighting adds modest premium.",
+      detail: "Matching mid-tier finishes across vanity, shower, and lighting adds a modest premium.",
     });
   }
 
@@ -231,18 +231,18 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
     // No tier picked yet — point them at a sensible starting comparison
     nextStep = {
       text: layoutRisk
-        ? "Before picking a tier, decide whether plumbing stays put — that single choice can swing the project $2k–$4k."
+        ? "Before picking a tier, decide whether plumbing stays put — that single choice tends to move the project meaningfully up or down the range."
         : "Compare Balanced as your baseline; it usually delivers the visible upgrades buyers expect without moving plumbing.",
       highlightTier: "Balanced",
     };
   } else if (complexity === "Complex" && preferredTier !== "Premium") {
     nextStep = {
-      text: `Your project carries real layout and wet-area risk. ${preferredTier} can work, but Premium gives you the budget room to handle surprises without compromising finishes.`,
+      text: `Your project carries real layout and wet-area risk. ${preferredTier} can work, but Premium gives you more budget room to absorb surprises without compromising finishes.`,
       highlightTier: "Premium",
     };
   } else if (complexity === "Simple" && preferredTier === "Premium") {
     nextStep = {
-      text: "Your scope is clean and predictable — Balanced will likely deliver the same visible result and keep $4k–$8k in your pocket.",
+      text: "Your scope is clean and predictable — Balanced will likely deliver a very similar visible result for noticeably less.",
       highlightTier: "Balanced",
     };
   } else if (preferredTier === "Premium") {
