@@ -289,6 +289,76 @@ export const AgreementPrintDocument = ({ data, widthPx }: { data: AgreementPrint
               </div>
             </div>
           </Section>
+
+          {((data.referencePhotos && data.referencePhotos.length > 0) || (data.homeownerNotes && data.homeownerNotes.trim())) && (
+            <Section title="Site Reference Photos">
+              <div
+                style={{
+                  width: "100%",
+                  maxWidth: "100%",
+                  minWidth: 0,
+                  border: "1px solid hsl(var(--accent) / 0.35)",
+                  borderRadius: "12px",
+                  padding: "12px 14px",
+                  marginBottom: "16px",
+                  backgroundColor: "hsl(var(--accent) / 0.08)",
+                  boxSizing: "border-box",
+                }}
+              >
+                <p style={{ ...valueStyle, fontSize: "12px", color: "hsl(var(--muted-foreground))" }}>
+                  Homeowner-supplied reference photos for builder context. Not an inspection or site survey. A licensed pro should confirm conditions on site before work begins.
+                </p>
+              </div>
+
+              {data.homeownerNotes && data.homeownerNotes.trim() && (
+                <div style={{ marginBottom: "16px" }}>
+                  <TextBlock label="Homeowner Notes" value={data.homeownerNotes} />
+                </div>
+              )}
+
+              {data.referencePhotos && data.referencePhotos.length > 0 && (
+                <div
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+                    gap: "12px",
+                    width: "100%",
+                    maxWidth: "100%",
+                    minWidth: 0,
+                  }}
+                >
+                  {data.referencePhotos.map((photo, idx) => (
+                    <div
+                      key={`${photo.name}-${idx}`}
+                      style={{
+                        ...blockStyle,
+                        padding: "8px",
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: "6px",
+                      }}
+                    >
+                      <img
+                        src={photo.dataUrl}
+                        alt={photo.name}
+                        style={{
+                          width: "100%",
+                          height: "auto",
+                          maxHeight: "240px",
+                          objectFit: "cover",
+                          borderRadius: "8px",
+                          display: "block",
+                        }}
+                      />
+                      <p style={{ fontSize: "10px", color: "hsl(var(--muted-foreground))", margin: 0, textAlign: "center" }}>
+                        {photo.name}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </Section>
+          )}
         </div>
       </div>
     </article>
