@@ -227,6 +227,28 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
     });
   }
 
+  // Cold-start padding: when the buyer hasn't entered enough signal, the pool can
+  // be very thin. Backfill with general, defensible drivers so the card never
+  // renders with only 1 item. Order kept stable; only used to reach 3.
+  const fallbackDrivers: CostDriver[] = [
+    {
+      label: "Demolition & disposal",
+      detail: "Tear-out, debris haul-away, and protecting adjacent rooms is a baseline cost on every remodel.",
+    },
+    {
+      label: "Lighting & electrical",
+      detail: "GFCI outlets, vanity lighting, and a code-compliant exhaust fan are easy to under-budget early on.",
+    },
+    {
+      label: "Permits & inspections",
+      detail: "Most jurisdictions require permits for plumbing or electrical work — fees and scheduling matter.",
+    },
+  ];
+  for (const fb of fallbackDrivers) {
+    if (allDrivers.length >= 3) break;
+    if (!allDrivers.some((d) => d.label === fb.label)) allDrivers.push(fb);
+  }
+
   const drivers = allDrivers.slice(0, 3);
 
   // ── Recommended next step (builder guidance tone) ────────────────
