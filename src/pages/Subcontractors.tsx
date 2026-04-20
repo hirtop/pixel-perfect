@@ -180,9 +180,26 @@ const Subcontractors = () => {
             </div>
           </div>
 
-          <p className="text-sm text-muted-foreground mb-8">
+          <p className="text-sm text-muted-foreground mb-4">
             Based on your workflow, you may need help with <span className="text-foreground font-medium">plumbing, electrical, tile, shower hardware, and finishing</span>.
           </p>
+
+          {(photoCount > 0 || hasNotes) && (
+            <div className="rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 mb-8 flex items-start gap-2.5">
+              <ImageIcon className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+              <p className="text-xs text-foreground/90 leading-relaxed">
+                <span className="font-semibold">Reference attached:</span>{" "}
+                {photoCount > 0 && (
+                  <>
+                    {photoCount} photo{photoCount !== 1 ? "s" : ""}
+                    {hasNotes ? " and your notes" : ""}
+                  </>
+                )}
+                {photoCount === 0 && hasNotes && "your notes"}
+                {" "}will be shared with each pro you contact.
+              </p>
+            </div>
+          )}
 
           <section className="mb-12">
             <h2 className="font-heading text-xl text-foreground mb-5">Verified Pros</h2>
