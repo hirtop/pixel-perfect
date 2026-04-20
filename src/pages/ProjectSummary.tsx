@@ -7,6 +7,7 @@ import AccountMenu from "@/components/AccountMenu";
 import balancedImg from "@/assets/package-balanced.jpg";
 import { useProject } from "@/contexts/ProjectContext";
 import { useAuth } from "@/hooks/useAuth";
+import ReferencePhotos from "@/components/ReferencePhotos";
 
 const baseLaborRate = 5800;
 const baseShipping = 650;
@@ -156,6 +157,15 @@ const ProjectSummary = () => {
               </p>
             </div>
           </div>
+
+          {(project.photos.metadata.length > 0 || project.photos.notes?.trim()) && (
+            <div className="mb-12">
+              <ReferencePhotos
+                metadata={project.photos.metadata}
+                notes={project.photos.notes}
+              />
+            </div>
+          )}
 
           <section className="mb-12">
             <h2 className="font-heading text-xl text-foreground mb-5">Your Selected Package Includes</h2>
