@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, ShieldCheck, BadgeCheck, FileText, Home } from "lucide-react";
+import { ArrowLeft, Star, ShieldCheck, BadgeCheck, FileText, Home, ImageIcon } from "lucide-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
+import { usePhotoSignedUrls } from "@/hooks/usePhotoSignedUrls";
 
 interface Pro {
   name: string;
@@ -40,6 +41,9 @@ const BadgePill = ({ label }: { label: string }) => (
 const Subcontractors = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
+  const { photos: referencePhotos } = usePhotoSignedUrls(project.photos.metadata);
+  const photoCount = project.photos.metadata.length;
+  const hasNotes = !!project.photos.notes?.trim();
 
   const [interactions, setInteractions] = useState<Record<string, { quote: boolean; summary: boolean }>>(
     () => {
@@ -67,14 +71,37 @@ const Subcontractors = () => {
     });
   };
 
+  const buildHandoffPayload = (pro: Pro) => ({
+    pro: { name: pro.name, trade: pro.trade, location: pro.location },
+    project: {
+      name: project.name,
+      bathroom_type: project.bathroom_type,
+      bathing_setup: project.bathing_setup,
+      dimensions: project.dimensions,
+      style: project.style_preferences,
+      package: project.selected_package,
+    },
+    reference_photos: referencePhotos
+      .filter((p) => p.url)
+      .map((p) => ({ name: p.name, url: p.url })),
+    homeowner_notes: project.photos.notes?.trim() || null,
+  });
+
   const handleQuote = (pro: Pro) => {
     recordInteraction(pro.name, "quote");
-    toast.success("Quote requested", { description: `We'll notify ${pro.name} with your project details.` });
+    toast.success("Quote requested", {
+      description: `${pro.name} will receive your project details${photoCount > 0 ? ` and ${photoCount} reference photo${photoCount !== 1 ? "s" : ""}` : ""}.`,
+    });
   };
 
   const handleSummary = (pro: Pro) => {
     recordInteraction(pro.name, "summary");
-    toast.success("Summary sent", { description: `Your project summary was shared with ${pro.name}.` });
+    // Payload includes signed photo URLs + homeowner notes for the sub.
+    // Wire this to a real send endpoint when subcontractor delivery is built.
+    console.info("[BOBOX handoff payload]", buildHandoffPayload(pro));
+    toast.success("Summary sent", {
+      description: `Shared with ${pro.name}${photoCount > 0 ? ` — includes ${photoCount} reference photo${photoCount !== 1 ? "s" : ""}` : ""}.`,
+    });
   };
 
   const ProCard = ({ pro }: { pro: Pro }) => {
