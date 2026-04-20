@@ -78,6 +78,8 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
   const conditionReasons: string[] = [];
 
   if (isPowder) {
+    // Powder rooms default to Simple. Footprint and tier alone cannot push them up.
+    // Only a layout-change hint may lift them to Moderate (handled below via floor).
     score -= 1;
     conditionReasons.push("powder room — no wet areas");
   } else if (isPrimary) {
