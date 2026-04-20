@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { createRoot, type Root } from "react-dom/client";
+import { flushSync } from "react-dom";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, AlertCircle, Download, Check, Loader2, Home } from "lucide-react";
