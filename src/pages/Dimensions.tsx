@@ -99,9 +99,31 @@ const Dimensions = () => {
   const { project, updateProject, saveProject, markStepComplete } = useProject();
   const navigate = useNavigate();
 
-  const [dims, setDims] = useState<DimensionsState>(() => fromProject(project.dimensions));
+  // Use a stable storage key so it survives across the project.id being assigned post-hydration.
+  // We read both keys (with id and "draft") to handle pre-id sessions.
+  const draftStorageKey = `bobox_dimensions_draft_${project.id ?? "draft"}`;
+  const fallbackDraftKey = "bobox_dimensions_draft_draft";
 
-  const userEditedRef = useRef(false);
+  const readLocalDraftSync = (): DimensionsState | null => {
+    try {
+      const stored =
+        localStorage.getItem(draftStorageKey) ??
+        localStorage.getItem(fallbackDraftKey);
+      if (!stored) return null;
+      return { ...emptyDims, ...JSON.parse(stored) } as DimensionsState;
+    } catch {
+      return null;
+    }
+  };
+
+  // Seed initial state from local draft if present — avoids any flash of stale server data.
+  const [dims, setDims] = useState<DimensionsState>(() => {
+    const draft = readLocalDraftSync();
+    return draft ?? fromProject(project.dimensions);
+  });
+
+  // If we seeded from a local draft, mark as user-edited so server hydration can't clobber it.
+  const userEditedRef = useRef<boolean>(readLocalDraftSync() !== null);
   const dimsRef = useRef(dims);
   dimsRef.current = dims;
   const projectRef = useRef(project);
@@ -109,7 +131,6 @@ const Dimensions = () => {
   const latestPersistedRef = useRef<DimensionsState>(fromProject(project.dimensions));
   const saveInFlightRef = useRef<Promise<boolean> | null>(null);
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const draftStorageKey = `bobox_dimensions_draft_${project.id ?? "draft"}`;
 
   const writeLocalDraft = useCallback((value: DimensionsState) => {
     try {
@@ -121,7 +142,9 @@ const Dimensions = () => {
 
   const readLocalDraft = useCallback((): DimensionsState | null => {
     try {
-      const stored = localStorage.getItem(draftStorageKey);
+      const stored =
+        localStorage.getItem(draftStorageKey) ??
+        localStorage.getItem(fallbackDraftKey);
       if (!stored) return null;
       return { ...emptyDims, ...JSON.parse(stored) } as DimensionsState;
     } catch {
@@ -132,30 +155,48 @@ const Dimensions = () => {
   const clearLocalDraft = useCallback(() => {
     try {
       localStorage.removeItem(draftStorageKey);
+      // Also clear the pre-id fallback once we've successfully persisted.
+      if (draftStorageKey !== fallbackDraftKey) {
+        localStorage.removeItem(fallbackDraftKey);
+      }
     } catch {
       /* ignore storage errors */
     }
   }, [draftStorageKey]);
 
+  // If the project.id materializes after we wrote a draft under "draft", migrate it to the id-scoped key.
   useEffect(() => {
-    const draft = readLocalDraft();
-    if (!draft) return;
+    if (!project.id || draftStorageKey === fallbackDraftKey) return;
+    try {
+      const fallback = localStorage.getItem(fallbackDraftKey);
+      if (fallback && !localStorage.getItem(draftStorageKey)) {
+        localStorage.setItem(draftStorageKey, fallback);
+      }
+      localStorage.removeItem(fallbackDraftKey);
+    } catch {
+      /* ignore */
+    }
+  }, [project.id, draftStorageKey]);
 
-    userEditedRef.current = true;
-    setDims(draft);
-    dimsRef.current = draft;
-    updateProject({ dimensions: { ...project.dimensions, ...draft } });
-  }, [project.dimensions, readLocalDraft, updateProject]);
-
-  // Hydrate from project when it (re)loads — but never overwrite in-progress local edits.
+  // Hydrate from project ONLY if no local draft exists and user hasn't edited.
+  // Local draft always wins because it represents edits not yet confirmed-persisted.
   useEffect(() => {
     if (userEditedRef.current) return;
+    const draft = readLocalDraft();
+    if (draft) {
+      // A draft exists — adopt it and mark edited so server can't overwrite later.
+      userEditedRef.current = true;
+      if (!dimsEqual(draft, dimsRef.current)) {
+        setDims(draft);
+      }
+      return;
+    }
     const next = fromProject(project.dimensions);
     if (!dimsEqual(next, dimsRef.current)) {
       setDims(next);
       latestPersistedRef.current = next;
     }
-  }, [project.dimensions]);
+  }, [project.dimensions, readLocalDraft]);
 
   const persistDims = useCallback(
     async (value: DimensionsState) => {
