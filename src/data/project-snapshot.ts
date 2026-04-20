@@ -1,10 +1,12 @@
 /**
  * BOBOX Remodel — Project Snapshot
  *
- * Deterministic synthesis of project signals into a buyer-facing decision card:
- * realistic range, complexity, top cost drivers, recommended next step.
+ * Deterministic synthesis of project signals into a buyer-facing decision card.
+ * v2: rules biased toward renovation friction (plumbing, wet areas, waterproofing,
+ * footprint constraints, ventilation/electrical) over finish/package signals.
  *
- * v1: pure rules, no AI. Swap this helper to upgrade later.
+ * Complexity is driven by project conditions; package tier influences budget,
+ * not complexity (small +1 nudge for Premium when layout risk likely).
  */
 
 import type { ProjectData } from "@/contexts/ProjectContext";
@@ -24,11 +26,8 @@ export interface NextStep {
 }
 
 export interface ProjectSnapshot {
-  /** Widest realistic market range across all tiers, e.g. "$8,000 – $32,000" */
   marketRange: string;
-  /** Range anchored to the user's selected/preferred tier, or null if none picked */
   yourTierRange: string | null;
-  /** Label for the user's tier, e.g. "Balanced" */
   yourTierLabel: string | null;
   complexity: Complexity;
   complexityReason: string;
@@ -46,12 +45,24 @@ const matchTier = (raw?: string): TierName | null => {
 };
 
 export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
+  // ── Signals ──────────────────────────────────────────────────────
   const width = Number(project.dimensions?.width_ft) || 0;
   const length = Number(project.dimensions?.length_ft) || 0;
   const sqft = width * length;
+
   const bathroomType = (project.bathroom_type || "").toLowerCase();
-  const isFullBath = bathroomType.includes("full") || bathroomType.includes("primary") || bathroomType.includes("master");
   const isPowder = bathroomType.includes("half") || bathroomType.includes("powder");
+  const isPrimary = bathroomType.includes("primary") || bathroomType.includes("master");
+  const isFullBath = bathroomType.includes("full") || isPrimary;
+  const hasWetAreas = isFullBath || bathroomType.includes("bath"); // anything but pure powder
+
+  const bathingSetup = (project.bathing_setup || "").toLowerCase();
+  const hasTub = bathingSetup.includes("tub");
+  const hasShower = bathingSetup.includes("shower");
+  const hasTubShowerCombo = hasTub && hasShower;
+
+  const layoutNotes = (project.dimensions?.layout_notes || "").toLowerCase();
+  const layoutChangeHinted = /move|relocat|reconfigur|new layout|change.*layout|layout.*change|swap/.test(layoutNotes);
 
   const selectedTier = matchTier(project.selected_package?.name);
   const preferredTier = selectedTier ?? matchTier(project.style_preferences?.budget_level);
@@ -61,30 +72,45 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
   const yourTierRange = preferredTier ? packagePricing[preferredTier].projectRange : null;
   const yourTierLabel = preferredTier;
 
-  // ── Complexity scoring ───────────────────────────────────────────
+  // ── Complexity (project-condition driven) ────────────────────────
+  // Conditions dominate; tier is a small nudge only when layout risk likely.
   let score = 0;
-  const reasons: string[] = [];
+  const conditionReasons: string[] = [];
 
   if (isPowder) {
     score -= 1;
-    reasons.push("powder room scope");
+    conditionReasons.push("powder room — no wet areas");
+  } else if (isPrimary) {
+    score += 2;
+    conditionReasons.push("primary bath with multiple fixtures");
   } else if (isFullBath) {
     score += 1;
-    reasons.push("full bath with wet areas");
+    conditionReasons.push("full bath with wet areas");
+  }
+
+  if (hasTubShowerCombo) {
+    score += 1;
+    conditionReasons.push("tub and shower both in scope");
   }
 
   if (sqft > 0 && sqft < 35) {
+    score += 2;
+    conditionReasons.push("tight footprint limits substitutions");
+  } else if (sqft > 0 && sqft < 50) {
     score += 1;
-    reasons.push("tight footprint");
-  } else if (sqft > 70) {
+    conditionReasons.push("compact room — fitments matter");
+  } else if (sqft > 80) {
     score += 1;
-    reasons.push("larger room with more surface area");
+    conditionReasons.push("larger room means more surface scope");
   }
 
-  if (preferredTier === "Premium") {
+  if (layoutChangeHinted) {
     score += 2;
-    reasons.push("premium-tier finishes");
-  } else if (preferredTier === "Balanced") {
+    conditionReasons.push("layout change implied by your notes");
+  }
+
+  // Tier nudge — Premium only adds risk when layout change is plausible
+  if (preferredTier === "Premium" && (isFullBath || sqft >= 50 || layoutChangeHinted)) {
     score += 1;
   }
 
@@ -93,104 +119,163 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
   else if (score <= 2) complexity = "Moderate";
   else complexity = "Complex";
 
+  const topReasons = conditionReasons.slice(0, 2);
   const complexityReason =
     complexity === "Simple"
-      ? "Standard scope on existing plumbing — predictable timeline."
+      ? topReasons.length
+        ? `${topReasons[0].charAt(0).toUpperCase() + topReasons[0].slice(1)} — predictable scope on existing plumbing.`
+        : "Standard scope on existing plumbing — predictable timeline."
       : complexity === "Moderate"
-        ? `Typical remodel scope — ${reasons.slice(0, 2).join(", ") || "standard install"}.`
-        : `Higher coordination needed — ${reasons.slice(0, 2).join(", ") || "premium scope"}.`;
+        ? `${topReasons.join(", ") || "typical remodel scope"} — manageable with planning.`
+        : `${topReasons.join(", ") || "premium scope"} — sequencing and trade coordination matter.`;
 
-  // ── Top 3 cost drivers (ranked) ─────────────────────────────────
+  // Capitalize first letter cleanly
+  const finalComplexityReason = complexityReason.charAt(0).toUpperCase() + complexityReason.slice(1);
+
+  // ── Top 3 cost drivers (renovation-friction first) ───────────────
+  // Pool ordered by renovation risk; package/finish drivers go last.
   const allDrivers: CostDriver[] = [];
 
-  if (isFullBath) {
+  // 1. Plumbing & water movement (highest friction)
+  if (layoutChangeHinted) {
     allDrivers.push({
-      label: "Tub & shower scope",
-      detail: "Wet areas drive the largest tile and labor share.",
+      label: "Plumbing relocation",
+      detail: "Moving a drain or supply line typically adds $1,500–$3,500 in plumbing + framing labor.",
+    });
+  } else if (isFullBath || hasWetAreas) {
+    allDrivers.push({
+      label: "Plumbing layout",
+      detail: "Keeping fixtures on existing supply and drain lines is the single biggest cost lever.",
     });
   }
 
-  if (sqft >= 50) {
+  // 2. Wet-area scope (waterproofing is silent but expensive)
+  if (hasTubShowerCombo) {
     allDrivers.push({
-      label: "Tile coverage",
-      detail: `~${sqft || "—"} sq ft means more material and install hours.`,
+      label: "Tub + shower scope",
+      detail: "Two wet zones means more waterproofing membrane, pan work, and tile labor than one.",
+    });
+  } else if (hasShower || isFullBath) {
+    allDrivers.push({
+      label: "Shower waterproofing",
+      detail: "Pan, curb, and membrane work is hidden but drives 15–20% of wet-area cost.",
+    });
+  } else if (hasTub) {
+    allDrivers.push({
+      label: "Tub surround",
+      detail: "Tub deck, surround tile, and access panel work add labor beyond the tub itself.",
+    });
+  }
+
+  // 3. Tile + waterproofing scope
+  if (sqft >= 60) {
+    allDrivers.push({
+      label: "Tile coverage area",
+      detail: `~${sqft} sq ft of floor plus wet-wall tile means more material, more setting hours, and more grout maintenance later.`,
     });
   } else if (sqft > 0 && sqft < 35) {
     allDrivers.push({
-      label: "Compact-room fitments",
-      detail: "Smaller fixtures cost more per unit and limit substitutions.",
+      label: "Compact-room fit",
+      detail: "Tight footprints force smaller (and often pricier) fixtures and limit substitution options.",
     });
-  } else {
+  } else if (hasWetAreas) {
     allDrivers.push({
-      label: "Tile coverage",
-      detail: "Floor and wall tile drive both material and labor.",
+      label: "Wet-area tile",
+      detail: "Shower walls and floor tile drive both material spend and skilled-trade hours.",
     });
   }
 
+  // 4. Ventilation & electrical (commonly overlooked)
+  if (isFullBath || hasShower) {
+    allDrivers.push({
+      label: "Ventilation & electrical",
+      detail: "Code-compliant fan, GFCI circuits, and dedicated lighting are easy to under-budget.",
+    });
+  }
+
+  // 5. Layout / footprint constraint
+  if (sqft > 0 && sqft < 50 && !allDrivers.some((d) => d.label === "Compact-room fit")) {
+    allDrivers.push({
+      label: "Layout constraints",
+      detail: "Limited wall length restricts vanity width and door swing — fewer off-the-shelf options.",
+    });
+  }
+
+  // 6. Vanity & countertop (a real line item, but ranked lower)
+  allDrivers.push({
+    label: "Vanity & countertop",
+    detail: "Width, drawer count, and stone choice are the largest single line on the materials list.",
+  });
+
+  // 7. Finish/fixture tier — lowest priority, only fills if room remains
   if (preferredTier === "Premium") {
     allDrivers.push({
-      label: "Fixture & finish tier",
-      detail: "Designer faucets, lighting, and hardware can swing $2k–$5k.",
+      label: "Designer fixture tier",
+      detail: "Premium faucets, lighting, and hardware swing $2k–$5k versus mid-tier equivalents.",
     });
   } else if (preferredTier === "Balanced") {
     allDrivers.push({
-      label: "Fixture coordination",
-      detail: "Matching mid-tier finishes across vanity, shower, and lighting.",
-    });
-  } else {
-    allDrivers.push({
-      label: "Fixture choices",
-      detail: "Faucet, lighting, and hardware tier sets the visual ceiling.",
-    });
-  }
-
-  allDrivers.push({
-    label: "Vanity & countertop",
-    detail: "Width and stone choice are the single largest single-line cost.",
-  });
-
-  if (isFullBath || preferredTier === "Premium") {
-    allDrivers.push({
-      label: "Plumbing layout",
-      detail: "Keeping fixtures in place avoids $2,000+ in relocation labor.",
+      label: "Coordinated finishes",
+      detail: "Matching mid-tier finishes across vanity, shower, and lighting adds modest premium.",
     });
   }
 
   const drivers = allDrivers.slice(0, 3);
 
-  // ── Recommended next step ───────────────────────────────────────
+  // ── Recommended next step (builder guidance tone) ────────────────
   let nextStep: NextStep;
 
+  const layoutRisk = layoutChangeHinted || (isFullBath && sqft > 0 && sqft < 40);
+
   if (!preferredTier) {
+    // No tier picked yet — point them at a sensible starting comparison
     nextStep = {
-      text: "Compare the three packages below to see which scope fits your goals.",
+      text: layoutRisk
+        ? "Before picking a tier, decide whether plumbing stays put — that single choice can swing the project $2k–$4k."
+        : "Compare Balanced as your baseline; it usually delivers the visible upgrades buyers expect without moving plumbing.",
       highlightTier: "Balanced",
     };
   } else if (complexity === "Complex" && preferredTier !== "Premium") {
     nextStep = {
-      text: `Your scope leans complex — review ${preferredTier} carefully and consider Premium if layout changes are likely.`,
+      text: `Your project carries real layout and wet-area risk. ${preferredTier} can work, but Premium gives you the budget room to handle surprises without compromising finishes.`,
       highlightTier: "Premium",
     };
   } else if (complexity === "Simple" && preferredTier === "Premium") {
     nextStep = {
-      text: "Your scope is simple — Balanced may deliver the look you want for less.",
+      text: "Your scope is clean and predictable — Balanced will likely deliver the same visible result and keep $4k–$8k in your pocket.",
       highlightTier: "Balanced",
     };
   } else if (preferredTier === "Premium") {
-    nextStep = {
-      text: "Premium fits your vision — keep the existing layout to stay near the lower end of the range.",
-      highlightTier: "Premium",
-    };
+    nextStep = layoutRisk
+      ? {
+          text: "Premium fits the scope. To stay near the lower end, lock in the existing fixture locations early and absorb upgrades in finishes, not in plumbing.",
+          highlightTier: "Premium",
+        }
+      : {
+          text: "Premium is well-matched here. To protect the lower end of the range, prioritize stone and tile upgrades over layout changes.",
+          highlightTier: "Premium",
+        };
   } else if (preferredTier === "Balanced") {
-    nextStep = {
-      text: "Balanced is a strong fit — open it to see exactly what's included before committing.",
-      highlightTier: "Balanced",
-    };
+    nextStep = layoutRisk
+      ? {
+          text: "Balanced is a strong baseline. Validate your plumbing assumptions before committing — a single relocated drain can push you past the upper end of this tier.",
+          highlightTier: "Balanced",
+        }
+      : {
+          text: "Balanced lines up with your scope. Keep fixtures in their current spots and you'll likely land in the lower half of the range.",
+          highlightTier: "Balanced",
+        };
   } else {
-    nextStep = {
-      text: "Budget keeps costs predictable — open it to confirm the finishes match your taste.",
-      highlightTier: "Budget",
-    };
+    // Budget
+    nextStep = layoutRisk
+      ? {
+          text: "Budget keeps costs predictable, but the layout risk in your space could erode that margin. Compare Balanced before deciding — the contingency may be worth it.",
+          highlightTier: "Balanced",
+        }
+      : {
+          text: "Budget keeps you predictable. Re-use existing tile substrate where sound, and put any savings toward the vanity — that's the piece you'll see every day.",
+          highlightTier: "Budget",
+        };
   }
 
   return {
@@ -198,7 +283,7 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
     yourTierRange,
     yourTierLabel,
     complexity,
-    complexityReason,
+    complexityReason: finalComplexityReason,
     drivers,
     nextStep,
   };
