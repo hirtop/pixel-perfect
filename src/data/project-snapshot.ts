@@ -264,9 +264,11 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
         : "Compare Balanced as your baseline; it usually delivers the visible upgrades buyers expect without moving plumbing.",
       highlightTier: "Balanced",
     };
-  } else if (complexity === "Complex" && preferredTier !== "Premium") {
+  } else if (complexity === "Complex" && preferredTier !== "Premium" && layoutRisk) {
+    // Only nudge toward Premium when there's a real layout/plumbing risk signal —
+    // otherwise this reads as an upsell, not advice.
     nextStep = {
-      text: `Your project carries real layout and wet-area risk. ${preferredTier} can work, but Premium gives you more budget room to absorb surprises without compromising finishes.`,
+      text: `Your scope carries real layout and wet-area risk. ${preferredTier} can still work, but it's worth glancing at Premium for the budget cushion if surprises come up.`,
       highlightTier: "Premium",
     };
   } else if (complexity === "Simple" && preferredTier === "Premium") {
