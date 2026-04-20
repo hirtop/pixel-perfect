@@ -14,6 +14,59 @@ export type Database = {
   }
   public: {
     Tables: {
+      bathroom_photo_scans: {
+        Row: {
+          created_at: string
+          error_message: string | null
+          id: string
+          model: string | null
+          overall_summary: string | null
+          photo_id: string
+          project_id: string
+          raw_response: Json | null
+          signals: Json
+          status: string
+          storage_path: string
+          updated_at: string
+        }
+        Insert: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          model?: string | null
+          overall_summary?: string | null
+          photo_id: string
+          project_id: string
+          raw_response?: Json | null
+          signals?: Json
+          status?: string
+          storage_path: string
+          updated_at?: string
+        }
+        Update: {
+          created_at?: string
+          error_message?: string | null
+          id?: string
+          model?: string | null
+          overall_summary?: string | null
+          photo_id?: string
+          project_id?: string
+          raw_response?: Json | null
+          signals?: Json
+          status?: string
+          storage_path?: string
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "bathroom_photo_scans_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       catalog_products: {
         Row: {
           active: boolean
