@@ -291,7 +291,9 @@ const Agreement = () => {
       document.body.appendChild(printHost);
 
       printRoot = createRoot(printHost);
-      printRoot.render(<AgreementPrintDocument data={printData} widthPx={printWidthPx} />);
+      flushSync(() => {
+        printRoot?.render(<AgreementPrintDocument data={printData} widthPx={printWidthPx} />);
+      });
 
       await document.fonts?.ready;
       await new Promise<void>((resolve) => {
