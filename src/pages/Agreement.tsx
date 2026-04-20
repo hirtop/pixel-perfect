@@ -6,12 +6,13 @@ import { ArrowLeft, AlertCircle, Download, Check, Loader2, Home } from "lucide-r
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { toast } from "sonner";
-import AgreementPrintDocument, { type AgreementPrintData } from "@/components/agreement/AgreementPrintDocument";
+import AgreementPrintDocument, { type AgreementPrintData, type AgreementReferencePhoto } from "@/components/agreement/AgreementPrintDocument";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useProject } from "@/contexts/ProjectContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="space-y-4" data-pdf-section>
@@ -118,6 +119,28 @@ const addCanvasToPdf = ({
   return nextY;
 };
 
+const fetchPhotoAsDataUrl = async (storagePath: string): Promise<string | null> => {
+  try {
+    const { data: signed, error: signError } = await supabase.storage
+      .from("bathroom-photos")
+      .createSignedUrl(storagePath, 300);
+    if (signError || !signed?.signedUrl) return null;
+
+    const res = await fetch(signed.signedUrl);
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    return await new Promise<string | null>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : null);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(blob);
+    });
+  } catch (err) {
+    console.warn("Could not embed reference photo:", storagePath, err);
+    return null;
+  }
+};
+
 const Agreement = () => {
   const { project, updateProject, saveProject, markStepComplete, isSaving } = useProject();
   const formRef = useRef<HTMLFormElement>(null);
@@ -141,7 +164,7 @@ const Agreement = () => {
     return data;
   }, []);
 
-  const buildPrintData = useCallback((rawData: AgreementFormData): AgreementPrintData => ({
+  const buildPrintData = useCallback((rawData: AgreementFormData, referencePhotos: AgreementReferencePhoto[] = []): AgreementPrintData => ({
     clientName: toStringValue(rawData.client_name),
     projectAddress: toStringValue(rawData.project_address),
     roomType: toStringValue(rawData.room_type, project.bathroom_type || "Primary Bathroom"),
@@ -181,7 +204,23 @@ const Agreement = () => {
     clientSignDate: toStringValue(rawData.client_sign_date),
     contractorPrintedName: toStringValue(rawData.contractor_printed_name),
     contractorSignDate: toStringValue(rawData.contractor_sign_date),
+    referencePhotos,
+    homeownerNotes: project.photos.notes?.trim() || undefined,
   }), [project]);
+
+  const resolveReferencePhotos = useCallback(async (): Promise<AgreementReferencePhoto[]> => {
+    const meta = project.photos.metadata.filter((p) => p.storage_path);
+    if (meta.length === 0) return [];
+
+    const resolved = await Promise.all(
+      meta.map(async (p) => {
+        const dataUrl = await fetchPhotoAsDataUrl(p.storage_path!);
+        return dataUrl ? { name: p.name, dataUrl } : null;
+      }),
+    );
+
+    return resolved.filter((p): p is AgreementReferencePhoto => p !== null);
+  }, [project.photos.metadata]);
 
   const handleSave = async () => {
     const data = gatherFormData();
@@ -203,7 +242,8 @@ const Agreement = () => {
     let printHost: HTMLDivElement | null = null;
 
     try {
-      const printData = buildPrintData(rawData);
+      const referencePhotos = await resolveReferencePhotos();
+      const printData = buildPrintData(rawData, referencePhotos);
       const pageWidthMM = 210;
       const pageHeightMM = 297;
       const marginMM = 12;
