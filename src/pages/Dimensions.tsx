@@ -21,6 +21,11 @@ type DimensionsState = {
   layout_notes: string;
 };
 
+type DimensionsDraftRecord = {
+  values: DimensionsState;
+  updatedAt: number;
+};
+
 const emptyDims: DimensionsState = {
   width_ft: "",
   width_in: "",
@@ -31,6 +36,37 @@ const emptyDims: DimensionsState = {
   door_notes: "",
   window_notes: "",
   layout_notes: "",
+};
+
+const DIMENSIONS_DRAFT_KEY = "bobox_dimensions_draft";
+const LEGACY_DIMENSIONS_FALLBACK_KEY = "bobox_dimensions_draft_draft";
+
+const parseDraftRecord = (stored: string | null): DimensionsDraftRecord | null => {
+  if (!stored) return null;
+
+  try {
+    const parsed = JSON.parse(stored) as Partial<DimensionsDraftRecord> | Partial<DimensionsState>;
+
+    if (
+      parsed &&
+      typeof parsed === "object" &&
+      "values" in parsed &&
+      parsed.values &&
+      typeof parsed.updatedAt === "number"
+    ) {
+      return {
+        values: { ...emptyDims, ...parsed.values } as DimensionsState,
+        updatedAt: parsed.updatedAt,
+      };
+    }
+
+    return {
+      values: { ...emptyDims, ...(parsed as Partial<DimensionsState>) },
+      updatedAt: 0,
+    };
+  } catch {
+    return null;
+  }
 };
 
 const fromProject = (dims: ProjectData["dimensions"]): DimensionsState => ({
@@ -99,21 +135,20 @@ const Dimensions = () => {
   const { project, updateProject, saveProject, markStepComplete } = useProject();
   const navigate = useNavigate();
 
-  // Use a stable storage key so it survives across the project.id being assigned post-hydration.
-  // We read both keys (with id and "draft") to handle pre-id sessions.
-  const draftStorageKey = `bobox_dimensions_draft_${project.id ?? "draft"}`;
-  const fallbackDraftKey = "bobox_dimensions_draft_draft";
+  const legacyProjectDraftKey = `bobox_dimensions_draft_${project.id ?? "draft"}`;
 
   const readLocalDraftSync = (): DimensionsState | null => {
-    try {
-      const stored =
-        localStorage.getItem(draftStorageKey) ??
-        localStorage.getItem(fallbackDraftKey);
-      if (!stored) return null;
-      return { ...emptyDims, ...JSON.parse(stored) } as DimensionsState;
-    } catch {
-      return null;
+    let latestDraft: DimensionsDraftRecord | null = null;
+
+    for (const key of new Set([DIMENSIONS_DRAFT_KEY, legacyProjectDraftKey, LEGACY_DIMENSIONS_FALLBACK_KEY])) {
+      const candidate = parseDraftRecord(localStorage.getItem(key));
+      if (!candidate) continue;
+      if (!latestDraft || candidate.updatedAt >= latestDraft.updatedAt) {
+        latestDraft = candidate;
+      }
     }
+
+    return latestDraft?.values ?? null;
   };
 
   // Seed initial state from local draft if present — avoids any flash of stale server data.
@@ -134,49 +169,28 @@ const Dimensions = () => {
 
   const writeLocalDraft = useCallback((value: DimensionsState) => {
     try {
-      localStorage.setItem(draftStorageKey, JSON.stringify(value));
+      localStorage.setItem(
+        DIMENSIONS_DRAFT_KEY,
+        JSON.stringify({ values: value, updatedAt: Date.now() } satisfies DimensionsDraftRecord),
+      );
     } catch {
       /* ignore storage errors */
     }
-  }, [draftStorageKey]);
+  }, []);
 
   const readLocalDraft = useCallback((): DimensionsState | null => {
-    try {
-      const stored =
-        localStorage.getItem(draftStorageKey) ??
-        localStorage.getItem(fallbackDraftKey);
-      if (!stored) return null;
-      return { ...emptyDims, ...JSON.parse(stored) } as DimensionsState;
-    } catch {
-      return null;
-    }
-  }, [draftStorageKey]);
+    return readLocalDraftSync();
+  }, [legacyProjectDraftKey]);
 
   const clearLocalDraft = useCallback(() => {
     try {
-      localStorage.removeItem(draftStorageKey);
-      // Also clear the pre-id fallback once we've successfully persisted.
-      if (draftStorageKey !== fallbackDraftKey) {
-        localStorage.removeItem(fallbackDraftKey);
-      }
+      localStorage.removeItem(DIMENSIONS_DRAFT_KEY);
+      localStorage.removeItem(legacyProjectDraftKey);
+      localStorage.removeItem(LEGACY_DIMENSIONS_FALLBACK_KEY);
     } catch {
       /* ignore storage errors */
     }
-  }, [draftStorageKey]);
-
-  // If the project.id materializes after we wrote a draft under "draft", migrate it to the id-scoped key.
-  useEffect(() => {
-    if (!project.id || draftStorageKey === fallbackDraftKey) return;
-    try {
-      const fallback = localStorage.getItem(fallbackDraftKey);
-      if (fallback && !localStorage.getItem(draftStorageKey)) {
-        localStorage.setItem(draftStorageKey, fallback);
-      }
-      localStorage.removeItem(fallbackDraftKey);
-    } catch {
-      /* ignore */
-    }
-  }, [project.id, draftStorageKey]);
+  }, [legacyProjectDraftKey]);
 
   // Hydrate from project ONLY if no local draft exists and user hasn't edited.
   // Local draft always wins because it represents edits not yet confirmed-persisted.
