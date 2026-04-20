@@ -90,10 +90,9 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
     conditionReasons.push("full bath with wet areas");
   }
 
-  if (hasTubShowerCombo) {
-    score += 1;
-    conditionReasons.push("tub and shower both in scope");
-  }
+  // Tub+shower combo is the standard American full bath — normal scope, not a
+  // complexity multiplier. Still surfaced as a cost driver below, but no score bump.
+
 
   if (sqft > 0 && sqft < 35) {
     score += 2;
@@ -228,6 +227,28 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
     });
   }
 
+  // Cold-start padding: when the buyer hasn't entered enough signal, the pool can
+  // be very thin. Backfill with general, defensible drivers so the card never
+  // renders with only 1 item. Order kept stable; only used to reach 3.
+  const fallbackDrivers: CostDriver[] = [
+    {
+      label: "Demolition & disposal",
+      detail: "Tear-out, debris haul-away, and protecting adjacent rooms is a baseline cost on every remodel.",
+    },
+    {
+      label: "Lighting & electrical",
+      detail: "GFCI outlets, vanity lighting, and a code-compliant exhaust fan are easy to under-budget early on.",
+    },
+    {
+      label: "Permits & inspections",
+      detail: "Most jurisdictions require permits for plumbing or electrical work — fees and scheduling matter.",
+    },
+  ];
+  for (const fb of fallbackDrivers) {
+    if (allDrivers.length >= 3) break;
+    if (!allDrivers.some((d) => d.label === fb.label)) allDrivers.push(fb);
+  }
+
   const drivers = allDrivers.slice(0, 3);
 
   // ── Recommended next step (builder guidance tone) ────────────────
@@ -243,9 +264,11 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
         : "Compare Balanced as your baseline; it usually delivers the visible upgrades buyers expect without moving plumbing.",
       highlightTier: "Balanced",
     };
-  } else if (complexity === "Complex" && preferredTier !== "Premium") {
+  } else if (complexity === "Complex" && preferredTier !== "Premium" && layoutRisk) {
+    // Only nudge toward Premium when there's a real layout/plumbing risk signal —
+    // otherwise this reads as an upsell, not advice.
     nextStep = {
-      text: `Your project carries real layout and wet-area risk. ${preferredTier} can work, but Premium gives you more budget room to absorb surprises without compromising finishes.`,
+      text: `Your scope carries real layout and wet-area risk. ${preferredTier} can still work, but it's worth glancing at Premium for the budget cushion if surprises come up.`,
       highlightTier: "Premium",
     };
   } else if (complexity === "Simple" && preferredTier === "Premium") {
