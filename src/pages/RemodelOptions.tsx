@@ -1,10 +1,13 @@
 import { motion } from "framer-motion";
+import { useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Check, ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 import { getBathroomInsights, packageFitReasons, packagePricing } from "@/data/products";
+import { deriveProjectSnapshot } from "@/data/project-snapshot";
 import BathroomInsights from "@/components/BathroomInsights";
+import ProjectSnapshot from "@/components/ProjectSnapshot";
 import budgetImg from "@/assets/package-budget.jpg";
 import balancedImg from "@/assets/package-balanced.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
@@ -56,6 +59,8 @@ const RemodelOptions = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
   const insights = getBathroomInsights(project);
+  const snapshot = deriveProjectSnapshot(project);
+  const packageRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const selectPackage = (pkgName: string) => {
     updateProject({
@@ -63,6 +68,16 @@ const RemodelOptions = () => {
     });
     markStepComplete("package-select");
     navigate(`/package/${pkgName.toLowerCase()}`);
+  };
+
+  const scrollToTier = (tier?: "Budget" | "Balanced" | "Premium") => {
+    if (!tier) return;
+    const el = packageRefs.current[tier];
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth", block: "center" });
+      el.classList.add("ring-2", "ring-primary");
+      setTimeout(() => el.classList.remove("ring-2", "ring-primary"), 1600);
+    }
   };
 
   return (
@@ -97,9 +112,13 @@ const RemodelOptions = () => {
             </p>
           </div>
 
+          <div className="mb-6 max-w-4xl mx-auto">
+            <ProjectSnapshot snapshot={snapshot} onNextStepClick={scrollToTier} />
+          </div>
+
           {insights.length > 0 && (
             <div className="mb-8 max-w-3xl mx-auto">
-              <BathroomInsights insights={insights} />
+              <BathroomInsights insights={insights} compact />
             </div>
           )}
 
@@ -131,6 +150,7 @@ const RemodelOptions = () => {
               return (
                 <motion.div
                   key={pkg.name}
+                  ref={(el) => (packageRefs.current[pkg.name] = el)}
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.12, duration: 0.5 }}
