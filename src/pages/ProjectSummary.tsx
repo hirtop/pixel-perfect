@@ -8,6 +8,7 @@ import balancedImg from "@/assets/package-balanced.jpg";
 import { useProject } from "@/contexts/ProjectContext";
 import { useAuth } from "@/hooks/useAuth";
 import ReferencePhotos from "@/components/ReferencePhotos";
+import BathroomRiskScan from "@/components/BathroomRiskScan";
 
 const baseLaborRate = 5800;
 const baseShipping = 650;
