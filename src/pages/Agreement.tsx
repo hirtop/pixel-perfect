@@ -6,12 +6,13 @@ import { ArrowLeft, AlertCircle, Download, Check, Loader2, Home } from "lucide-r
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { toast } from "sonner";
-import AgreementPrintDocument, { type AgreementPrintData } from "@/components/agreement/AgreementPrintDocument";
+import AgreementPrintDocument, { type AgreementPrintData, type AgreementReferencePhoto } from "@/components/agreement/AgreementPrintDocument";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { useProject } from "@/contexts/ProjectContext";
+import { supabase } from "@/integrations/supabase/client";
 
 const Section = ({ title, children }: { title: string; children: React.ReactNode }) => (
   <div className="space-y-4" data-pdf-section>
@@ -116,6 +117,28 @@ const addCanvasToPdf = ({
   }
 
   return nextY;
+};
+
+const fetchPhotoAsDataUrl = async (storagePath: string): Promise<string | null> => {
+  try {
+    const { data: signed, error: signError } = await supabase.storage
+      .from("bathroom-photos")
+      .createSignedUrl(storagePath, 300);
+    if (signError || !signed?.signedUrl) return null;
+
+    const res = await fetch(signed.signedUrl);
+    if (!res.ok) return null;
+    const blob = await res.blob();
+    return await new Promise<string | null>((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : null);
+      reader.onerror = () => resolve(null);
+      reader.readAsDataURL(blob);
+    });
+  } catch (err) {
+    console.warn("Could not embed reference photo:", storagePath, err);
+    return null;
+  }
 };
 
 const Agreement = () => {
