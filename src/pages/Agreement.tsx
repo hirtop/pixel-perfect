@@ -1,5 +1,6 @@
 import { useState, useRef, useCallback } from "react";
 import { createRoot, type Root } from "react-dom/client";
+import { flushSync } from "react-dom";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { ArrowLeft, AlertCircle, Download, Check, Loader2, Home } from "lucide-react";
@@ -126,14 +127,37 @@ const fetchPhotoAsDataUrl = async (storagePath: string): Promise<string | null> 
       .createSignedUrl(storagePath, 300);
     if (signError || !signed?.signedUrl) return null;
 
-    const res = await fetch(signed.signedUrl);
+    const res = await fetch(signed.signedUrl, { mode: "cors", cache: "no-store" });
     if (!res.ok) return null;
     const blob = await res.blob();
+
     return await new Promise<string | null>((resolve) => {
-      const reader = new FileReader();
-      reader.onload = () => resolve(typeof reader.result === "string" ? reader.result : null);
-      reader.onerror = () => resolve(null);
-      reader.readAsDataURL(blob);
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      const objectUrl = URL.createObjectURL(blob);
+      img.onload = () => {
+        try {
+          const canvas = document.createElement("canvas");
+          canvas.width = img.naturalWidth || img.width;
+          canvas.height = img.naturalHeight || img.height;
+          const ctx = canvas.getContext("2d");
+          if (!ctx) {
+            resolve(null);
+            return;
+          }
+          ctx.drawImage(img, 0, 0);
+          resolve(canvas.toDataURL("image/png"));
+        } catch {
+          resolve(null);
+        } finally {
+          URL.revokeObjectURL(objectUrl);
+        }
+      };
+      img.onerror = () => {
+        URL.revokeObjectURL(objectUrl);
+        resolve(null);
+      };
+      img.src = objectUrl;
     });
   } catch (err) {
     console.warn("Could not embed reference photo:", storagePath, err);
@@ -267,7 +291,9 @@ const Agreement = () => {
       document.body.appendChild(printHost);
 
       printRoot = createRoot(printHost);
-      printRoot.render(<AgreementPrintDocument data={printData} widthPx={printWidthPx} />);
+      flushSync(() => {
+        printRoot?.render(<AgreementPrintDocument data={printData} widthPx={printWidthPx} />);
+      });
 
       await document.fonts?.ready;
       await new Promise<void>((resolve) => {
