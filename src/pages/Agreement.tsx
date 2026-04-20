@@ -164,7 +164,7 @@ const Agreement = () => {
     return data;
   }, []);
 
-  const buildPrintData = useCallback((rawData: AgreementFormData): AgreementPrintData => ({
+  const buildPrintData = useCallback((rawData: AgreementFormData, referencePhotos: AgreementReferencePhoto[] = []): AgreementPrintData => ({
     clientName: toStringValue(rawData.client_name),
     projectAddress: toStringValue(rawData.project_address),
     roomType: toStringValue(rawData.room_type, project.bathroom_type || "Primary Bathroom"),
@@ -204,7 +204,23 @@ const Agreement = () => {
     clientSignDate: toStringValue(rawData.client_sign_date),
     contractorPrintedName: toStringValue(rawData.contractor_printed_name),
     contractorSignDate: toStringValue(rawData.contractor_sign_date),
+    referencePhotos,
+    homeownerNotes: project.photos.notes?.trim() || undefined,
   }), [project]);
+
+  const resolveReferencePhotos = useCallback(async (): Promise<AgreementReferencePhoto[]> => {
+    const meta = project.photos.metadata.filter((p) => p.storage_path);
+    if (meta.length === 0) return [];
+
+    const resolved = await Promise.all(
+      meta.map(async (p) => {
+        const dataUrl = await fetchPhotoAsDataUrl(p.storage_path!);
+        return dataUrl ? { name: p.name, dataUrl } : null;
+      }),
+    );
+
+    return resolved.filter((p): p is AgreementReferencePhoto => p !== null);
+  }, [project.photos.metadata]);
 
   const handleSave = async () => {
     const data = gatherFormData();
