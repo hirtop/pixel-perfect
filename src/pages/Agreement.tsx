@@ -242,7 +242,8 @@ const Agreement = () => {
     let printHost: HTMLDivElement | null = null;
 
     try {
-      const printData = buildPrintData(rawData);
+      const referencePhotos = await resolveReferencePhotos();
+      const printData = buildPrintData(rawData, referencePhotos);
       const pageWidthMM = 210;
       const pageHeightMM = 297;
       const marginMM = 12;
