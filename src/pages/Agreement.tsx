@@ -279,6 +279,31 @@ const Agreement = () => {
         throw new Error("Could not render the agreement print layout.");
       }
 
+      // Wait for every <img> in the print layout to fully decode before snapshotting.
+      // Without this, html2canvas captures sections before base64 data URLs paint,
+      // producing blank thumbnails in the PDF appendix.
+      const imgs = Array.from(printElement.querySelectorAll("img"));
+      await Promise.all(
+        imgs.map(async (img) => {
+          try {
+            if (!img.complete) {
+              await new Promise<void>((resolve) => {
+                img.addEventListener("load", () => resolve(), { once: true });
+                img.addEventListener("error", () => resolve(), { once: true });
+              });
+            }
+            if (typeof img.decode === "function") {
+              await img.decode().catch(() => undefined);
+            }
+          } catch {
+            // ignore — html2canvas will fall back to whatever painted
+          }
+        }),
+      );
+      await new Promise<void>((resolve) => {
+        requestAnimationFrame(() => requestAnimationFrame(() => resolve()));
+      });
+
       const sections = Array.from(printElement.querySelectorAll<HTMLElement>("[data-pdf-section]"));
       if (!sections.length) {
         throw new Error("Could not find printable agreement sections.");
