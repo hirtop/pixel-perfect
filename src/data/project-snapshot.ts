@@ -291,7 +291,10 @@ export function deriveProjectSnapshot(
   // ── Recommended next step (builder guidance tone) ────────────────
   let nextStep: NextStep;
 
-  const layoutRisk = layoutChangeHinted || (isFullBath && sqft > 0 && sqft < 40);
+  const layoutRisk =
+    layoutChangeHinted ||
+    (isFullBath && sqft > 0 && sqft < 40) ||
+    photoNudgeApplied;
 
   if (!preferredTier) {
     // No tier picked yet — point them at a sensible starting comparison
