@@ -56,7 +56,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">Photo Risk Scan</p>
         <h2 className="font-heading text-lg text-foreground mt-1">No photos to scan yet</h2>
         <p className="text-xs text-muted-foreground mt-2 max-w-md mx-auto">
-          Upload bathroom photos first. Then BOBOX can run a builder-style early-warning review on them.
+          Upload bathroom photos first. Then BOBOX can flag things worth verifying before you commit to a scope.
         </p>
       </section>
     );
