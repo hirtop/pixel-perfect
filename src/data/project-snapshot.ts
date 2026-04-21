@@ -44,11 +44,24 @@ export interface ProjectSnapshot {
  *   - low-confidence concerns are ignored entirely
  *   - photo signals never replace existing logic — they only add a small nudge
  */
+export interface PromotedDriver {
+  /** Originating signal key — used for stable de-duping. */
+  key: string;
+  label: string;
+  detail: string;
+}
+
 export interface PhotoSignalSummary {
   /** True if photos credibly show layout/access tightness or visible wet-area concerns. */
   layoutRiskFromPhotos: boolean;
   /** Short, builder-honest fragment for the complexity reason. */
   reasonFragment?: string;
+  /**
+   * Step 2: photo-derived cost drivers eligible for promotion into the
+   * Snapshot's Top Cost Drivers list. Capped upstream — usually 0 or 1.
+   * Additive only; never replaces dimensions/notes-derived drivers.
+   */
+  promotedDrivers?: PromotedDriver[];
 }
 
 const TIER_NAMES = ["Budget", "Balanced", "Premium"] as const;
@@ -262,6 +275,23 @@ export function deriveProjectSnapshot(
       label: "Coordinated finishes",
       detail: "Matching mid-tier finishes across vanity, shower, and lighting adds a modest premium.",
     });
+  }
+
+  // ── Layer 3 (Step 2): photo-derived cost-driver promotion ────────
+  // Additive only. Insert at position 2 so condition-based drivers from
+  // dimensions/notes still LEAD the list; the photo-derived driver
+  // augments rather than dominates. De-dupe by label so we never repeat
+  // an existing driver. Runs BEFORE fallback padding so a credible photo
+  // signal outranks generic fallbacks but never displaces a condition-based
+  // driver in the lead slot.
+  const promoted = photoSignals?.promotedDrivers ?? [];
+  if (promoted.length > 0) {
+    for (const pd of promoted) {
+      if (allDrivers.some((d) => d.label === pd.label)) continue;
+      const insertAt = Math.min(2, allDrivers.length);
+      allDrivers.splice(insertAt, 0, { label: pd.label, detail: pd.detail });
+      break; // only one promoted driver, even if multiple supplied
+    }
   }
 
   // Cold-start padding: when the buyer hasn't entered enough signal, the pool can
