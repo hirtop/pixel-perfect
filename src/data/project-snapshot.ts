@@ -35,6 +35,22 @@ export interface ProjectSnapshot {
   nextStep: NextStep;
 }
 
+/**
+ * Soft, additive signals derived from bathroom photo scans.
+ * Layer 3 — Step 1: photoLayoutRisk only. Cost-driver promotion + tier bumps come later.
+ *
+ * Rules baked in upstream by `summarizePhotoSignals`:
+ *   - only "concern" status with medium/high confidence counts as credible
+ *   - low-confidence concerns are ignored entirely
+ *   - photo signals never replace existing logic — they only add a small nudge
+ */
+export interface PhotoSignalSummary {
+  /** True if photos credibly show layout/access tightness or visible wet-area concerns. */
+  layoutRiskFromPhotos: boolean;
+  /** Short, builder-honest fragment for the complexity reason. */
+  reasonFragment?: string;
+}
+
 const TIER_NAMES = ["Budget", "Balanced", "Premium"] as const;
 type TierName = (typeof TIER_NAMES)[number];
 
@@ -44,7 +60,10 @@ const matchTier = (raw?: string): TierName | null => {
   return TIER_NAMES.find((t) => lower.includes(t.toLowerCase())) ?? null;
 };
 
-export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
+export function deriveProjectSnapshot(
+  project: ProjectData,
+  photoSignals?: PhotoSignalSummary,
+): ProjectSnapshot {
   // ── Signals ──────────────────────────────────────────────────────
   const width = Number(project.dimensions?.width_ft) || 0;
   const length = Number(project.dimensions?.length_ft) || 0;
