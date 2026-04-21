@@ -10,8 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { PhotoMeta } from "@/contexts/ProjectContext";
 
-const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|heic)$/i;
-const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/heic"];
+const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|webp|heic)$/i;
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic"];
 const MAX_FILES = 8;
 
 type RestoredPhoto = {
@@ -285,7 +285,7 @@ const UploadPhotos = () => {
 
     if (rejected > 0) {
       toast.error(`${rejected} file${rejected > 1 ? "s" : ""} not supported`, {
-        description: "Only JPG, PNG, and HEIC photos are accepted.",
+        description: "Only JPG, PNG, WEBP, and HEIC photos are accepted.",
       });
     }
 
@@ -483,7 +483,7 @@ const UploadPhotos = () => {
               ref={fileInputRef}
               type="file"
               multiple
-              accept=".jpg,.jpeg,.png,.heic"
+              accept=".jpg,.jpeg,.png,.webp,.heic"
               className="hidden"
               onChange={handleFileInput}
             />
@@ -525,7 +525,7 @@ const UploadPhotos = () => {
                   )}
                 </div>
                 <div className="flex items-center gap-4 mt-2 text-xs text-muted-foreground">
-                  <span>JPG, PNG, HEIC accepted</span>
+                  <span>JPG, PNG, WEBP, HEIC accepted</span>
                   <span className="w-px h-3 bg-border" />
                   <span>Upload 3–8 photos for best results</span>
                 </div>
