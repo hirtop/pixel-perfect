@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 import { getBathroomInsights, packageFitReasons, packagePricing } from "@/data/products";
 import { deriveProjectSnapshot } from "@/data/project-snapshot";
+import { summarizePhotoSignals } from "@/lib/photoSignalSummary";
+import { useBathroomPhotoScans } from "@/hooks/useBathroomPhotoScans";
 import BathroomInsights from "@/components/BathroomInsights";
 import ProjectSnapshot from "@/components/ProjectSnapshot";
 import budgetImg from "@/assets/package-budget.jpg";
