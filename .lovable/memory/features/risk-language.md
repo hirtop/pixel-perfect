@@ -19,8 +19,11 @@ Describe what's actually visible in the photo. An old-looking toilet, dated tile
 - Ventilation
 - Electrical (visible only)
 - Waterproofing (wet areas)
-- Plumbing movement / age (visible only)
+- Plumbing movement / age (visible only) — **calibration note:** weakest category in practice; often reads as filler ("ok"/"unclear") rather than photo-supported. Watch in future tuning; consider renaming or splitting into something more literal (e.g., "visible plumbing condition") if pattern persists in broader usage.
 - Tile & grout condition
+
+## Calibration status (latest review)
+Scan tone retune locked in — output is literal, not inferential. No further tuning loop unless a new pattern shows up in broader usage. Plumbing-movement category flagged as the one to watch.
 
 ## Approved phrasing
 - "possible layout concern"
