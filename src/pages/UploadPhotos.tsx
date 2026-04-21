@@ -10,8 +10,8 @@ import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import type { PhotoMeta } from "@/contexts/ProjectContext";
 
-const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|heic)$/i;
-const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/heic"];
+const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|webp|heic)$/i;
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic"];
 const MAX_FILES = 8;
 
 type RestoredPhoto = {
