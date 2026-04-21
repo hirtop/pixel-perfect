@@ -277,6 +277,23 @@ export function deriveProjectSnapshot(
     });
   }
 
+  // ── Layer 3 (Step 2): photo-derived cost-driver promotion ────────
+  // Additive only. Insert at position 2 so condition-based drivers from
+  // dimensions/notes still LEAD the list; the photo-derived driver
+  // augments rather than dominates. De-dupe by label so we never repeat
+  // an existing driver. Runs BEFORE fallback padding so a credible photo
+  // signal outranks generic fallbacks but never displaces a condition-based
+  // driver in the lead slot.
+  const promoted = photoSignals?.promotedDrivers ?? [];
+  if (promoted.length > 0) {
+    for (const pd of promoted) {
+      if (allDrivers.some((d) => d.label === pd.label)) continue;
+      const insertAt = Math.min(2, allDrivers.length);
+      allDrivers.splice(insertAt, 0, { label: pd.label, detail: pd.detail });
+      break; // only one promoted driver, even if multiple supplied
+    }
+  }
+
   // Cold-start padding: when the buyer hasn't entered enough signal, the pool can
   // be very thin. Backfill with general, defensible drivers so the card never
   // renders with only 1 item. Order kept stable; only used to reach 3.
