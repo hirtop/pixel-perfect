@@ -151,9 +151,9 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                         onClick={() => void scanPhoto(photo)}
                         disabled={isScanning}
                         className="text-[10px] font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 flex-shrink-0"
-                        aria-label={`Re-scan ${photo.name}`}
+                        aria-label={`Re-review ${photo.name}`}
                       >
-                        <RefreshCw className="h-3 w-3" /> Re-scan
+                        <RefreshCw className="h-3 w-3" /> Re-review
                       </button>
                     )}
                     {!scan && !isScanning && (
@@ -163,7 +163,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                         onClick={() => void scanPhoto(photo)}
                         className="h-7 px-2.5 text-xs rounded-md flex-shrink-0"
                       >
-                        Scan
+                        Review
                       </Button>
                     )}
                   </div>
