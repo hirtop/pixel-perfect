@@ -194,7 +194,7 @@ Deno.serve(async (req: Request) => {
             content: [
               {
                 type: "text",
-                text: "Review this homeowner-supplied bathroom photo. Return structured builder-style early warnings using the report_bathroom_photo_scan tool. Be conservative — prefer 'unclear' over weak guesses.",
+                text: "Review this homeowner-supplied bathroom photo using BOBOX's builder-honest red-flag heuristics. Use the report_bathroom_photo_scan tool. Be conservative — prefer 'unclear' over weak guesses. Use only approved phrasing. If anything visible suggests water-moving work, mark it as a likely cost driver.",
               },
               { type: "image_url", image_url: { url: dataUrl } },
             ],
