@@ -9,6 +9,10 @@ type: preference
 ## Golden rule
 **The most expensive bathroom decisions are usually the ones that move water.**
 Apply this principle to: top cost drivers, next-step guidance, builder notes, all future scan copy.
+**BUT** — only invoke water-moving language when there is visible evidence. Never jump from "old bathroom" to "moving water" based on age cues alone. Dated finishes ≠ failing systems.
+
+## Be literal, not inferential
+Describe what's actually visible in the photo. An old-looking toilet, dated tile, or aged fixtures are NOT plumbing-movement evidence — they're "older wet-area finishes" or "dated fixture configuration." Prefer visual descriptions ("visible staining around the toilet base") over diagnostic claims ("plumbing movement"). When in doubt, return "unclear."
 
 ## Risk themes (the only ones we surface from photos)
 - Layout / flow
