@@ -44,11 +44,24 @@ export interface ProjectSnapshot {
  *   - low-confidence concerns are ignored entirely
  *   - photo signals never replace existing logic — they only add a small nudge
  */
+export interface PromotedDriver {
+  /** Originating signal key — used for stable de-duping. */
+  key: string;
+  label: string;
+  detail: string;
+}
+
 export interface PhotoSignalSummary {
   /** True if photos credibly show layout/access tightness or visible wet-area concerns. */
   layoutRiskFromPhotos: boolean;
   /** Short, builder-honest fragment for the complexity reason. */
   reasonFragment?: string;
+  /**
+   * Step 2: photo-derived cost drivers eligible for promotion into the
+   * Snapshot's Top Cost Drivers list. Capped upstream — usually 0 or 1.
+   * Additive only; never replaces dimensions/notes-derived drivers.
+   */
+  promotedDrivers?: PromotedDriver[];
 }
 
 const TIER_NAMES = ["Budget", "Balanced", "Premium"] as const;
