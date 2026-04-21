@@ -13,17 +13,17 @@ interface Props {
 const statusConfig: Record<ScanSignal["status"], { icon: typeof AlertTriangle; label: string; className: string }> = {
   concern: {
     icon: AlertTriangle,
-    label: "Worth a look",
+    label: "Worth verifying",
     className: "text-amber-600 bg-amber-50 border-amber-200 dark:text-amber-400 dark:bg-amber-950/40 dark:border-amber-900/50",
   },
   ok: {
     icon: CheckCircle2,
-    label: "Looks fine",
+    label: "Looks ok in photo",
     className: "text-emerald-700 bg-emerald-50 border-emerald-200 dark:text-emerald-400 dark:bg-emerald-950/40 dark:border-emerald-900/50",
   },
   unclear: {
     icon: HelpCircle,
-    label: "Unclear",
+    label: "Unclear from photo",
     className: "text-muted-foreground bg-muted/50 border-border",
   },
 };
