@@ -69,7 +69,8 @@ const ReferencePhotos = ({ metadata, notes, variant = "full", allowDelete = fals
         {metadata.length > 0 && (
           <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-6 gap-2">
             {photos.map((photo, i) => {
-              const trackingId = photo.id ?? photo.storage_path ?? photo.name;
+              const sourceMeta = metadata[i];
+              const trackingId = sourceMeta?.id ?? sourceMeta?.storage_path ?? sourceMeta?.name;
               const isDeleting = deletingId === trackingId;
               return (
                 <div
@@ -96,11 +97,11 @@ const ReferencePhotos = ({ metadata, notes, variant = "full", allowDelete = fals
                     </div>
                   )}
 
-                  {allowDelete && (
+                  {allowDelete && sourceMeta && (
                     <button
                       type="button"
                       disabled={isDeleting}
-                      onClick={() => setPendingDelete(photo)}
+                      onClick={() => setPendingDelete(sourceMeta)}
                       aria-label={`Remove ${photo.name}`}
                       className="absolute top-1.5 right-1.5 rounded-full bg-foreground/75 backdrop-blur-sm p-1.5 text-background opacity-0 group-hover:opacity-100 focus-visible:opacity-100 transition-opacity duration-150 hover:bg-destructive disabled:opacity-50 disabled:cursor-not-allowed"
                     >
