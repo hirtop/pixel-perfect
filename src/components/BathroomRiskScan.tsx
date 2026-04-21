@@ -70,15 +70,15 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
           <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary flex items-center gap-1.5">
             <ScanLine className="h-3 w-3" /> Photo Risk Scan
           </p>
-          <h2 className="font-heading text-lg text-foreground mt-1">Builder-style early warnings</h2>
+          <h2 className="font-heading text-lg text-foreground mt-1">Things worth verifying before you commit</h2>
           <p className="text-xs text-muted-foreground mt-1 max-w-xl">
-            BOBOX reviews each photo for things a builder would want to look at on-site. This is not an inspection or code review — just a heads-up based on what's visible.
+            BOBOX flags red-flag heuristics a builder would want to look at on-site. Not an inspection, not a code review — just a heads-up based on what's visible in your photos.
           </p>
         </div>
         <div className="flex items-center gap-2">
           {scannedCount > 0 && (
             <span className="text-xs text-muted-foreground whitespace-nowrap">
-              {scannedCount} / {totalCount} scanned
+              {scannedCount} / {totalCount} reviewed
             </span>
           )}
           <Button
@@ -88,11 +88,11 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
             className="rounded-lg"
           >
             {isAnyScanning ? (
-              <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> Scanning…</>
+              <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> Reviewing…</>
             ) : allScanned ? (
-              <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> All scanned</>
+              <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> All reviewed</>
             ) : (
-              <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> Scan {scannedCount > 0 ? "remaining" : "photos"}</>
+              <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> Review {scannedCount > 0 ? "remaining" : "photos"}</>
             )}
           </Button>
         </div>
