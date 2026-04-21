@@ -134,7 +134,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{scan.overall_summary}</p>
                       )}
                       {!scan && !isScanning && (
-                        <p className="text-xs text-muted-foreground mt-1">Not scanned yet.</p>
+                        <p className="text-xs text-muted-foreground mt-1">Not reviewed yet.</p>
                       )}
                       {isScanning && (
                         <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
@@ -142,7 +142,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                         </p>
                       )}
                       {scan?.status === "failed" && (
-                        <p className="text-xs text-destructive mt-1">{scan.error_message || "Scan failed."}</p>
+                        <p className="text-xs text-destructive mt-1">{scan.error_message || "Couldn't review this photo."}</p>
                       )}
                     </div>
                     {scan?.status === "completed" && photo.id && (
