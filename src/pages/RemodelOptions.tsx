@@ -61,7 +61,10 @@ const RemodelOptions = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
   const insights = getBathroomInsights(project);
-  const snapshot = deriveProjectSnapshot(project);
+  const photoMetadata = project.photos?.metadata ?? [];
+  const { scans } = useBathroomPhotoScans(project.id, photoMetadata);
+  const photoSignals = summarizePhotoSignals(scans);
+  const snapshot = deriveProjectSnapshot(project, photoSignals);
   const packageRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   const selectPackage = (pkgName: string) => {
