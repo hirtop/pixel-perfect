@@ -31,11 +31,11 @@ export interface PhotoScanRow {
 }
 
 export const SIGNAL_LABELS: Record<SignalKey, string> = {
-  visible_water_damage: "Visible water damage",
+  visible_water_damage: "Wet-area waterproofing",
   ventilation_concern: "Ventilation",
-  plumbing_age_or_condition: "Plumbing condition",
+  plumbing_age_or_condition: "Plumbing movement / age",
   tile_or_grout_condition: "Tile & grout",
-  layout_or_access_concern: "Layout & access",
+  layout_or_access_concern: "Layout & flow",
   electrical_visible_concern: "Electrical (visible)",
 };
 
