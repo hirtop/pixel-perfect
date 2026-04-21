@@ -132,6 +132,14 @@ export const useBathroomPhotoScans = (projectId: string | undefined, photos: Pho
     }
   }, [photos, scans, scanPhoto]);
 
+  const rescanAll = useCallback(async () => {
+    const eligible = photos.filter((p) => p.id && p.storage_path);
+    for (const p of eligible) {
+      // eslint-disable-next-line no-await-in-loop
+      await scanPhoto(p);
+    }
+  }, [photos, scanPhoto]);
+
   return {
     scans,
     loading,
@@ -139,6 +147,7 @@ export const useBathroomPhotoScans = (projectId: string | undefined, photos: Pho
     error,
     scanPhoto,
     scanAll,
+    rescanAll,
     refetch,
   };
 };
