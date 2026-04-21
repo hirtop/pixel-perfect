@@ -164,7 +164,14 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">{photo.name}</p>
+                      <div className="flex items-baseline gap-2 flex-wrap">
+                        <p className="text-sm font-medium text-foreground truncate">{photo.name}</p>
+                        {scan?.status === "completed" && scan.updated_at && (
+                          <span className="text-[10px] text-muted-foreground/70 whitespace-nowrap">
+                            reviewed {formatRelative(scan.updated_at)}
+                          </span>
+                        )}
+                      </div>
                       {scan?.overall_summary && (
                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{scan.overall_summary}</p>
                       )}
