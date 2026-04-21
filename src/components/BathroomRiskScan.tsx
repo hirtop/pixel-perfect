@@ -205,7 +205,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
       </div>
 
       <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-        Scan results are based only on what's visible in your photos. They are not an inspection, do not determine code compliance, and should not replace an on-site visit by a licensed pro.
+        These are red-flag heuristics based only on what's visible in your photos — not an inspection, not a code review, and not a substitute for an on-site visit by a licensed pro. Use them to ask better questions before you commit. Remember: the most expensive bathroom decisions are usually the ones that move water.
       </p>
     </section>
   );
