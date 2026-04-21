@@ -40,15 +40,28 @@ const SIGNAL_ORDER: SignalKey[] = [
   "electrical_visible_concern",
 ];
 
+const formatRelative = (iso?: string) => {
+  if (!iso) return null;
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return null;
+  const diffSec = Math.max(0, Math.round((Date.now() - then) / 1000));
+  if (diffSec < 60) return "just now";
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+  return `${Math.floor(diffSec / 86400)}d ago`;
+};
+
 const BathroomRiskScan = ({ projectId, photos }: Props) => {
   const eligiblePhotos = useMemo(() => photos.filter((p) => p.id && p.storage_path), [photos]);
-  const { scans, loading, scanningPhotoIds, error, scanPhoto, scanAll } = useBathroomPhotoScans(projectId, eligiblePhotos);
+  const { scans, loading, scanningPhotoIds, error, scanPhoto, scanAll, rescanAll } = useBathroomPhotoScans(projectId, eligiblePhotos);
   const { photos: resolvedPhotos } = usePhotoSignedUrls(eligiblePhotos);
 
   const scannedCount = Object.values(scans).filter((s) => s.status === "completed").length;
+  const failedCount = Object.values(scans).filter((s) => s.status === "failed").length;
   const totalCount = eligiblePhotos.length;
   const allScanned = totalCount > 0 && scannedCount === totalCount;
   const isAnyScanning = scanningPhotoIds.size > 0;
+  const hasAnyScan = scannedCount > 0 || failedCount > 0;
 
   if (totalCount === 0) {
     return (
@@ -75,10 +88,13 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
             BOBOX flags red-flag heuristics a builder would want to look at on-site. Not an inspection, not a code review — just a heads-up based on what's visible in your photos.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          {scannedCount > 0 && (
+        <div className="flex items-center gap-2 flex-wrap justify-end">
+          {hasAnyScan && (
             <span className="text-xs text-muted-foreground whitespace-nowrap">
               {scannedCount} / {totalCount} reviewed
+              {failedCount > 0 && (
+                <span className="text-destructive ml-1">· {failedCount} failed</span>
+              )}
             </span>
           )}
           <Button
@@ -95,8 +111,27 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
               <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> Review {scannedCount > 0 ? "remaining" : "photos"}</>
             )}
           </Button>
+          {hasAnyScan && (
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => void rescanAll()}
+              disabled={isAnyScanning || loading}
+              className="rounded-lg text-xs text-muted-foreground hover:text-foreground"
+              title="Re-runs the AI review on every photo, replacing cached results. Useful after photo updates or scan tuning."
+            >
+              <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${isAnyScanning ? "animate-spin" : ""}`} />
+              Re-review all
+            </Button>
+          )}
         </div>
       </div>
+
+      {hasAnyScan && (
+        <p className="text-[10px] text-muted-foreground/80 -mt-2">
+          Re-review refreshes cached scan results — use after updating photos or when scan tone has been tuned.
+        </p>
+      )}
 
       {error && (
         <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-xs text-destructive">
@@ -129,7 +164,14 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                 <div className="flex-1 min-w-0">
                   <div className="flex items-start justify-between gap-3 mb-2">
                     <div className="min-w-0">
-                      <p className="text-sm font-medium text-foreground truncate">{photo.name}</p>
+                      <div className="flex items-baseline gap-2 flex-wrap">
+                        <p className="text-sm font-medium text-foreground truncate">{photo.name}</p>
+                        {scan?.status === "completed" && scan.updated_at && (
+                          <span className="text-[10px] text-muted-foreground/70 whitespace-nowrap">
+                            reviewed {formatRelative(scan.updated_at)}
+                          </span>
+                        )}
+                      </div>
                       {scan?.overall_summary && (
                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{scan.overall_summary}</p>
                       )}
