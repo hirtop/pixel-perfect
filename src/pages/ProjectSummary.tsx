@@ -192,7 +192,7 @@ const ProjectSummary = () => {
             }
             return (
               <div className="mb-12 space-y-6">
-                <ReferencePhotos metadata={photoMeta} notes={photoNotes} />
+                <ReferencePhotos metadata={photoMeta} notes={photoNotes} allowDelete />
                 <BathroomRiskScan projectId={project.id} photos={photoMeta} />
               </div>
             );
