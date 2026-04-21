@@ -35,6 +35,22 @@ export interface ProjectSnapshot {
   nextStep: NextStep;
 }
 
+/**
+ * Soft, additive signals derived from bathroom photo scans.
+ * Layer 3 — Step 1: photoLayoutRisk only. Cost-driver promotion + tier bumps come later.
+ *
+ * Rules baked in upstream by `summarizePhotoSignals`:
+ *   - only "concern" status with medium/high confidence counts as credible
+ *   - low-confidence concerns are ignored entirely
+ *   - photo signals never replace existing logic — they only add a small nudge
+ */
+export interface PhotoSignalSummary {
+  /** True if photos credibly show layout/access tightness or visible wet-area concerns. */
+  layoutRiskFromPhotos: boolean;
+  /** Short, builder-honest fragment for the complexity reason. */
+  reasonFragment?: string;
+}
+
 const TIER_NAMES = ["Budget", "Balanced", "Premium"] as const;
 type TierName = (typeof TIER_NAMES)[number];
 
@@ -44,7 +60,10 @@ const matchTier = (raw?: string): TierName | null => {
   return TIER_NAMES.find((t) => lower.includes(t.toLowerCase())) ?? null;
 };
 
-export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
+export function deriveProjectSnapshot(
+  project: ProjectData,
+  photoSignals?: PhotoSignalSummary,
+): ProjectSnapshot {
   // ── Signals ──────────────────────────────────────────────────────
   const width = Number(project.dimensions?.width_ft) || 0;
   const length = Number(project.dimensions?.length_ft) || 0;
@@ -110,6 +129,18 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
     conditionReasons.push("layout change implied by your notes");
   }
 
+  // ── Layer 3 (Step 1): photo-derived layout/wet-area soft nudge ───
+  // Additive only — never overrides existing logic, never moves Simple → Complex
+  // on its own. Capped at +1 score, never used for powder rooms.
+  const photoNudgeApplied =
+    !!photoSignals?.layoutRiskFromPhotos && !isPowder;
+  if (photoNudgeApplied) {
+    score += 1;
+    conditionReasons.push(
+      photoSignals?.reasonFragment || "photos suggest a tight or wet-area layout",
+    );
+  }
+
   // Tier nudge — Premium only adds risk when layout change is plausible
   if (preferredTier === "Premium" && (isFullBath || sqft >= 50 || layoutChangeHinted)) {
     score += 1;
@@ -119,6 +150,12 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
   if (score <= 0) complexity = "Simple";
   else if (score <= 2) complexity = "Moderate";
   else complexity = "Complex";
+
+  // Photo-only cap: a photo nudge alone cannot push from Simple to Complex.
+  // If the ONLY thing pushing us above Moderate is the photo signal, hold at Moderate.
+  if (photoNudgeApplied && complexity === "Complex" && score - 1 <= 2) {
+    complexity = "Moderate";
+  }
 
   // Powder room cap: footprint/tier alone can't push above Simple.
   // Only a layout-change hint may lift it to Moderate. Never Complex.
@@ -254,7 +291,10 @@ export function deriveProjectSnapshot(project: ProjectData): ProjectSnapshot {
   // ── Recommended next step (builder guidance tone) ────────────────
   let nextStep: NextStep;
 
-  const layoutRisk = layoutChangeHinted || (isFullBath && sqft > 0 && sqft < 40);
+  const layoutRisk =
+    layoutChangeHinted ||
+    (isFullBath && sqft > 0 && sqft < 40) ||
+    photoNudgeApplied;
 
   if (!preferredTier) {
     // No tier picked yet — point them at a sensible starting comparison
