@@ -13,17 +13,17 @@ interface Props {
 const statusConfig: Record<ScanSignal["status"], { icon: typeof AlertTriangle; label: string; className: string }> = {
   concern: {
     icon: AlertTriangle,
-    label: "Worth a look",
+    label: "Worth verifying",
     className: "text-amber-600 bg-amber-50 border-amber-200 dark:text-amber-400 dark:bg-amber-950/40 dark:border-amber-900/50",
   },
   ok: {
     icon: CheckCircle2,
-    label: "Looks fine",
+    label: "Looks ok in photo",
     className: "text-emerald-700 bg-emerald-50 border-emerald-200 dark:text-emerald-400 dark:bg-emerald-950/40 dark:border-emerald-900/50",
   },
   unclear: {
     icon: HelpCircle,
-    label: "Unclear",
+    label: "Unclear from photo",
     className: "text-muted-foreground bg-muted/50 border-border",
   },
 };
@@ -56,7 +56,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
         <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary">Photo Risk Scan</p>
         <h2 className="font-heading text-lg text-foreground mt-1">No photos to scan yet</h2>
         <p className="text-xs text-muted-foreground mt-2 max-w-md mx-auto">
-          Upload bathroom photos first. Then BOBOX can run a builder-style early-warning review on them.
+          Upload bathroom photos first. Then BOBOX can flag things worth verifying before you commit to a scope.
         </p>
       </section>
     );
@@ -70,15 +70,15 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
           <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-primary flex items-center gap-1.5">
             <ScanLine className="h-3 w-3" /> Photo Risk Scan
           </p>
-          <h2 className="font-heading text-lg text-foreground mt-1">Builder-style early warnings</h2>
+          <h2 className="font-heading text-lg text-foreground mt-1">Things worth verifying before you commit</h2>
           <p className="text-xs text-muted-foreground mt-1 max-w-xl">
-            BOBOX reviews each photo for things a builder would want to look at on-site. This is not an inspection or code review — just a heads-up based on what's visible.
+            BOBOX flags red-flag heuristics a builder would want to look at on-site. Not an inspection, not a code review — just a heads-up based on what's visible in your photos.
           </p>
         </div>
         <div className="flex items-center gap-2">
           {scannedCount > 0 && (
             <span className="text-xs text-muted-foreground whitespace-nowrap">
-              {scannedCount} / {totalCount} scanned
+              {scannedCount} / {totalCount} reviewed
             </span>
           )}
           <Button
@@ -88,11 +88,11 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
             className="rounded-lg"
           >
             {isAnyScanning ? (
-              <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> Scanning…</>
+              <><Loader2 className="h-3.5 w-3.5 mr-1.5 animate-spin" /> Reviewing…</>
             ) : allScanned ? (
-              <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> All scanned</>
+              <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> All reviewed</>
             ) : (
-              <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> Scan {scannedCount > 0 ? "remaining" : "photos"}</>
+              <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> Review {scannedCount > 0 ? "remaining" : "photos"}</>
             )}
           </Button>
         </div>
@@ -134,7 +134,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                         <p className="text-xs text-muted-foreground mt-1 leading-relaxed">{scan.overall_summary}</p>
                       )}
                       {!scan && !isScanning && (
-                        <p className="text-xs text-muted-foreground mt-1">Not scanned yet.</p>
+                        <p className="text-xs text-muted-foreground mt-1">Not reviewed yet.</p>
                       )}
                       {isScanning && (
                         <p className="text-xs text-muted-foreground mt-1 flex items-center gap-1.5">
@@ -142,7 +142,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                         </p>
                       )}
                       {scan?.status === "failed" && (
-                        <p className="text-xs text-destructive mt-1">{scan.error_message || "Scan failed."}</p>
+                        <p className="text-xs text-destructive mt-1">{scan.error_message || "Couldn't review this photo."}</p>
                       )}
                     </div>
                     {scan?.status === "completed" && photo.id && (
@@ -151,9 +151,9 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                         onClick={() => void scanPhoto(photo)}
                         disabled={isScanning}
                         className="text-[10px] font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1 flex-shrink-0"
-                        aria-label={`Re-scan ${photo.name}`}
+                        aria-label={`Re-review ${photo.name}`}
                       >
-                        <RefreshCw className="h-3 w-3" /> Re-scan
+                        <RefreshCw className="h-3 w-3" /> Re-review
                       </button>
                     )}
                     {!scan && !isScanning && (
@@ -163,7 +163,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
                         onClick={() => void scanPhoto(photo)}
                         className="h-7 px-2.5 text-xs rounded-md flex-shrink-0"
                       >
-                        Scan
+                        Review
                       </Button>
                     )}
                   </div>
@@ -205,7 +205,7 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
       </div>
 
       <p className="text-[10px] text-muted-foreground/70 leading-relaxed">
-        Scan results are based only on what's visible in your photos. They are not an inspection, do not determine code compliance, and should not replace an on-site visit by a licensed pro.
+        These are red-flag heuristics based only on what's visible in your photos — not an inspection, not a code review, and not a substitute for an on-site visit by a licensed pro. Use them to ask better questions before you commit. Remember: the most expensive bathroom decisions are usually the ones that move water.
       </p>
     </section>
   );
