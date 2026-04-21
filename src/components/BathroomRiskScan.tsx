@@ -40,15 +40,28 @@ const SIGNAL_ORDER: SignalKey[] = [
   "electrical_visible_concern",
 ];
 
+const formatRelative = (iso?: string) => {
+  if (!iso) return null;
+  const then = new Date(iso).getTime();
+  if (Number.isNaN(then)) return null;
+  const diffSec = Math.max(0, Math.round((Date.now() - then) / 1000));
+  if (diffSec < 60) return "just now";
+  if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+  if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+  return `${Math.floor(diffSec / 86400)}d ago`;
+};
+
 const BathroomRiskScan = ({ projectId, photos }: Props) => {
   const eligiblePhotos = useMemo(() => photos.filter((p) => p.id && p.storage_path), [photos]);
-  const { scans, loading, scanningPhotoIds, error, scanPhoto, scanAll } = useBathroomPhotoScans(projectId, eligiblePhotos);
+  const { scans, loading, scanningPhotoIds, error, scanPhoto, scanAll, rescanAll } = useBathroomPhotoScans(projectId, eligiblePhotos);
   const { photos: resolvedPhotos } = usePhotoSignedUrls(eligiblePhotos);
 
   const scannedCount = Object.values(scans).filter((s) => s.status === "completed").length;
+  const failedCount = Object.values(scans).filter((s) => s.status === "failed").length;
   const totalCount = eligiblePhotos.length;
   const allScanned = totalCount > 0 && scannedCount === totalCount;
   const isAnyScanning = scanningPhotoIds.size > 0;
+  const hasAnyScan = scannedCount > 0 || failedCount > 0;
 
   if (totalCount === 0) {
     return (
