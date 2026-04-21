@@ -129,6 +129,18 @@ export function deriveProjectSnapshot(
     conditionReasons.push("layout change implied by your notes");
   }
 
+  // ── Layer 3 (Step 1): photo-derived layout/wet-area soft nudge ───
+  // Additive only — never overrides existing logic, never moves Simple → Complex
+  // on its own. Capped at +1 score, never used for powder rooms.
+  const photoNudgeApplied =
+    !!photoSignals?.layoutRiskFromPhotos && !isPowder;
+  if (photoNudgeApplied) {
+    score += 1;
+    conditionReasons.push(
+      photoSignals?.reasonFragment || "photos suggest a tight or wet-area layout",
+    );
+  }
+
   // Tier nudge — Premium only adds risk when layout change is plausible
   if (preferredTier === "Premium" && (isFullBath || sqft >= 50 || layoutChangeHinted)) {
     score += 1;
@@ -138,6 +150,12 @@ export function deriveProjectSnapshot(
   if (score <= 0) complexity = "Simple";
   else if (score <= 2) complexity = "Moderate";
   else complexity = "Complex";
+
+  // Photo-only cap: a photo nudge alone cannot push from Simple to Complex.
+  // If the ONLY thing pushing us above Moderate is the photo signal, hold at Moderate.
+  if (photoNudgeApplied && complexity === "Complex" && score - 1 <= 2) {
+    complexity = "Moderate";
+  }
 
   // Powder room cap: footprint/tier alone can't push above Simple.
   // Only a layout-change hint may lift it to Moderate. Never Complex.
