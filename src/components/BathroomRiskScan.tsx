@@ -88,10 +88,13 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
             BOBOX flags red-flag heuristics a builder would want to look at on-site. Not an inspection, not a code review — just a heads-up based on what's visible in your photos.
           </p>
         </div>
-        <div className="flex items-center gap-2">
-          {scannedCount > 0 && (
+        <div className="flex items-center gap-2 flex-wrap justify-end">
+          {hasAnyScan && (
             <span className="text-xs text-muted-foreground whitespace-nowrap">
               {scannedCount} / {totalCount} reviewed
+              {failedCount > 0 && (
+                <span className="text-destructive ml-1">· {failedCount} failed</span>
+              )}
             </span>
           )}
           <Button
@@ -108,8 +111,27 @@ const BathroomRiskScan = ({ projectId, photos }: Props) => {
               <><Sparkles className="h-3.5 w-3.5 mr-1.5" /> Review {scannedCount > 0 ? "remaining" : "photos"}</>
             )}
           </Button>
+          {hasAnyScan && (
+            <Button
+              size="sm"
+              variant="ghost"
+              onClick={() => void rescanAll()}
+              disabled={isAnyScanning || loading}
+              className="rounded-lg text-xs text-muted-foreground hover:text-foreground"
+              title="Re-runs the AI review on every photo, replacing cached results. Useful after photo updates or scan tuning."
+            >
+              <RefreshCw className={`h-3.5 w-3.5 mr-1.5 ${isAnyScanning ? "animate-spin" : ""}`} />
+              Re-review all
+            </Button>
+          )}
         </div>
       </div>
+
+      {hasAnyScan && (
+        <p className="text-[10px] text-muted-foreground/80 -mt-2">
+          Re-review refreshes cached scan results — use after updating photos or when scan tone has been tuned.
+        </p>
+      )}
 
       {error && (
         <div className="rounded-lg border border-destructive/30 bg-destructive/5 px-3 py-2 text-xs text-destructive">
