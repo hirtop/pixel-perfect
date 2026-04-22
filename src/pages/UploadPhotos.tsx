@@ -69,6 +69,12 @@ const UploadPhotos = () => {
   // Sync notes from backend ONLY if the user hasn't started editing locally.
   useEffect(() => {
     if (userEditedRef.current) return;
+    try {
+      if (localStorage.getItem(NOTES_DRAFT_KEY) !== null) {
+        userEditedRef.current = true;
+        return;
+      }
+    } catch { /* ignore */ }
     latestPersistedNotesRef.current = project.photos.notes || "";
     setNotes(project.photos.notes || "");
   }, [project.photos.notes]);
@@ -91,12 +97,16 @@ const UploadPhotos = () => {
       latestPersistedNotesRef.current = photosRef.current.notes || "";
     }
     saveInFlightRef.current = null;
+    if (didSave) {
+      try { localStorage.removeItem(NOTES_DRAFT_KEY); } catch { /* ignore */ }
+    }
     return didSave;
   }, [saveProject, updateProject]);
 
   const handleNotesChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     userEditedRef.current = true;
+    try { localStorage.setItem(NOTES_DRAFT_KEY, value); } catch { /* ignore */ }
     setNotes(value);
     if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
     autosaveTimerRef.current = setTimeout(() => {
