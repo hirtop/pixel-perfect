@@ -173,6 +173,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.homedepot.com/s/floating+vanity+48+quartz",
   },
   {
     id: "bal-vanity-02",
@@ -315,6 +316,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.kohler.com/en/products/bathroom/shop-bathroom-sinks",
   },
   {
     id: "bal-sink-02",
@@ -455,6 +457,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.delta.com/us/en/bathroom-faucets/trinsic",
   },
   {
     id: "bal-faucet-02",
@@ -600,6 +603,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.homedepot.com/s/frameless+mirror+shelf+36",
   },
   {
     id: "bal-mirror-02",
@@ -749,6 +753,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.daltile.com/products/ceramic-porcelain",
   },
   {
     id: "bal-swtile-02",
@@ -896,6 +901,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.daltile.com/products/ceramic-porcelain",
   },
   {
     id: "bal-ftile-02",
@@ -1037,6 +1043,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.daltile.com/products/ceramic-porcelain",
   },
   {
     id: "bal-sftile-02",
@@ -1182,6 +1189,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Default",
+    affiliateUrl: "",
   },
   {
     id: "bal-accent-02",
@@ -1324,6 +1332,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.dreamline.com/shower-doors",
   },
   {
     id: "bal-sglass-02",
@@ -1463,6 +1472,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.delta.com/us/en/shower-faucets-and-systems",
   },
   {
     id: "bal-svalve-02",
@@ -1603,6 +1613,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.moen.com/rain-shower-heads",
   },
   {
     id: "bal-strim-02",
@@ -1745,6 +1756,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "Freestanding requires floor drain relocation — adds ~$200",
     tag: "Recommended",
+    affiliateUrl: "https://www.wyndhamcollection.com/freestanding-bathtubs",
   },
   {
     id: "bal-tub-02",
@@ -1886,6 +1898,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.delta.com/us/en/bathroom-faucets",
   },
   {
     id: "bal-tvalve-02",
@@ -2028,6 +2041,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Custom tiling inside niche adds ~$100 labor",
     tag: "Recommended",
+    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems",
   },
   {
     id: "bal-niche-02",
