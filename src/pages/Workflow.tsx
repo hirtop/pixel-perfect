@@ -20,7 +20,8 @@ const steps = [
 ];
 
 const Workflow = () => {
-  const { markStepComplete } = useProject();
+  const { project, markStepComplete } = useProject();
+  const tier = project?.selected_package?.tier || "balanced";
   const navigate = useNavigate();
 
   const handleContinue = () => {
@@ -36,7 +37,7 @@ const Workflow = () => {
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link to="/customize/balanced" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link to={`/customize/${tier}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <ArrowLeft className="h-3.5 w-3.5" /> Back to Customization
             </Link>
             <Link to="/" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -89,7 +90,7 @@ const Workflow = () => {
             <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
               Continue to Project Summary
             </Button>
-            <Link to="/customize/balanced" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link to={`/customize/${tier}`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Back to Customization
             </Link>
           </div>
