@@ -45,6 +45,15 @@ const ProjectSummary = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
+  const tierImageMap: Record<string, string> = {
+    budget: budgetImg,
+    balanced: balancedImg,
+    premium: premiumImg,
+  };
+  const summaryHeroImg = tierImageMap[
+    project.selected_package.tier?.toLowerCase() || "balanced"
+  ] || balancedImg;
+
   const summaryFields = [
     { label: "Project Name", value: project.name || "Untitled Project" },
     { label: "Selected Package", value: project.selected_package.name || "Not yet selected" },
@@ -123,7 +132,7 @@ const ProjectSummary = () => {
           </div>
 
           <div className="rounded-2xl overflow-hidden aspect-[21/9] mb-12">
-            <img src={balancedImg} alt="Selected bathroom remodel direction" className="w-full h-full object-cover" width={800} height={600} />
+            <img src={summaryHeroImg} alt="Selected bathroom remodel direction" className="w-full h-full object-cover" width={800} height={600} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
