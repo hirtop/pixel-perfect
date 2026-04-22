@@ -5,6 +5,8 @@ import { Check, ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import balancedImg from "@/assets/package-balanced.jpg";
+import budgetImg from "@/assets/package-budget.jpg";
+import premiumImg from "@/assets/package-premium.jpg";
 import { useProject } from "@/contexts/ProjectContext";
 import { useAuth } from "@/hooks/useAuth";
 import ReferencePhotos from "@/components/ReferencePhotos";
@@ -42,6 +44,15 @@ const ProjectSummary = () => {
   const { project, saveProject, markStepComplete, isSaving } = useProject();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  const tierImageMap: Record<string, string> = {
+    budget: budgetImg,
+    balanced: balancedImg,
+    premium: premiumImg,
+  };
+  const summaryHeroImg = tierImageMap[
+    project.selected_package.tier?.toLowerCase() || "balanced"
+  ] || balancedImg;
 
   const summaryFields = [
     { label: "Project Name", value: project.name || "Untitled Project" },
@@ -121,7 +132,7 @@ const ProjectSummary = () => {
           </div>
 
           <div className="rounded-2xl overflow-hidden aspect-[21/9] mb-12">
-            <img src={balancedImg} alt="Selected bathroom remodel direction" className="w-full h-full object-cover" width={800} height={600} />
+            <img src={summaryHeroImg} alt="Selected bathroom remodel direction" className="w-full h-full object-cover" width={800} height={600} />
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
