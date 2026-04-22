@@ -195,6 +195,7 @@ const Dimensions = () => {
   // Hydrate from project ONLY if no local draft exists and user hasn't edited.
   // Local draft always wins because it represents edits not yet confirmed-persisted.
   useEffect(() => {
+    console.log('[BOBOX] hydration effect fired, userEdited:', userEditedRef.current, 'dims:', JSON.stringify(dimsRef.current));
     if (userEditedRef.current) return;
     const draft = readLocalDraft();
     if (draft) {
