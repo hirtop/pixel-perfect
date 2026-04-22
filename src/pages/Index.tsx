@@ -406,6 +406,7 @@ export default function LandingPage() {
                       ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
                       : "bg-primary text-primary-foreground hover:bg-primary/90"
                   }`}
+                  onClick={() => plan.highlighted ? navigate("/auth") : handlePrimaryCta()}
                 >
                   {plan.cta}
                 </Button>
