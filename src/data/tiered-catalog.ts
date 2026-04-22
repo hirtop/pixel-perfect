@@ -321,7 +321,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.kohler.com/en/products/bathroom/shop-bathroom-sinks/shop-all-bathroom-sinks",
+    affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Sinks/KOHLER/N-5yc1vZbzb0Z1qh",
   },
   {
     id: "bal-sink-02",
@@ -466,7 +466,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.delta.com/us/en/bathroom-faucets/collections/trinsic",
+    affiliateUrl: "https://www.deltafaucet.com/bathroom/sink",
   },
   {
     id: "bal-faucet-02",
@@ -483,7 +483,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 120,
     laborNote: "Wider spread may need vanity top re-drill — adds ~$120",
     tag: "Upgrade",
-    affiliateUrl: "https://www.kohler.com/en/products/bathroom/shop-bathroom-faucets",
+    affiliateUrl: "https://www.kohler.com/en/products/bathroom-faucets",
   },
   {
     id: "bal-faucet-03",
@@ -616,7 +616,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Mirrors/N-5yc1vZbzb5",
+    affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Mirrors/N-5yc1vZbzbo",
   },
   {
     id: "bal-mirror-02",
@@ -953,7 +953,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Pattern alignment adds ~$150 labor",
     tag: "Trending",
-    affiliateUrl: "https://www.merolatile.com",
+    affiliateUrl: "https://www.daltile.com/tile-product-category",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1068,7 +1068,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.daltile.com/products/tile/mosaic-tile",
+    affiliateUrl: "https://www.daltile.com/tile-product-category",
   },
   {
     id: "bal-sftile-02",
@@ -1365,7 +1365,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.dreamline.com/shower-doors/semi-frameless-shower-doors",
+    affiliateUrl: "https://www.dreamline.com/shower-doors.html",
   },
   {
     id: "bal-sglass-02",
@@ -1395,7 +1395,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.dreamline.com/shower-doors",
+    affiliateUrl: "https://www.dreamline.com/shower-doors.html",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1509,7 +1509,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.delta.com/us/en/shower-faucets-and-systems/shower-valves",
+    affiliateUrl: "https://www.deltafaucet.com/bathroom/showering",
   },
   {
     id: "bal-svalve-02",
@@ -1525,7 +1525,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 80,
     laborNote: "3-way diverter requires additional rough-in — adds ~$80",
     tag: "Upgrade",
-    affiliateUrl: "https://www.us.kohler.com/us/shower-valves/content/shower-valves.htm",
+    affiliateUrl: "https://www.kohler.com/en/products/showers/shop-bath-shower-faucets",
   },
   {
     id: "bal-svalve-03",
@@ -1685,7 +1685,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "Ceiling mount requires rerouting supply pipe — adds ~$200",
     tag: "Upgrade",
-    affiliateUrl: "https://www.delta.com/us/en/shower-systems/all-shower-systems",
+    affiliateUrl: "https://www.deltafaucet.com/bathroom/showering",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1801,7 +1801,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "Freestanding requires floor drain relocation — adds ~$200",
     tag: "Recommended",
-    affiliateUrl: "https://www.wyndhamcollection.com/freestanding-bathtubs",
+    affiliateUrl: "https://www.wyndhamcollection.com/collections/all-bathtubs",
   },
   {
     id: "bal-tub-02",
@@ -1833,7 +1833,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 250,
     laborNote: "Deep tub may need higher-capacity drain — adds ~$250",
     tag: "Trending",
-    affiliateUrl: "https://www.aquatica.eu/en/bathtubs",
+    affiliateUrl: "https://www.aquatica.eu/en/bathtubs.html",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1947,7 +1947,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.delta.com/us/en/tub-and-shower-faucets",
+    affiliateUrl: "https://www.deltafaucet.com/bathroom",
   },
   {
     id: "bal-tvalve-02",
@@ -2126,7 +2126,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "LED requires low-voltage wiring to niche — adds ~$200",
     tag: "Trending",
-    affiliateUrl: "https://www.tileware.com",
+    affiliateUrl: "https://www.tileware.com/niches",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
