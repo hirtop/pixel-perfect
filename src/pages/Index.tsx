@@ -193,7 +193,7 @@ export default function LandingPage() {
               custom={0}
               className="font-heading text-3xl md:text-5xl lg:text-[3.25rem] leading-snug md:leading-[1.2] text-primary-foreground mb-6 max-w-lg"
             >
-              Scan your room.
+              Photo your bathroom.
               <br />
               Compare remodel options.
               <br />
