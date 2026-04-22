@@ -1365,7 +1365,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.dreamline.com/shower-doors.html",
+    affiliateUrl: "https://dreamline.com/shower-doors",
   },
   {
     id: "bal-sglass-02",
@@ -1380,7 +1380,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.dreamline.com/shower-doors",
+    affiliateUrl: "https://dreamline.com/shower-doors",
   },
   {
     id: "bal-sglass-03",
@@ -1395,7 +1395,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.dreamline.com/shower-doors.html",
+    affiliateUrl: "https://dreamline.com/shower-doors",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1833,7 +1833,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 250,
     laborNote: "Deep tub may need higher-capacity drain — adds ~$250",
     tag: "Trending",
-    affiliateUrl: "https://www.aquatica.eu",
+    affiliateUrl: "https://aquaticausa.com",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
