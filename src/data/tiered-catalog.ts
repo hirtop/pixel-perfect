@@ -499,7 +499,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.brizo.com/bathroom/bathroom-faucets",
+    affiliateUrl: "https://www.brizo.com/bath/bathroom-faucets",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -632,7 +632,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.cb2.com/bathroom/mirrors",
+    affiliateUrl: "https://www.cb2.com/search/results?query=round+mirror",
   },
   {
     id: "bal-mirror-03",
@@ -649,7 +649,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 350,
     laborNote: "Recessed install requires wall cavity cut — adds ~$350",
     tag: "Most Storage",
-    affiliateUrl: "https://www.robern.com/medicine-cabinets",
+    affiliateUrl: "https://www.robern.com/products/medicine-cabinets",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -787,7 +787,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Mid-size tile — slightly more cuts than large-format, adds ~$100",
     tag: "Value Pick",
-    affiliateUrl: "https://www.bedrosians.com/en/tile/ceramic-tile/",
+    affiliateUrl: "https://www.bedrosians.com/en/product/list/by-use/wall-tile/",
   },
   {
     id: "bal-swtile-03",
@@ -803,7 +803,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Upgrade",
-    affiliateUrl: "https://www.bedrosians.com/en/tile/porcelain-tile/",
+    affiliateUrl: "https://www.bedrosians.com/en/product/list/by-use/wall-tile/",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1083,7 +1083,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.bedrosians.com/en/tile/mosaic-tile/",
+    affiliateUrl: "https://www.bedrosians.com/en/product/list/mosaic-tile/",
   },
   {
     id: "bal-sftile-03",
@@ -1099,7 +1099,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Linear drain prep adds ~$100 labor",
     tag: "Upgrade",
-    affiliateUrl: "https://www.merolatile.com",
+    affiliateUrl: "https://www.merolatile.com/collections/bathroom",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1234,7 +1234,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 80,
     laborNote: "Liner placement adds ~$80 labor",
     tag: "Elegant Detail",
-    affiliateUrl: "https://www.bedrosians.com/en/tile/mosaic-tile/",
+    affiliateUrl: "https://www.bedrosians.com/en/product/list/mosaic-tile/",
   },
   {
     id: "bal-accent-03",
@@ -1250,7 +1250,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Feature panel layout adds ~$150 labor",
     tag: "Trending",
-    affiliateUrl: "https://www.bedrosians.com/en/tile/mosaic-tile/",
+    affiliateUrl: "https://www.bedrosians.com/en/product/list/mosaic-tile/",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
