@@ -189,6 +189,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
+    affiliateUrl: "https://www.avanityusa.com/collections/bathroom-vanities",
   },
   {
     id: "bal-vanity-03",
@@ -204,6 +205,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Upgrade",
+    affiliateUrl: "https://www.westelm.com/shop/furniture/bathroom-vanities/",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -331,6 +333,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
+    affiliateUrl: "https://www.kraususa.com/bathroom/bathroom-sinks",
   },
   {
     id: "bal-sink-03",
@@ -345,6 +348,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
+    affiliateUrl: "https://www.duravit.us/products/all_products_washbasins.html",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -474,6 +478,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 120,
     laborNote: "Wider spread may need vanity top re-drill — adds ~$120",
     tag: "Upgrade",
+    affiliateUrl: "https://www.kohler.com/en/products/bathroom/shop-bathroom-faucets",
   },
   {
     id: "bal-faucet-03",
@@ -489,6 +494,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
+    affiliateUrl: "https://www.brizo.com/bathroom/litze",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -619,6 +625,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
+    affiliateUrl: "https://www.cb2.com/mirrors/bath-mirrors/1",
   },
   {
     id: "bal-mirror-03",
@@ -635,6 +642,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 350,
     laborNote: "Recessed install requires wall cavity cut — adds ~$350",
     tag: "Most Storage",
+    affiliateUrl: "https://www.robern.com/medicine-cabinets",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -770,6 +778,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Mid-size tile — slightly more cuts than large-format, adds ~$100",
     tag: "Value Pick",
+    affiliateUrl: "https://www.bedrosians.com/en/product-tile/ceramic/",
   },
   {
     id: "bal-swtile-03",
@@ -785,6 +794,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Upgrade",
+    affiliateUrl: "https://www.bedrosians.com/en/product-tile/porcelain/",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -916,6 +926,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
+    affiliateUrl: "https://www.marazziusa.com/products/wood-look-tile/",
   },
   {
     id: "bal-ftile-03",
@@ -931,6 +942,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Pattern alignment adds ~$150 labor",
     tag: "Trending",
+    affiliateUrl: "https://www.merolatile.com/categories/floor-tile",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1058,6 +1070,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
+    affiliateUrl: "https://www.bedrosians.com/en/product-tile/mosaic/",
   },
   {
     id: "bal-sftile-03",
@@ -1073,6 +1086,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Linear drain prep adds ~$100 labor",
     tag: "Upgrade",
+    affiliateUrl: "https://www.merolatile.com/categories/mosaic-tile",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1205,6 +1219,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 80,
     laborNote: "Liner placement adds ~$80 labor",
     tag: "Elegant Detail",
+    affiliateUrl: "https://www.bedrosians.com/en/product-tile/trim-and-moldings/",
   },
   {
     id: "bal-accent-03",
@@ -1220,6 +1235,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Feature panel layout adds ~$150 labor",
     tag: "Trending",
+    affiliateUrl: "https://www.bedrosians.com/en/product-tile/mosaic/",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1347,6 +1363,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
+    affiliateUrl: "https://www.dreamline.com/shower-doors/fixed-panels",
   },
   {
     id: "bal-sglass-03",
@@ -1361,6 +1378,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
+    affiliateUrl: "https://www.coastalshowerdoors.com/sliding-doors",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1488,6 +1506,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 80,
     laborNote: "3-way diverter requires additional rough-in — adds ~$80",
     tag: "Upgrade",
+    affiliateUrl: "https://www.kohler.com/en/products/bathroom/shop-bathroom-faucets/showers",
   },
   {
     id: "bal-svalve-03",
@@ -1503,6 +1522,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Digital valve requires electrical connection — adds ~$150",
     tag: "Trending",
+    affiliateUrl: "https://www.moen.com/u-by-moen",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1628,6 +1648,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
+    affiliateUrl: "https://www.kohler.com/en/products/bathroom/shop-bathroom-faucets/showers",
   },
   {
     id: "bal-strim-03",
@@ -1643,6 +1664,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "Ceiling mount requires rerouting supply pipe — adds ~$200",
     tag: "Upgrade",
+    affiliateUrl: "https://www.delta.com/us/en/shower-faucets-and-systems/rain-can-shower-heads",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1772,6 +1794,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Cast iron is heavy — may need floor reinforcement, adds ~$100",
     tag: "Classic Pick",
+    affiliateUrl: "https://www.kohler.com/en/products/bathroom/shop-bathroom-baths",
   },
   {
     id: "bal-tub-03",
@@ -1787,6 +1810,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 250,
     laborNote: "Deep tub may need higher-capacity drain — adds ~$250",
     tag: "Trending",
+    affiliateUrl: "https://www.aquaticausa.com/category/freestanding-bathtubs",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1914,6 +1938,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 300,
     laborNote: "Floor-mount requires concealed supply lines — adds ~$300",
     tag: "Upgrade",
+    affiliateUrl: "https://www.wyndhamcollection.com/freestanding-tub-fillers",
   },
   {
     id: "bal-tvalve-03",
@@ -1929,6 +1954,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Wall-mount requires in-wall valve rough-in — adds ~$150",
     tag: "Trending",
+    affiliateUrl: "https://www.kohler.com/en/products/bathroom/shop-bathroom-faucets/bath",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -2057,6 +2083,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Two-compartment niche requires more precise tile cuts — adds ~$150",
     tag: "Upgrade",
+    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems/Shower-Niches",
   },
   {
     id: "bal-niche-03",
@@ -2072,6 +2099,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "LED requires low-voltage wiring to niche — adds ~$200",
     tag: "Trending",
+    affiliateUrl: "https://www.tilewareproducts.com/promessa-series",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
