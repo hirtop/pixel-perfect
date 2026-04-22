@@ -13,6 +13,7 @@ import type { PhotoMeta } from "@/contexts/ProjectContext";
 const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|webp|heic)$/i;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic"];
 const MAX_FILES = 8;
+const NOTES_DRAFT_KEY = "bobox_notes_draft";
 
 type RestoredPhoto = {
   id?: string;
