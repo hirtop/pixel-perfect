@@ -306,60 +306,55 @@ const CustomizeOption = () => {
                         </div>
                       )}
                       <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 mb-0.5">
+                        <div className="flex items-start justify-between gap-3">
                           <p className="text-xs font-semibold uppercase tracking-wider text-primary">{cat.name}</p>
-                          {cat.name === "Accent Tile" && (
-                            <span className="text-[10px] font-medium bg-muted text-muted-foreground rounded-full px-2 py-0.5">Optional</span>
-                          )}
+                          <div className="flex flex-col gap-1 flex-shrink-0">
+                            <Button variant="outline" size="sm" className="text-xs h-8 px-3 rounded-lg" onClick={() => toggleExpand(cat.name)}>
+                              {isExpanded ? <><ChevronUp className="h-3 w-3 mr-1" /> Close</> : <>Change</>}
+                            </Button>
+                            {isSwapped && (
+                              <button onClick={() => resetToDefault(cat.name)} className="text-[10px] text-muted-foreground hover:text-foreground transition-colors text-right">
+                                Reset
+                              </button>
+                            )}
+                          </div>
+                        </div>
+                        <p className="text-sm font-medium text-foreground mt-0.5">{cat.selected}</p>
+                        <div className="flex flex-wrap items-center gap-2 mt-1.5">
                           {cat.tag && (
                             <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5">{cat.tag}</span>
+                          )}
+                          {cat.name === "Accent Tile" && (
+                            <span className="text-[10px] font-medium bg-muted text-muted-foreground rounded-full px-2 py-0.5">Optional</span>
                           )}
                           {isSwapped && (
                             <span className="text-[10px] font-medium bg-secondary text-muted-foreground rounded-full px-2 py-0.5">Changed</span>
                           )}
-                        </div>
-                        <p className="text-sm font-medium text-foreground truncate">{cat.selected}</p>
-                        <div className="flex items-center gap-2 mt-0.5">
-                          <span className="text-xs text-muted-foreground">{cat.vendor}</span>
-                          {cat.finish && (
-                            <>
-                              <span className="text-muted-foreground">·</span>
-                              <span className="text-xs text-muted-foreground">{cat.finish}</span>
-                            </>
+                          <span className="text-sm font-semibold text-foreground whitespace-nowrap">{fmt(cat.price)}</span>
+                          {priceDiff !== 0 && (
+                            <span className={`text-[10px] font-medium ${priceDiff > 0 ? "text-destructive" : "text-primary"}`}>
+                              {priceDiff > 0 ? "+" : ""}{fmt(priceDiff)}
+                            </span>
                           )}
                         </div>
-                        {cat.spec && <p className="text-[11px] text-muted-foreground mt-1">{cat.spec}</p>}
+                        <div className="flex flex-col gap-0.5 mt-2">
+                          <span className="text-xs text-muted-foreground">{cat.vendor}</span>
+                          {cat.finish && (
+                            <span className="text-xs text-muted-foreground">{cat.finish}</span>
+                          )}
+                          {cat.spec && <span className="text-[11px] text-muted-foreground">{cat.spec}</span>}
+                        </div>
                         {cat.affiliateUrl && (
                           <a
                             href={cat.affiliateUrl}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="text-[11px] text-primary hover:underline mt-1 inline-block"
+                            className="text-[11px] text-primary hover:underline mt-2 inline-block"
                           >
                             View at {cat.vendor} →
                           </a>
                         )}
                         {cat.disclaimer && <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-1">{cat.disclaimer}</p>}
-                      </div>
-                      <div className="flex items-center gap-3 ml-4 flex-shrink-0">
-                        <div className="text-right">
-                          <span className="text-sm font-semibold text-foreground whitespace-nowrap">{fmt(cat.price)}</span>
-                          {priceDiff !== 0 && (
-                            <p className={`text-[10px] font-medium ${priceDiff > 0 ? "text-destructive" : "text-primary"}`}>
-                              {priceDiff > 0 ? "+" : ""}{fmt(priceDiff)}
-                            </p>
-                          )}
-                        </div>
-                        <div className="flex flex-col gap-1">
-                          <Button variant="outline" size="sm" className="text-xs h-8 px-3 rounded-lg" onClick={() => toggleExpand(cat.name)}>
-                            {isExpanded ? <><ChevronUp className="h-3 w-3 mr-1" /> Close</> : <>Change</>}
-                          </Button>
-                          {isSwapped && (
-                            <button onClick={() => resetToDefault(cat.name)} className="text-[10px] text-muted-foreground hover:text-foreground transition-colors">
-                              Reset
-                            </button>
-                          )}
-                        </div>
                       </div>
                     </div>
 
