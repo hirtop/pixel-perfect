@@ -262,6 +262,7 @@ const Dimensions = () => {
       const next = { ...dimsRef.current, [key]: value };
       dimsRef.current = next;
       writeLocalDraft(next);
+      console.log('[BOBOX] draft written:', JSON.stringify(next));
       updateProject({ dimensions: { ...projectRef.current.dimensions, ...next } });
       setDims(next);
       scheduleSave(next);
