@@ -20,7 +20,8 @@ const steps = [
 ];
 
 const Workflow = () => {
-  const { markStepComplete } = useProject();
+  const { project, markStepComplete } = useProject();
+  const tier = project?.selected_package?.tier || "balanced";
   const navigate = useNavigate();
 
   const handleContinue = () => {
