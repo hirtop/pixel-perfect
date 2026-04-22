@@ -182,6 +182,7 @@ const Dimensions = () => {
   }, [legacyProjectDraftKey]);
 
   const clearLocalDraft = useCallback(() => {
+    console.log('[BOBOX] clearLocalDraft called');
     try {
       localStorage.removeItem(DIMENSIONS_DRAFT_KEY);
       localStorage.removeItem(legacyProjectDraftKey);
@@ -236,6 +237,7 @@ const Dimensions = () => {
           latestPersistedRef.current = value;
           const storedDraft = readLocalDraft();
           if (storedDraft && dimsEqual(storedDraft, value)) {
+            console.log('[BOBOX] clearing draft after successful save');
             clearLocalDraft();
           }
         }
