@@ -182,7 +182,6 @@ const Dimensions = () => {
   }, [legacyProjectDraftKey]);
 
   const clearLocalDraft = useCallback(() => {
-    console.log('[BOBOX] clearLocalDraft called');
     try {
       localStorage.removeItem(DIMENSIONS_DRAFT_KEY);
       localStorage.removeItem(legacyProjectDraftKey);
@@ -195,7 +194,6 @@ const Dimensions = () => {
   // Hydrate from project ONLY if no local draft exists and user hasn't edited.
   // Local draft always wins because it represents edits not yet confirmed-persisted.
   useEffect(() => {
-    console.log('[BOBOX] hydration effect fired, userEdited:', userEditedRef.current, 'dims:', JSON.stringify(dimsRef.current));
     if (userEditedRef.current) return;
     const draft = readLocalDraft();
     if (draft) {
@@ -236,17 +234,12 @@ const Dimensions = () => {
         const ok = await saveInFlightRef.current;
         if (ok) {
           latestPersistedRef.current = value;
-          const storedDraft = readLocalDraft();
-          if (storedDraft && dimsEqual(storedDraft, value)) {
-            console.log('[BOBOX] clearing draft after successful save');
-            clearLocalDraft();
-          }
         }
       } finally {
         saveInFlightRef.current = null;
       }
     },
-    [clearLocalDraft, readLocalDraft, saveProject, updateProject],
+    [saveProject, updateProject],
   );
 
   const scheduleSave = useCallback(
@@ -265,7 +258,6 @@ const Dimensions = () => {
       const next = { ...dimsRef.current, [key]: value };
       dimsRef.current = next;
       writeLocalDraft(next);
-      console.log('[BOBOX] draft written:', JSON.stringify(next));
       updateProject({ dimensions: { ...projectRef.current.dimensions, ...next } });
       setDims(next);
       scheduleSave(next);
@@ -305,6 +297,7 @@ const Dimensions = () => {
       debounceRef.current = null;
     }
     await persistDims(dimsRef.current);
+    clearLocalDraft();
     markStepComplete("dimensions");
     navigate("/style-budget");
   };
