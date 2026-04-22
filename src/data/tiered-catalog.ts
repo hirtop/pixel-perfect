@@ -174,7 +174,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Vanities/N-5yc1vZbzb2",
+    affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Vanities/N-5yc1vZcfv3",
   },
   {
     id: "bal-vanity-02",
@@ -190,7 +190,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
-    affiliateUrl: "https://www.avanity.com/bathroom-vanities",
+    affiliateUrl: "https://www.avanity.com/collections/vanity-cabinet",
   },
   {
     id: "bal-vanity-03",
@@ -499,7 +499,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.brizo.com/bath/bathroom-faucets",
+    affiliateUrl: "https://www.brizo.com/bath",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -632,7 +632,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.cb2.com/search/results?query=round+mirror",
+    affiliateUrl: "https://www.cb2.com/furniture/mirrors",
   },
   {
     id: "bal-mirror-03",
@@ -937,7 +937,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
-    affiliateUrl: "https://www.marazziusa.com/tile/porcelain-tile",
+    affiliateUrl: "https://www.marazziusa.com/our-products",
   },
   {
     id: "bal-ftile-03",
@@ -1083,7 +1083,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.bedrosians.com/en/product/list/mosaic-tile/",
+    affiliateUrl: "https://www.bedrosians.com/en/product/list/by-look/mosaic/",
   },
   {
     id: "bal-sftile-03",
@@ -1099,7 +1099,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Linear drain prep adds ~$100 labor",
     tag: "Upgrade",
-    affiliateUrl: "https://www.merolatile.com/collections/bathroom",
+    affiliateUrl: "https://www.merolatile.com",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1234,7 +1234,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 80,
     laborNote: "Liner placement adds ~$80 labor",
     tag: "Elegant Detail",
-    affiliateUrl: "https://www.bedrosians.com/en/product/list/mosaic-tile/",
+    affiliateUrl: "https://www.bedrosians.com/en/product/list/by-look/mosaic/",
   },
   {
     id: "bal-accent-03",
@@ -1250,7 +1250,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Feature panel layout adds ~$150 labor",
     tag: "Trending",
-    affiliateUrl: "https://www.bedrosians.com/en/product/list/mosaic-tile/",
+    affiliateUrl: "https://www.bedrosians.com/en/product/list/by-look/mosaic/",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1380,7 +1380,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.dreamline.com/shower-doors/frameless-shower-doors",
+    affiliateUrl: "https://www.dreamline.com/shower-doors",
   },
   {
     id: "bal-sglass-03",
@@ -1541,7 +1541,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Digital valve requires electrical connection — adds ~$150",
     tag: "Trending",
-    affiliateUrl: "https://www.moen.com/shower-systems",
+    affiliateUrl: "https://www.moen.com/bathroom/shower-spa",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1654,7 +1654,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.moen.com/shower-heads",
+    affiliateUrl: "https://www.moen.com/bathroom/shower-spa",
   },
   {
     id: "bal-strim-02",
@@ -1685,7 +1685,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "Ceiling mount requires rerouting supply pipe — adds ~$200",
     tag: "Upgrade",
-    affiliateUrl: "https://www.delta.com/us/en/shower-heads",
+    affiliateUrl: "https://www.delta.com/us/en/shower-systems/all-shower-systems",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1833,7 +1833,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 250,
     laborNote: "Deep tub may need higher-capacity drain — adds ~$250",
     tag: "Trending",
-    affiliateUrl: "https://www.aquatica-usa.com/bathtubs",
+    affiliateUrl: "https://www.aquatica.eu/en/bathtubs",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1963,7 +1963,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 300,
     laborNote: "Floor-mount requires concealed supply lines — adds ~$300",
     tag: "Upgrade",
-    affiliateUrl: "https://www.wyndhamcollection.com/tub-fillers",
+    affiliateUrl: "https://www.wyndhamcollection.com/collections/all-bathtubs",
   },
   {
     id: "bal-tvalve-03",
@@ -2094,7 +2094,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Custom tiling inside niche adds ~$100 labor",
     tag: "Recommended",
-    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems/Shower-Niches",
+    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems",
   },
   {
     id: "bal-niche-02",
@@ -2110,7 +2110,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Two-compartment niche requires more precise tile cuts — adds ~$150",
     tag: "Upgrade",
-    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems/Shower-Niches",
+    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems",
   },
   {
     id: "bal-niche-03",
@@ -2126,7 +2126,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "LED requires low-voltage wiring to niche — adds ~$200",
     tag: "Trending",
-    affiliateUrl: "https://www.tileware.com/products/niches",
+    affiliateUrl: "https://www.tileware.com",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
