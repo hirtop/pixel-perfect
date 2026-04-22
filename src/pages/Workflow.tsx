@@ -90,7 +90,7 @@ const Workflow = () => {
             <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
               Continue to Project Summary
             </Button>
-            <Link to="/customize/balanced" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link to={`/customize/${tier}`} className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Back to Customization
             </Link>
           </div>
