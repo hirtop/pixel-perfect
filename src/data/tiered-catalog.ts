@@ -128,6 +128,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.homedepot.com/b/Glacier-Bay/N-5yc1vZcd5fZ4i",
   },
   {
     id: "bud-vanity-02",
@@ -224,6 +225,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     disclaimer: "Marble top requires periodic sealing (every 6–12 months)",
+    affiliateUrl: "https://www.jamesmartinvanities.com/collections/all",
   },
   {
     id: "pre-vanity-02",
@@ -275,6 +277,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Sinks/Glacier-Bay/N-5yc1vZbzbcZ4i",
   },
   {
     id: "bud-sink-02",
@@ -365,6 +368,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.rohlhome.com/sinks",
   },
   {
     id: "pre-sink-02",
@@ -416,6 +420,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.moen.com/products/banbury",
   },
   {
     id: "bud-faucet-02",
@@ -513,6 +518,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 120,
     laborNote: "Widespread needs 3-hole vanity top — adds ~$120 if drilling required",
     tag: "Recommended",
+    affiliateUrl: "https://www.rohlhome.com/bathroom-faucets",
   },
   {
     id: "pre-faucet-02",
@@ -565,6 +571,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Mirrors/Glacier-Bay/N-5yc1vZbzbu1Z4i",
   },
   {
     id: "bud-mirror-02",
@@ -661,6 +668,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     disclaimer: "Requires hardwired electrical connection behind the mirror",
+    affiliateUrl: "https://www.robern.com/lighted-mirrors",
   },
   {
     id: "pre-mirror-02",
@@ -714,6 +722,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.daltile.com/products/ceramic-porcelain",
   },
   {
     id: "bud-swtile-02",
@@ -814,6 +823,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Hand-cut tiles require careful layout and more setting time — adds ~$500",
     tag: "Recommended",
     disclaimer: "Handmade — color and size vary slightly between tiles. Requires sealing.",
+    affiliateUrl: "https://www.cletile.com/collections/zellige",
   },
   {
     id: "pre-swtile-02",
@@ -867,6 +877,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.msisurfaces.com/floor-tile/",
   },
   {
     id: "bud-ftile-02",
@@ -961,6 +972,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Mosaic floor setting is precision work — adds ~$300",
     tag: "Recommended",
     disclaimer: "Natural stone requires sealing",
+    affiliateUrl: "https://www.annsacks.com/stone-tile/marble",
   },
   {
     id: "pre-ftile-02",
@@ -1011,6 +1023,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.daltile.com/products/mosaics",
   },
   {
     id: "bud-sftile-02",
@@ -1105,6 +1118,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Marble mosaic needs careful slope-setting — adds ~$200",
     tag: "Recommended",
     disclaimer: "Natural stone requires sealing",
+    affiliateUrl: "https://www.annsacks.com/mosaics",
   },
   {
     id: "pre-sftile-02",
@@ -1157,6 +1171,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Default",
+    affiliateUrl: "",
   },
   {
     id: "bud-accent-02",
@@ -1252,6 +1267,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Default",
+    affiliateUrl: "",
   },
   {
     id: "pre-accent-02",
@@ -1304,6 +1320,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.delta.com/us/en/shower-doors",
   },
   {
     id: "bud-sglass-02",
@@ -1396,6 +1413,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "Custom glass requires field measurement and precision install — adds ~$200",
     tag: "Recommended",
+    affiliateUrl: "https://www.crlaurence.com/shower-enclosures",
   },
   {
     id: "pre-sglass-02",
@@ -1447,6 +1465,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.moen.com/products/posi-temp",
   },
   {
     id: "bud-svalve-02",
@@ -1539,6 +1558,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.grohe.us/en_us/shower-and-bath/grohtherm",
   },
   {
     id: "pre-svalve-02",
@@ -1589,6 +1609,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.moen.com/products/showerheads",
   },
   {
     id: "bud-strim-02",
@@ -1682,6 +1703,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 400,
     laborNote: "Body spray rough-in requires additional plumbing — adds ~$400",
     tag: "Recommended",
+    affiliateUrl: "https://www.grohe.us/en_us/shower-and-bath/rainshower-systems",
   },
   {
     id: "pre-strim-02",
@@ -1732,6 +1754,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.americanstandard-us.com/bathtubs",
   },
   {
     id: "bud-tub-02",
@@ -1828,6 +1851,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 300,
     laborNote: "Heavy tub — requires floor reinforcement and plumbing relocation, adds ~$300",
     tag: "Recommended",
+    affiliateUrl: "https://www.vandabaths.com/us/freestanding-baths",
   },
   {
     id: "pre-tub-02",
@@ -1879,6 +1903,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.moen.com/products/tub-shower-valves",
   },
   {
     id: "bud-tvalve-02",
@@ -1972,6 +1997,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 400,
     laborNote: "Floor-mount requires concealed supply and structural support — adds ~$400",
     tag: "Recommended",
+    affiliateUrl: "https://www.rohlhome.com/tub-fillers",
   },
   {
     id: "pre-tvalve-02",
@@ -2022,6 +2048,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.johnsmanville.com/goboard",
   },
   {
     id: "bud-niche-02",
@@ -2118,6 +2145,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Stone slab fabrication and precision install — adds ~$250",
     tag: "Recommended",
     disclaimer: "Marble requires sealing before and after grouting",
+    affiliateUrl: "https://www.walkerzanger.com/products",
   },
   {
     id: "pre-niche-02",
