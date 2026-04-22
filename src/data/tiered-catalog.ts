@@ -770,7 +770,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.daltile.com/products/tile/porcelain-tile",
+    affiliateUrl: "https://www.daltile.com/tile-product-category",
   },
   {
     id: "bal-swtile-02",
@@ -922,7 +922,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.daltile.com/products/tile/porcelain-tile",
+    affiliateUrl: "https://www.daltile.com/tile-product-category",
   },
   {
     id: "bal-ftile-02",
@@ -2094,7 +2094,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Custom tiling inside niche adds ~$100 labor",
     tag: "Recommended",
-    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems",
+    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems/Schluter-KERDI-BOARD-N",
   },
   {
     id: "bal-niche-02",
@@ -2110,7 +2110,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Two-compartment niche requires more precise tile cuts — adds ~$150",
     tag: "Upgrade",
-    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems",
+    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems/Schluter-KERDI-BOARD-N",
   },
   {
     id: "bal-niche-03",
