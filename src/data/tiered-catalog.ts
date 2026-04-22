@@ -173,6 +173,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
+    affiliateUrl: "https://www.homedepot.com/s/floating+vanity+48+quartz",
   },
   {
     id: "bal-vanity-02",
