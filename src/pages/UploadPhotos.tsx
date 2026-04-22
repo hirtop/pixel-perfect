@@ -42,7 +42,13 @@ const UploadPhotos = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [dragging, setDragging] = useState(false);
-  const [notes, setNotes] = useState(project.photos.notes || "");
+  const [notes, setNotes] = useState(() => {
+    try {
+      const draft = localStorage.getItem(NOTES_DRAFT_KEY);
+      if (draft !== null) return draft;
+    } catch { /* ignore */ }
+    return project.photos.notes || "";
+  });
   const [restoredPhotos, setRestoredPhotos] = useState<RestoredPhoto[]>([]);
   const [pendingUploadCount, setPendingUploadCount] = useState(0);
 
@@ -52,7 +58,10 @@ const UploadPhotos = () => {
   photosRef.current = project.photos;
   const projectRef = useRef(project);
   projectRef.current = project;
-  const userEditedRef = useRef(false);
+  const hasDraft = (() => {
+    try { return localStorage.getItem(NOTES_DRAFT_KEY) !== null; } catch { return false; }
+  })();
+  const userEditedRef = useRef(hasDraft);
   const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latestPersistedNotesRef = useRef(project.photos.notes || "");
   const saveInFlightRef = useRef<Promise<boolean> | null>(null);
