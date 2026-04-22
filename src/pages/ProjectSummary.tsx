@@ -5,6 +5,8 @@ import { Check, ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import balancedImg from "@/assets/package-balanced.jpg";
+import budgetImg from "@/assets/package-budget.jpg";
+import premiumImg from "@/assets/package-premium.jpg";
 import { useProject } from "@/contexts/ProjectContext";
 import { useAuth } from "@/hooks/useAuth";
 import ReferencePhotos from "@/components/ReferencePhotos";
