@@ -11,9 +11,8 @@ import { useProject } from "@/contexts/ProjectContext";
 import { useAuth } from "@/hooks/useAuth";
 import ReferencePhotos from "@/components/ReferencePhotos";
 import BathroomRiskScan from "@/components/BathroomRiskScan";
+import { TIER_BASE_LABOR, SHIPPING_ESTIMATE } from "@/data/products";
 
-const baseLaborRate = 5800;
-const baseShipping = 650;
 
 const defaultPackageItems = [
   { name: "Vanity", item: "Floating oak vanity with quartz top" },
