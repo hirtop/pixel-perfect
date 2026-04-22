@@ -953,7 +953,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Pattern alignment adds ~$150 labor",
     tag: "Trending",
-    affiliateUrl: "https://www.daltile.com/tile-product-category",
+    affiliateUrl: "https://www.merolatile.com",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1833,7 +1833,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 250,
     laborNote: "Deep tub may need higher-capacity drain — adds ~$250",
     tag: "Trending",
-    affiliateUrl: "https://www.aquatica.eu/en/bathtubs.html",
+    affiliateUrl: "https://www.aquatica.eu",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -2094,7 +2094,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Custom tiling inside niche adds ~$100 labor",
     tag: "Recommended",
-    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems/Schluter-KERDI-BOARD-N",
+    affiliateUrl: "https://www.schluter.com",
   },
   {
     id: "bal-niche-02",
@@ -2110,7 +2110,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Two-compartment niche requires more precise tile cuts — adds ~$150",
     tag: "Upgrade",
-    affiliateUrl: "https://www.schluter.com/schluter-us/en_US/Products/Shower-Systems/Schluter-KERDI-BOARD-N",
+    affiliateUrl: "https://www.schluter.com",
   },
   {
     id: "bal-niche-03",
@@ -2126,7 +2126,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "LED requires low-voltage wiring to niche — adds ~$200",
     tag: "Trending",
-    affiliateUrl: "https://www.tileware.com/niches",
+    affiliateUrl: "https://www.tileware.com",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
