@@ -13,6 +13,7 @@ import type { PhotoMeta } from "@/contexts/ProjectContext";
 const ACCEPTED_EXTENSIONS = /\.(jpg|jpeg|png|webp|heic)$/i;
 const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/heic"];
 const MAX_FILES = 8;
+const NOTES_DRAFT_KEY = "bobox_notes_draft";
 
 type RestoredPhoto = {
   id?: string;
@@ -41,7 +42,13 @@ const UploadPhotos = () => {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [dragging, setDragging] = useState(false);
-  const [notes, setNotes] = useState(project.photos.notes || "");
+  const [notes, setNotes] = useState(() => {
+    try {
+      const draft = localStorage.getItem(NOTES_DRAFT_KEY);
+      if (draft !== null) return draft;
+    } catch { /* ignore */ }
+    return project.photos.notes || "";
+  });
   const [restoredPhotos, setRestoredPhotos] = useState<RestoredPhoto[]>([]);
   const [pendingUploadCount, setPendingUploadCount] = useState(0);
 
@@ -51,7 +58,10 @@ const UploadPhotos = () => {
   photosRef.current = project.photos;
   const projectRef = useRef(project);
   projectRef.current = project;
-  const userEditedRef = useRef(false);
+  const hasDraft = (() => {
+    try { return localStorage.getItem(NOTES_DRAFT_KEY) !== null; } catch { return false; }
+  })();
+  const userEditedRef = useRef(hasDraft);
   const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const latestPersistedNotesRef = useRef(project.photos.notes || "");
   const saveInFlightRef = useRef<Promise<boolean> | null>(null);
@@ -59,6 +69,12 @@ const UploadPhotos = () => {
   // Sync notes from backend ONLY if the user hasn't started editing locally.
   useEffect(() => {
     if (userEditedRef.current) return;
+    try {
+      if (localStorage.getItem(NOTES_DRAFT_KEY) !== null) {
+        userEditedRef.current = true;
+        return;
+      }
+    } catch { /* ignore */ }
     latestPersistedNotesRef.current = project.photos.notes || "";
     setNotes(project.photos.notes || "");
   }, [project.photos.notes]);
@@ -81,12 +97,16 @@ const UploadPhotos = () => {
       latestPersistedNotesRef.current = photosRef.current.notes || "";
     }
     saveInFlightRef.current = null;
+    if (didSave) {
+      try { localStorage.removeItem(NOTES_DRAFT_KEY); } catch { /* ignore */ }
+    }
     return didSave;
   }, [saveProject, updateProject]);
 
   const handleNotesChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const value = e.target.value;
     userEditedRef.current = true;
+    try { localStorage.setItem(NOTES_DRAFT_KEY, value); } catch { /* ignore */ }
     setNotes(value);
     if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
     autosaveTimerRef.current = setTimeout(() => {
