@@ -44,8 +44,11 @@ const ProjectSummary = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const tier = (project.selected_package.tier as keyof typeof TIER_BASE_LABOR) || "Balanced";
-  const baseLaborRate = TIER_BASE_LABOR[tier] ?? 5800;
+  const tierKey = project.selected_package.tier
+    ? (project.selected_package.tier.charAt(0).toUpperCase() + 
+       project.selected_package.tier.slice(1)) as keyof typeof TIER_BASE_LABOR
+    : "Balanced";
+  const baseLaborRate = TIER_BASE_LABOR[tierKey] ?? 5800;
   const baseShipping = SHIPPING_ESTIMATE;
 
   const tierImageMap: Record<string, string> = {
