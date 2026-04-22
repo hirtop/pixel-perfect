@@ -153,7 +153,9 @@ const PackageDetail = () => {
 
               <div className="rounded-xl border border-border bg-secondary/30 p-6 space-y-3 text-sm">
                 <div className="flex justify-between">
-                  <span className="text-muted-foreground">Materials (all 7 items)</span>
+                  <span className="text-muted-foreground">
+                    Materials ({customizableProducts.length} items)
+                  </span>
                   <span className="font-medium text-foreground">{pricing.materialRange}</span>
                 </div>
                 <div className="flex justify-between">
