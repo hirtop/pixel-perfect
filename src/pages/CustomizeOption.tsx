@@ -37,6 +37,7 @@ interface Alternative {
   disclaimer?: string;
   price: number;
   laborDelta: number;
+  affiliateUrl?: string;
 }
 
 interface Category {
@@ -55,6 +56,7 @@ interface Category {
   laborDelta: number;
   laborNote?: string;
   basePrice: number;
+  affiliateUrl?: string;
 }
 
 const tierNameMap: Record<string, ProductTier> = {
@@ -82,6 +84,7 @@ const buildCategoriesForTier = (tier: ProductTier): Category[] => {
         spec: product.spec,
         finish: product.finish,
         disclaimer: product.disclaimer,
+        affiliateUrl: product.affiliateUrl,
         laborDelta: 0,
         alternatives: alts.map((a) => ({
           id: a.id,
@@ -96,6 +99,7 @@ const buildCategoriesForTier = (tier: ProductTier): Category[] => {
           disclaimer: a.disclaimer,
           price: a.price,
           laborDelta: a.laborDelta,
+          affiliateUrl: a.affiliateUrl,
         })),
       };
     });
@@ -190,6 +194,7 @@ const CustomizeOption = () => {
               disclaimer: alt.disclaimer,
               laborDelta: alt.laborDelta,
               laborNote: alt.laborNote,
+              affiliateUrl: alt.affiliateUrl,
             }
           : c
       )
@@ -324,6 +329,16 @@ const CustomizeOption = () => {
                           )}
                         </div>
                         {cat.spec && <p className="text-[11px] text-muted-foreground mt-1">{cat.spec}</p>}
+                        {cat.affiliateUrl && (
+                          <a
+                            href={cat.affiliateUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-[11px] text-primary hover:underline mt-1 inline-block"
+                          >
+                            View at {cat.vendor} →
+                          </a>
+                        )}
                         {cat.disclaimer && <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-1">{cat.disclaimer}</p>}
                       </div>
                       <div className="flex items-center gap-3 ml-4 flex-shrink-0">
@@ -379,6 +394,16 @@ const CustomizeOption = () => {
                                       )}
                                       {alt.spec && (
                                         <p className="text-[11px] text-muted-foreground">{alt.spec}</p>
+                                      )}
+                                      {alt.affiliateUrl && (
+                                        <a
+                                          href={alt.affiliateUrl}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-[11px] text-primary hover:underline mt-1 inline-block"
+                                        >
+                                          View at {alt.vendor} →
+                                        </a>
                                       )}
                                       {alt.disclaimer && (
                                         <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-1">{alt.disclaimer}</p>
