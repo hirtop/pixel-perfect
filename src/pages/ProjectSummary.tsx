@@ -11,9 +11,8 @@ import { useProject } from "@/contexts/ProjectContext";
 import { useAuth } from "@/hooks/useAuth";
 import ReferencePhotos from "@/components/ReferencePhotos";
 import BathroomRiskScan from "@/components/BathroomRiskScan";
+import { TIER_BASE_LABOR, SHIPPING_ESTIMATE } from "@/data/products";
 
-const baseLaborRate = 5800;
-const baseShipping = 650;
 
 const defaultPackageItems = [
   { name: "Vanity", item: "Floating oak vanity with quartz top" },
@@ -44,6 +43,10 @@ const ProjectSummary = () => {
   const { project, saveProject, markStepComplete, isSaving } = useProject();
   const { user } = useAuth();
   const navigate = useNavigate();
+
+  const tier = (project.selected_package.tier as keyof typeof TIER_BASE_LABOR) || "Balanced";
+  const baseLaborRate = TIER_BASE_LABOR[tier] ?? 5800;
+  const baseShipping = SHIPPING_ESTIMATE;
 
   const tierImageMap: Record<string, string> = {
     budget: budgetImg,
