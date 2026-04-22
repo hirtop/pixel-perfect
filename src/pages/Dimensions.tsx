@@ -152,13 +152,13 @@ const Dimensions = () => {
   };
 
   // Seed initial state from local draft if present — avoids any flash of stale server data.
+  const initialDraft = readLocalDraftSync();
   const [dims, setDims] = useState<DimensionsState>(() => {
-    const draft = readLocalDraftSync();
-    return draft ?? fromProject(project.dimensions);
+    return initialDraft ?? fromProject(project.dimensions);
   });
 
   // If we seeded from a local draft, mark as user-edited so server hydration can't clobber it.
-  const userEditedRef = useRef<boolean>(readLocalDraftSync() !== null);
+  const userEditedRef = useRef<boolean>(initialDraft !== null);
   const dimsRef = useRef(dims);
   dimsRef.current = dims;
   const projectRef = useRef(project);
