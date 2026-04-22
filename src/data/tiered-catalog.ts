@@ -64,6 +64,7 @@ export interface TieredProduct {
   laborNote?: string;
   tag?: string;
   disclaimer?: string;
+  affiliateUrl?: string;
 }
 
 // ─── Tier base labor (before product-specific deltas) ───────────────
