@@ -439,7 +439,7 @@ export default function LandingPage() {
                 Kitchen Remodel Planning — join the waitlist to get early access
               </span>
               <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLSc45Dog7h3bn0ybuLHBB2ccu9pdZfhBRrSX48H3dUfe34i3_w/viewform"
+                href="https://docs.google.com/forms/d/e/1FAIpQLScacp6SFiJA0ZJZtE5hcrgIfHV19KA6E-JuunztHox29tqz1w/viewform"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-sm font-medium text-primary hover:underline"
