@@ -151,14 +151,14 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div className="w-full bg-primary text-primary-foreground text-center py-2 px-4">
-        <p className="text-sm font-medium">
+      <div style={{ width: '100%', backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', textAlign: 'center', padding: '8px 16px' }}>
+        <p style={{ fontSize: '14px', fontWeight: 500, margin: 0 }}>
           🏠 Kitchen Remodel Planning — coming soon.{" "}
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLSc45Dog7h3bn0ybuLHBB2ccu9pdZfhBRrSX48H3dUfe34i3_w/viewform"
             target="_blank"
             rel="noopener noreferrer"
-            className="underline font-semibold hover:opacity-80 transition-opacity"
+            style={{ fontWeight: 700, textDecoration: 'underline' }}
           >
             Join the waitlist →
           </a>
