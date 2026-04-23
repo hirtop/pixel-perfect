@@ -151,7 +151,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div style={{ width: '100%', backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', textAlign: 'center', padding: '8px 16px' }}>
+      <div style={{ width: '100%', backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', textAlign: 'center', padding: '8px 16px', position: 'relative', zIndex: 60 }}>
         <p style={{ fontSize: '14px', fontWeight: 500, margin: 0 }}>
           🏠 Kitchen Remodel Planning — coming soon.{" "}
           <a
@@ -165,7 +165,7 @@ export default function LandingPage() {
         </p>
       </div>
       {/* Nav */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <nav className="fixed top-10 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 h-16">
           <span className="font-heading text-xl tracking-tight text-foreground">
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
