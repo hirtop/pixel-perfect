@@ -151,8 +151,8 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div style={{ width: '100%', backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', textAlign: 'center', padding: '8px 16px', position: 'relative', zIndex: 60 }}>
-        <p style={{ fontSize: '14px', fontWeight: 500, margin: 0 }}>
+      <div style={{ width: '100%', backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', textAlign: 'center', padding: '10px 16px', position: 'relative', zIndex: 60 }}>
+        <p style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>
           🏠 Kitchen Remodel Planning — coming soon.{" "}
           <a
             href="https://docs.google.com/forms/d/e/1FAIpQLSc45Dog7h3bn0ybuLHBB2ccu9pdZfhBRrSX48H3dUfe34i3_w/viewform"
