@@ -69,9 +69,10 @@ const plans = [
     price: "$0",
     features: [
       "1 bathroom project",
-      "3 remodel options",
-      "Basic product recommendations",
+      "3 remodel package options",
       "Live budget estimate",
+      "AI photo risk scan",
+      "AI shopping assistant",
     ],
     cta: "Get Started",
     highlighted: false,
@@ -413,6 +414,26 @@ export default function LandingPage() {
                 </Button>
               </motion.div>
             ))}
+          </div>
+
+          <div className="mt-12 text-center">
+            <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-6 py-3">
+              <span className="text-xs font-semibold uppercase tracking-widest text-primary">
+                Coming Soon
+              </span>
+              <span className="w-px h-4 bg-border" />
+              <span className="text-sm text-muted-foreground">
+                Kitchen Remodel Planning — join the waitlist to get early access
+              </span>
+              <a
+                href="https://docs.google.com/forms/d/e/1FAIpQLSc45Dog7h3bn0ybuLHBB2ccu9pdZfhBRrSX48H3dUfe34i3_w/viewform"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-medium text-primary hover:underline"
+              >
+                Join waitlist →
+              </a>
+            </div>
           </div>
         </div>
       </section>
