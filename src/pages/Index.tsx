@@ -69,9 +69,10 @@ const plans = [
     price: "$0",
     features: [
       "1 bathroom project",
-      "3 remodel options",
-      "Basic product recommendations",
+      "3 remodel package options",
       "Live budget estimate",
+      "AI photo risk scan",
+      "AI shopping assistant",
     ],
     cta: "Get Started",
     highlighted: false,
