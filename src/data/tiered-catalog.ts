@@ -278,6 +278,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Sinks/Glacier-Bay/N-5yc1vZbzbcZ4i",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "bud-sink-02",
@@ -292,6 +293,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "bud-sink-03",
@@ -305,6 +307,7 @@ export const tieredCatalog: TieredProduct[] = [
     spec: "Integrated with vanity top, single-hole faucet mount",
     isDefault: false,
     laborDelta: 0,
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -322,6 +325,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Sinks/KOHLER/N-5yc1vZbzb0Z1qh",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "bal-sink-02",
@@ -337,6 +341,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Trending",
     affiliateUrl: "https://www.kraususa.com/bathroom/sinks.html",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "bal-sink-03",
@@ -352,6 +357,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Value Pick",
     affiliateUrl: "https://www.duravit.com/products/all_series/bathroom_sinks.en.html",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -369,6 +375,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.rohlhome.com/sinks",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "pre-sink-02",
@@ -384,6 +391,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Designer Pick",
     disclaimer: "Natural stone requires periodic sealing",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "pre-sink-03",
@@ -399,6 +407,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 180,
     laborNote: "Wall-mount requires in-wall carrier — adds ~$180",
     tag: "Modern Pick",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
 
   // ════════════════════════════════════════════════════════════════════
@@ -878,6 +887,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.msisurfaces.com/floor-tile/",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
   {
     id: "bud-ftile-02",
@@ -891,6 +901,7 @@ export const tieredCatalog: TieredProduct[] = [
     spec: '12" × 24" ceramic, ~40 sq ft, slip-rated',
     isDefault: false,
     laborDelta: 0,
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
   {
     id: "bud-ftile-03",
@@ -906,6 +917,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: -200,
     laborNote: "Click-lock install saves ~$200 vs. mortar-set tile",
     tag: "Budget Pick",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -923,6 +935,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.daltile.com/tile-product-category",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
   {
     id: "bal-ftile-02",
@@ -938,6 +951,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Value Pick",
     affiliateUrl: "https://www.marazziusa.com/our-products",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
   {
     id: "bal-ftile-03",
@@ -954,6 +968,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Pattern alignment adds ~$150 labor",
     tag: "Trending",
     affiliateUrl: "https://www.merolatile.com",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -973,6 +988,7 @@ export const tieredCatalog: TieredProduct[] = [
     tag: "Recommended",
     disclaimer: "Natural stone requires sealing",
     affiliateUrl: "https://www.annsacks.com/stone-tile/marble",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
   {
     id: "pre-ftile-02",
@@ -988,6 +1004,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Designer Pick",
     disclaimer: "Limestone requires sealing before and after grouting",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
   {
     id: "pre-ftile-03",
@@ -1003,6 +1020,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 800,
     laborNote: "Radiant heat mat install adds ~$800 labor",
     tag: "Upgrade",
+    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
 
   // ════════════════════════════════════════════════════════════════════
@@ -1024,6 +1042,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.daltile.com/products/mosaics",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "bud-sftile-02",
@@ -1038,6 +1057,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Classic Pick",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "bud-sftile-03",
@@ -1052,6 +1072,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -1069,6 +1090,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.daltile.com/tile-product-category",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "bal-sftile-02",
@@ -1084,6 +1106,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Trending",
     affiliateUrl: "https://www.bedrosians.com/en/product/list/by-look/mosaic/",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "bal-sftile-03",
@@ -1100,6 +1123,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Linear drain prep adds ~$100 labor",
     tag: "Upgrade",
     affiliateUrl: "https://www.merolatile.com",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1119,6 +1143,7 @@ export const tieredCatalog: TieredProduct[] = [
     tag: "Recommended",
     disclaimer: "Natural stone requires sealing",
     affiliateUrl: "https://www.annsacks.com/mosaics",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "pre-sftile-02",
@@ -1135,6 +1160,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Uneven surface needs extra mortar work — adds ~$250",
     tag: "Spa Pick",
     disclaimer: "Natural stone — color varies between sheets",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "pre-sftile-03",
@@ -1151,6 +1177,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Marble mosaic precision setting — adds ~$200",
     tag: "Designer Pick",
     disclaimer: "Natural stone requires sealing",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
 
   // ════════════════════════════════════════════════════════════════════
@@ -1187,6 +1214,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 80,
     laborNote: "Accent strip layout adds ~$80 labor",
     tag: "Subtle Pop",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
   },
   {
     id: "bud-accent-03",
@@ -1202,6 +1230,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Pattern alignment adds ~$100",
     tag: "Value Pick",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -1235,6 +1264,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Liner placement adds ~$80 labor",
     tag: "Elegant Detail",
     affiliateUrl: "https://www.bedrosians.com/en/product/list/by-look/mosaic/",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
   },
   {
     id: "bal-accent-03",
@@ -1251,6 +1281,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Feature panel layout adds ~$150 labor",
     tag: "Trending",
     affiliateUrl: "https://www.bedrosians.com/en/product/list/by-look/mosaic/",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1284,6 +1315,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Hand-cut tile accent layout adds ~$120",
     tag: "Artisan Pick",
     disclaimer: "Handmade — color varies between tiles",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
   },
   {
     id: "pre-accent-03",
@@ -1300,6 +1332,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Precision medallion install adds ~$300 labor",
     tag: "Designer Pick",
     disclaimer: "Natural stone requires sealing",
+    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
   },
 
   // ════════════════════════════════════════════════════════════════════
@@ -1321,6 +1354,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.delta.com/us/en/shower-doors",
+    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
   },
   {
     id: "bud-sglass-02",
@@ -1334,6 +1368,7 @@ export const tieredCatalog: TieredProduct[] = [
     spec: '32"–36" W × 72" H, semi-frameless, tempered glass',
     isDefault: false,
     laborDelta: 0,
+    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
   },
   {
     id: "bud-sglass-03",
@@ -1349,6 +1384,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: -100,
     laborNote: "No glass install needed — saves ~$100",
     tag: "Budget Pick",
+    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -1366,6 +1402,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://dreamline.com/shower-doors",
+    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
   },
   {
     id: "bal-sglass-02",
@@ -1381,6 +1418,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Trending",
     affiliateUrl: "https://dreamline.com/shower-doors",
+    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
   },
   {
     id: "bal-sglass-03",
@@ -1396,6 +1434,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Trending",
     affiliateUrl: "https://dreamline.com/shower-doors",
+    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1414,6 +1453,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Custom glass requires field measurement and precision install — adds ~$200",
     tag: "Recommended",
     affiliateUrl: "https://www.crlaurence.com/shower-enclosures",
+    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
   },
   {
     id: "pre-sglass-02",
@@ -1429,6 +1469,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 300,
     laborNote: "Neo-angle requires precision templating — adds ~$300",
     tag: "Modern Pick",
+    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
   },
   {
     id: "pre-sglass-03",
@@ -1445,6 +1486,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Ceiling-height sealed enclosure requires specialized install — adds ~$600",
     tag: "Designer Pick",
     disclaimer: "Requires steam generator (sold separately) and dedicated electrical",
+    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
   },
 
   // ════════════════════════════════════════════════════════════════════
@@ -1466,6 +1508,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.moen.com/products/posi-temp",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "bud-svalve-02",
@@ -1479,6 +1522,7 @@ export const tieredCatalog: TieredProduct[] = [
     spec: "Pressure-balance, single-function, universal rough-in",
     isDefault: false,
     laborDelta: 0,
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "bud-svalve-03",
@@ -1493,6 +1537,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -1510,6 +1555,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.deltafaucet.com/bathroom/showering",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "bal-svalve-02",
@@ -1526,6 +1572,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "3-way diverter requires additional rough-in — adds ~$80",
     tag: "Upgrade",
     affiliateUrl: "https://www.kohler.com/en/products/showers/shop-bath-shower-faucets",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "bal-svalve-03",
@@ -1542,6 +1589,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Digital valve requires electrical connection — adds ~$150",
     tag: "Trending",
     affiliateUrl: "https://www.moen.com/bathroom/shower-spa",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1559,6 +1607,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.grohe.us/en_us/shower-and-bath/grohtherm",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "pre-svalve-02",
@@ -1574,6 +1623,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 350,
     laborNote: "Digital system requires dedicated electrical and data wiring — adds ~$350",
     tag: "Modern Pick",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
   {
     id: "pre-svalve-03",
@@ -1589,6 +1639,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 120,
     laborNote: "4-function requires additional rough-in work — adds ~$120",
     tag: "Designer Pick",
+    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
   },
 
   // ════════════════════════════════════════════════════════════════════
@@ -1610,6 +1661,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.moen.com/products/showerheads",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
     id: "bud-strim-02",
@@ -1624,6 +1676,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
     id: "bud-strim-03",
@@ -1638,6 +1691,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -1655,6 +1709,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.moen.com/bathroom/shower-spa",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
     id: "bal-strim-02",
@@ -1670,6 +1725,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Value Pick",
     affiliateUrl: "https://www.us.kohler.com/us/showerheads/content/showerheads.htm",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
     id: "bal-strim-03",
@@ -1686,6 +1742,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Ceiling mount requires rerouting supply pipe — adds ~$200",
     tag: "Upgrade",
     affiliateUrl: "https://www.deltafaucet.com/bathroom/showering",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1704,6 +1761,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Body spray rough-in requires additional plumbing — adds ~$400",
     tag: "Recommended",
     affiliateUrl: "https://www.grohe.us/en_us/shower-and-bath/rainshower-systems",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
     id: "pre-strim-02",
@@ -1719,6 +1777,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 600,
     laborNote: "4-outlet system requires significant rough-in — adds ~$600",
     tag: "Designer Pick",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
     id: "pre-strim-03",
@@ -1734,6 +1793,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 500,
     laborNote: "Flush ceiling mount requires framing and waterproofing — adds ~$500",
     tag: "Modern Pick",
+    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
 
   // ════════════════════════════════════════════════════════════════════
@@ -1755,6 +1815,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.americanstandard-us.com/bathtubs",
+    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
   },
   {
     id: "bud-tub-02",
@@ -1769,6 +1830,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
+    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
   },
   {
     id: "bud-tub-03",
@@ -1784,6 +1846,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: -300,
     laborNote: "No tile work needed — saves ~$300 labor",
     tag: "Budget Pick",
+    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -1802,6 +1865,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Freestanding requires floor drain relocation — adds ~$200",
     tag: "Recommended",
     affiliateUrl: "https://www.wyndhamcollection.com/collections/all-bathtubs",
+    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
   },
   {
     id: "bal-tub-02",
@@ -1818,6 +1882,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Cast iron is heavy — may need floor reinforcement, adds ~$100",
     tag: "Classic Pick",
     affiliateUrl: "https://www.us.kohler.com/us/freestanding-bathtubs/content/freestanding-bathtubs.htm",
+    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
   },
   {
     id: "bal-tub-03",
@@ -1834,6 +1899,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Deep tub may need higher-capacity drain — adds ~$250",
     tag: "Trending",
     affiliateUrl: "https://aquaticausa.com",
+    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1852,6 +1918,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Heavy tub — requires floor reinforcement and plumbing relocation, adds ~$300",
     tag: "Recommended",
     affiliateUrl: "https://www.vandabaths.com/us/freestanding-baths",
+    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
   },
   {
     id: "pre-tub-02",
@@ -1867,6 +1934,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 350,
     laborNote: "Stone resin is heavy — requires structural assessment, adds ~$350",
     tag: "Designer Pick",
+    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
   },
   {
     id: "pre-tub-03",
@@ -1883,6 +1951,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Copper tub requires specialized plumbing connections — adds ~$400",
     tag: "Designer Pick",
     disclaimer: "Copper naturally patinas — color will change over time",
+    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
   },
 
   // ════════════════════════════════════════════════════════════════════
@@ -1904,6 +1973,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.moen.com/products/tub-shower-valves",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "bud-tvalve-02",
@@ -1917,6 +1987,7 @@ export const tieredCatalog: TieredProduct[] = [
     spec: "Single-hole deck mount, brass body",
     isDefault: false,
     laborDelta: 0,
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "bud-tvalve-03",
@@ -1931,6 +2002,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -1948,6 +2020,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.deltafaucet.com/bathroom",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "bal-tvalve-02",
@@ -1964,6 +2037,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Floor-mount requires concealed supply lines — adds ~$300",
     tag: "Upgrade",
     affiliateUrl: "https://www.wyndhamcollection.com/collections/all-bathtubs",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "bal-tvalve-03",
@@ -1980,6 +2054,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Wall-mount requires in-wall valve rough-in — adds ~$150",
     tag: "Trending",
     affiliateUrl: "https://www.us.kohler.com/us/tub-fillers/content/tub-fillers.htm",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1998,6 +2073,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Floor-mount requires concealed supply and structural support — adds ~$400",
     tag: "Recommended",
     affiliateUrl: "https://www.rohlhome.com/tub-fillers",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "pre-tvalve-02",
@@ -2013,6 +2089,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 280,
     laborNote: "Thermostatic wall-mount requires dedicated rough-in — adds ~$280",
     tag: "Modern Pick",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
     id: "pre-tvalve-03",
@@ -2028,6 +2105,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Designer Pick",
     disclaimer: "Unlacquered brass will patina over time — this is intentional",
+    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
 
   // ════════════════════════════════════════════════════════════════════
@@ -2049,6 +2127,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.johnsmanville.com/goboard",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
   },
   {
     id: "bud-niche-02",
@@ -2062,6 +2141,7 @@ export const tieredCatalog: TieredProduct[] = [
     spec: '12" × 24" × 4" deep, stainless steel',
     isDefault: false,
     laborDelta: 0,
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
   },
   {
     id: "bud-niche-03",
@@ -2077,6 +2157,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: -50,
     laborNote: "No framing or cutting needed — saves ~$50",
     tag: "Budget Pick",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -2095,6 +2176,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Custom tiling inside niche adds ~$100 labor",
     tag: "Recommended",
     affiliateUrl: "https://www.tilewareproducts.com/us",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
   },
   {
     id: "bal-niche-02",
@@ -2111,6 +2193,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Two-compartment niche requires more precise tile cuts — adds ~$150",
     tag: "Upgrade",
     affiliateUrl: "https://www.tilewareproducts.com/us",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
   },
   {
     id: "bal-niche-03",
@@ -2127,6 +2210,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "LED requires low-voltage wiring to niche — adds ~$200",
     tag: "Trending",
     affiliateUrl: "https://www.illuminiche.com",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -2146,6 +2230,7 @@ export const tieredCatalog: TieredProduct[] = [
     tag: "Recommended",
     disclaimer: "Marble requires sealing before and after grouting",
     affiliateUrl: "https://www.walkerzanger.com/products",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
   },
   {
     id: "pre-niche-02",
@@ -2161,6 +2246,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 450,
     laborNote: "Custom framing, waterproofing, and 3-tier tiling — adds ~$450",
     tag: "Designer Pick",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
   },
   {
     id: "pre-niche-03",
@@ -2177,6 +2263,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Brass frame requires precision mounting — adds ~$200",
     tag: "Modern Pick",
     disclaimer: "Unlacquered brass will patina in wet environment",
+    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
   },
 ];
 
