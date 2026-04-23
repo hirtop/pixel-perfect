@@ -239,6 +239,23 @@ const ProjectSummary = () => {
             </ul>
           </section>
 
+          <div className="rounded-xl border border-border bg-card/50 p-5 text-center mb-6">
+            <p className="text-sm font-medium text-foreground mb-1">
+              How are we doing?
+            </p>
+            <p className="text-xs text-muted-foreground mb-3">
+              Help us improve BOBOX with 2 minutes of feedback.
+            </p>
+            <a
+              href="https://forms.gle/YOUR_FORM_ID"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
+            >
+              Share your feedback →
+            </a>
+          </div>
+
           <div className="flex flex-col sm:flex-row items-center gap-4">
             <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleContinue} disabled={isSaving}>
               Continue to Subcontractors
