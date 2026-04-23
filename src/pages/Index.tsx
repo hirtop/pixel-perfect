@@ -155,7 +155,7 @@ export default function LandingPage() {
         <p style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>
           🏠 Kitchen Remodel Planning — coming soon.{" "}
           <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLSc45Dog7h3bn0ybuLHBB2ccu9pdZfhBRrSX48H3dUfe34i3_w/viewform"
+            href="https://docs.google.com/forms/d/e/1FAIpQLScacp6SFiJA0ZJZtE5hcrgIfHV19KA6E-JuunztHox29tqz1w/viewform"
             target="_blank"
             rel="noopener noreferrer"
             style={{ fontWeight: 700, textDecoration: 'underline' }}
