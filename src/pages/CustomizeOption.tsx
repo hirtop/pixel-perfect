@@ -345,6 +345,11 @@ const CustomizeOption = () => {
                             <span className="text-xs text-muted-foreground">{cat.finish}</span>
                           )}
                           {cat.spec && <span className="text-[11px] text-muted-foreground">{cat.spec}</span>}
+                          {cat.selected === "No Accent Tile" && (
+                            <p className="text-[11px] text-muted-foreground mt-1 italic">
+                              Optional — click Change to explore accent tile options.
+                            </p>
+                          )}
                         </div>
                         {cat.affiliateUrl && cat.vendor !== "—" && (
                           <a
