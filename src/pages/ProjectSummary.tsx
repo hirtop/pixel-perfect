@@ -247,7 +247,7 @@ const ProjectSummary = () => {
               Help us improve BOBOX with 2 minutes of feedback.
             </p>
             <a
-              href="https://forms.gle/YOUR_FORM_ID"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSc45Dog7h3bn0ybuLHBB2ccu9pdZfhBRrSX48H3dUfe34i3_w/viewform"
               target="_blank"
               rel="noopener noreferrer"
               className="inline-flex items-center gap-2 text-sm font-medium text-primary hover:underline"
