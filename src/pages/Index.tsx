@@ -78,15 +78,16 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$19/mo",
+    price: "$49/mo",
     features: [
       "Unlimited projects",
-      "Deeper product comparisons",
-      "Exportable project summary",
-      "Workflow + subcontractor tools",
-      "Premium planning features",
+      "PDF project summary export",
+      "Subcontractor handoff tools",
+      "Agreement templates",
+      "Priority support",
+      "Early access to new features",
     ],
-    cta: "Go Pro",
+    cta: "Join Pro Waitlist",
     highlighted: true,
   },
 ];
