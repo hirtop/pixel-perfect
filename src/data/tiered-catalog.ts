@@ -2094,7 +2094,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Custom tiling inside niche adds ~$100 labor",
     tag: "Recommended",
-    affiliateUrl: "https://www.schluter.com",
+    affiliateUrl: "https://www.tilewareproducts.com/us",
   },
   {
     id: "bal-niche-02",
@@ -2110,14 +2110,14 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Two-compartment niche requires more precise tile cuts — adds ~$150",
     tag: "Upgrade",
-    affiliateUrl: "https://www.schluter.com",
+    affiliateUrl: "https://www.tilewareproducts.com/us",
   },
   {
     id: "bal-niche-03",
     name: "LED-Lit Shower Niche",
     category: "Shower Niche",
     tier: "Balanced",
-    vendor: "TileWare",
+    vendor: "Illuminiche",
     price: 260,
     description: "Built-in LED strip illuminates the niche — subtle accent lighting",
     finish: "Tile-ready with LED strip",
@@ -2126,7 +2126,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "LED requires low-voltage wiring to niche — adds ~$200",
     tag: "Trending",
-    affiliateUrl: "https://www.tileware.com",
+    affiliateUrl: "https://www.illuminiche.com",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
