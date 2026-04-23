@@ -151,7 +151,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div style={{ width: '100%', backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', textAlign: 'center', padding: '8px 16px' }}>
+      <div style={{ width: '100%', backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', textAlign: 'center', padding: '8px 16px', position: 'relative', zIndex: 60 }}>
         <p style={{ fontSize: '14px', fontWeight: 500, margin: 0 }}>
           🏠 Kitchen Remodel Planning — coming soon.{" "}
           <a
