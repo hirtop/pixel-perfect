@@ -421,7 +421,7 @@ export default function LandingPage() {
                       ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
                       : "bg-primary text-primary-foreground hover:bg-primary/90"
                   }`}
-                  onClick={() => plan.highlighted ? window.open("https://docs.google.com/forms/d/e/1FAIpQLSc45Dog7h3bn0ybuLHBB2ccu9pdZfhBRrSX48H3dUfe34i3_w/viewform", "_blank", "noopener,noreferrer") : handlePrimaryCta()}
+                  onClick={() => plan.highlighted ? window.open("https://docs.google.com/forms/d/e/1FAIpQLSfK1F5seSe_XQkkM7S53eLP6-D8bYV2KGaLR8u3IguVGUHv9Q/viewform", "_blank", "noopener,noreferrer") : handlePrimaryCta()}
                 >
                   {plan.cta}
                 </Button>
