@@ -338,13 +338,15 @@ const CustomizeOption = () => {
                           )}
                         </div>
                         <div className="flex flex-col gap-0.5 mt-2">
-                          <span className="text-xs text-muted-foreground">{cat.vendor}</span>
-                          {cat.finish && (
+                          {cat.vendor && cat.vendor !== "—" && (
+                            <span className="text-xs text-muted-foreground">{cat.vendor}</span>
+                          )}
+                          {cat.finish && cat.finish !== "—" && (
                             <span className="text-xs text-muted-foreground">{cat.finish}</span>
                           )}
                           {cat.spec && <span className="text-[11px] text-muted-foreground">{cat.spec}</span>}
                         </div>
-                        {cat.affiliateUrl && (
+                        {cat.affiliateUrl && cat.vendor !== "—" && (
                           <a
                             href={cat.affiliateUrl}
                             target="_blank"
