@@ -151,6 +151,19 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
+      <div className="w-full bg-primary text-primary-foreground text-center py-2 px-4">
+        <p className="text-sm font-medium">
+          🏠 Kitchen Remodel Planning — coming soon.{" "}
+          <a
+            href="https://docs.google.com/forms/d/e/1FAIpQLSc45Dog7h3bn0ybuLHBB2ccu9pdZfhBRrSX48H3dUfe34i3_w/viewform"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="underline font-semibold hover:opacity-80 transition-opacity"
+          >
+            Join the waitlist →
+          </a>
+        </p>
+      </div>
       {/* Nav */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 h-16">
