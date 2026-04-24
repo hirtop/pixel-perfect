@@ -72,7 +72,12 @@ const ProjectSnapshot = ({ snapshot, onNextStepClick }: Props) => {
             </div>
             <p className="font-heading text-2xl text-foreground leading-tight">{snapshot.complexity}</p>
           </div>
-          <p className="text-xs text-muted-foreground mt-2 leading-relaxed">{snapshot.complexityReason}</p>
+          <p className="text-[10px] text-muted-foreground/70 mt-1">
+            {snapshot.complexity === "Simple" && "1–2 weeks · no plumbing moves · predictable cost"}
+            {snapshot.complexity === "Moderate" && "2–4 weeks · some trade coordination needed"}
+            {snapshot.complexity === "Complex" && "4–6+ weeks · plumbing or layout changes likely"}
+          </p>
+          <p className="text-xs text-muted-foreground mt-1.5 leading-relaxed">{snapshot.complexityReason}</p>
         </div>
 
         {/* Cost drivers */}
