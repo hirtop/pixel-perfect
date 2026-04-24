@@ -54,6 +54,8 @@ const Subcontractors = () => {
       return map;
     }
   );
+  const [zipCode, setZipCode] = useState("");
+  const [zipSubmitted, setZipSubmitted] = useState(false);
 
   const recordInteraction = (proName: string, type: "quote" | "summary") => {
     setInteractions((prev) => {
@@ -165,7 +167,7 @@ const Subcontractors = () => {
             <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">Connect</p>
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Find Subcontractors</h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-              Connect your remodel plan with the right professionals for each step of the project.
+              Connect your remodel plan with verified professionals. Enter your zip code to find contractors near you.
             </p>
           </div>
 
@@ -200,6 +202,35 @@ const Subcontractors = () => {
               </p>
             </div>
           )}
+
+          <div className="mb-8">
+            <p className="text-sm font-medium text-foreground mb-2">
+              Find contractors near you
+            </p>
+            <div className="flex gap-2 max-w-xs">
+              <input
+                type="text"
+                placeholder="Enter zip code"
+                value={zipCode}
+                onChange={(e) => setZipCode(e.target.value)}
+                maxLength={5}
+                className="flex h-10 rounded-lg border border-border bg-background px-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring w-36"
+              />
+              <button
+                onClick={() => {
+                  if (zipCode.length === 5) setZipSubmitted(true);
+                }}
+                className="h-10 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
+              >
+                Search
+              </button>
+            </div>
+            {zipSubmitted && (
+              <p className="text-xs text-muted-foreground mt-2">
+                We're building our contractor network in {zipCode}. In the meantime, here are verified pros from our founding region — use them as a reference for what to look for locally.
+              </p>
+            )}
+          </div>
 
           <section className="mb-12">
             <h2 className="font-heading text-xl text-foreground mb-5">Verified Pros</h2>
