@@ -22,12 +22,12 @@ const styles = [
   { 
     name: "Traditional", 
     desc: "Timeless details and classic warmth",
-    img: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=400&q=80"
   },
   { 
     name: "Minimal", 
     desc: "Simple, refined, and uncluttered",
-    img: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=400&q=80"
   },
   { 
     name: "Luxury", 
