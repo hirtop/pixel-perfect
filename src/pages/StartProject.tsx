@@ -9,7 +9,7 @@ import { useProject } from "@/contexts/ProjectContext";
 
 const bathroomTypes = ["Primary Bathroom", "Guest Bathroom", "Powder Room", "Other"];
 const propertyTypes = ["House", "Condo", "Apartment", "Other"];
-const bathingSetupOptions = ["Shower only", "Tub only", "Tub + shower", "Neither / powder room"];
+const bathingSetupOptions = ["Shower only", "Shower + sink (no tub)", "Tub only", "Tub + shower", "Neither / powder room"];
 const styleOptions = ["Modern", "Spa", "Traditional", "Minimal", "Luxury", "Transitional"];
 
 const StartProject = () => {
@@ -142,7 +142,7 @@ const StartProject = () => {
             </div>
 
             <div className="space-y-3">
-              <Label className="text-sm font-medium text-foreground">Bathing Setup</Label>
+              <Label className="text-sm font-medium text-foreground">Bathroom Setup</Label>
               <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                 {bathingSetupOptions.map((option) => (
                   <button
