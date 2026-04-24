@@ -27,7 +27,7 @@ const styles = [
   { 
     name: "Minimal", 
     desc: "Simple, refined, and uncluttered",
-    img: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1600566753086-00f18fb6b3ea?w=400&q=80"
   },
   { 
     name: "Luxury", 
@@ -37,7 +37,7 @@ const styles = [
   { 
     name: "Transitional", 
     desc: "A balanced blend of classic and modern",
-    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80"
   },
 ];
 
