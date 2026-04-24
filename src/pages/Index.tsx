@@ -458,12 +458,21 @@ export default function LandingPage() {
             <span className="font-heading text-2xl text-primary-foreground">
               BOBOX<span className="text-primary"> Remodel</span>
             </span>
+            <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-sm">
+              <Link to="/contact" className="hover:text-primary-foreground transition-colors">
+                Contact
+              </Link>
+              <Link to="/disclaimer" className="hover:text-primary-foreground transition-colors">
+                Affiliate Disclosure
+              </Link>
+            </nav>
             <p className="text-sm">
               © {new Date().getFullYear()} BOBOX Remodel. All rights reserved.
             </p>
           </div>
         </div>
       </footer>
+
 
       <ProjectPickerDialog
         open={pickerOpen}
