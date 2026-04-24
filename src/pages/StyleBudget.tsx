@@ -27,7 +27,7 @@ const styles = [
   { 
     name: "Minimal", 
     desc: "Simple, refined, and uncluttered",
-    img: "https://images.unsplash.com/photo-1600566753376-12c8ab7fb75b?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1629079447777-1e605558b9b6?w=400&q=80"
   },
   { 
     name: "Luxury", 
