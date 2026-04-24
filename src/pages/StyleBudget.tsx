@@ -7,37 +7,43 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useProject } from "@/contexts/ProjectContext";
+import modernImg from "@/assets/MODERN.webp";
+import spaImg from "@/assets/SPA.webp";
+import traditionalImg from "@/assets/TRADITIONAL.jpg";
+import minimalImg from "@/assets/MINIMALIST.webp";
+import luxuryImg from "@/assets/LUXURY.webp";
+import transitionalImg from "@/assets/TRANSITIONAL.jpg";
 
 const styles = [
   { 
     name: "Modern", 
     desc: "Clean lines and contemporary finishes",
-    img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80"
+    img: modernImg
   },
   { 
     name: "Spa", 
     desc: "Soft, calming, resort-inspired",
-    img: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80"
+    img: spaImg
   },
   { 
     name: "Traditional", 
     desc: "Timeless details and classic warmth",
-    img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80"
+    img: traditionalImg
   },
   { 
     name: "Minimal", 
     desc: "Simple, refined, and uncluttered",
-    img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80"
+    img: minimalImg
   },
   { 
     name: "Luxury", 
     desc: "High-end finishes and elevated details",
-    img: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80"
+    img: luxuryImg
   },
   { 
     name: "Transitional", 
     desc: "A balanced blend of classic and modern",
-    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80"
+    img: transitionalImg
   },
 ];
 
