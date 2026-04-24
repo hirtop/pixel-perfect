@@ -9,12 +9,36 @@ import { Label } from "@/components/ui/label";
 import { useProject } from "@/contexts/ProjectContext";
 
 const styles = [
-  { name: "Modern", desc: "Clean lines and contemporary finishes" },
-  { name: "Spa", desc: "Soft, calming, resort-inspired" },
-  { name: "Traditional", desc: "Timeless details and classic warmth" },
-  { name: "Minimal", desc: "Simple, refined, and uncluttered" },
-  { name: "Luxury", desc: "High-end finishes and elevated details" },
-  { name: "Transitional", desc: "A balanced blend of classic and modern" },
+  { 
+    name: "Modern", 
+    desc: "Clean lines and contemporary finishes",
+    img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80"
+  },
+  { 
+    name: "Spa", 
+    desc: "Soft, calming, resort-inspired",
+    img: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80"
+  },
+  { 
+    name: "Traditional", 
+    desc: "Timeless details and classic warmth",
+    img: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80"
+  },
+  { 
+    name: "Minimal", 
+    desc: "Simple, refined, and uncluttered",
+    img: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80"
+  },
+  { 
+    name: "Luxury", 
+    desc: "High-end finishes and elevated details",
+    img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80"
+  },
+  { 
+    name: "Transitional", 
+    desc: "A balanced blend of classic and modern",
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80"
+  },
 ];
 
 const budgetLevels = [
@@ -82,13 +106,26 @@ const StyleBudget = () => {
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
                 {styles.map((s) => (
                   <button key={s.name} onClick={() => setSelectedStyle(s.name)}
-                    className={`group text-left rounded-xl border-2 p-5 transition-all duration-200 ${
+                    className={`group text-left rounded-xl border-2 overflow-hidden transition-all duration-200 ${
                       selectedStyle === s.name
-                        ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
+                        ? "border-primary shadow-md ring-2 ring-primary/20"
                         : "border-transparent bg-secondary/40 hover:bg-secondary/70 hover:border-primary/20"
                     }`}>
-                    <p className={`text-sm font-semibold mb-1 ${selectedStyle === s.name ? "text-primary-foreground" : "text-foreground"}`}>{s.name}</p>
-                    <p className={`text-xs leading-relaxed ${selectedStyle === s.name ? "text-primary-foreground/80" : "text-muted-foreground"}`}>{s.desc}</p>
+                    <div className="w-full h-32 overflow-hidden">
+                      <img 
+                        src={s.img} 
+                        alt={s.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <div className={`p-4 ${selectedStyle === s.name ? "bg-primary" : ""}`}>
+                      <p className={`text-sm font-semibold mb-1 ${selectedStyle === s.name ? "text-primary-foreground" : "text-foreground"}`}>
+                        {s.name}
+                      </p>
+                      <p className={`text-xs leading-relaxed ${selectedStyle === s.name ? "text-primary-foreground/80" : "text-muted-foreground"}`}>
+                        {s.desc}
+                      </p>
+                    </div>
                   </button>
                 ))}
               </div>
