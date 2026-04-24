@@ -12,7 +12,7 @@ const styles = [
   { 
     name: "Modern", 
     desc: "Clean lines and contemporary finishes",
-    img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80"
   },
   { 
     name: "Spa", 
@@ -22,22 +22,22 @@ const styles = [
   { 
     name: "Traditional", 
     desc: "Timeless details and classic warmth",
-    img: "https://images.unsplash.com/photo-1595428774223-ef52624120d2?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80"
   },
   { 
     name: "Minimal", 
     desc: "Simple, refined, and uncluttered",
-    img: "https://images.unsplash.com/photo-1629079447777-1e605558b9b6?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80"
   },
   { 
     name: "Luxury", 
     desc: "High-end finishes and elevated details",
-    img: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80"
   },
   { 
     name: "Transitional", 
     desc: "A balanced blend of classic and modern",
-    img: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80"
+    img: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80"
   },
 ];
 
