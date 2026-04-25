@@ -47,6 +47,7 @@ const contactSchema = z.object({
 });
 
 const CONTACT_EMAIL = "hello@boboxremodel.com";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xkokykge";
 
 const Contact = () => {
   const [name, setName] = useState("");
