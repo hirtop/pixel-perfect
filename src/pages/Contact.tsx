@@ -47,6 +47,7 @@ const contactSchema = z.object({
 });
 
 const CONTACT_EMAIL = "hello@boboxremodel.com";
+const FORMSPREE_ENDPOINT = "https://formspree.io/f/xkokykge";
 
 const Contact = () => {
   const [name, setName] = useState("");
@@ -67,19 +68,38 @@ const Contact = () => {
     setSubmitting(true);
     try {
       const data = result.data;
-      const mailto = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(
-        `[${data.subject}] ${data.name}`,
-      )}&body=${encodeURIComponent(`${data.message}\n\n— ${data.name} (${data.email})`)}`;
-      window.location.href = mailto;
+      const response = await fetch(FORMSPREE_ENDPOINT, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          name: data.name,
+          email: data.email,
+          subject: data.subject,
+          message: data.message,
+        }),
+      });
+
+      if (!response.ok) {
+        throw new Error(`Request failed with status ${response.status}`);
+      }
 
       toast({
-        title: "Opening your email app",
-        description: `We've prepared a message to ${CONTACT_EMAIL}.`,
+        title: "Message sent",
+        description: "Thank you for reaching out! We'll get back to you within 24 hours.",
       });
       setName("");
       setEmail("");
       setSubject("");
       setMessage("");
+    } catch {
+      toast({
+        title: "Submission failed",
+        description: `Something went wrong. Please try again or email us directly at ${CONTACT_EMAIL}`,
+        variant: "destructive",
+      });
     } finally {
       setSubmitting(false);
     }
