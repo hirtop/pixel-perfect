@@ -32,6 +32,43 @@ const tierNameMap: Record<string, ProductTier> = {
 
 const VALID_TIERS = new Set(["budget", "balanced", "premium"]);
 
+const PRODUCT_PRICES: Record<string, string> = {
+  "Vanity": "$649",
+  "Sink": "$189",
+  "Faucet": "$148",
+  "Mirror": "$124",
+  "Shower Wall Tile": "$3.49/sq ft",
+  "Main Floor Tile": "$2.89/sq ft",
+  "Shower Floor Tile": "$3.29/sq ft",
+  "Accent Tile": "Not included",
+  "Shower Glass": "$389",
+  "Shower Valve": "$287",
+  "Shower Trim": "$234",
+  "Tub": "$899",
+  "Tub Valve": "$198",
+  "Shower Niche": "$89",
+  "Lighting": "$178",
+  "Toilet": "$449",
+};
+
+const PRODUCT_FIT_REASONS: Record<string, string> = {
+  "Vanity": "Matches your Matte Black finish preference",
+  "Sink": "Sized for standard vanity top cutouts",
+  "Faucet": "Matte Black finish — matches your selection",
+  "Mirror": "Sized for standard single-sink vanity width",
+  "Shower Wall Tile": "Large format reduces grout lines",
+  "Main Floor Tile": "Rectified edges for tight grout lines",
+  "Shower Floor Tile": "Mosaic format conforms to shower pan slope",
+  "Shower Glass": "Hinged door fits your bathroom layout",
+  "Shower Valve": "Thermostatic — maintains exact temperature",
+  "Shower Trim": "Magnetic docking handheld",
+  "Tub": "Freestanding oval fits your square footage",
+  "Tub Valve": "Thermostatic — pairs with your tub",
+  "Shower Niche": "Waterproof prefab — sized to your tile format",
+  "Lighting": "Frosted glass diffuses light evenly",
+  "Toilet": "Elongated bowl — standard rough-in fit",
+};
+
 const PackageDetail = () => {
   const { project, updateProject, markStepComplete, isLoaded } = useProject();
   const { id: urlTierRaw } = useParams<{ id: string }>();
