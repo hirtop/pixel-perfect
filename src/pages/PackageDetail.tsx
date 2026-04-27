@@ -59,14 +59,14 @@ const PRODUCT_IMAGES: Record<string, string> = {
   "Shower Wall Tile": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   "Main Floor Tile": "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   "Shower Floor Tile": "https://images.unsplash.com/photo-1564540574859-0dfb63985953?w=400&q=80",
-  "Shower Glass": "https://images.unsplash.com/photo-1584622781564-1d987f7333c1?w=400&q=80",
+  "Shower Glass": "https://images.unsplash.com/photo-1600566752734-2a0cd66ab658?w=400&q=80",
   "Shower Valve": "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=80",
   "Shower Trim": "https://images.unsplash.com/photo-1620626011761-996317702149?w=400&q=80",
   "Tub": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
-  "Tub Valve": "https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=400&q=80",
-  "Shower Niche": "https://images.unsplash.com/photo-1600566752734-2a0cd66ab658?w=400&q=80",
+  "Tub Valve": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
+  "Shower Niche": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   "Lighting": "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=400&q=80",
-  "Toilet": "https://images.unsplash.com/photo-1613214049841-028981a2eb71?w=400&q=80",
+  "Toilet": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
 };
 
 const PRODUCT_FIT_REASONS: Record<string, string> = {
