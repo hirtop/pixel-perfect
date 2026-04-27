@@ -303,9 +303,20 @@ const PackageDetail = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {staticItems.map((item) => (
                 <div key={item.category} className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
-                  <div className="h-[140px] w-full bg-muted flex items-center justify-center">
-                    <ImageIcon className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
-                  </div>
+                  {PRODUCT_IMAGES[item.category] ? (
+                    <img
+                      src={PRODUCT_IMAGES[item.category]}
+                      alt={item.name}
+                      className="h-[140px] w-full object-cover"
+                      loading="lazy"
+                      width={400}
+                      height={140}
+                    />
+                  ) : (
+                    <div className="h-[140px] w-full bg-muted flex items-center justify-center">
+                      <ImageIcon className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
+                    </div>
+                  )}
                   <div className="p-5 space-y-2 flex flex-col flex-1">
                     <div className="flex items-center justify-between">
                       <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.category}</p>
