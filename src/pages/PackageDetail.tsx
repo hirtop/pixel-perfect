@@ -235,13 +235,31 @@ const PackageDetail = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {customizableProducts.map((item) => (
-                <div key={item.category} className="rounded-xl border border-border bg-card p-5 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">{item.category}</p>
-                    <span className="text-[10px] text-muted-foreground">{item.vendor}</span>
+                <div key={item.category} className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
+                  <div className="h-[140px] w-full bg-muted flex items-center justify-center">
+                    <ImageIcon className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
                   </div>
-                  <p className="text-sm font-medium text-foreground">{item.name}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
+                  <div className="p-5 space-y-2 flex flex-col flex-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-primary">{item.category}</p>
+                      <span className="text-[10px] text-muted-foreground">{item.vendor}</span>
+                    </div>
+                    <p className="text-sm font-medium text-foreground">{item.name}</p>
+                    <p className="text-sm font-bold text-primary">{PRODUCT_PRICES[item.category] || ""}</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
+                    <div className="flex-1" />
+                    {PRODUCT_FIT_REASONS[item.category] && (
+                      <p className="text-xs italic text-muted-foreground pt-1">{PRODUCT_FIT_REASONS[item.category]}</p>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mt-1"
+                      asChild
+                    >
+                      <a href="#">View Product →</a>
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -253,12 +271,32 @@ const PackageDetail = () => {
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Also Included</p>
               <p className="text-sm text-muted-foreground">Included in every package. Not yet swappable — we're adding more options soon.</p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {staticItems.map((item) => (
-                <div key={item.category} className="rounded-lg border border-border bg-card px-4 py-3 space-y-0.5">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.category}</p>
-                  <p className="text-sm text-foreground">{item.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{item.vendor}</p>
+                <div key={item.category} className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
+                  <div className="h-[140px] w-full bg-muted flex items-center justify-center">
+                    <ImageIcon className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
+                  </div>
+                  <div className="p-5 space-y-2 flex flex-col flex-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.category}</p>
+                      <span className="text-[10px] text-muted-foreground">{item.vendor}</span>
+                    </div>
+                    <p className="text-sm font-medium text-foreground">{item.name}</p>
+                    <p className="text-sm font-bold text-primary">{PRODUCT_PRICES[item.category] || ""}</p>
+                    <div className="flex-1" />
+                    {PRODUCT_FIT_REASONS[item.category] && (
+                      <p className="text-xs italic text-muted-foreground pt-1">{PRODUCT_FIT_REASONS[item.category]}</p>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mt-1"
+                      asChild
+                    >
+                      <a href="#">View Product →</a>
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
