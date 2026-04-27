@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { Check, ArrowLeft, Home, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useProject } from "@/contexts/ProjectContext";
 import {
   getBathroomInsights,
