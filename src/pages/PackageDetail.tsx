@@ -52,23 +52,7 @@ const PRODUCT_PRICES: Record<string, string> = {
   "Toilet": "$449",
 };
 
-const PRODUCT_IMAGES: Record<string, string> = {
-  "Vanity": "https://picsum.photos/id/314/400/300",
-  "Sink": "https://picsum.photos/id/425/400/300",
-  "Faucet": "https://picsum.photos/id/366/400/300",
-  "Mirror": "https://picsum.photos/id/326/400/300",
-  "Shower Wall Tile": "https://picsum.photos/id/401/400/300",
-  "Main Floor Tile": "https://picsum.photos/id/412/400/300",
-  "Shower Floor Tile": "https://picsum.photos/id/433/400/300",
-  "Shower Glass": "https://picsum.photos/id/318/400/300",
-  "Shower Valve": "https://picsum.photos/id/381/400/300",
-  "Shower Trim": "https://picsum.photos/id/350/400/300",
-  "Tub": "https://picsum.photos/id/338/400/300",
-  "Tub Valve": "https://picsum.photos/id/392/400/300",
-  "Shower Niche": "https://picsum.photos/id/355/400/300",
-  "Lighting": "https://picsum.photos/id/378/400/300",
-  "Toilet": "https://picsum.photos/id/430/400/300",
-};
+const PRODUCT_IMAGES: Record<string, string> = {};
 
 const PRODUCT_FIT_REASONS: Record<string, string> = {
   "Vanity": "Matches your Matte Black finish preference",
