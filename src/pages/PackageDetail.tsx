@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { Link, useParams, Navigate } from "react-router-dom";
-import { Check, ArrowLeft, Home } from "lucide-react";
+import { Check, ArrowLeft, Home, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 import {
@@ -31,6 +31,43 @@ const tierNameMap: Record<string, ProductTier> = {
 };
 
 const VALID_TIERS = new Set(["budget", "balanced", "premium"]);
+
+const PRODUCT_PRICES: Record<string, string> = {
+  "Vanity": "$649",
+  "Sink": "$189",
+  "Faucet": "$148",
+  "Mirror": "$124",
+  "Shower Wall Tile": "$3.49/sq ft",
+  "Main Floor Tile": "$2.89/sq ft",
+  "Shower Floor Tile": "$3.29/sq ft",
+  "Accent Tile": "Not included",
+  "Shower Glass": "$389",
+  "Shower Valve": "$287",
+  "Shower Trim": "$234",
+  "Tub": "$899",
+  "Tub Valve": "$198",
+  "Shower Niche": "$89",
+  "Lighting": "$178",
+  "Toilet": "$449",
+};
+
+const PRODUCT_FIT_REASONS: Record<string, string> = {
+  "Vanity": "Matches your Matte Black finish preference",
+  "Sink": "Sized for standard vanity top cutouts",
+  "Faucet": "Matte Black finish — matches your selection",
+  "Mirror": "Sized for standard single-sink vanity width",
+  "Shower Wall Tile": "Large format reduces grout lines",
+  "Main Floor Tile": "Rectified edges for tight grout lines",
+  "Shower Floor Tile": "Mosaic format conforms to shower pan slope",
+  "Shower Glass": "Hinged door fits your bathroom layout",
+  "Shower Valve": "Thermostatic — maintains exact temperature",
+  "Shower Trim": "Magnetic docking handheld",
+  "Tub": "Freestanding oval fits your square footage",
+  "Tub Valve": "Thermostatic — pairs with your tub",
+  "Shower Niche": "Waterproof prefab — sized to your tile format",
+  "Lighting": "Frosted glass diffuses light evenly",
+  "Toilet": "Elongated bowl — standard rough-in fit",
+};
 
 const PackageDetail = () => {
   const { project, updateProject, markStepComplete, isLoaded } = useProject();
@@ -198,13 +235,31 @@ const PackageDetail = () => {
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {customizableProducts.map((item) => (
-                <div key={item.category} className="rounded-xl border border-border bg-card p-5 space-y-2">
-                  <div className="flex items-center justify-between">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-primary">{item.category}</p>
-                    <span className="text-[10px] text-muted-foreground">{item.vendor}</span>
+                <div key={item.category} className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
+                  <div className="h-[140px] w-full bg-muted flex items-center justify-center">
+                    <ImageIcon className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
                   </div>
-                  <p className="text-sm font-medium text-foreground">{item.name}</p>
-                  <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
+                  <div className="p-5 space-y-2 flex flex-col flex-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-primary">{item.category}</p>
+                      <span className="text-[10px] text-muted-foreground">{item.vendor}</span>
+                    </div>
+                    <p className="text-sm font-medium text-foreground">{item.name}</p>
+                    <p className="text-sm font-bold text-primary">{PRODUCT_PRICES[item.category] || ""}</p>
+                    <p className="text-xs text-muted-foreground leading-relaxed">{item.description}</p>
+                    <div className="flex-1" />
+                    {PRODUCT_FIT_REASONS[item.category] && (
+                      <p className="text-xs italic text-muted-foreground pt-1">{PRODUCT_FIT_REASONS[item.category]}</p>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mt-1"
+                      asChild
+                    >
+                      <a href="#">View Product →</a>
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -216,12 +271,32 @@ const PackageDetail = () => {
               <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-1">Also Included</p>
               <p className="text-sm text-muted-foreground">Included in every package. Not yet swappable — we're adding more options soon.</p>
             </div>
-            <div className="flex flex-wrap gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {staticItems.map((item) => (
-                <div key={item.category} className="rounded-lg border border-border bg-card px-4 py-3 space-y-0.5">
-                  <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.category}</p>
-                  <p className="text-sm text-foreground">{item.name}</p>
-                  <p className="text-[10px] text-muted-foreground">{item.vendor}</p>
+                <div key={item.category} className="rounded-xl border border-border bg-card overflow-hidden flex flex-col">
+                  <div className="h-[140px] w-full bg-muted flex items-center justify-center">
+                    <ImageIcon className="h-8 w-8 text-muted-foreground/50" aria-hidden="true" />
+                  </div>
+                  <div className="p-5 space-y-2 flex flex-col flex-1">
+                    <div className="flex items-center justify-between">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">{item.category}</p>
+                      <span className="text-[10px] text-muted-foreground">{item.vendor}</span>
+                    </div>
+                    <p className="text-sm font-medium text-foreground">{item.name}</p>
+                    <p className="text-sm font-bold text-primary">{PRODUCT_PRICES[item.category] || ""}</p>
+                    <div className="flex-1" />
+                    {PRODUCT_FIT_REASONS[item.category] && (
+                      <p className="text-xs italic text-muted-foreground pt-1">{PRODUCT_FIT_REASONS[item.category]}</p>
+                    )}
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mt-1"
+                      asChild
+                    >
+                      <a href="#">View Product →</a>
+                    </Button>
+                  </div>
                 </div>
               ))}
             </div>
