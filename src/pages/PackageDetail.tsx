@@ -53,21 +53,21 @@ const PRODUCT_PRICES: Record<string, string> = {
 };
 
 const PRODUCT_IMAGES: Record<string, string> = {
-  "Vanity": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
-  "Sink": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
-  "Faucet": "https://images.unsplash.com/photo-1563453392212-326f5e854473?w=400&q=80",
-  "Mirror": "https://images.unsplash.com/photo-1618220179428-22790b461013?w=400&q=80",
-  "Shower Wall Tile": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
-  "Main Floor Tile": "https://images.unsplash.com/photo-1600047509358-9dc75507daeb?w=400&q=80",
-  "Shower Floor Tile": "https://images.unsplash.com/photo-1571902943202-507ec2618e8f?w=400&q=80",
-  "Shower Glass": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
-  "Shower Valve": "https://images.unsplash.com/photo-1604709177225-055f99402ea3?w=400&q=80",
-  "Shower Trim": "https://images.unsplash.com/photo-1595515106969-1ce29566ff1c?w=400&q=80",
-  "Tub": "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
-  "Tub Valve": "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
-  "Shower Niche": "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
-  "Lighting": "https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=400&q=80",
-  "Toilet": "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
+  "Vanity": "https://source.unsplash.com/400x300/?bathroom,vanity",
+  "Sink": "https://source.unsplash.com/400x300/?bathroom,sink",
+  "Faucet": "https://source.unsplash.com/400x300/?faucet,chrome",
+  "Mirror": "https://source.unsplash.com/400x300/?bathroom,mirror",
+  "Shower Wall Tile": "https://source.unsplash.com/400x300/?tile,wall",
+  "Main Floor Tile": "https://source.unsplash.com/400x300/?floor,tile",
+  "Shower Floor Tile": "https://source.unsplash.com/400x300/?mosaic,tile",
+  "Shower Glass": "https://source.unsplash.com/400x300/?shower,glass",
+  "Shower Valve": "https://source.unsplash.com/400x300/?shower,valve",
+  "Shower Trim": "https://source.unsplash.com/400x300/?shower,rain",
+  "Tub": "https://source.unsplash.com/400x300/?bathtub,freestanding",
+  "Tub Valve": "https://source.unsplash.com/400x300/?bathtub,faucet",
+  "Shower Niche": "https://source.unsplash.com/400x300/?shower,niche",
+  "Lighting": "https://source.unsplash.com/400x300/?bathroom,lighting",
+  "Toilet": "https://source.unsplash.com/400x300/?toilet,bathroom",
 };
 
 const PRODUCT_FIT_REASONS: Record<string, string> = {
