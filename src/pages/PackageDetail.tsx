@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useParams, Navigate } from "react-router-dom";
 import { Check, ArrowLeft, Home, Image as ImageIcon } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { useProject } from "@/contexts/ProjectContext";
 import {
   getBathroomInsights,
@@ -280,14 +281,21 @@ const PackageDetail = () => {
                     {PRODUCT_FIT_REASONS[item.category] && (
                       <p className="text-xs italic text-muted-foreground pt-1">{PRODUCT_FIT_REASONS[item.category]}</p>
                     )}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mt-1"
-                      asChild
-                    >
-                      <a href="#">View Product →</a>
-                    </Button>
+                    <TooltipProvider delayDuration={150}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mt-1 hover:cursor-not-allowed"
+                            asChild
+                          >
+                            <a href="#" onClick={(e) => e.preventDefault()}>View Product →</a>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Product links coming soon</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 </div>
               ))}
@@ -328,14 +336,21 @@ const PackageDetail = () => {
                     {PRODUCT_FIT_REASONS[item.category] && (
                       <p className="text-xs italic text-muted-foreground pt-1">{PRODUCT_FIT_REASONS[item.category]}</p>
                     )}
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mt-1"
-                      asChild
-                    >
-                      <a href="#">View Product →</a>
-                    </Button>
+                    <TooltipProvider delayDuration={150}>
+                      <Tooltip>
+                        <TooltipTrigger asChild>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="w-full border-primary text-primary hover:bg-primary hover:text-primary-foreground mt-1 hover:cursor-not-allowed"
+                            asChild
+                          >
+                            <a href="#" onClick={(e) => e.preventDefault()}>View Product →</a>
+                          </Button>
+                        </TooltipTrigger>
+                        <TooltipContent>Product links coming soon</TooltipContent>
+                      </Tooltip>
+                    </TooltipProvider>
                   </div>
                 </div>
               ))}
