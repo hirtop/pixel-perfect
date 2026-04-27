@@ -53,21 +53,21 @@ const PRODUCT_PRICES: Record<string, string> = {
 };
 
 const PRODUCT_IMAGES: Record<string, string> = {
-  "Vanity": "https://source.unsplash.com/400x300/?bathroom,vanity",
-  "Sink": "https://source.unsplash.com/400x300/?bathroom,sink",
-  "Faucet": "https://source.unsplash.com/400x300/?faucet,chrome",
-  "Mirror": "https://source.unsplash.com/400x300/?bathroom,mirror",
-  "Shower Wall Tile": "https://source.unsplash.com/400x300/?tile,wall",
-  "Main Floor Tile": "https://source.unsplash.com/400x300/?floor,tile",
-  "Shower Floor Tile": "https://source.unsplash.com/400x300/?mosaic,tile",
-  "Shower Glass": "https://source.unsplash.com/400x300/?shower,glass",
-  "Shower Valve": "https://source.unsplash.com/400x300/?shower,valve",
-  "Shower Trim": "https://source.unsplash.com/400x300/?shower,rain",
-  "Tub": "https://source.unsplash.com/400x300/?bathtub,freestanding",
-  "Tub Valve": "https://source.unsplash.com/400x300/?bathtub,faucet",
-  "Shower Niche": "https://source.unsplash.com/400x300/?shower,niche",
-  "Lighting": "https://source.unsplash.com/400x300/?bathroom,lighting",
-  "Toilet": "https://source.unsplash.com/400x300/?toilet,bathroom",
+  "Vanity": "https://picsum.photos/id/314/400/300",
+  "Sink": "https://picsum.photos/id/425/400/300",
+  "Faucet": "https://picsum.photos/id/366/400/300",
+  "Mirror": "https://picsum.photos/id/326/400/300",
+  "Shower Wall Tile": "https://picsum.photos/id/401/400/300",
+  "Main Floor Tile": "https://picsum.photos/id/412/400/300",
+  "Shower Floor Tile": "https://picsum.photos/id/433/400/300",
+  "Shower Glass": "https://picsum.photos/id/318/400/300",
+  "Shower Valve": "https://picsum.photos/id/381/400/300",
+  "Shower Trim": "https://picsum.photos/id/350/400/300",
+  "Tub": "https://picsum.photos/id/338/400/300",
+  "Tub Valve": "https://picsum.photos/id/392/400/300",
+  "Shower Niche": "https://picsum.photos/id/355/400/300",
+  "Lighting": "https://picsum.photos/id/378/400/300",
+  "Toilet": "https://picsum.photos/id/430/400/300",
 };
 
 const PRODUCT_FIT_REASONS: Record<string, string> = {
