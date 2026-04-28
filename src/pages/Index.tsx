@@ -12,6 +12,7 @@ import { resolveResumeRoute } from "@/lib/resumeRoute";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
+import ShopProducts from "@/components/ShopProducts";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -175,6 +176,7 @@ export default function LandingPage() {
             <a href="#transform" className="hover:text-foreground transition-colors">Before & After</a>
             <a href="#why" className="hover:text-foreground transition-colors">Why BOBOX</a>
             <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
+            <Link to="/shop" className="hover:text-foreground transition-colors">Shop</Link>
           </div>
           <div className="flex items-center gap-3">
             <AccountMenu />
@@ -367,6 +369,29 @@ export default function LandingPage() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* Shop teaser */}
+      <section id="shop-teaser" className="py-24 bg-card">
+        <div className="container mx-auto px-6">
+          <div className="text-center mb-12 max-w-2xl mx-auto">
+            <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
+              Shop Products
+            </p>
+            <h2 className="font-heading text-3xl md:text-5xl text-foreground mb-4">
+              Curated Products for Your Remodel
+            </h2>
+            <p className="text-muted-foreground leading-relaxed">
+              Handpicked fixtures and finishes from trusted brands.
+            </p>
+          </div>
+        </div>
+        <ShopProducts limit={3} hideFilters hideHeader className="py-0 bg-transparent" />
+        <div className="text-center mt-10">
+          <Button size="lg" variant="outline" asChild>
+            <Link to="/shop">Browse All Products →</Link>
+          </Button>
         </div>
       </section>
 
