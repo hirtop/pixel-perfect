@@ -247,7 +247,19 @@ export default function ShopProducts({
 
 // ─── Card ───────────────────────────────────────────────────────────
 
+const CATEGORY_ICONS: Record<ShopCategory, LucideIcon> = {
+  All: Package,
+  Faucets: Droplet,
+  Vanities: Square,
+  Bathtubs: Bath,
+  "Shower Systems": ShowerHead,
+  Lighting: Lightbulb,
+  "Heated Floors": Flame,
+};
+
 function ProductCard({ product, index }: { product: ShopProduct; index: number }) {
+  const [imgFailed, setImgFailed] = useState(!product.image);
+  const CategoryIcon = CATEGORY_ICONS[product.category] ?? Package;
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
