@@ -1,0 +1,1 @@
+DELETE FROM public.catalog_products WHERE retailer IS NOT NULL;
