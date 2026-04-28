@@ -70,18 +70,22 @@ export type Database = {
       catalog_products: {
         Row: {
           active: boolean
+          best_for: string | null
           brand: string | null
           category: string
           compatibility_tags: string[] | null
           created_at: string
           depth: number | null
+          featured: boolean
           finish: string | null
           height: number | null
           id: string
           image_url: string | null
           install_notes: string | null
           price: number | null
+          price_note: string | null
           product_url: string | null
+          retailer: string | null
           room_type: string
           short_description: string | null
           style_tags: string[] | null
@@ -91,18 +95,22 @@ export type Database = {
         }
         Insert: {
           active?: boolean
+          best_for?: string | null
           brand?: string | null
           category: string
           compatibility_tags?: string[] | null
           created_at?: string
           depth?: number | null
+          featured?: boolean
           finish?: string | null
           height?: number | null
           id?: string
           image_url?: string | null
           install_notes?: string | null
           price?: number | null
+          price_note?: string | null
           product_url?: string | null
+          retailer?: string | null
           room_type?: string
           short_description?: string | null
           style_tags?: string[] | null
@@ -112,18 +120,22 @@ export type Database = {
         }
         Update: {
           active?: boolean
+          best_for?: string | null
           brand?: string | null
           category?: string
           compatibility_tags?: string[] | null
           created_at?: string
           depth?: number | null
+          featured?: boolean
           finish?: string | null
           height?: number | null
           id?: string
           image_url?: string | null
           install_notes?: string | null
           price?: number | null
+          price_note?: string | null
           product_url?: string | null
+          retailer?: string | null
           room_type?: string
           short_description?: string | null
           style_tags?: string[] | null
