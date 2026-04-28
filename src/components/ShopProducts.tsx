@@ -111,25 +111,24 @@ export default function ShopProducts({
         return;
       }
 
-      const mapped: ShopProduct[] = data
-        .map((row) => {
-          const uiCat = DB_TO_UI[row.category];
-          if (!uiCat || !row.product_url || !row.image_url) return null;
-          return {
-            id: row.id,
-            category: uiCat,
-            brand: row.brand ?? "",
-            name: row.title,
-            price: Number(row.price ?? 0),
-            priceNote: row.price_note ?? undefined,
-            image: row.image_url,
-            url: row.product_url,
-            retailer: (row.retailer as ShopProduct["retailer"]) ?? "Ferguson Home",
-            bestFor: row.best_for ?? "Any Bath",
-            featured: !!row.featured,
-          } satisfies ShopProduct;
-        })
-        .filter((p): p is ShopProduct => p !== null);
+      const mapped: ShopProduct[] = [];
+      for (const row of data) {
+        const uiCat = DB_TO_UI[row.category];
+        if (!uiCat || !row.product_url || !row.image_url) continue;
+        mapped.push({
+          id: row.id,
+          category: uiCat,
+          brand: row.brand ?? "",
+          name: row.title,
+          price: Number(row.price ?? 0),
+          priceNote: row.price_note ?? undefined,
+          image: row.image_url,
+          url: row.product_url,
+          retailer: (row.retailer as ShopProduct["retailer"]) ?? "Ferguson Home",
+          bestFor: row.best_for ?? "Any Bath",
+          featured: !!row.featured,
+        });
+      }
 
       setProducts(mapped.length ? mapped : SHOP_PRODUCTS_FALLBACK);
       setLoading(false);
