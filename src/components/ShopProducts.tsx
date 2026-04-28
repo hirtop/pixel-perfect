@@ -1,6 +1,17 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import { ExternalLink, Sparkles } from "lucide-react";
+import {
+  ExternalLink,
+  Sparkles,
+  Droplet,
+  Square,
+  Bath,
+  ShowerHead,
+  Lightbulb,
+  Flame,
+  Package,
+  type LucideIcon,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
