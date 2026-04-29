@@ -1,17 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
-import {
-  ExternalLink,
-  Sparkles,
-  Droplet,
-  Square,
-  Bath,
-  ShowerHead,
-  Lightbulb,
-  Flame,
-  Package,
-  type LucideIcon,
-} from "lucide-react";
+import { ExternalLink, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -39,7 +28,7 @@ export type ShopProduct = {
 };
 
 const SHOP_PRODUCTS_FALLBACK: ShopProduct[] = [
-  { id: "p1", category: "Faucets", brand: "Hansgrohe", name: "Joleena 1.2 GPM Widespread Bathroom Faucet with Pop-Up Drain", price: 349, image: "https://images.fergusonhome.com/is/image/FergusonHome/3997862", url: "https://www.fergusonhome.com/hansgrohe-04774/s1694368?uid=3997862", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
+  { id: "p1", category: "Faucets", brand: "Hansgrohe", name: "Joleena 1.2 GPM Widespread Bathroom Faucet with Pop-Up Drain", price: 349, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/hansgrohe/hansgrohe-04774-alternate-image-6.jpg", url: "https://www.fergusonhome.com/hansgrohe-04774/s1694368?uid=3997862", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
   { id: "p2", category: "Faucets", brand: "Kohler", name: "Occasion Widespread Bathroom Sink Faucet with Drain", price: 419, image: "https://images.fergusonhome.com/is/image/FergusonHome/4388895", url: "https://www.fergusonhome.com/kohler-k-27416-4/s1836676?uid=4388895", retailer: "Ferguson Home", bestFor: "Modern Bath" },
   { id: "p3", category: "Faucets", brand: "Moen", name: "Align Single Hole Bathroom Faucet with Drain Assembly", price: 189, image: "https://images.fergusonhome.com/is/image/FergusonHome/1958607", url: "https://www.fergusonhome.com/moen-6901/s763023?uid=1958607", retailer: "Ferguson Home", bestFor: "Guest Bath" },
   { id: "p4", category: "Faucets", brand: "Delta", name: "Stryke Single Handle Widespread Bathroom Faucet with Drain", price: 279, image: "https://images.fergusonhome.com/is/image/FergusonHome/4125880", url: "https://www.fergusonhome.com/delta-3533lf-mpu/s1746214?uid=4125880", retailer: "Ferguson Home", bestFor: "Any Bath" },
@@ -247,19 +236,19 @@ export default function ShopProducts({
 
 // ─── Card ───────────────────────────────────────────────────────────
 
-const CATEGORY_ICONS: Record<ShopCategory, LucideIcon> = {
-  All: Package,
-  Faucets: Droplet,
-  Vanities: Square,
-  Bathtubs: Bath,
-  "Shower Systems": ShowerHead,
-  Lighting: Lightbulb,
-  "Heated Floors": Flame,
+const CATEGORY_EMOJI: Record<ShopCategory, string> = {
+  All: "🛁",
+  Faucets: "🚿",
+  Vanities: "🪞",
+  Bathtubs: "🛁",
+  "Shower Systems": "🚿",
+  Lighting: "💡",
+  "Heated Floors": "🌡️",
 };
 
 function ProductCard({ product, index }: { product: ShopProduct; index: number }) {
   const [imgFailed, setImgFailed] = useState(!product.image);
-  const CategoryIcon = CATEGORY_ICONS[product.category] ?? Package;
+  const emoji = CATEGORY_EMOJI[product.category] ?? "🛁";
   return (
     <motion.article
       initial={{ opacity: 0, y: 20 }}
@@ -275,14 +264,25 @@ function ProductCard({ product, index }: { product: ShopProduct; index: number }
         </div>
       )}
 
-      <div className="relative aspect-[4/3] overflow-hidden bg-muted">
+      <div className="relative aspect-[4/3] overflow-hidden">
         {imgFailed ? (
-          <div className="flex flex-col items-center justify-center w-full h-full bg-muted/70 px-4 text-center">
-            <CategoryIcon className="w-10 h-10 text-foreground/40 mb-3" strokeWidth={1.5} />
-            <span className="font-heading text-base text-foreground leading-tight">
+          <div
+            className="flex flex-col items-center justify-center w-full h-full px-4 text-center"
+            style={{ backgroundColor: "#F5F0EB" }}
+          >
+            <span className="text-5xl mb-3 leading-none" aria-hidden="true">
+              {emoji}
+            </span>
+            <span
+              className="text-foreground"
+              style={{ fontSize: "16px", fontWeight: 500 }}
+            >
               {product.brand}
             </span>
-            <span className="text-[11px] uppercase tracking-widest text-muted-foreground mt-1">
+            <span
+              className="text-muted-foreground mt-1"
+              style={{ fontSize: "12px" }}
+            >
               {product.category}
             </span>
           </div>
