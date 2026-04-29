@@ -1,4 +1,4 @@
-＃ BOBOX Remodel — robots policy
+# BOBOX Remodel — robots policy
 # Allow public marketing + shop pages. Block app flow & auth pages.
 
 User-agent: Googlebot
