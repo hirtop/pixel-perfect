@@ -312,22 +312,20 @@ function ProductCard({ product, index }: { product: ShopProduct; index: number }
         </h3>
 
         <div className="mt-auto">
-          <div className="flex items-baseline gap-2 mb-4">
-            {product.priceNote && (
-              <span className="text-xs text-muted-foreground">{product.priceNote}</span>
-            )}
-            <span className="font-heading text-2xl text-foreground">
-              {formatPrice(product.price)}
-            </span>
-          </div>
+          <a
+            href={product.url}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline mb-4"
+          >
+            See current price
+            <ExternalLink className="w-3.5 h-3.5" />
+          </a>
 
           <div className="flex items-center justify-between gap-3">
-            <span className="text-xs text-muted-foreground">
-              at <span className="font-medium text-foreground">{product.retailer}</span>
-            </span>
             <Button
               size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5"
+              className="bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 w-full"
               asChild
             >
               <a href={product.url} target="_blank" rel="noopener noreferrer sponsored">
@@ -336,6 +334,10 @@ function ProductCard({ product, index }: { product: ShopProduct; index: number }
               </a>
             </Button>
           </div>
+
+          <p className="mt-3 text-[11px] text-muted-foreground text-center">
+            Price shown at {product.retailer}
+          </p>
         </div>
       </div>
     </motion.article>
