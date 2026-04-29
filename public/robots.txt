@@ -1,8 +1,45 @@
+# BOBOX Remodel — robots policy
+# Allow public marketing + shop pages. Block app flow & auth pages.
+
 User-agent: Googlebot
-Allow: /
+Allow: /$
+Allow: /shop
+Allow: /blog
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /start
+Disallow: /upload
+Disallow: /dimensions
+Disallow: /style-budget
+Disallow: /options
+Disallow: /package/
+Disallow: /customize/
+Disallow: /summary
+Disallow: /workflow
+Disallow: /agreement
+Disallow: /subcontractors
+Disallow: /contact
+Disallow: /disclaimer
 
 User-agent: Bingbot
-Allow: /
+Allow: /$
+Allow: /shop
+Allow: /blog
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /start
+Disallow: /upload
+Disallow: /dimensions
+Disallow: /style-budget
+Disallow: /options
+Disallow: /package/
+Disallow: /customize/
+Disallow: /summary
+Disallow: /workflow
+Disallow: /agreement
+Disallow: /subcontractors
+Disallow: /contact
+Disallow: /disclaimer
 
 User-agent: Twitterbot
 Allow: /
@@ -11,4 +48,23 @@ User-agent: facebookexternalhit
 Allow: /
 
 User-agent: *
-Allow: /
+Allow: /$
+Allow: /shop
+Allow: /blog
+Disallow: /auth
+Disallow: /reset-password
+Disallow: /start
+Disallow: /upload
+Disallow: /dimensions
+Disallow: /style-budget
+Disallow: /options
+Disallow: /package/
+Disallow: /customize/
+Disallow: /summary
+Disallow: /workflow
+Disallow: /agreement
+Disallow: /subcontractors
+Disallow: /contact
+Disallow: /disclaimer
+
+Sitemap: https://boboxremodel.com/sitemap.xml
