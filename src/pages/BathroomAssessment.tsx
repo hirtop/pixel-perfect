@@ -443,6 +443,8 @@ const BathroomAssessment = () => {
           electricalScope,
           ventilation: state.ventilation,
           ventilationScope,
+          framingItems: framingItemsArr,
+          framingScope,
         },
       });
       markStepComplete("assessment");
