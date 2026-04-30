@@ -55,11 +55,26 @@ const VENTILATION_QUESTIONS = [
 type VentilationKey = (typeof VENTILATION_QUESTIONS)[number]["key"];
 type VentilationScope = "None" | "Replace only" | "New install" | "Upgrade";
 
+const FRAMING_ITEMS = [
+  "Moving / removing a wall",
+  "Adding shower niche",
+  "Adding shower bench",
+  "Enlarging shower",
+  "Moving door",
+  "Replacing door",
+  "Replacing window",
+  "Window inside / near shower",
+  "Adding blocking for grab bars or glass door",
+] as const;
+type FramingItem = (typeof FRAMING_ITEMS)[number];
+type FramingScope = "None" | "Minor blocking" | "Wall modification" | "Major layout change";
+
 interface AssessmentState {
   demolitionItems: Record<DemoItem, KeepRemove>;
   plumbing: Record<PlumbingKey, YesNoUnknown>;
   electricalItems: Record<ElectricalItem, boolean>;
   ventilation: Record<VentilationKey, YesNoUnknown>;
+  framingItems: Record<FramingItem, boolean>;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -87,16 +102,39 @@ const defaultVentilation: Record<VentilationKey, YesNoUnknown> = VENTILATION_QUE
   {} as Record<VentilationKey, YesNoUnknown>,
 );
 
+const defaultFraming: Record<FramingItem, boolean> = FRAMING_ITEMS.reduce(
+  (acc, item) => ({ ...acc, [item]: false }),
+  {} as Record<FramingItem, boolean>,
+);
+
 const defaultState: AssessmentState = {
   demolitionItems: defaultDemo,
   plumbing: defaultPlumbing,
   electricalItems: defaultElectrical,
   ventilation: defaultVentilation,
+  framingItems: defaultFraming,
   activeLeaks: "no",
   crackedGrout: "no",
   visibleMold: "no",
   waterDamageSuspected: "no",
   waterproofingScope: "",
+};
+
+const computeFramingScope = (items: Record<FramingItem, boolean>): FramingScope => {
+  const wallMove = items["Moving / removing a wall"];
+  const doorMove = items["Moving door"];
+  const enlargeShower = items["Enlarging shower"];
+  const wallMods =
+    items["Adding shower niche"] || items["Adding shower bench"] || enlargeShower;
+  const minorOnly =
+    items["Adding blocking for grab bars or glass door"] ||
+    items["Replacing door"] ||
+    items["Replacing window"] ||
+    items["Window inside / near shower"];
+  if (wallMove || (doorMove && enlargeShower)) return "Major layout change";
+  if (wallMods || doorMove) return "Wall modification";
+  if (minorOnly) return "Minor blocking";
+  return "None";
 };
 
 const computeElectricalScope = (items: Record<ElectricalItem, boolean>): ElectricalScope => {
