@@ -812,7 +812,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Upgrade",
-    affiliateUrl: "https://www.bedrosians.com/en/product/list/by-use/wall-tile/",
+    affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
