@@ -2036,7 +2036,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 300,
     laborNote: "Floor-mount requires concealed supply lines — adds ~$300",
     tag: "Upgrade",
-    affiliateUrl: "https://www.wyndhamcollection.com/collections/all-bathtubs",
+    affiliateUrl: "https://www.fergusonhome.com/tub-faucets/c133237",
     image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
