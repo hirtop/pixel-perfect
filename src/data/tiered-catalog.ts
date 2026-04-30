@@ -796,7 +796,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Mid-size tile — slightly more cuts than large-format, adds ~$100",
     tag: "Value Pick",
-    affiliateUrl: "https://www.bedrosians.com/en/product/list/by-use/wall-tile/",
+    affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
   },
   {
     id: "bal-swtile-03",
