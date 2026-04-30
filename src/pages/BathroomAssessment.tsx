@@ -233,8 +233,14 @@ const BathroomAssessment = () => {
     [state.visibleMold, state.waterDamageSuspected, state.demolitionItems],
   );
 
+  const toiletRelocated = state.plumbing.toiletSameLocation === "no";
+  const tubToShower = state.plumbing.tubToShowerConversion === "yes";
+
   const set = <K extends keyof AssessmentState>(key: K, value: AssessmentState[K]) =>
     setState((s) => ({ ...s, [key]: value }));
+
+  const setPlumbing = (key: PlumbingKey, value: YesNoUnknown) =>
+    setState((s) => ({ ...s, plumbing: { ...s.plumbing, [key]: value } }));
 
   const toggleDemo = (item: DemoItem) =>
     setState((s) => ({
