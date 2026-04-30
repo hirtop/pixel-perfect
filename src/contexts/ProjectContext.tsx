@@ -48,6 +48,15 @@ export interface ProjectData {
     waterproofingScope?: "None" | "Tub surround" | "Shower walls" | "Full shower system";
     demolitionItems?: Record<string, "keep" | "remove">;
     demolitionLevel?: "Light" | "Medium" | "Full Gut";
+    plumbing?: {
+      vanitySameLocation?: "yes" | "no" | "unknown";
+      toiletSameLocation?: "yes" | "no" | "unknown";
+      tubShowerSameLocation?: "yes" | "no" | "unknown";
+      tubToShowerConversion?: "yes" | "no" | "unknown";
+      addingSecondSink?: "yes" | "no" | "unknown";
+      knownLeaks?: "yes" | "no" | "unknown";
+      drainIssues?: "yes" | "no" | "unknown";
+    };
   };
   style_preferences: {
     style?: string;

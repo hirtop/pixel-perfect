@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer } from "lucide-react";
+import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer, Wrench, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 
@@ -22,8 +22,20 @@ const DEMO_ITEMS = [
 ] as const;
 type DemoItem = (typeof DEMO_ITEMS)[number];
 
+const PLUMBING_QUESTIONS = [
+  { key: "vanitySameLocation", label: "Is the vanity staying in the same location?" },
+  { key: "toiletSameLocation", label: "Is the toilet staying in the same location?" },
+  { key: "tubShowerSameLocation", label: "Is the tub/shower staying in the same location?" },
+  { key: "tubToShowerConversion", label: "Are you converting a tub to a shower?" },
+  { key: "addingSecondSink", label: "Adding a second sink?" },
+  { key: "knownLeaks", label: "Any known leaks?" },
+  { key: "drainIssues", label: "Any drain issues?" },
+] as const;
+type PlumbingKey = (typeof PLUMBING_QUESTIONS)[number]["key"];
+
 interface AssessmentState {
   demolitionItems: Record<DemoItem, KeepRemove>;
+  plumbing: Record<PlumbingKey, YesNoUnknown>;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -36,8 +48,14 @@ const defaultDemo: Record<DemoItem, KeepRemove> = DEMO_ITEMS.reduce(
   {} as Record<DemoItem, KeepRemove>,
 );
 
+const defaultPlumbing: Record<PlumbingKey, YesNoUnknown> = PLUMBING_QUESTIONS.reduce(
+  (acc, q) => ({ ...acc, [q.key]: "unknown" }),
+  {} as Record<PlumbingKey, YesNoUnknown>,
+);
+
 const defaultState: AssessmentState = {
   demolitionItems: defaultDemo,
+  plumbing: defaultPlumbing,
   activeLeaks: "no",
   crackedGrout: "no",
   visibleMold: "no",
@@ -52,9 +70,12 @@ const computeDemolitionLevel = (items: Record<DemoItem, KeepRemove>): Demolition
   return "Light";
 };
 
+type YesNoStepKey = "activeLeaks" | "crackedGrout" | "visibleMold" | "waterDamageSuspected";
+
 type StepDef =
   | { kind: "demo"; title: string; subtitle?: string }
-  | { key: keyof Omit<AssessmentState, "demolitionItems" | "waterproofingScope">; kind: "yesno"; title: string; subtitle?: string }
+  | { kind: "plumbing"; title: string; subtitle?: string }
+  | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
   | { kind: "scope"; title: string; subtitle?: string };
 
 const STEPS: StepDef[] = [
@@ -62,6 +83,11 @@ const STEPS: StepDef[] = [
     kind: "demo",
     title: "What stays and what goes?",
     subtitle: "Tap each item to mark it Keep or Remove. This sets your demolition scope.",
+  },
+  {
+    kind: "plumbing",
+    title: "Plumbing changes",
+    subtitle: "Moving fixtures or adding new ones can be a major cost driver. Quick check below.",
   },
   {
     key: "activeLeaks",
@@ -186,6 +212,7 @@ const BathroomAssessment = () => {
     ...defaultState,
     ...initial,
     demolitionItems: { ...defaultDemo, ...(initial.demolitionItems as Record<DemoItem, KeepRemove> | undefined) },
+    plumbing: { ...defaultPlumbing, ...(initial.plumbing as Record<PlumbingKey, YesNoUnknown> | undefined) },
   });
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -206,8 +233,14 @@ const BathroomAssessment = () => {
     [state.visibleMold, state.waterDamageSuspected, state.demolitionItems],
   );
 
+  const toiletRelocated = state.plumbing.toiletSameLocation === "no";
+  const tubToShower = state.plumbing.tubToShowerConversion === "yes";
+
   const set = <K extends keyof AssessmentState>(key: K, value: AssessmentState[K]) =>
     setState((s) => ({ ...s, [key]: value }));
+
+  const setPlumbing = (key: PlumbingKey, value: YesNoUnknown) =>
+    setState((s) => ({ ...s, plumbing: { ...s.plumbing, [key]: value } }));
 
   const toggleDemo = (item: DemoItem) =>
     setState((s) => ({
@@ -342,6 +375,42 @@ const BathroomAssessment = () => {
                 </>
               )}
 
+              {step.kind === "plumbing" && (
+                <div className="space-y-5">
+                  {PLUMBING_QUESTIONS.map((q) => (
+                    <div key={q.key} className="space-y-2">
+                      <p className="text-sm font-medium text-foreground">{q.label}</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(["yes", "no", "unknown"] as YesNoUnknown[]).map((v) => {
+                          const selected = state.plumbing[q.key] === v;
+                          const label = v === "unknown" ? "Not sure" : v === "yes" ? "Yes" : "No";
+                          return (
+                            <button
+                              key={v}
+                              type="button"
+                              onClick={() => setPlumbing(q.key, v)}
+                              className={`px-3 py-2.5 rounded-lg text-sm border-2 font-medium transition-colors ${
+                                selected
+                                  ? "border-primary bg-primary/10 text-foreground"
+                                  : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                  <div className="mt-4 flex items-center gap-2.5 rounded-xl bg-secondary/60 border border-border p-4">
+                    <Wrench className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-xs text-muted-foreground leading-relaxed">
+                      Moving water lines or drains is one of the largest hidden cost drivers in a remodel.
+                    </span>
+                  </div>
+                </div>
+              )}
+
               {step.kind === "yesno" && (
                 <div className="space-y-3">
                   {yesNoOptions.map((opt) => (
@@ -388,6 +457,34 @@ const BathroomAssessment = () => {
               <AlertTriangle className="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
               <p className="text-sm text-destructive leading-relaxed">
                 Visible mold or water damage requires professional remediation before work begins.
+              </p>
+            </motion.div>
+          )}
+
+          {toiletRelocated && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              role="alert"
+              className="mt-3 flex gap-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-4"
+            >
+              <Info className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-yellow-700 dark:text-yellow-300 leading-relaxed">
+                Toilet relocation often requires drain and vent changes — contractor verification required.
+              </p>
+            </motion.div>
+          )}
+
+          {tubToShower && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              role="alert"
+              className="mt-3 flex gap-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-4"
+            >
+              <Info className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-yellow-700 dark:text-yellow-300 leading-relaxed">
+                Tub-to-shower requires waterproofing, new drain, and valve height review.
               </p>
             </motion.div>
           )}
