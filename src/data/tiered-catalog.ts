@@ -1886,11 +1886,11 @@ export const tieredCatalog: TieredProduct[] = [
   },
   {
     id: "bal-tub-03",
-    name: '48" Japanese-Style Deep Soaking Tub',
+    name: 'Cheshire 69 inch Free Standing Clawfoot Bathtub',
     category: "Tub",
     tier: "Balanced",
-    vendor: "Aquatica",
-    price: 1200,
+    vendor: "Victoria and Albert",
+    price: 4551,
     description: "Deeper than wide — designed for a seated, fully submerged soak",
     finish: "Matte White",
     spec: '48" × 28" × 25" deep, acrylic, freestanding',
@@ -1898,8 +1898,8 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 250,
     laborNote: "Deep tub may need higher-capacity drain — adds ~$250",
     tag: "Trending",
-    affiliateUrl: "https://aquaticausa.com",
-    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/victoria-and-albert-che-n-of+ft-che/s1763389?uid=4163828",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/victoriaandalbert/victoria-and-albert-che-n-sw-of-ft-che-pb-5743830.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
