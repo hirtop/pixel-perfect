@@ -169,6 +169,7 @@ type StepDef =
   | { kind: "demo"; title: string; subtitle?: string }
   | { kind: "plumbing"; title: string; subtitle?: string }
   | { kind: "electrical"; title: string; subtitle?: string }
+  | { kind: "framing"; title: string; subtitle?: string }
   | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
   | { kind: "scope"; title: string; subtitle?: string };
 
@@ -187,6 +188,11 @@ const STEPS: StepDef[] = [
     kind: "electrical",
     title: "Electrical and ventilation",
     subtitle: "Tap any electrical work that applies, then answer a few quick ventilation questions.",
+  },
+  {
+    kind: "framing",
+    title: "Walls, framing, doors, and windows",
+    subtitle: "Tap any structural or opening changes that apply.",
   },
   {
     key: "activeLeaks",
