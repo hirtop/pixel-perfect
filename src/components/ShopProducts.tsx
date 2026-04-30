@@ -313,16 +313,6 @@ function ProductCard({ product, index }: { product: ShopProduct; index: number }
         </h3>
 
         <div className="mt-auto">
-          <a
-            href={product.url}
-            target="_blank"
-            rel="noopener noreferrer sponsored"
-            className="inline-flex items-center gap-1.5 text-sm font-medium text-primary hover:underline mb-4"
-          >
-            See current price
-            <ExternalLink className="w-3.5 h-3.5" />
-          </a>
-
           <div className="flex items-center justify-between gap-3">
             <Button
               size="sm"
