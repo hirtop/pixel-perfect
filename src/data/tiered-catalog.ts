@@ -15,8 +15,6 @@ import faucetBudgetImg from "@/assets/products/faucet-budget.jpg";
 import tileBudgetImg from "@/assets/products/tile-budget.jpg";
 import mirrorBudgetImg from "@/assets/products/mirror-budget.jpg";
 // Balanced defaults
-import vanityImg from "@/assets/products/vanity-balanced.jpg";
-import faucetImg from "@/assets/products/faucet-balanced.jpg";
 import tileImg from "@/assets/products/tile-balanced.jpg";
 import mirrorImg from "@/assets/products/mirror-balanced.jpg";
 // Premium defaults
