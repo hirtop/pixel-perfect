@@ -79,6 +79,7 @@ export interface ProjectData {
     };
     subfloorRisk?: "Low" | "Medium" | "High";
     complexity?: "Simple Refresh" | "Standard Remodel" | "Moderate Remodel" | "Major Remodel";
+    accessibilityItems?: string[];
   };
   style_preferences: {
     style?: string;
