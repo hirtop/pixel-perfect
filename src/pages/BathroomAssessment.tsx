@@ -205,6 +205,67 @@ const computeDemolitionLevel = (items: Record<DemoItem, KeepRemove>): Demolition
   return "Light";
 };
 
+type Complexity = "Simple Refresh" | "Standard Remodel" | "Moderate Remodel" | "Major Remodel";
+
+interface ComplexityInput {
+  demolitionLevel: DemolitionLevel;
+  plumbing: Record<PlumbingKey, YesNoUnknown>;
+  electricalScope: ElectricalScope;
+  framingScope: FramingScope;
+  subfloorRisk: SubfloorRisk;
+  waterproofingScope: WaterproofingScope | "";
+  visibleMold: YesNoUnknown;
+  waterDamageSuspected: YesNoUnknown;
+  moldDemoFlag: boolean;
+  tubToShower: YesNoUnknown;
+}
+
+const computeComplexity = (i: ComplexityInput): Complexity => {
+  const moldDetected =
+    i.visibleMold === "yes" || i.waterDamageSuspected === "yes" || i.moldDemoFlag;
+  const anyRelocation =
+    i.plumbing.vanitySameLocation === "no" ||
+    i.plumbing.toiletSameLocation === "no" ||
+    i.plumbing.tubShowerSameLocation === "no" ||
+    i.tubToShower === "yes";
+
+  if (
+    moldDetected ||
+    anyRelocation ||
+    i.subfloorRisk === "High" ||
+    i.framingScope === "Major layout change" ||
+    i.waterproofingScope === "Full shower system" ||
+    i.demolitionLevel === "Full Gut" ||
+    i.electricalScope === "Major"
+  ) {
+    return "Major Remodel";
+  }
+
+  if (
+    i.demolitionLevel === "Medium" ||
+    i.framingScope === "Wall modification" ||
+    i.electricalScope === "Moderate" ||
+    i.waterproofingScope === "Shower walls" ||
+    i.subfloorRisk === "Medium"
+  ) {
+    return "Moderate Remodel";
+  }
+
+  const allPlumbingStays =
+    i.plumbing.vanitySameLocation !== "no" &&
+    i.plumbing.toiletSameLocation !== "no" &&
+    i.plumbing.tubShowerSameLocation !== "no";
+  const simpleRefresh =
+    i.demolitionLevel === "Light" &&
+    allPlumbingStays &&
+    (i.electricalScope === "None" || i.electricalScope === "Minor") &&
+    i.framingScope === "None" &&
+    i.subfloorRisk === "Low" &&
+    (i.waterproofingScope === "None" || i.waterproofingScope === "" || i.waterproofingScope === "Tub surround");
+
+  return simpleRefresh ? "Simple Refresh" : "Standard Remodel";
+};
+
 type YesNoStepKey = "activeLeaks" | "crackedGrout" | "visibleMold" | "waterDamageSuspected";
 
 type StepDef =
