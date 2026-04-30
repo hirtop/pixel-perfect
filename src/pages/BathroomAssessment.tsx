@@ -214,7 +214,8 @@ type StepDef =
   | { kind: "framing"; title: string; subtitle?: string }
   | { kind: "subfloor"; title: string; subtitle?: string }
   | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
-  | { kind: "scope"; title: string; subtitle?: string };
+  | { kind: "scope"; title: string; subtitle?: string }
+  | { kind: "review"; title: string; subtitle?: string };
 
 const STEPS: StepDef[] = [
   {
@@ -270,6 +271,11 @@ const STEPS: StepDef[] = [
     kind: "scope",
     title: "Waterproofing scope likely needed",
     subtitle: "Best estimate of what wet-area work the existing bathroom needs.",
+  },
+  {
+    kind: "review",
+    title: "Review your scope",
+    subtitle: "A summary of everything you flagged, plus a complexity estimate to guide planning.",
   },
 ];
 
