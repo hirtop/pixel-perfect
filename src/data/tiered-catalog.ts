@@ -1247,7 +1247,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Default",
-    affiliateUrl: "",
+    affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
   },
   {
     id: "bal-accent-02",
