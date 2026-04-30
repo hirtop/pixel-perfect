@@ -268,12 +268,36 @@ const BathroomAssessment = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
 
-  const initial = (project?.assessment as Partial<AssessmentState>) || {};
+  const initial = (project?.assessment ?? {}) as Record<string, unknown>;
+  const initialElectricalArr = Array.isArray(initial.electricalItems)
+    ? (initial.electricalItems as string[])
+    : [];
+  const hydratedElectrical: Record<ElectricalItem, boolean> = ELECTRICAL_ITEMS.reduce(
+    (acc, item) => ({ ...acc, [item]: initialElectricalArr.includes(item) }),
+    {} as Record<ElectricalItem, boolean>,
+  );
+
   const [state, setState] = useState<AssessmentState>({
     ...defaultState,
-    ...initial,
-    demolitionItems: { ...defaultDemo, ...(initial.demolitionItems as Record<DemoItem, KeepRemove> | undefined) },
-    plumbing: { ...defaultPlumbing, ...(initial.plumbing as Record<PlumbingKey, YesNoUnknown> | undefined) },
+    activeLeaks: (initial.activeLeaks as YesNoUnknown) ?? defaultState.activeLeaks,
+    crackedGrout: (initial.crackedGrout as YesNoUnknown) ?? defaultState.crackedGrout,
+    visibleMold: (initial.visibleMold as YesNoUnknown) ?? defaultState.visibleMold,
+    waterDamageSuspected:
+      (initial.waterDamageSuspected as YesNoUnknown) ?? defaultState.waterDamageSuspected,
+    waterproofingScope: (initial.waterproofingScope as WaterproofingScope) ?? "",
+    demolitionItems: {
+      ...defaultDemo,
+      ...((initial.demolitionItems as Record<DemoItem, KeepRemove> | undefined) ?? {}),
+    },
+    plumbing: {
+      ...defaultPlumbing,
+      ...((initial.plumbing as Record<PlumbingKey, YesNoUnknown> | undefined) ?? {}),
+    },
+    electricalItems: hydratedElectrical,
+    ventilation: {
+      ...defaultVentilation,
+      ...((initial.ventilation as Record<VentilationKey, YesNoUnknown> | undefined) ?? {}),
+    },
   });
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -286,6 +310,16 @@ const BathroomAssessment = () => {
     [state.demolitionItems],
   );
 
+  const electricalScope = useMemo(
+    () => computeElectricalScope(state.electricalItems),
+    [state.electricalItems],
+  );
+
+  const ventilationScope = useMemo(
+    () => computeVentilationScope(state.ventilation),
+    [state.ventilation],
+  );
+
   const remediationAlert = useMemo(
     () =>
       state.visibleMold === "yes" ||
@@ -293,6 +327,8 @@ const BathroomAssessment = () => {
       state.demolitionItems["Suspected mold or water damage"] === "remove",
     [state.visibleMold, state.waterDamageSuspected, state.demolitionItems],
   );
+
+  const ventIntoAttic = state.ventilation.ventsOutside === "no";
 
   const toiletRelocated = state.plumbing.toiletSameLocation === "no";
   const tubToShower = state.plumbing.tubToShowerConversion === "yes";
@@ -302,6 +338,15 @@ const BathroomAssessment = () => {
 
   const setPlumbing = (key: PlumbingKey, value: YesNoUnknown) =>
     setState((s) => ({ ...s, plumbing: { ...s.plumbing, [key]: value } }));
+
+  const setVentilation = (key: VentilationKey, value: YesNoUnknown) =>
+    setState((s) => ({ ...s, ventilation: { ...s.ventilation, [key]: value } }));
+
+  const toggleElectrical = (item: ElectricalItem) =>
+    setState((s) => ({
+      ...s,
+      electricalItems: { ...s.electricalItems, [item]: !s.electricalItems[item] },
+    }));
 
   const toggleDemo = (item: DemoItem) =>
     setState((s) => ({
@@ -316,12 +361,21 @@ const BathroomAssessment = () => {
 
   const handleNext = () => {
     if (isLast) {
-      const { waterproofingScope, ...rest } = state;
+      const electricalItemsArr = ELECTRICAL_ITEMS.filter((item) => state.electricalItems[item]);
       updateProject({
         assessment: {
-          ...rest,
+          activeLeaks: state.activeLeaks,
+          crackedGrout: state.crackedGrout,
+          visibleMold: state.visibleMold,
+          waterDamageSuspected: state.waterDamageSuspected,
+          ...(state.waterproofingScope ? { waterproofingScope: state.waterproofingScope } : {}),
+          demolitionItems: state.demolitionItems,
           demolitionLevel,
-          ...(waterproofingScope ? { waterproofingScope } : {}),
+          plumbing: state.plumbing,
+          electricalItems: electricalItemsArr,
+          electricalScope,
+          ventilation: state.ventilation,
+          ventilationScope,
         },
       });
       markStepComplete("assessment");
