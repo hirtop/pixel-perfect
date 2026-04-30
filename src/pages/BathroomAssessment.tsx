@@ -321,6 +321,14 @@ const BathroomAssessment = () => {
     {} as Record<ElectricalItem, boolean>,
   );
 
+  const initialFramingArr = Array.isArray(initial.framingItems)
+    ? (initial.framingItems as string[])
+    : [];
+  const hydratedFraming: Record<FramingItem, boolean> = FRAMING_ITEMS.reduce(
+    (acc, item) => ({ ...acc, [item]: initialFramingArr.includes(item) }),
+    {} as Record<FramingItem, boolean>,
+  );
+
   const [state, setState] = useState<AssessmentState>({
     ...defaultState,
     activeLeaks: (initial.activeLeaks as YesNoUnknown) ?? defaultState.activeLeaks,
@@ -342,6 +350,7 @@ const BathroomAssessment = () => {
       ...defaultVentilation,
       ...((initial.ventilation as Record<VentilationKey, YesNoUnknown> | undefined) ?? {}),
     },
+    framingItems: hydratedFraming,
   });
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -364,6 +373,11 @@ const BathroomAssessment = () => {
     [state.ventilation],
   );
 
+  const framingScope = useMemo(
+    () => computeFramingScope(state.framingItems),
+    [state.framingItems],
+  );
+
   const remediationAlert = useMemo(
     () =>
       state.visibleMold === "yes" ||
@@ -371,6 +385,8 @@ const BathroomAssessment = () => {
       state.demolitionItems["Suspected mold or water damage"] === "remove",
     [state.visibleMold, state.waterDamageSuspected, state.demolitionItems],
   );
+
+  const windowNearShower = state.framingItems["Window inside / near shower"];
 
   const ventIntoAttic = state.ventilation.ventsOutside === "no";
 
@@ -390,6 +406,13 @@ const BathroomAssessment = () => {
     setState((s) => ({
       ...s,
       electricalItems: { ...s.electricalItems, [item]: !s.electricalItems[item] },
+    }));
+
+  const toggleFraming = (item: FramingItem) =>
+    setState((s) => ({
+      ...s,
+      framingItems: { ...s.framingItems, [item]: !s.framingItems[item] },
+    }));
     }));
 
   const toggleDemo = (item: DemoItem) =>
