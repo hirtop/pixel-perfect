@@ -74,14 +74,15 @@ const CATEGORIES = [
 
 type ShopCategory = (typeof CATEGORIES)[number];
 
-// Map between DB category values and UI tab labels
+// Map between DB category values and UI tab labels.
+// DB stores plural names — keep these aligned exactly.
 const DB_TO_UI: Record<string, ShopCategory> = {
-  Faucet: "Faucets",
-  Vanity: "Vanities",
-  Bathtub: "Bathtubs",
-  "Shower System": "Shower Systems",
+  Faucets: "Faucets",
+  Vanities: "Vanities",
+  Bathtubs: "Bathtubs",
+  "Shower Systems": "Shower Systems",
   Lighting: "Lighting",
-  "Heated Floor": "Heated Floors",
+  "Heated Floors": "Heated Floors",
 };
 
 // ─── Component ──────────────────────────────────────────────────────
