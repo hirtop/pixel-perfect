@@ -318,8 +318,8 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Sinks/KOHLER/N-5yc1vZbzb0Z1qh",
-    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/bathroom-sinks/c131345",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-2211-0-9163879.jpg",
   },
   {
     id: "bal-sink-02",
@@ -334,8 +334,8 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.kraususa.com/bathroom/sinks.html",
-    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/bathroom-sinks/c131345",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-2211-0-9163879.jpg",
   },
   {
     id: "bal-sink-03",
@@ -350,8 +350,8 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
-    affiliateUrl: "https://www.duravit.com/products/all_series/bathroom_sinks.en.html",
-    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/bathroom-sinks/c131345",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-2211-0-9163879.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -615,11 +615,11 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Tempered glass with polished edge — shelf holds everyday items",
     finish: "Polished Edge",
     spec: '36" W × 28" H, ½" tempered glass, 4" integrated shelf',
-    image: mirrorImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-99007-m-chr-5129969.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.homedepot.com/b/Bath-Bathroom-Mirrors/N-5yc1vZbzbo",
+    affiliateUrl: "https://www.fergusonhome.com/bathroom-mirrors/c112528",
   },
   {
     id: "bal-mirror-02",
@@ -631,11 +631,11 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Round shape softens angular tile and vanity lines",
     finish: "Antiqued Brass",
     spec: '30" diameter, solid brass frame, flush mount',
-    image: mirrorAlt1Img,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-99007-m-chr-5129969.jpg",
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.cb2.com/furniture/mirrors",
+    affiliateUrl: "https://www.fergusonhome.com/bathroom-mirrors/c112528",
   },
   {
     id: "bal-mirror-03",
@@ -647,12 +647,12 @@ export const tieredCatalog: TieredProduct[] = [
     description: 'Mirror-front hides 4" of storage — keeps counter clear',
     finish: "Mirror Front",
     spec: '30" W × 26" H × 4" D, recessed mount, slow-close hinges',
-    image: mirrorAlt2Img,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-99007-m-chr-5129969.jpg",
     isDefault: false,
     laborDelta: 350,
     laborNote: "Recessed install requires wall cavity cut — adds ~$350",
     tag: "Most Storage",
-    affiliateUrl: "https://www.robern.com/products/medicine-cabinets",
+    affiliateUrl: "https://www.fergusonhome.com/bathroom-mirrors/c112528",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -769,7 +769,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Fewer grout lines means easier cleaning and a more seamless look",
     finish: "Warm Gray Matte",
     spec: '24" × 48" rectified panels, ~60 sq ft coverage, rated for wet areas',
-    image: tileImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -785,7 +785,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Taller format than standard subway — fewer grout lines, more modern proportion",
     finish: "Glossy White",
     spec: '4" × 12" ceramic, ~60 sq ft, stacked or offset pattern',
-    image: tileAlt1Img,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
     isDefault: false,
     laborDelta: 100,
     laborNote: "Mid-size tile — slightly more cuts than large-format, adds ~$100",
@@ -802,7 +802,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Marble aesthetic without the sealing — porcelain is lower maintenance",
     finish: "Calacatta Matte",
     spec: '12" × 24" rectified porcelain, ~60 sq ft, rated for wet areas',
-    image: tileAlt2Img,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
     isDefault: false,
     laborDelta: 0,
     tag: "Upgrade",
@@ -929,7 +929,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/flooring/c108807",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
   },
   {
     id: "bal-ftile-02",
@@ -945,7 +945,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Value Pick",
     affiliateUrl: "https://www.fergusonhome.com/flooring/c108807",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
   },
   {
     id: "bal-ftile-03",
@@ -962,7 +962,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Pattern alignment adds ~$150 labor",
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/flooring/c108807",
-    image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1083,8 +1083,8 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.daltile.com/tile-product-category",
-    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
   },
   {
     id: "bal-sftile-02",
@@ -1099,8 +1099,8 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://www.bedrosians.com/en/product/list/by-look/mosaic/",
-    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
   },
   {
     id: "bal-sftile-03",
@@ -1116,8 +1116,8 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Linear drain prep adds ~$100 labor",
     tag: "Upgrade",
-    affiliateUrl: "https://www.merolatile.com",
-    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1258,7 +1258,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Liner placement adds ~$80 labor",
     tag: "Elegant Detail",
     affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
   },
   {
     id: "bal-accent-03",
@@ -1275,7 +1275,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Feature panel layout adds ~$150 labor",
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
-    image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1395,8 +1395,8 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://dreamline.com/shower-doors",
-    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/shower-doors/c109701",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-sglass-02",
@@ -1411,8 +1411,8 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://dreamline.com/shower-doors",
-    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/shower-doors/c109701",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-sglass-03",
@@ -1427,8 +1427,8 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
-    affiliateUrl: "https://dreamline.com/shower-doors",
-    image: "https://images.unsplash.com/photo-1620626011761-996317702782?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/shower-doors/c109701",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1548,8 +1548,8 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.deltafaucet.com/bathroom/showering",
-    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-svalve-02",
@@ -1565,8 +1565,8 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 80,
     laborNote: "3-way diverter requires additional rough-in — adds ~$80",
     tag: "Upgrade",
-    affiliateUrl: "https://www.kohler.com/en/products/showers/shop-bath-shower-faucets",
-    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-svalve-03",
@@ -1582,8 +1582,8 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Digital valve requires electrical connection — adds ~$150",
     tag: "Trending",
-    affiliateUrl: "https://www.moen.com/bathroom/shower-spa",
-    image: "https://images.unsplash.com/photo-1584622650111-993a426fbf0a?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1703,7 +1703,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-strim-02",
@@ -1719,7 +1719,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Value Pick",
     affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-strim-03",
@@ -1736,7 +1736,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Ceiling mount requires rerouting supply pipe — adds ~$200",
     tag: "Upgrade",
     affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -2014,7 +2014,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/tub-faucets/c133237",
-    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
   {
     id: "bal-tvalve-02",
@@ -2031,7 +2031,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Floor-mount requires concealed supply lines — adds ~$300",
     tag: "Upgrade",
     affiliateUrl: "https://www.fergusonhome.com/tub-faucets/c133237",
-    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
   {
     id: "bal-tvalve-03",
@@ -2048,7 +2048,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Wall-mount requires in-wall valve rough-in — adds ~$150",
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/tub-faucets/c133237",
-    image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -2169,8 +2169,8 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 100,
     laborNote: "Custom tiling inside niche adds ~$100 labor",
     tag: "Recommended",
-    affiliateUrl: "https://www.tilewareproducts.com/us",
-    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-niche-02",
@@ -2186,8 +2186,8 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Two-compartment niche requires more precise tile cuts — adds ~$150",
     tag: "Upgrade",
-    affiliateUrl: "https://www.tilewareproducts.com/us",
-    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-niche-03",
@@ -2203,8 +2203,8 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "LED requires low-voltage wiring to niche — adds ~$200",
     tag: "Trending",
-    affiliateUrl: "https://www.illuminiche.com",
-    image: "https://images.unsplash.com/photo-1600566753190-17f0baa2a6c3?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
