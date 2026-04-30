@@ -69,12 +69,34 @@ const FRAMING_ITEMS = [
 type FramingItem = (typeof FRAMING_ITEMS)[number];
 type FramingScope = "None" | "Minor blocking" | "Wall modification" | "Major layout change";
 
+const SUBFLOOR_YESNO = [
+  { key: "softOrUneven", label: "Is the floor soft or uneven?" },
+  { key: "squeaking", label: "Any squeaking?" },
+  { key: "previousLeak", label: "Previous leak or water damage near toilet/shower?" },
+  { key: "crackedTiles", label: "Any cracked tiles?" },
+  { key: "tilingFloor", label: "Is the floor being tiled?" },
+] as const;
+type SubfloorYesNoKey = (typeof SUBFLOOR_YESNO)[number]["key"];
+const SUBFLOOR_TYPES = ["Slab", "Crawlspace", "Second floor", "Not sure"] as const;
+type SubfloorType = (typeof SUBFLOOR_TYPES)[number];
+type SubfloorRisk = "Low" | "Medium" | "High";
+
+interface SubfloorState {
+  softOrUneven: YesNoUnknown;
+  squeaking: YesNoUnknown;
+  previousLeak: YesNoUnknown;
+  crackedTiles: YesNoUnknown;
+  tilingFloor: YesNoUnknown;
+  subfloorType: SubfloorType | "";
+}
+
 interface AssessmentState {
   demolitionItems: Record<DemoItem, KeepRemove>;
   plumbing: Record<PlumbingKey, YesNoUnknown>;
   electricalItems: Record<ElectricalItem, boolean>;
   ventilation: Record<VentilationKey, YesNoUnknown>;
   framingItems: Record<FramingItem, boolean>;
+  subfloor: SubfloorState;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -107,17 +129,37 @@ const defaultFraming: Record<FramingItem, boolean> = FRAMING_ITEMS.reduce(
   {} as Record<FramingItem, boolean>,
 );
 
+const defaultSubfloor: SubfloorState = {
+  softOrUneven: "unknown",
+  squeaking: "unknown",
+  previousLeak: "unknown",
+  crackedTiles: "unknown",
+  tilingFloor: "unknown",
+  subfloorType: "",
+};
+
 const defaultState: AssessmentState = {
   demolitionItems: defaultDemo,
   plumbing: defaultPlumbing,
   electricalItems: defaultElectrical,
   ventilation: defaultVentilation,
   framingItems: defaultFraming,
+  subfloor: defaultSubfloor,
   activeLeaks: "no",
   crackedGrout: "no",
   visibleMold: "no",
   waterDamageSuspected: "no",
   waterproofingScope: "",
+};
+
+const computeSubfloorRisk = (s: SubfloorState): SubfloorRisk => {
+  const yesCount = [s.softOrUneven, s.squeaking, s.previousLeak, s.crackedTiles].filter(
+    (v) => v === "yes",
+  ).length;
+  const tiling = s.tilingFloor === "yes";
+  if (s.softOrUneven === "yes" || s.previousLeak === "yes" || yesCount >= 3) return "High";
+  if (yesCount >= 1 || (tiling && s.subfloorType === "Second floor")) return "Medium";
+  return "Low";
 };
 
 const computeFramingScope = (items: Record<FramingItem, boolean>): FramingScope => {
