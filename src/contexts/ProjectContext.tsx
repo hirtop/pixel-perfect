@@ -69,6 +69,15 @@ export interface ProjectData {
     ventilationScope?: "None" | "Replace only" | "New install" | "Upgrade";
     framingItems?: string[];
     framingScope?: "None" | "Minor blocking" | "Wall modification" | "Major layout change";
+    subfloor?: {
+      softOrUneven?: "yes" | "no" | "unknown";
+      squeaking?: "yes" | "no" | "unknown";
+      previousLeak?: "yes" | "no" | "unknown";
+      crackedTiles?: "yes" | "no" | "unknown";
+      subfloorType?: "Slab" | "Crawlspace" | "Second floor" | "Not sure";
+      tilingFloor?: "yes" | "no" | "unknown";
+    };
+    subfloorRisk?: "Low" | "Medium" | "High";
   };
   style_preferences: {
     style?: string;
