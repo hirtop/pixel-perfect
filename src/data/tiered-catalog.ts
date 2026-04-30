@@ -950,7 +950,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
-    affiliateUrl: "https://www.marazziusa.com/our-products",
+    affiliateUrl: "https://www.fergusonhome.com/flooring/c108807",
     image: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80",
   },
   {
