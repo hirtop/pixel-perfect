@@ -97,7 +97,8 @@ interface ShopProductsProps {
   className?: string;
 }
 
-const formatPrice = (n: number) => `$${n.toLocaleString()}`;
+const formatPrice = (n: number) =>
+  `$${n.toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
 export default function ShopProducts({
   limit,
@@ -304,30 +305,32 @@ function ProductCard({ product, index }: { product: ShopProduct; index: number }
             {product.brand}
           </span>
           <Badge variant="outline" className="text-[10px] font-medium border-border text-muted-foreground">
-            {product.bestFor}
+            {product.category}
           </Badge>
         </div>
 
-        <h3 className="font-heading text-lg text-foreground leading-snug line-clamp-2 mb-4 min-h-[3.25rem]">
+        <h3 className="font-heading text-lg text-foreground leading-snug line-clamp-2 mb-3 min-h-[3.25rem]">
           {product.name}
         </h3>
 
+        <p className="font-heading text-2xl text-foreground mb-4">
+          {formatPrice(product.price)}
+        </p>
+
         <div className="mt-auto">
-          <div className="flex items-center justify-between gap-3">
-            <Button
-              size="sm"
-              className="bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 w-full"
-              asChild
-            >
-              <a href={product.url} target="_blank" rel="noopener noreferrer sponsored">
-                Shop Now
-                <ExternalLink className="w-3.5 h-3.5" />
-              </a>
-            </Button>
-          </div>
+          <Button
+            size="sm"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 gap-1.5 w-full"
+            asChild
+          >
+            <a href={product.url} target="_blank" rel="noopener noreferrer sponsored">
+              Shop Now
+              <ExternalLink className="w-3.5 h-3.5" />
+            </a>
+          </Button>
 
           <p className="mt-3 text-[11px] text-muted-foreground text-center">
-            Price shown at {product.retailer}
+            Price shown at Ferguson Home
           </p>
         </div>
       </div>
