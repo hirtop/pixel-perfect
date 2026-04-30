@@ -565,6 +565,12 @@ const BathroomAssessment = () => {
       framingItems: { ...s.framingItems, [item]: !s.framingItems[item] },
     }));
 
+  const toggleAccessibility = (item: AccessibilityItem) =>
+    setState((s) => ({
+      ...s,
+      accessibilityItems: { ...s.accessibilityItems, [item]: !s.accessibilityItems[item] },
+    }));
+
   const setSubfloor = <K extends keyof SubfloorState>(key: K, value: SubfloorState[K]) =>
     setState((s) => ({ ...s, subfloor: { ...s.subfloor, [key]: value } }));
 
