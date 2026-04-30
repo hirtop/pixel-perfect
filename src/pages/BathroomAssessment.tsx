@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer } from "lucide-react";
+import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer, Wrench, Info } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 
