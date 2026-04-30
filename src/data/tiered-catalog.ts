@@ -1708,7 +1708,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.moen.com/bathroom/shower-spa",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
     image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
