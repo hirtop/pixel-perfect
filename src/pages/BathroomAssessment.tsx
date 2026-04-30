@@ -375,7 +375,42 @@ const BathroomAssessment = () => {
                 </>
               )}
 
-              {step.kind === "yesno" && (
+              {step.kind === "plumbing" && (
+                <div className="space-y-5">
+                  {PLUMBING_QUESTIONS.map((q) => (
+                    <div key={q.key} className="space-y-2">
+                      <p className="text-sm font-medium text-foreground">{q.label}</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(["yes", "no", "unknown"] as YesNoUnknown[]).map((v) => {
+                          const selected = state.plumbing[q.key] === v;
+                          const label = v === "unknown" ? "Not sure" : v === "yes" ? "Yes" : "No";
+                          return (
+                            <button
+                              key={v}
+                              type="button"
+                              onClick={() => setPlumbing(q.key, v)}
+                              className={`px-3 py-2.5 rounded-lg text-sm border-2 font-medium transition-colors ${
+                                selected
+                                  ? "border-primary bg-primary/10 text-foreground"
+                                  : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+                  <div className="mt-4 flex items-center gap-2.5 rounded-xl bg-secondary/60 border border-border p-4">
+                    <Wrench className="h-4 w-4 text-primary flex-shrink-0" />
+                    <span className="text-xs text-muted-foreground leading-relaxed">
+                      Moving water lines or drains is one of the largest hidden cost drivers in a remodel.
+                    </span>
+                  </div>
+                </div>
+              )}
+
                 <div className="space-y-3">
                   {yesNoOptions.map((opt) => (
                     <OptionButton
