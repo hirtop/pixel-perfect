@@ -22,8 +22,20 @@ const DEMO_ITEMS = [
 ] as const;
 type DemoItem = (typeof DEMO_ITEMS)[number];
 
+const PLUMBING_QUESTIONS = [
+  { key: "vanitySameLocation", label: "Is the vanity staying in the same location?" },
+  { key: "toiletSameLocation", label: "Is the toilet staying in the same location?" },
+  { key: "tubShowerSameLocation", label: "Is the tub/shower staying in the same location?" },
+  { key: "tubToShowerConversion", label: "Are you converting a tub to a shower?" },
+  { key: "addingSecondSink", label: "Adding a second sink?" },
+  { key: "knownLeaks", label: "Any known leaks?" },
+  { key: "drainIssues", label: "Any drain issues?" },
+] as const;
+type PlumbingKey = (typeof PLUMBING_QUESTIONS)[number]["key"];
+
 interface AssessmentState {
   demolitionItems: Record<DemoItem, KeepRemove>;
+  plumbing: Record<PlumbingKey, YesNoUnknown>;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -36,8 +48,14 @@ const defaultDemo: Record<DemoItem, KeepRemove> = DEMO_ITEMS.reduce(
   {} as Record<DemoItem, KeepRemove>,
 );
 
+const defaultPlumbing: Record<PlumbingKey, YesNoUnknown> = PLUMBING_QUESTIONS.reduce(
+  (acc, q) => ({ ...acc, [q.key]: "unknown" }),
+  {} as Record<PlumbingKey, YesNoUnknown>,
+);
+
 const defaultState: AssessmentState = {
   demolitionItems: defaultDemo,
+  plumbing: defaultPlumbing,
   activeLeaks: "no",
   crackedGrout: "no",
   visibleMold: "no",
