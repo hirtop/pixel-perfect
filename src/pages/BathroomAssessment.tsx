@@ -160,6 +160,7 @@ const defaultState: AssessmentState = {
   electricalItems: defaultElectrical,
   ventilation: defaultVentilation,
   framingItems: defaultFraming,
+  accessibilityItems: defaultAccessibility,
   subfloor: defaultSubfloor,
   activeLeaks: "no",
   crackedGrout: "no",
