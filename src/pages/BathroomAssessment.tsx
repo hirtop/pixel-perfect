@@ -69,12 +69,34 @@ const FRAMING_ITEMS = [
 type FramingItem = (typeof FRAMING_ITEMS)[number];
 type FramingScope = "None" | "Minor blocking" | "Wall modification" | "Major layout change";
 
+const SUBFLOOR_YESNO = [
+  { key: "softOrUneven", label: "Is the floor soft or uneven?" },
+  { key: "squeaking", label: "Any squeaking?" },
+  { key: "previousLeak", label: "Previous leak or water damage near toilet/shower?" },
+  { key: "crackedTiles", label: "Any cracked tiles?" },
+  { key: "tilingFloor", label: "Is the floor being tiled?" },
+] as const;
+type SubfloorYesNoKey = (typeof SUBFLOOR_YESNO)[number]["key"];
+const SUBFLOOR_TYPES = ["Slab", "Crawlspace", "Second floor", "Not sure"] as const;
+type SubfloorType = (typeof SUBFLOOR_TYPES)[number];
+type SubfloorRisk = "Low" | "Medium" | "High";
+
+interface SubfloorState {
+  softOrUneven: YesNoUnknown;
+  squeaking: YesNoUnknown;
+  previousLeak: YesNoUnknown;
+  crackedTiles: YesNoUnknown;
+  tilingFloor: YesNoUnknown;
+  subfloorType: SubfloorType | "";
+}
+
 interface AssessmentState {
   demolitionItems: Record<DemoItem, KeepRemove>;
   plumbing: Record<PlumbingKey, YesNoUnknown>;
   electricalItems: Record<ElectricalItem, boolean>;
   ventilation: Record<VentilationKey, YesNoUnknown>;
   framingItems: Record<FramingItem, boolean>;
+  subfloor: SubfloorState;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -107,17 +129,37 @@ const defaultFraming: Record<FramingItem, boolean> = FRAMING_ITEMS.reduce(
   {} as Record<FramingItem, boolean>,
 );
 
+const defaultSubfloor: SubfloorState = {
+  softOrUneven: "unknown",
+  squeaking: "unknown",
+  previousLeak: "unknown",
+  crackedTiles: "unknown",
+  tilingFloor: "unknown",
+  subfloorType: "",
+};
+
 const defaultState: AssessmentState = {
   demolitionItems: defaultDemo,
   plumbing: defaultPlumbing,
   electricalItems: defaultElectrical,
   ventilation: defaultVentilation,
   framingItems: defaultFraming,
+  subfloor: defaultSubfloor,
   activeLeaks: "no",
   crackedGrout: "no",
   visibleMold: "no",
   waterDamageSuspected: "no",
   waterproofingScope: "",
+};
+
+const computeSubfloorRisk = (s: SubfloorState): SubfloorRisk => {
+  const yesCount = [s.softOrUneven, s.squeaking, s.previousLeak, s.crackedTiles].filter(
+    (v) => v === "yes",
+  ).length;
+  const tiling = s.tilingFloor === "yes";
+  if (s.softOrUneven === "yes" || s.previousLeak === "yes" || yesCount >= 3) return "High";
+  if (yesCount >= 1 || (tiling && s.subfloorType === "Second floor")) return "Medium";
+  return "Low";
 };
 
 const computeFramingScope = (items: Record<FramingItem, boolean>): FramingScope => {
@@ -170,6 +212,7 @@ type StepDef =
   | { kind: "plumbing"; title: string; subtitle?: string }
   | { kind: "electrical"; title: string; subtitle?: string }
   | { kind: "framing"; title: string; subtitle?: string }
+  | { kind: "subfloor"; title: string; subtitle?: string }
   | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
   | { kind: "scope"; title: string; subtitle?: string };
 
@@ -193,6 +236,11 @@ const STEPS: StepDef[] = [
     kind: "framing",
     title: "Walls, framing, doors, and windows",
     subtitle: "Tap any structural or opening changes that apply.",
+  },
+  {
+    kind: "subfloor",
+    title: "Floor and subfloor condition",
+    subtitle: "A few quick checks to flag any subfloor risk before materials are ordered.",
   },
   {
     key: "activeLeaks",
@@ -351,6 +399,10 @@ const BathroomAssessment = () => {
       ...((initial.ventilation as Record<VentilationKey, YesNoUnknown> | undefined) ?? {}),
     },
     framingItems: hydratedFraming,
+    subfloor: {
+      ...defaultSubfloor,
+      ...((initial.subfloor as Partial<SubfloorState> | undefined) ?? {}),
+    },
   });
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -377,6 +429,8 @@ const BathroomAssessment = () => {
     () => computeFramingScope(state.framingItems),
     [state.framingItems],
   );
+
+  const subfloorRisk = useMemo(() => computeSubfloorRisk(state.subfloor), [state.subfloor]);
 
   const remediationAlert = useMemo(
     () =>
@@ -414,6 +468,9 @@ const BathroomAssessment = () => {
       framingItems: { ...s.framingItems, [item]: !s.framingItems[item] },
     }));
 
+  const setSubfloor = <K extends keyof SubfloorState>(key: K, value: SubfloorState[K]) =>
+    setState((s) => ({ ...s, subfloor: { ...s.subfloor, [key]: value } }));
+
   const toggleDemo = (item: DemoItem) =>
     setState((s) => ({
       ...s,
@@ -445,6 +502,17 @@ const BathroomAssessment = () => {
           ventilationScope,
           framingItems: framingItemsArr,
           framingScope,
+          subfloor: {
+            softOrUneven: state.subfloor.softOrUneven,
+            squeaking: state.subfloor.squeaking,
+            previousLeak: state.subfloor.previousLeak,
+            crackedTiles: state.subfloor.crackedTiles,
+            tilingFloor: state.subfloor.tilingFloor,
+            ...(state.subfloor.subfloorType
+              ? { subfloorType: state.subfloor.subfloorType }
+              : {}),
+          },
+          subfloorRisk,
         },
       });
       markStepComplete("assessment");
@@ -715,6 +783,64 @@ const BathroomAssessment = () => {
                 </div>
               )}
 
+              {step.kind === "subfloor" && (
+                <div className="space-y-5">
+                  {SUBFLOOR_YESNO.map((q) => (
+                    <div key={q.key} className="space-y-2">
+                      <p className="text-sm font-medium text-foreground">{q.label}</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(["yes", "no", "unknown"] as YesNoUnknown[]).map((v) => {
+                          const selected = state.subfloor[q.key] === v;
+                          const label = v === "unknown" ? "Not sure" : v === "yes" ? "Yes" : "No";
+                          return (
+                            <button
+                              key={v}
+                              type="button"
+                              onClick={() => setSubfloor(q.key, v)}
+                              className={`px-3 py-2.5 rounded-lg text-sm border-2 font-medium transition-colors ${
+                                selected
+                                  ? "border-primary bg-primary/10 text-foreground"
+                                  : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-foreground">What type of subfloor is this on?</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {SUBFLOOR_TYPES.map((t) => {
+                        const selected = state.subfloor.subfloorType === t;
+                        return (
+                          <button
+                            key={t}
+                            type="button"
+                            onClick={() => setSubfloor("subfloorType", t)}
+                            className={`px-3 py-2.5 rounded-lg text-sm border-2 font-medium transition-colors ${
+                              selected
+                                ? "border-primary bg-primary/10 text-foreground"
+                                : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                            }`}
+                          >
+                            {t}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="mt-2 flex items-center justify-between rounded-xl bg-secondary/60 border border-border p-3">
+                    <span className="text-sm text-muted-foreground">Subfloor risk</span>
+                    <span className="font-heading text-base text-foreground">{subfloorRisk}</span>
+                  </div>
+                </div>
+              )}
+
               {step.kind === "yesno" && (
                 <div className="space-y-3">
                   {yesNoOptions.map((opt) => (
@@ -803,6 +929,20 @@ const BathroomAssessment = () => {
               <Info className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-yellow-700 dark:text-yellow-300 leading-relaxed">
                 Venting into an attic instead of outside often causes moisture buildup — worth verifying with your contractor.
+              </p>
+            </motion.div>
+          )}
+
+          {subfloorRisk === "High" && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              role="alert"
+              className="mt-3 flex gap-3 rounded-xl border border-orange-500/40 bg-orange-500/10 p-4"
+            >
+              <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-orange-700 dark:text-orange-300 leading-relaxed">
+                Subfloor should be inspected before final material order.
               </p>
             </motion.div>
           )}
