@@ -60,6 +60,25 @@ const SHOP_PRODUCTS_FALLBACK: ShopProduct[] = [
   { id: "p30", category: "Heated Floors", brand: "WarmlyYours", name: "Tempzone Cable System 240V — 37 sq ft", price: 349, priceNote: "starting at", image: "https://images.fergusonhome.com/is/image/FergusonHome/4949031", url: "https://www.fergusonhome.com/warmlyyours-tct240-3-7w-595-fs/s2057047?uid=4949031", retailer: "Ferguson Home", bestFor: "Master Bath" },
 ];
 
+
+  // Sinks
+  { id: "p31", category: "Sinks", brand: "Kohler", name: 'Caxton 21-1/4" x 17-1/4" Undermount Bathroom Sink with Overflow', price: 116.25, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-2211-0.jpg", url: "https://www.fergusonhome.com/kohler-k-2211/s560195?uid=163516", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
+  { id: "p32", category: "Sinks", brand: "Signature Hardware", name: 'Myers 23" Porcelain Undermount Bathroom Sink', price: 179, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/sh-447959-myers-sink-wh-18-beauty08.jpg", url: "https://www.fergusonhome.com/signature-hardware-447959/s1581049?uid=4067898", retailer: "Ferguson Home", bestFor: "Guest Bath" },
+  { id: "p33", category: "Sinks", brand: "Kohler", name: 'Archer 19-7/8" x 14-3/8" Undermount Bathroom Sink with Overflow', price: 229, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-2355-0-1864588.jpg", url: "https://www.fergusonhome.com/kohler-k-2355/s560278?uid=1864588", retailer: "Ferguson Home", bestFor: "Modern Bath" },
+  // Mirrors
+  { id: "p34", category: "Mirrors", brand: "Kohler", name: '36" Essential Rectangular Metal Framed Bathroom Wall Mirror', price: 339, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-31364-bnl-8211481.jpg", url: "https://www.fergusonhome.com/kohler-k-31364/s2090660", retailer: "Ferguson Home", bestFor: "Any Bath", featured: true },
+  { id: "p35", category: "Mirrors", brand: "Kohler", name: 'Castia by Studio McGee 29-1/2" x 38-1/2" Rectangular Framed Mirror', price: 499, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-34969-2mb-2351648.jpg", url: "https://www.fergusonhome.com/kohler-k-34969/s2093020", retailer: "Ferguson Home", bestFor: "Master Bath" },
+  { id: "p36", category: "Mirrors", brand: "Signature Hardware", name: 'Curie 32" x 24" LED Lighted Modern Rectangular Bathroom Mirror', price: 329, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-442983-1508143.jpg", url: "https://www.fergusonhome.com/signature-hardware-442983/s1640082", retailer: "Ferguson Home", bestFor: "Spa Bath" },
+  // Shower Doors
+  { id: "p37", category: "Shower Doors", brand: "Kohler", name: 'Levity 74" High x 59-5/8" Wide Bypass Frameless Shower Door', price: 797.40, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-706015-l-mx-3980066.jpg", url: "https://www.fergusonhome.com/kohler-k-706015-l/s847083?uid=2180321", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
+  { id: "p38", category: "Shower Doors", brand: "Kohler", name: 'Revel 70" High x 43-1/8" - 48" Wide Pivot Frameless Shower Door', price: 834.93, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-707551-l-bnk-3980066.jpg", url: "https://www.fergusonhome.com/kohler-k-707551-l/s1127268?uid=2707429", retailer: "Ferguson Home", bestFor: "Guest Bath" },
+  { id: "p39", category: "Shower Doors", brand: "DreamLine", name: 'Enigma-X 76" High x 60" Wide Sliding Frameless Shower Door', price: 1319.99, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/dreamline/dreamline-shdr-61607610-07-1093561.jpg", url: "https://www.fergusonhome.com/dreamline-shdr-61607610/s709085?uid=1725914", retailer: "Ferguson Home", bestFor: "Spa Bath" },
+  // Tile
+  { id: "p40", category: "Tile", brand: "Daltile", name: 'Dignitary 12" x 24" Rectangle Floor and Wall Tile — Warm Gray Matte', price: 2.19, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-dr1012241p-712.jpg", url: "https://www.fergusonhome.com/daltile-dr1012241p/s1921316", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
+  { id: "p41", category: "Tile", brand: "Bedrosians", name: 'Cloe 2.5" x 8" Glossy White Ceramic Wall Tile', price: 3.49, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/bedrosians/bedrosians-decclowhi28g-8497430.jpg", url: "https://www.fergusonhome.com/bedrosians-decclowhi28g/s1925516", retailer: "Ferguson Home", bestFor: "Guest Bath" },
+  { id: "p42", category: "Tile", brand: "Daltile", name: 'Florentine 12" x 24" Marble Look Polished Porcelain Floor & Wall Tile', price: 4.49, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-fl061224f1pk-1300.jpg", url: "https://www.fergusonhome.com/daltile-fl061224f1pk/s1921325", retailer: "Ferguson Home", bestFor: "Spa Bath" },
+];
+
 // ─── Categories ─────────────────────────────────────────────────────
 
 const CATEGORIES = [
@@ -68,6 +87,10 @@ const CATEGORIES = [
   "Vanities",
   "Bathtubs",
   "Shower Systems",
+  "Shower Doors",
+  "Sinks",
+  "Mirrors",
+  "Tile",
   "Lighting",
   "Heated Floors",
 ] as const;
@@ -81,6 +104,10 @@ const DB_TO_UI: Record<string, ShopCategory> = {
   Vanities: "Vanities",
   Bathtubs: "Bathtubs",
   "Shower Systems": "Shower Systems",
+  "Shower Doors": "Shower Doors",
+  Sinks: "Sinks",
+  Mirrors: "Mirrors",
+  Tile: "Tile",
   Lighting: "Lighting",
   "Heated Floors": "Heated Floors",
 };
@@ -244,6 +271,10 @@ const CATEGORY_EMOJI: Record<ShopCategory, string> = {
   Vanities: "🪞",
   Bathtubs: "🛁",
   "Shower Systems": "🚿",
+  "Shower Doors": "🚿",
+  Sinks: "🪣",
+  Mirrors: "🪞",
+  Tile: "⬜",
   Lighting: "💡",
   "Heated Floors": "🌡️",
 };
