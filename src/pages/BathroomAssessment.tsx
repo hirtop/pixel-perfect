@@ -783,7 +783,64 @@ const BathroomAssessment = () => {
                 </div>
               )}
 
-              {step.kind === "yesno" && (
+              {step.kind === "subfloor" && (
+                <div className="space-y-5">
+                  {SUBFLOOR_YESNO.map((q) => (
+                    <div key={q.key} className="space-y-2">
+                      <p className="text-sm font-medium text-foreground">{q.label}</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(["yes", "no", "unknown"] as YesNoUnknown[]).map((v) => {
+                          const selected = state.subfloor[q.key] === v;
+                          const label = v === "unknown" ? "Not sure" : v === "yes" ? "Yes" : "No";
+                          return (
+                            <button
+                              key={v}
+                              type="button"
+                              onClick={() => setSubfloor(q.key, v)}
+                              className={`px-3 py-2.5 rounded-lg text-sm border-2 font-medium transition-colors ${
+                                selected
+                                  ? "border-primary bg-primary/10 text-foreground"
+                                  : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="space-y-2">
+                    <p className="text-sm font-medium text-foreground">What type of subfloor is this on?</p>
+                    <div className="grid grid-cols-2 gap-2">
+                      {SUBFLOOR_TYPES.map((t) => {
+                        const selected = state.subfloor.subfloorType === t;
+                        return (
+                          <button
+                            key={t}
+                            type="button"
+                            onClick={() => setSubfloor("subfloorType", t)}
+                            className={`px-3 py-2.5 rounded-lg text-sm border-2 font-medium transition-colors ${
+                              selected
+                                ? "border-primary bg-primary/10 text-foreground"
+                                : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                            }`}
+                          >
+                            {t}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  <div className="mt-2 flex items-center justify-between rounded-xl bg-secondary/60 border border-border p-3">
+                    <span className="text-sm text-muted-foreground">Subfloor risk</span>
+                    <span className="font-heading text-base text-foreground">{subfloorRisk}</span>
+                  </div>
+                </div>
+              )}
+
                 <div className="space-y-3">
                   {yesNoOptions.map((opt) => (
                     <OptionButton
