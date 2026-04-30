@@ -1263,7 +1263,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 80,
     laborNote: "Liner placement adds ~$80 labor",
     tag: "Elegant Detail",
-    affiliateUrl: "https://www.bedrosians.com/en/product/list/by-look/mosaic/",
+    affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
     image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&q=80",
   },
   {
