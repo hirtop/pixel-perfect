@@ -2019,7 +2019,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.deltafaucet.com/bathroom",
+    affiliateUrl: "https://www.fergusonhome.com/tub-faucets/c133237",
     image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
   {
