@@ -499,6 +499,35 @@ const BathroomAssessment = () => {
 
   const subfloorRisk = useMemo(() => computeSubfloorRisk(state.subfloor), [state.subfloor]);
 
+  const moldDemoFlag = state.demolitionItems["Suspected mold or water damage"] === "remove";
+
+  const complexity = useMemo(
+    () =>
+      computeComplexity({
+        demolitionLevel,
+        plumbing: state.plumbing,
+        electricalScope,
+        framingScope,
+        subfloorRisk,
+        waterproofingScope: state.waterproofingScope,
+        visibleMold: state.visibleMold,
+        waterDamageSuspected: state.waterDamageSuspected,
+        moldDemoFlag,
+        tubToShower: state.plumbing.tubToShowerConversion ?? "unknown",
+      }),
+    [
+      demolitionLevel,
+      state.plumbing,
+      electricalScope,
+      framingScope,
+      subfloorRisk,
+      state.waterproofingScope,
+      state.visibleMold,
+      state.waterDamageSuspected,
+      moldDemoFlag,
+    ],
+  );
+
   const remediationAlert = useMemo(
     () =>
       state.visibleMold === "yes" ||
