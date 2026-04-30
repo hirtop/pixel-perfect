@@ -59,7 +59,7 @@ const PRODUCT_IMAGES: Record<string, string> = {
   "Mirrors": "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-31364-bnl-8211481.jpg",
   "Shower Wall Tile": "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-dr1012241p-712.jpg",
   "Main Floor Tile": "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-dr1012241p-712.jpg",
-  "Shower Floor Tile": "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-mm303121p2-2072260.jpg",
+  "Shower Floor Tile": "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-dr1012241p-712.jpg",
   "Accent Tile": "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-dr1012241p-712.jpg",
   "Shower Doors": "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   "Shower Valve": "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
