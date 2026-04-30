@@ -135,7 +135,13 @@ const BathroomAssessment = () => {
   const handleNext = () => {
     if (!canAdvance) return;
     if (isLast) {
-      updateProject({ assessment: state });
+      const { waterproofingScope, ...rest } = state;
+      updateProject({
+        assessment: {
+          ...rest,
+          ...(waterproofingScope ? { waterproofingScope } : {}),
+        },
+      });
       markStepComplete("assessment");
       navigate("/style-budget");
       return;
