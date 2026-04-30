@@ -685,7 +685,20 @@ const BathroomAssessment = () => {
             </motion.div>
           )}
 
-          <div className="mt-8 flex items-center justify-between gap-4">
+          {ventIntoAttic && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              role="alert"
+              className="mt-3 flex gap-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-4"
+            >
+              <Info className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-yellow-700 dark:text-yellow-300 leading-relaxed">
+                Venting into an attic instead of outside often causes moisture buildup — worth verifying with your contractor.
+              </p>
+            </motion.div>
+          )}
+
             <Button
               variant="ghost"
               onClick={handleBack}
