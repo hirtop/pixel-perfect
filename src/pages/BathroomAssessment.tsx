@@ -841,6 +841,7 @@ const BathroomAssessment = () => {
                 </div>
               )}
 
+              {step.kind === "yesno" && (
                 <div className="space-y-3">
                   {yesNoOptions.map((opt) => (
                     <OptionButton
