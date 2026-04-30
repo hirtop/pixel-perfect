@@ -399,6 +399,10 @@ const BathroomAssessment = () => {
       ...((initial.ventilation as Record<VentilationKey, YesNoUnknown> | undefined) ?? {}),
     },
     framingItems: hydratedFraming,
+    subfloor: {
+      ...defaultSubfloor,
+      ...((initial.subfloor as Partial<SubfloorState> | undefined) ?? {}),
+    },
   });
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -425,6 +429,8 @@ const BathroomAssessment = () => {
     () => computeFramingScope(state.framingItems),
     [state.framingItems],
   );
+
+  const subfloorRisk = useMemo(() => computeSubfloorRisk(state.subfloor), [state.subfloor]);
 
   const remediationAlert = useMemo(
     () =>
@@ -462,6 +468,9 @@ const BathroomAssessment = () => {
       framingItems: { ...s.framingItems, [item]: !s.framingItems[item] },
     }));
 
+  const setSubfloor = <K extends keyof SubfloorState>(key: K, value: SubfloorState[K]) =>
+    setState((s) => ({ ...s, subfloor: { ...s.subfloor, [key]: value } }));
+
   const toggleDemo = (item: DemoItem) =>
     setState((s) => ({
       ...s,
@@ -493,6 +502,8 @@ const BathroomAssessment = () => {
           ventilationScope,
           framingItems: framingItemsArr,
           framingScope,
+          subfloor: state.subfloor,
+          subfloorRisk,
         },
       });
       markStepComplete("assessment");
