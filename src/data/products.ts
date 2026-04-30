@@ -8,20 +8,19 @@
 // ─── Standard Categories ────────────────────────────────────────────
 
 export const PRODUCT_CATEGORIES = [
-  "Vanity",
-  "Sink",
-  "Faucet",
-  "Mirror",
+  "Vanities",
+  "Sinks",
+  "Faucets",
+  "Mirrors",
   "Shower Wall Tile",
   "Shower Floor Tile",
   "Main Floor Tile",
   "Accent Tile",
-  "Shower Glass",
+  "Shower Doors",
   "Shower Valve",
-  "Shower Trim",
-  "Tub",
+  "Shower Systems",
+  "Bathtubs",
   "Tub Valve",
-  "Shower Niche",
   "Lighting",
   "Toilet",
 ] as const;
@@ -30,27 +29,26 @@ export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];
 
 /** The 12 categories users can actively customize */
 export const CUSTOMIZABLE_CATEGORIES: ProductCategory[] = [
-  "Vanity",
-  "Sink",
-  "Faucet",
-  "Mirror",
+  "Vanities",
+  "Sinks",
+  "Faucets",
+  "Mirrors",
   "Shower Wall Tile",
   "Shower Floor Tile",
   "Main Floor Tile",
   "Accent Tile",
-  "Shower Glass",
+  "Shower Doors",
   "Shower Valve",
-  "Shower Trim",
-  "Tub",
+  "Shower Systems",
+  "Bathtubs",
   "Tub Valve",
-  "Shower Niche",
 ];
 
 /** Visual groupings for the customize page */
 export const CATEGORY_GROUPS: { label: string; categories: ProductCategory[] }[] = [
-  { label: "Vanity & Sink", categories: ["Vanity", "Sink", "Faucet", "Mirror"] },
-  { label: "Shower", categories: ["Shower Wall Tile", "Shower Floor Tile", "Shower Glass", "Shower Valve", "Shower Trim", "Shower Niche"] },
-  { label: "Tub", categories: ["Tub", "Tub Valve"] },
+  { label: "Vanity & Sink", categories: ["Vanities", "Sinks", "Faucets", "Mirrors"] },
+  { label: "Shower", categories: ["Shower Wall Tile", "Shower Floor Tile", "Shower Doors", "Shower Valve", "Shower Systems"] },
+  { label: "Bathtubs", categories: ["Bathtubs", "Tub Valve"] },
   { label: "Flooring & Accent", categories: ["Main Floor Tile", "Accent Tile"] },
 ];
 
