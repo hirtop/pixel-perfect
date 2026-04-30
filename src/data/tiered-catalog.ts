@@ -418,7 +418,7 @@ export const tieredCatalog: TieredProduct[] = [
     price: 145,
     description: "Reliable single-handle with LifeShine finish — resists tarnish and corrosion",
     finish: "Chrome",
-    spec: '19-7/8" x 14-3/4" oval undermount, overflow',
+    spec: "Single-hole mount, Moen cartridge, 1.2 GPM WaterSense",
     image: faucetBudgetImg,
     isDefault: true,
     laborDelta: 0,
