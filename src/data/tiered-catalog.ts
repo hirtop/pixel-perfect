@@ -1852,11 +1852,11 @@ export const tieredCatalog: TieredProduct[] = [
   // ── Balanced ──────────────────────────────────────────────────────
   {
     id: "bal-tub-01",
-    name: '60" Freestanding Acrylic Tub',
+    name: 'Torben 69 inch Acrylic Soaking Tub',
     category: "Tub",
     tier: "Balanced",
-    vendor: "Wyndham Collection",
-    price: 850,
+    vendor: "Signature Hardware",
+    price: 1679,
     description: "Freestanding oval — becomes the focal point of the bathroom",
     finish: "Glossy White",
     spec: '60" × 29" × 23" deep, freestanding, drain included',
@@ -1864,8 +1864,8 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "Freestanding requires floor drain relocation — adds ~$200",
     tag: "Recommended",
-    affiliateUrl: "https://www.wyndhamcollection.com/collections/all-bathtubs",
-    image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&q=80",
+    affiliateUrl: "https://www.fergusonhome.com/signature-hardware-948784/s1845818?uid=4374432",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
   {
     id: "bal-tub-02",
