@@ -23,6 +23,7 @@ export const PRODUCT_CATEGORIES = [
   "Tub Valve",
   "Lighting",
   "Toilet",
+  "Shower Niche",
 ] as const;
 
 export type ProductCategory = (typeof PRODUCT_CATEGORIES)[number];

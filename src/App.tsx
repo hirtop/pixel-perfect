@@ -10,6 +10,7 @@ import Index from "./pages/Index.tsx";
 import StartProject from "./pages/StartProject.tsx";
 import UploadPhotos from "./pages/UploadPhotos.tsx";
 import Dimensions from "./pages/Dimensions.tsx";
+import BathroomAssessment from "./pages/BathroomAssessment.tsx";
 import StyleBudget from "./pages/StyleBudget.tsx";
 import RemodelOptions from "./pages/RemodelOptions.tsx";
 import PackageDetail from "./pages/PackageDetail.tsx";
@@ -50,6 +51,7 @@ const App = () => (
               <Route path="/start" element={<StartProject />} />
               <Route path="/upload" element={<UploadPhotos />} />
               <Route path="/dimensions" element={<Dimensions />} />
+              <Route path="/assessment" element={<BathroomAssessment />} />
               <Route path="/style-budget" element={<StyleBudget />} />
               <Route path="/options" element={<RemodelOptions />} />
               <Route path="/package/:id" element={<PackageDetail />} />

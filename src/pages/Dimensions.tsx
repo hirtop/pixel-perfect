@@ -299,7 +299,7 @@ const Dimensions = () => {
     await persistDims(dimsRef.current);
     clearLocalDraft();
     markStepComplete("dimensions");
-    navigate("/style-budget");
+    navigate("/assessment");
   };
 
   return (

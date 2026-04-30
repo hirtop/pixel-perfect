@@ -40,6 +40,13 @@ export interface ProjectData {
     window_notes?: string;
     layout_notes?: string;
   };
+  assessment?: {
+    activeLeaks?: "yes" | "no" | "unknown";
+    crackedGrout?: "yes" | "no" | "unknown";
+    visibleMold?: "yes" | "no" | "unknown";
+    waterDamageSuspected?: "yes" | "no" | "unknown";
+    waterproofingScope?: "None" | "Tub surround" | "Shower walls" | "Full shower system";
+  };
   style_preferences: {
     style?: string;
     budget?: string;
