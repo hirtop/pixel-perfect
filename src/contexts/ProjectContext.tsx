@@ -57,6 +57,16 @@ export interface ProjectData {
       knownLeaks?: "yes" | "no" | "unknown";
       drainIssues?: "yes" | "no" | "unknown";
     };
+    electricalItems?: string[];
+    electricalScope?: "None" | "Minor" | "Moderate" | "Major";
+    ventilation?: {
+      hasExhaustFan?: "yes" | "no" | "unknown";
+      fanWorking?: "yes" | "no" | "unknown";
+      ventsOutside?: "yes" | "no" | "unknown";
+      replaceOrAddFan?: "yes" | "no" | "unknown";
+      addHumiditySensor?: "yes" | "no" | "unknown";
+    };
+    ventilationScope?: "None" | "Replace only" | "New install" | "Upgrade";
   };
   style_preferences: {
     style?: string;
