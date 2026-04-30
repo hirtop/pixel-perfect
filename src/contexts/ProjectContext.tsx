@@ -78,6 +78,7 @@ export interface ProjectData {
       tilingFloor?: "yes" | "no" | "unknown";
     };
     subfloorRisk?: "Low" | "Medium" | "High";
+    complexity?: "Simple Refresh" | "Standard Remodel" | "Moderate Remodel" | "Major Remodel";
   };
   style_preferences: {
     style?: string;
