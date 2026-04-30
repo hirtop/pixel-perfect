@@ -173,7 +173,16 @@ export default function ShopProducts({
         });
       }
 
-      setProducts(mapped.length ? mapped : SHOP_PRODUCTS_FALLBACK);
+      // Merge DB results with fallback products for categories not in DB
+      if (mapped.length) {
+        const dbCategories = new Set(mapped.map((p) => p.category));
+        const fallbackSupplements = SHOP_PRODUCTS_FALLBACK.filter(
+          (p) => !dbCategories.has(p.category)
+        );
+        setProducts([...mapped, ...fallbackSupplements]);
+      } else {
+        setProducts(SHOP_PRODUCTS_FALLBACK);
+      }
       setLoading(false);
     })();
 
