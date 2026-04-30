@@ -10,33 +10,11 @@ import type { ProductCategory } from "./products";
 
 // ─── Product images ─────────────────────────────────────────────────
 // Budget defaults
-import vanityBudgetImg from "@/assets/products/vanity-budget.jpg";
-import faucetBudgetImg from "@/assets/products/faucet-budget.jpg";
-import tileBudgetImg from "@/assets/products/tile-budget.jpg";
-import mirrorBudgetImg from "@/assets/products/mirror-budget.jpg";
 // Balanced defaults
-import tileImg from "@/assets/products/tile-balanced.jpg";
-import mirrorImg from "@/assets/products/mirror-balanced.jpg";
 // Premium defaults
-import vanityPremiumImg from "@/assets/products/vanity-premium.jpg";
-import faucetPremiumImg from "@/assets/products/faucet-premium.jpg";
-import tilePremiumImg from "@/assets/products/tile-premium.jpg";
-import mirrorPremiumImg from "@/assets/products/mirror-premium.jpg";
 // Budget alternatives
-import vanityBudgetAltImg from "@/assets/products/vanity-budget-alt.jpg";
-import faucetBudgetAltImg from "@/assets/products/faucet-budget-alt.jpg";
-import tileBudgetAltImg from "@/assets/products/tile-budget-alt.jpg";
-import mirrorBudgetAltImg from "@/assets/products/mirror-budget-alt.jpg";
 // Balanced alternatives
-import tileAlt1Img from "@/assets/products/tile-alt1.jpg";
-import tileAlt2Img from "@/assets/products/tile-alt2.jpg";
-import mirrorAlt1Img from "@/assets/products/mirror-alt1.jpg";
-import mirrorAlt2Img from "@/assets/products/mirror-alt2.jpg";
 // Premium alternatives
-import vanityPremiumAltImg from "@/assets/products/vanity-premium-alt.jpg";
-import faucetPremiumAltImg from "@/assets/products/faucet-premium-alt.jpg";
-import tilePremiumAltImg from "@/assets/products/tile-premium-alt.jpg";
-import mirrorPremiumAltImg from "@/assets/products/mirror-premium-alt.jpg";
 
 // ─── Types ──────────────────────────────────────────────────────────
 
@@ -118,7 +96,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Solid wood frame with pre-mounted cultured marble top — ready to connect",
     finish: "White",
     spec: '36" W × 21" D, soft-close doors, pre-drilled for single-hole faucet',
-    image: vanityBudgetImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/jamesmartinvanities/james-martin-vanities-650-v30-sc-3wz-5129969.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -134,7 +112,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Compact with integrated ceramic sink — no separate top to seal",
     finish: "Gray",
     spec: '30" W × 19" D, integrated ceramic basin, single door + shelf',
-    image: vanityBudgetAltImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/jamesmartinvanities/james-martin-vanities-330-v48-srb-3wz-7989618.jpg",
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
@@ -214,7 +192,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Solid white oak with Carrara marble top — fits primary baths with double sinks",
     finish: "White Oak / Carrara Marble",
     spec: '60" W × 22" D, dual sinks, soft-close, wall-mount hardware included',
-    image: vanityPremiumImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/jamesmartinvanities/james-martin-vanities-650-v60s-bnm-3ejp-7375299.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -246,7 +224,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Furniture-grade walnut with exposed legs — reads more like a console than a cabinet",
     finish: "Natural Walnut / White Marble",
     spec: '48" W × 22" D, tapered legs, single-hole pre-drill',
-    image: vanityPremiumAltImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/jamesmartinvanities/james-martin-vanities-157-v60s-sbr-6943170.jpg",
     isDefault: false,
     laborDelta: 0,
     tag: "Designer Pick",
@@ -419,7 +397,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Reliable single-handle with LifeShine finish — resists tarnish and corrosion",
     finish: "Chrome",
     spec: "Single-hole mount, Moen cartridge, 1.2 GPM WaterSense",
-    image: faucetBudgetImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-2597lf-czmpu-320.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -448,7 +426,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Basic single-handle — gets the job done, easy to replace",
     finish: "Chrome",
     spec: "Single-hole mount, brass body, 1.2 GPM",
-    image: faucetBudgetAltImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-447833-5129969.jpg",
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
@@ -516,7 +494,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Traditional widespread with cross handles — solid brass throughout",
     finish: "Satin Nickel",
     spec: '8" widespread, ceramic disc, 1.2 GPM',
-    image: faucetPremiumImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-14402-4a-2mb-3092463.jpg",
     isDefault: true,
     laborDelta: 120,
     laborNote: "Widespread needs 3-hole vanity top — adds ~$120 if drilling required",
@@ -533,7 +511,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Frees up counter space — spout comes from the wall, not the vanity",
     finish: "Polished Nickel",
     spec: "Wall-mount, ceramic disc valve, 1.2 GPM, requires in-wall rough-in",
-    image: faucetPremiumAltImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/hansgrohe/hansgrohe-04774670-8783533.jpg",
     isDefault: false,
     laborDelta: 280,
     laborNote: "Wall-mount requires in-wall valve rough-in — adds ~$280",
@@ -570,7 +548,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Polished-edge frameless — clean look, simple wall mount",
     finish: "Polished Edge",
     spec: '30" W × 24" H, ¼" tempered glass, French cleat mount',
-    image: mirrorBudgetImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-31364-bnl-8211481.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -599,7 +577,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Beveled edge catches light — slightly more refined than frameless",
     finish: "Beveled Edge",
     spec: '36" W × 28" H, 1" bevel, D-ring mount',
-    image: mirrorBudgetAltImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-442983-1508143.jpg",
     isDefault: false,
     laborDelta: 0,
   },
@@ -666,7 +644,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Touch sensor LED lighting — dimmable glow for morning routines",
     finish: "Frameless / LED Surround",
     spec: '36" W × 30" H, dimmable 3000K LED, built-in defogger, hardwired',
-    image: mirrorPremiumImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-34969-2mb-2351648.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -683,7 +661,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Oversized round with unlacquered brass that develops a living patina",
     finish: "Unlacquered Brass",
     spec: '40" diameter, solid brass frame, French cleat mount',
-    image: mirrorPremiumAltImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-31364-bnl-8211481.jpg",
     isDefault: false,
     laborDelta: 0,
     tag: "Designer Pick",
@@ -721,7 +699,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Mid-size format balances fewer grout lines with easy handling",
     finish: "Matte Light Gray",
     spec: '12" × 24" ceramic, ~60 sq ft shower coverage, rated for wet areas',
-    image: tileBudgetImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-dr1012241p-712.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -737,7 +715,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Classic pattern, easy to source for repairs — smaller format adds labor",
     finish: "Glossy White",
     spec: '3" × 6" ceramic, ~60 sq ft',
-    image: tileBudgetAltImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-mm303121p2-2072260.jpg",
     isDefault: false,
     laborDelta: 150,
     laborNote: "Smaller tiles mean more grout lines — adds ~$150 labor",
@@ -820,7 +798,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Hand-cut Moroccan tile — each piece has unique color variation and texture",
     finish: "Weathered White (varies)",
     spec: '4" × 4" hand-cut, ~60 sq ft, slight size variation is expected',
-    image: tilePremiumImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-fl061224f1pk-1300.jpg",
     isDefault: true,
     laborDelta: 500,
     laborNote: "Hand-cut tiles require careful layout and more setting time — adds ~$500",
@@ -838,7 +816,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Classic marble hex — timeless pattern with natural stone depth",
     finish: "Honed Carrara White",
     spec: '2" hex mosaic on mesh backing, ~60 sq ft',
-    image: tilePremiumAltImg,
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/bedrosians/bedrosians-decclowhi28g-8497430.jpg",
     isDefault: false,
     laborDelta: 450,
     laborNote: "Mosaic setting is precision work — adds ~$450 labor",
@@ -1396,7 +1374,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/shower-doors/c109701",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-sglass-02",
@@ -1412,7 +1390,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/shower-doors/c109701",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-sglass-03",
@@ -1428,7 +1406,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/shower-doors/c109701",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1549,7 +1527,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-svalve-02",
@@ -1566,7 +1544,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "3-way diverter requires additional rough-in — adds ~$80",
     tag: "Upgrade",
     affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-svalve-03",
@@ -1583,7 +1561,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Digital valve requires electrical connection — adds ~$150",
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1703,7 +1681,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-strim-02",
@@ -1719,7 +1697,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Value Pick",
     affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   },
   {
     id: "bal-strim-03",
@@ -1736,7 +1714,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Ceiling mount requires rerouting supply pipe — adds ~$200",
     tag: "Upgrade",
     affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-342702-cz-9217950.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
