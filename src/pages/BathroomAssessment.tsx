@@ -737,6 +737,31 @@ const BathroomAssessment = () => {
           </div>
 
           <div className="mb-10">
+            <div className="flex items-center justify-center gap-2 mb-4">
+              {Array.from({ length: totalSteps }).map((_, i) => {
+                const visited = i <= stepIndex;
+                const isCurrent = i === stepIndex;
+                return (
+                  <button
+                    key={i}
+                    type="button"
+                    onClick={() => visited && setStepIndex(i)}
+                    disabled={!visited}
+                    aria-label={`Go to step ${i + 1}`}
+                    aria-current={isCurrent ? "step" : undefined}
+                    className={`h-7 w-7 rounded-full text-xs font-medium flex items-center justify-center border transition-colors ${
+                      isCurrent
+                        ? "bg-primary text-primary-foreground border-primary"
+                        : visited
+                        ? "bg-secondary text-foreground border-border hover:bg-accent cursor-pointer"
+                        : "bg-transparent text-muted-foreground/50 border-border/50 cursor-not-allowed"
+                    }`}
+                  >
+                    {i + 1}
+                  </button>
+                );
+              })}
+            </div>
             <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
               <span>
                 Step {stepIndex + 1} of {totalSteps}
