@@ -91,6 +91,15 @@ interface SubfloorState {
   subfloorType: SubfloorType | "";
 }
 
+const ACCESSIBILITY_ITEMS = [
+  "Grab bars",
+  "Curbless / walk-in shower",
+  "Wider doorway",
+  "Comfort-height toilet",
+  "Non-slip flooring",
+] as const;
+type AccessibilityItem = (typeof ACCESSIBILITY_ITEMS)[number];
+
 interface AssessmentState {
   demolitionItems: Record<DemoItem, KeepRemove>;
   plumbing: Record<PlumbingKey, YesNoUnknown>;
@@ -98,6 +107,7 @@ interface AssessmentState {
   ventilation: Record<VentilationKey, YesNoUnknown>;
   framingItems: Record<FramingItem, boolean>;
   subfloor: SubfloorState;
+  accessibilityItems: Record<AccessibilityItem, boolean>;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -128,6 +138,11 @@ const defaultVentilation: Record<VentilationKey, YesNoUnknown> = VENTILATION_QUE
 const defaultFraming: Record<FramingItem, boolean> = FRAMING_ITEMS.reduce(
   (acc, item) => ({ ...acc, [item]: false }),
   {} as Record<FramingItem, boolean>,
+);
+
+const defaultAccessibility: Record<AccessibilityItem, boolean> = ACCESSIBILITY_ITEMS.reduce(
+  (acc, item) => ({ ...acc, [item]: false }),
+  {} as Record<AccessibilityItem, boolean>,
 );
 
 const defaultSubfloor: SubfloorState = {
@@ -277,15 +292,6 @@ type StepDef =
   | { kind: "subfloor"; title: string; subtitle?: string }
   | { kind: "water"; title: string; subtitle?: string }
   | { kind: "review"; title: string; subtitle?: string };
-
-const ACCESSIBILITY_ITEMS = [
-  "Grab bars",
-  "Curbless / walk-in shower",
-  "Wider doorway",
-  "Comfort-height toilet",
-  "Non-slip flooring",
-] as const;
-type AccessibilityItem = (typeof ACCESSIBILITY_ITEMS)[number];
 
 const STEPS: StepDef[] = [
   {
