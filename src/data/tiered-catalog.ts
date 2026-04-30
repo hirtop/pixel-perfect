@@ -1884,6 +1884,8 @@ export const tieredCatalog: TieredProduct[] = [
     affiliateUrl: "https://www.fergusonhome.com/kohler-k-26080/s1879206?uid=4443527",
     image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-26080-0-9611322.jpg",
   },
+  {
+    id: "bal-tub-03",
     name: '48" Japanese-Style Deep Soaking Tub',
     category: "Tub",
     tier: "Balanced",
