@@ -413,7 +413,6 @@ const BathroomAssessment = () => {
       ...s,
       framingItems: { ...s.framingItems, [item]: !s.framingItems[item] },
     }));
-    }));
 
   const toggleDemo = (item: DemoItem) =>
     setState((s) => ({
