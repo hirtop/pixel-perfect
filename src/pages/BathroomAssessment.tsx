@@ -275,9 +275,17 @@ type StepDef =
   | { kind: "electrical"; title: string; subtitle?: string }
   | { kind: "framing"; title: string; subtitle?: string }
   | { kind: "subfloor"; title: string; subtitle?: string }
-  | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
-  | { kind: "scope"; title: string; subtitle?: string }
+  | { kind: "water"; title: string; subtitle?: string }
   | { kind: "review"; title: string; subtitle?: string };
+
+const ACCESSIBILITY_ITEMS = [
+  "Grab bars",
+  "Curbless / walk-in shower",
+  "Wider doorway",
+  "Comfort-height toilet",
+  "Non-slip flooring",
+] as const;
+type AccessibilityItem = (typeof ACCESSIBILITY_ITEMS)[number];
 
 const STEPS: StepDef[] = [
   {
@@ -306,33 +314,9 @@ const STEPS: StepDef[] = [
     subtitle: "A few quick checks to flag any subfloor risk before materials are ordered.",
   },
   {
-    key: "activeLeaks",
-    kind: "yesno",
-    title: "Any active leaks?",
-    subtitle: "Drips, pooling water, stains under fixtures, or wet spots.",
-  },
-  {
-    key: "crackedGrout",
-    kind: "yesno",
-    title: "Cracked or failing grout?",
-    subtitle: "Look around the tub, shower walls, and floor tile joints.",
-  },
-  {
-    key: "visibleMold",
-    kind: "yesno",
-    title: "Any visible mold?",
-    subtitle: "Black, green, or pink discoloration around wet areas, caulk, or grout.",
-  },
-  {
-    key: "waterDamageSuspected",
-    kind: "yesno",
-    title: "Water damage suspected behind walls?",
-    subtitle: "Soft drywall, swelling baseboards, peeling paint, or musty smell.",
-  },
-  {
-    kind: "scope",
-    title: "Waterproofing scope likely needed",
-    subtitle: "Best estimate of what wet-area work the existing bathroom needs.",
+    kind: "water",
+    title: "Water damage and waterproofing",
+    subtitle: "A few quick checks on existing wet areas, then your best guess on waterproofing scope.",
   },
   {
     kind: "review",
