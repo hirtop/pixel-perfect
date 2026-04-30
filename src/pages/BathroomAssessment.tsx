@@ -429,6 +429,7 @@ const BathroomAssessment = () => {
   const handleNext = () => {
     if (isLast) {
       const electricalItemsArr = ELECTRICAL_ITEMS.filter((item) => state.electricalItems[item]);
+      const framingItemsArr = FRAMING_ITEMS.filter((item) => state.framingItems[item]);
       updateProject({
         assessment: {
           activeLeaks: state.activeLeaks,
