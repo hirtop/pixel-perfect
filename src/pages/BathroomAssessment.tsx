@@ -466,6 +466,7 @@ const BathroomAssessment = () => {
       ...((initial.ventilation as Record<VentilationKey, YesNoUnknown> | undefined) ?? {}),
     },
     framingItems: hydratedFraming,
+    accessibilityItems: hydratedAccessibility,
     subfloor: {
       ...defaultSubfloor,
       ...((initial.subfloor as Partial<SubfloorState> | undefined) ?? {}),
