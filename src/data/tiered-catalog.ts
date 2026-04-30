@@ -619,7 +619,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.fergusonhome.com/bathroom-mirrors/c112528",
+    affiliateUrl: "https://www.fergusonhome.com/redirect/c112528",
   },
   {
     id: "bal-mirror-02",
