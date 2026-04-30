@@ -176,6 +176,56 @@ const ProjectSummary = () => {
             </div>
           </div>
 
+          {project.assessment && (project.assessment.demolitionLevel || project.assessment.complexity) && (
+            <section className="mb-12">
+              <h2 className="font-heading text-xl text-foreground mb-5">Bathroom Assessment Scope</h2>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+                {project.assessment.demolitionLevel && (
+                  <div className="rounded-xl border border-border bg-card p-4">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Demolition</p>
+                    <p className="font-heading text-base text-foreground">{project.assessment.demolitionLevel}</p>
+                  </div>
+                )}
+                {project.assessment.electricalScope && project.assessment.electricalScope !== "None" && (
+                  <div className="rounded-xl border border-border bg-card p-4">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Electrical</p>
+                    <p className="font-heading text-base text-foreground">{project.assessment.electricalScope}</p>
+                  </div>
+                )}
+                {project.assessment.framingScope && project.assessment.framingScope !== "None" && (
+                  <div className="rounded-xl border border-border bg-card p-4">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Framing / Walls</p>
+                    <p className="font-heading text-base text-foreground">{project.assessment.framingScope}</p>
+                  </div>
+                )}
+                {project.assessment.subfloorRisk && (
+                  <div className="rounded-xl border border-border bg-card p-4">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Subfloor Risk</p>
+                    <p className="font-heading text-base text-foreground">{project.assessment.subfloorRisk}</p>
+                  </div>
+                )}
+                {project.assessment.waterproofingScope && project.assessment.waterproofingScope !== "None" && (
+                  <div className="rounded-xl border border-border bg-card p-4">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Waterproofing</p>
+                    <p className="font-heading text-base text-foreground">{project.assessment.waterproofingScope}</p>
+                  </div>
+                )}
+                {project.assessment.complexity && (
+                  <div className="rounded-xl border border-border bg-card p-4">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Overall Complexity</p>
+                    <p className="font-heading text-base text-foreground">{project.assessment.complexity}</p>
+                  </div>
+                )}
+                {project.assessment.plumbing && Object.values(project.assessment.plumbing).some(v => v === "yes") && (
+                  <div className="rounded-xl border border-border bg-card p-4">
+                    <p className="text-xs uppercase tracking-widest text-muted-foreground mb-1">Plumbing Changes</p>
+                    <p className="font-heading text-base text-foreground">Required</p>
+                  </div>
+                )}
+              </div>
+            </section>
+          )}
+
           {(() => {
             const photoMeta = project.photos?.metadata ?? [];
             const photoNotes = project.photos?.notes ?? "";
