@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer, Wrench, Info, Zap, Wind } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
+import { supabase } from "@/integrations/supabase/client";
 
 type YesNoUnknown = "yes" | "no" | "unknown";
 type WaterproofingScope = "None" | "Tub surround" | "Shower walls" | "Full shower system";
@@ -578,7 +579,7 @@ const BathroomAssessment = () => {
 
   const isLast = stepIndex === totalSteps - 1;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (isLast) {
       const electricalItemsArr = ELECTRICAL_ITEMS.filter((item) => state.electricalItems[item]);
       const framingItemsArr = FRAMING_ITEMS.filter((item) => state.framingItems[item]);
@@ -612,6 +613,67 @@ const BathroomAssessment = () => {
           complexity,
         },
       });
+
+      const electricalItemsArrLocal = electricalItemsArr;
+      const framingItemsArrLocal = framingItemsArr;
+      const doorWindowItemsArr = framingItemsArrLocal.filter((it) =>
+        ["Moving door", "Replacing door", "Replacing window", "Window inside / near shower"].includes(it),
+      );
+      const scopeSummary = [
+        `Demolition: ${demolitionLevel}`,
+        `Electrical: ${electricalScope}`,
+        `Ventilation: ${ventilationScope}`,
+        `Framing: ${framingScope}`,
+        `Subfloor risk: ${subfloorRisk}`,
+        `Waterproofing: ${state.waterproofingScope || "Not sure"}`,
+        `Complexity: ${complexity}`,
+      ].join(" • ");
+
+      const assessmentData = {
+        demolitionItems: state.demolitionItems,
+        demolitionLevel,
+        plumbingChanges: state.plumbing,
+        electricalItems: electricalItemsArrLocal,
+        electricalScope,
+        ventilationAnswers: state.ventilation,
+        ventilationScope,
+        framingItems: framingItemsArrLocal,
+        framingScope,
+        doorWindowItems: doorWindowItemsArr,
+        subfloorAnswers: state.subfloor,
+        subfloorRisk,
+        waterproofingAnswers: {
+          activeLeaks: state.activeLeaks,
+          crackedGrout: state.crackedGrout,
+          visibleMold: state.visibleMold,
+          waterDamageSuspected: state.waterDamageSuspected,
+        },
+        waterproofingScope: state.waterproofingScope || null,
+        complexityScore: complexity,
+        scopeSummary,
+        createdAt: new Date().toISOString(),
+      };
+
+      try {
+        localStorage.setItem("bobox_assessment", JSON.stringify(assessmentData));
+      } catch {
+        /* ignore quota */
+      }
+
+      if (project?.id) {
+        try {
+          // Optional column — skip silently if it doesn't exist.
+          const payload = { assessment_data: assessmentData } as unknown as Record<string, unknown>;
+          await (supabase.from("projects") as unknown as {
+            update: (v: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<unknown> };
+          })
+            .update(payload)
+            .eq("id", project.id);
+        } catch {
+          /* column may not exist — silent */
+        }
+      }
+
       markStepComplete("assessment");
       navigate("/style-budget");
       return;
