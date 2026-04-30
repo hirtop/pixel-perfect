@@ -164,7 +164,7 @@ const CustomizeOption = () => {
         })
       : initialCategories
   );
-  const [expandedCategory, setExpandedCategory] = useState<string | null>("Vanity");
+  const [expandedCategory, setExpandedCategory] = useState<string | null>("Vanities");
   const [lastSwapNote, setLastSwapNote] = useState<string | null>(null);
 
   const customizableMaterials = categories.reduce((sum, c) => sum + c.price, 0);
