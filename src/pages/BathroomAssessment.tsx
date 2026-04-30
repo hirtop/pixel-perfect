@@ -503,9 +503,15 @@ const BathroomAssessment = () => {
           framingItems: framingItemsArr,
           framingScope,
           subfloor: {
-            ...state.subfloor,
-            ...(state.subfloor.subfloorType ? {} : { subfloorType: undefined }),
-          } as ProjectAssessmentSubfloor,
+            softOrUneven: state.subfloor.softOrUneven,
+            squeaking: state.subfloor.squeaking,
+            previousLeak: state.subfloor.previousLeak,
+            crackedTiles: state.subfloor.crackedTiles,
+            tilingFloor: state.subfloor.tilingFloor,
+            ...(state.subfloor.subfloorType
+              ? { subfloorType: state.subfloor.subfloorType }
+              : {}),
+          },
           subfloorRisk,
         },
       });
