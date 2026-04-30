@@ -111,7 +111,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-vanity-01",
     name: '36" Shaker Vanity with Cultured Marble Top',
-    category: "Vanity",
+    category: "Vanities",
     tier: "Budget",
     vendor: "Glacier Bay",
     price: 1080,
@@ -127,7 +127,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-vanity-02",
     name: '30" Single-Door Vanity with Integrated Sink',
-    category: "Vanity",
+    category: "Vanities",
     tier: "Budget",
     vendor: "Style Selections",
     price: 890,
@@ -142,7 +142,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-vanity-03",
     name: '36" Freestanding Vanity — Oak Laminate',
-    category: "Vanity",
+    category: "Vanities",
     tier: "Budget",
     vendor: "Allen + Roth",
     price: 1340,
@@ -157,7 +157,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-vanity-01",
     name: 'Emmeline 48" Single Basin Ash Wood Vanity Cabinet Only',
-    category: "Vanity",
+    category: "Vanities",
     tier: "Balanced",
     vendor: "James Martin",
     price: 2450,
@@ -173,7 +173,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-vanity-02",
     name: 'Breckenridge 48" Free Standing Single Basin Poplar Wood Vanity Set',
-    category: "Vanity",
+    category: "Vanities",
     tier: "Balanced",
     vendor: "James Martin",
     price: 3202,
@@ -189,7 +189,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-vanity-03",
     name: 'Breckenridge 72" Free Standing Double Basin Poplar Wood Vanity Set',
-    category: "Vanity",
+    category: "Vanities",
     tier: "Balanced",
     vendor: "James Martin",
     price: 4607,
@@ -207,7 +207,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-vanity-01",
     name: '60" Floating Double Vanity — White Oak',
-    category: "Vanity",
+    category: "Vanities",
     tier: "Premium",
     vendor: "James Martin",
     price: 3400,
@@ -224,7 +224,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-vanity-02",
     name: '48" Wall-Mounted Vanity — Matte Lacquer',
-    category: "Vanity",
+    category: "Vanities",
     tier: "Premium",
     vendor: "Restoration Hardware",
     price: 2850,
@@ -239,7 +239,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-vanity-03",
     name: '48" Furniture-Style Vanity — Solid Walnut',
-    category: "Vanity",
+    category: "Vanities",
     tier: "Premium",
     vendor: "West Elm",
     price: 3200,
@@ -261,7 +261,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-sink-01",
     name: "Undermount Rectangular Sink — White Ceramic",
-    category: "Sink",
+    category: "Sinks",
     tier: "Budget",
     vendor: "Glacier Bay",
     price: 120,
@@ -277,7 +277,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-sink-02",
     name: "Drop-In Oval Sink — White Porcelain",
-    category: "Sink",
+    category: "Sinks",
     tier: "Budget",
     vendor: "American Standard",
     price: 85,
@@ -292,7 +292,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-sink-03",
     name: "Integrated Basin Sink — Cultured Marble",
-    category: "Sink",
+    category: "Sinks",
     tier: "Budget",
     vendor: "Style Selections",
     price: 150,
@@ -308,7 +308,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-sink-01",
     name: 'Caxton 21-1/4" x 17-1/4" Undermount Bathroom Sink with Overflow',
-    category: "Sink",
+    category: "Sinks",
     tier: "Balanced",
     vendor: "Kohler",
     price: 116,
@@ -324,7 +324,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-sink-02",
     name: 'Myers 23" Porcelain Undermount Bathroom Sink',
-    category: "Sink",
+    category: "Sinks",
     tier: "Balanced",
     vendor: "Signature Hardware",
     price: 252,
@@ -340,7 +340,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-sink-03",
     name: 'Archer 19-7/8" Undermount Bathroom Sink with Overflow',
-    category: "Sink",
+    category: "Sinks",
     tier: "Balanced",
     vendor: "Kohler",
     price: 187,
@@ -358,7 +358,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-sink-01",
     name: "Undermount Trough Sink — Fireclay",
-    category: "Sink",
+    category: "Sinks",
     tier: "Premium",
     vendor: "Rohl",
     price: 480,
@@ -374,7 +374,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-sink-02",
     name: "Vessel Sink — Natural Stone",
-    category: "Sink",
+    category: "Sinks",
     tier: "Premium",
     vendor: "Native Trails",
     price: 620,
@@ -390,7 +390,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-sink-03",
     name: "Wall-Mount Sink — Ceramic",
-    category: "Sink",
+    category: "Sinks",
     tier: "Premium",
     vendor: "Duravit",
     price: 540,
@@ -412,7 +412,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-faucet-01",
     name: "Banbury Single-Handle Faucet",
-    category: "Faucet",
+    category: "Faucets",
     tier: "Budget",
     vendor: "Moen",
     price: 145,
@@ -428,7 +428,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-faucet-02",
     name: "Ladera Single-Handle Faucet",
-    category: "Faucet",
+    category: "Faucets",
     tier: "Budget",
     vendor: "Pfister",
     price: 165,
@@ -441,7 +441,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-faucet-03",
     name: "Constructor Single-Handle Faucet",
-    category: "Faucet",
+    category: "Faucets",
     tier: "Budget",
     vendor: "Glacier Bay",
     price: 120,
@@ -458,7 +458,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-faucet-01",
     name: "Provincetown Centerset Bathroom Faucet",
-    category: "Faucet",
+    category: "Faucets",
     tier: "Balanced",
     vendor: "Signature Hardware",
     price: 186,
@@ -474,7 +474,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-faucet-02",
     name: "Cassidy Centerset Bathroom Faucet with Pop-Up Drain Assembly",
-    category: "Faucet",
+    category: "Faucets",
     tier: "Balanced",
     vendor: "Delta",
     price: 469,
@@ -491,7 +491,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-faucet-03",
     name: "Purist 1.2 GPM Single Hole Bathroom Faucet with Pop-Up Drain Assembly",
-    category: "Faucet",
+    category: "Faucets",
     tier: "Balanced",
     vendor: "Kohler",
     price: 687,
@@ -509,7 +509,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-faucet-01",
     name: "Holborn Widespread Faucet",
-    category: "Faucet",
+    category: "Faucets",
     tier: "Premium",
     vendor: "Rohl",
     price: 740,
@@ -526,7 +526,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-faucet-02",
     name: "Purist Wall-Mount Faucet",
-    category: "Faucet",
+    category: "Faucets",
     tier: "Premium",
     vendor: "Kohler",
     price: 680,
@@ -542,7 +542,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-faucet-03",
     name: "Litze Wall-Mount Faucet",
-    category: "Faucet",
+    category: "Faucets",
     tier: "Premium",
     vendor: "Brizo",
     price: 820,
@@ -563,7 +563,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-mirror-01",
     name: '30" Frameless Rectangular Mirror',
-    category: "Mirror",
+    category: "Mirrors",
     tier: "Budget",
     vendor: "Glacier Bay",
     price: 95,
@@ -579,7 +579,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-mirror-02",
     name: '24" Round Mirror — Thin Metal Frame',
-    category: "Mirror",
+    category: "Mirrors",
     tier: "Budget",
     vendor: "Project Source",
     price: 110,
@@ -592,7 +592,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-mirror-03",
     name: '36" Beveled Rectangle Mirror',
-    category: "Mirror",
+    category: "Mirrors",
     tier: "Budget",
     vendor: "Home Decorators Collection",
     price: 145,
@@ -608,7 +608,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-mirror-01",
     name: '36" Essential Rectangular Metal Framed Bathroom Wall Mirror',
-    category: "Mirror",
+    category: "Mirrors",
     tier: "Balanced",
     vendor: "Kohler",
     price: 339,
@@ -624,7 +624,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-mirror-02",
     name: '29-1/2" Castia by Studio McGee Transitional Rectangular Frameless Bathroom Wall Mirror',
-    category: "Mirror",
+    category: "Mirrors",
     tier: "Balanced",
     vendor: "Kohler",
     price: 320,
@@ -640,7 +640,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-mirror-03",
     name: '32" W x 24" H Curie Modern Rectangular Frameless Bathroom Wall Mirror with LED Lighting',
-    category: "Mirror",
+    category: "Mirrors",
     tier: "Balanced",
     vendor: "Signature Hardware",
     price: 340,
@@ -659,7 +659,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-mirror-01",
     name: '36" Backlit LED Mirror — Frameless',
-    category: "Mirror",
+    category: "Mirrors",
     tier: "Premium",
     vendor: "Robern",
     price: 880,
@@ -676,7 +676,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-mirror-02",
     name: '40" Round Mirror — Unlacquered Brass',
-    category: "Mirror",
+    category: "Mirrors",
     tier: "Premium",
     vendor: "Restoration Hardware",
     price: 720,
@@ -692,7 +692,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-mirror-03",
     name: '30" Recessed Medicine Cabinet with Lighting',
-    category: "Mirror",
+    category: "Mirrors",
     tier: "Premium",
     vendor: "Robern",
     price: 1100,
@@ -1337,7 +1337,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-sglass-01",
     name: "Framed Sliding Shower Door — Clear Glass",
-    category: "Shower Glass",
+    category: "Shower Doors",
     tier: "Budget",
     vendor: "Delta",
     price: 380,
@@ -1353,7 +1353,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-sglass-02",
     name: "Semi-Frameless Pivot Shower Door",
-    category: "Shower Glass",
+    category: "Shower Doors",
     tier: "Budget",
     vendor: "DreamLine",
     price: 520,
@@ -1367,7 +1367,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-sglass-03",
     name: "Curved Shower Rod + Curtain Setup",
-    category: "Shower Glass",
+    category: "Shower Doors",
     tier: "Budget",
     vendor: "Moen",
     price: 85,
@@ -1385,7 +1385,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-sglass-01",
     name: "Semi-Frameless Hinged Shower Door",
-    category: "Shower Glass",
+    category: "Shower Doors",
     tier: "Balanced",
     vendor: "DreamLine",
     price: 780,
@@ -1401,7 +1401,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-sglass-02",
     name: "Frameless Fixed Glass Panel",
-    category: "Shower Glass",
+    category: "Shower Doors",
     tier: "Balanced",
     vendor: "DreamLine",
     price: 650,
@@ -1417,7 +1417,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-sglass-03",
     name: "Barn-Door Style Sliding Shower Door",
-    category: "Shower Glass",
+    category: "Shower Doors",
     tier: "Balanced",
     vendor: "Coastal",
     price: 920,
@@ -1435,7 +1435,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-sglass-01",
     name: "Frameless Hinged Shower Enclosure",
-    category: "Shower Glass",
+    category: "Shower Doors",
     tier: "Premium",
     vendor: "CR Laurence",
     price: 1800,
@@ -1452,7 +1452,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-sglass-02",
     name: "Neo-Angle Frameless Enclosure",
-    category: "Shower Glass",
+    category: "Shower Doors",
     tier: "Premium",
     vendor: "CR Laurence",
     price: 2200,
@@ -1468,7 +1468,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-sglass-03",
     name: "Steam Shower Glass Enclosure",
-    category: "Shower Glass",
+    category: "Shower Doors",
     tier: "Premium",
     vendor: "Mr. Steam",
     price: 3200,
@@ -1644,7 +1644,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-strim-01",
     name: "Adler Single Showerhead",
-    category: "Shower Trim",
+    category: "Shower Systems",
     tier: "Budget",
     vendor: "Moen",
     price: 65,
@@ -1660,7 +1660,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-strim-02",
     name: "Handheld Shower Combo",
-    category: "Shower Trim",
+    category: "Shower Systems",
     tier: "Budget",
     vendor: "Moen",
     price: 95,
@@ -1675,7 +1675,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-strim-03",
     name: '6" Rain Showerhead — Fixed Mount',
-    category: "Shower Trim",
+    category: "Shower Systems",
     tier: "Budget",
     vendor: "Glacier Bay",
     price: 55,
@@ -1692,7 +1692,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-strim-01",
     name: "Attract Magnetix Rain + Handheld Combo",
-    category: "Shower Trim",
+    category: "Shower Systems",
     tier: "Balanced",
     vendor: "Moen",
     price: 280,
@@ -1708,7 +1708,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-strim-02",
     name: "Multi-Function Showerhead — 3 Spray Settings",
-    category: "Shower Trim",
+    category: "Shower Systems",
     tier: "Balanced",
     vendor: "Kohler",
     price: 220,
@@ -1724,7 +1724,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-strim-03",
     name: '10" Ceiling-Mount Rain Showerhead',
-    category: "Shower Trim",
+    category: "Shower Systems",
     tier: "Balanced",
     vendor: "Delta",
     price: 380,
@@ -1743,7 +1743,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-strim-01",
     name: "Rainshower System with Body Sprays",
-    category: "Shower Trim",
+    category: "Shower Systems",
     tier: "Premium",
     vendor: "Grohe",
     price: 680,
@@ -1760,7 +1760,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-strim-02",
     name: "Multi-Spray Shower System — 4 Outlets",
-    category: "Shower Trim",
+    category: "Shower Systems",
     tier: "Premium",
     vendor: "Kohler",
     price: 920,
@@ -1776,7 +1776,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-strim-03",
     name: '14" Flush-Mount Ceiling Rain Panel',
-    category: "Shower Trim",
+    category: "Shower Systems",
     tier: "Premium",
     vendor: "Hansgrohe",
     price: 1200,
@@ -1798,7 +1798,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-tub-01",
     name: '60" Alcove Bathtub — Standard',
-    category: "Tub",
+    category: "Bathtubs",
     tier: "Budget",
     vendor: "American Standard",
     price: 320,
@@ -1814,7 +1814,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-tub-02",
     name: '60" Deep Soak Alcove Tub',
-    category: "Tub",
+    category: "Bathtubs",
     tier: "Budget",
     vendor: "Kohler",
     price: 450,
@@ -1829,7 +1829,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bud-tub-03",
     name: '60" Fiberglass Tub/Shower Unit',
-    category: "Tub",
+    category: "Bathtubs",
     tier: "Budget",
     vendor: "Sterling",
     price: 280,
@@ -1847,7 +1847,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-tub-01",
     name: 'Torben 69 inch Acrylic Soaking Tub',
-    category: "Tub",
+    category: "Bathtubs",
     tier: "Balanced",
     vendor: "Signature Hardware",
     price: 1679,
@@ -1864,7 +1864,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-tub-02",
     name: 'Irvine 67-7/8" x 31-7/16" Free Standing Acrylic Soaking Tub',
-    category: "Tub",
+    category: "Bathtubs",
     tier: "Balanced",
     vendor: "Kohler",
     price: 3150,
@@ -1881,7 +1881,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "bal-tub-03",
     name: 'Cheshire 69 inch Free Standing Clawfoot Bathtub',
-    category: "Tub",
+    category: "Bathtubs",
     tier: "Balanced",
     vendor: "Victoria and Albert",
     price: 4551,
@@ -1900,7 +1900,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-tub-01",
     name: '67" Freestanding Cast Iron Tub',
-    category: "Tub",
+    category: "Bathtubs",
     tier: "Premium",
     vendor: "Victoria + Albert",
     price: 3200,
@@ -1917,7 +1917,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-tub-02",
     name: '65" Stone Resin Freestanding Tub',
-    category: "Tub",
+    category: "Bathtubs",
     tier: "Premium",
     vendor: "Native Trails",
     price: 4200,
@@ -1933,7 +1933,7 @@ export const tieredCatalog: TieredProduct[] = [
   {
     id: "pre-tub-03",
     name: '60" Copper Soaking Tub',
-    category: "Tub",
+    category: "Bathtubs",
     tier: "Premium",
     vendor: "Native Trails",
     price: 5500,
@@ -2156,55 +2156,52 @@ export const tieredCatalog: TieredProduct[] = [
 
   // ── Balanced ──────────────────────────────────────────────────────
   {
-    id: "bal-niche-01",
-    name: "Tiled Shower Niche — Custom Size",
-    category: "Shower Niche",
+    id: "bal-light-01",
+    name: 'Redondo 4 Light 33" Wide Bathroom Vanity Light',
+    category: "Lighting",
     tier: "Balanced",
-    vendor: "Schluter",
-    price: 140,
-    description: "Kerdi-Board prefab box — fully waterproof, tiled to match your shower walls",
-    finish: "Tile-ready",
-    spec: '12" × 28" × 3.5" deep, Kerdi waterproof membrane',
+    vendor: "Millennium Lighting",
+    price: 273.60,
+    description: "Four globe vanity light in modern gold — warm, diffused glow for bath tasks",
+    finish: "Modern Gold",
+    spec: '33" W, 4 lights, E26 bulbs, UL listed for damp locations',
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/millenniumlighting/millennium-lighting-30304-mg-8134424.jpg",
     isDefault: true,
-    laborDelta: 100,
-    laborNote: "Custom tiling inside niche adds ~$100 labor",
+    laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    affiliateUrl: "https://www.fergusonhome.com/millennium-lighting-30304/s2008976?uid=4764569",
   },
   {
-    id: "bal-niche-02",
-    name: "Double-Shelf Shower Niche",
-    category: "Shower Niche",
+    id: "bal-light-02",
+    name: "4 Light Bathroom Vanity Light from the Agilis Collection",
+    category: "Lighting",
     tier: "Balanced",
-    vendor: "Schluter",
-    price: 180,
-    description: "Two-compartment niche — separates bottles from bars and razors",
-    finish: "Tile-ready",
-    spec: '12" × 28" with divider shelf, Kerdi waterproof',
+    vendor: "Minka Lavery",
+    price: 215.79,
+    description: "Classic 4-light bar in matte black — timeless style for any bath",
+    finish: "Matte Black",
+    spec: '27" W, 4 lights, E26 bulbs, UL listed for damp locations',
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/minkalavery/4_Light_Bath_6814-66.jpg",
     isDefault: false,
-    laborDelta: 150,
-    laborNote: "Two-compartment niche requires more precise tile cuts — adds ~$150",
-    tag: "Upgrade",
-    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    laborDelta: 0,
+    tag: "Popular",
+    affiliateUrl: "https://www.fergusonhome.com/minka-lavery-ml-6814/s614304?uid=347812",
   },
   {
-    id: "bal-niche-03",
-    name: "LED-Lit Shower Niche",
-    category: "Shower Niche",
+    id: "bal-light-03",
+    name: 'Spec 24" Wide LED Bath Bar - ADA Compliant',
+    category: "Lighting",
     tier: "Balanced",
-    vendor: "Illuminiche",
-    price: 260,
-    description: "Built-in LED strip illuminates the niche — subtle accent lighting",
-    finish: "Tile-ready with LED strip",
-    spec: '14" × 22" × 4" deep, waterproof LED, 12V low-voltage',
+    vendor: "Maxim",
+    price: 109.80,
+    description: "Slim integrated LED bar — efficient, bright, and ADA-compliant",
+    finish: "Polished Chrome",
+    spec: '24" W, integrated LED, 3000K, ADA compliant',
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/maxim/maxim_52002pc.jpg",
     isDefault: false,
-    laborDelta: 200,
-    laborNote: "LED requires low-voltage wiring to niche — adds ~$200",
-    tag: "Trending",
-    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta-faucet/delta-342702-cz-9217950.jpg",
+    laborDelta: 0,
+    tag: "Best Value",
+    affiliateUrl: "https://www.fergusonhome.com/maxim-52002/s1511390?uid=3543914",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
