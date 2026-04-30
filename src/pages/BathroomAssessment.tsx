@@ -1191,14 +1191,25 @@ const BathroomAssessment = () => {
           )}
 
           <div className="mt-8 flex items-center justify-between gap-4">
-            <Button
-              variant="ghost"
-              onClick={handleBack}
-              className="text-muted-foreground hover:text-foreground"
-            >
-              <ArrowLeft className="h-4 w-4 mr-1.5" />
-              Back
-            </Button>
+            {isLast ? (
+              <Button
+                variant="outline"
+                onClick={() => setStepIndex(0)}
+                className="h-12 px-5 rounded-lg"
+              >
+                <ArrowLeft className="h-4 w-4 mr-1.5" />
+                Edit Assessment
+              </Button>
+            ) : (
+              <Button
+                variant="ghost"
+                onClick={handleBack}
+                className="text-muted-foreground hover:text-foreground"
+              >
+                <ArrowLeft className="h-4 w-4 mr-1.5" />
+                Back
+              </Button>
+            )}
 
             <Button
               size="lg"
