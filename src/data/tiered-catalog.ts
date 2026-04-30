@@ -794,7 +794,7 @@ export const tieredCatalog: TieredProduct[] = [
   },
   {
     id: "bal-swtile-03",
-    name: '12×24" Porcelain — Marble Look',
+    name: 'Florentine 12" x 24" Rectangle Wall & Floor Tile',
     category: "Shower Wall Tile",
     tier: "Balanced",
     vendor: "Daltile",
