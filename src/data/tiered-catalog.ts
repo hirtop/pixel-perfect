@@ -652,7 +652,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 350,
     laborNote: "Recessed install requires wall cavity cut — adds ~$350",
     tag: "Most Storage",
-    affiliateUrl: "https://www.fergusonhome.com/bathroom-mirrors/c112528",
+    affiliateUrl: "https://www.fergusonhome.com/redirect/c112528",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
