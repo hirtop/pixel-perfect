@@ -502,7 +502,10 @@ const BathroomAssessment = () => {
           ventilationScope,
           framingItems: framingItemsArr,
           framingScope,
-          subfloor: state.subfloor,
+          subfloor: {
+            ...state.subfloor,
+            ...(state.subfloor.subfloorType ? {} : { subfloorType: undefined }),
+          } as ProjectAssessmentSubfloor,
           subfloorRisk,
         },
       });
