@@ -779,7 +779,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.daltile.com/tile-product-category",
+    affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
   },
   {
     id: "bal-swtile-02",
