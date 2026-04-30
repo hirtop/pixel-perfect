@@ -67,6 +67,8 @@ export interface ProjectData {
       addHumiditySensor?: "yes" | "no" | "unknown";
     };
     ventilationScope?: "None" | "Replace only" | "New install" | "Upgrade";
+    framingItems?: string[];
+    framingScope?: "None" | "Minor blocking" | "Wall modification" | "Major layout change";
   };
   style_preferences: {
     style?: string;
