@@ -933,6 +933,20 @@ const BathroomAssessment = () => {
             </motion.div>
           )}
 
+          {subfloorRisk === "High" && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              role="alert"
+              className="mt-3 flex gap-3 rounded-xl border border-orange-500/40 bg-orange-500/10 p-4"
+            >
+              <AlertTriangle className="h-5 w-5 text-orange-600 dark:text-orange-400 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-orange-700 dark:text-orange-300 leading-relaxed">
+                Subfloor should be inspected before final material order.
+              </p>
+            </motion.div>
+          )}
+
           {windowNearShower && (
             <motion.div
               initial={{ opacity: 0, y: 8 }}
