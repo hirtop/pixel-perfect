@@ -2053,7 +2053,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 150,
     laborNote: "Wall-mount requires in-wall valve rough-in — adds ~$150",
     tag: "Trending",
-    affiliateUrl: "https://www.us.kohler.com/us/tub-fillers/content/tub-fillers.htm",
+    affiliateUrl: "https://www.fergusonhome.com/tub-faucets/c133237",
     image: "https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&q=80",
   },
 
