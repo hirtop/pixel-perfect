@@ -970,6 +970,139 @@ const BathroomAssessment = () => {
                   />
                 </div>
               )}
+
+              {step.kind === "review" && (
+                <div className="space-y-5">
+                  {(() => {
+                    const tone =
+                      complexity === "Simple Refresh"
+                        ? "border-emerald-500/40 bg-emerald-500/10 text-emerald-700 dark:text-emerald-300"
+                        : complexity === "Standard Remodel"
+                        ? "border-primary/40 bg-primary/10 text-foreground"
+                        : complexity === "Moderate Remodel"
+                        ? "border-yellow-500/40 bg-yellow-500/10 text-yellow-700 dark:text-yellow-300"
+                        : "border-destructive/40 bg-destructive/10 text-destructive";
+                    return (
+                      <div className={`rounded-xl border-2 p-5 ${tone}`}>
+                        <p className="text-xs font-semibold uppercase tracking-widest opacity-80 mb-1">
+                          Estimated complexity
+                        </p>
+                        <p className="font-heading text-2xl">{complexity}</p>
+                      </div>
+                    );
+                  })()}
+
+                  <div className="grid grid-cols-2 gap-3">
+                    <div className="rounded-xl border border-border bg-card p-4">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                        Demolition
+                      </p>
+                      <p className="font-heading text-base text-foreground">{demolitionLevel}</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {Object.values(state.demolitionItems).filter((v) => v === "remove").length} item(s) removed
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-border bg-card p-4">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                        Electrical
+                      </p>
+                      <p className="font-heading text-base text-foreground">{electricalScope}</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {ELECTRICAL_ITEMS.filter((it) => state.electricalItems[it]).length} item(s)
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-border bg-card p-4">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                        Ventilation
+                      </p>
+                      <p className="font-heading text-base text-foreground">{ventilationScope}</p>
+                    </div>
+                    <div className="rounded-xl border border-border bg-card p-4">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                        Framing
+                      </p>
+                      <p className="font-heading text-base text-foreground">{framingScope}</p>
+                      <p className="text-xs text-muted-foreground mt-1">
+                        {FRAMING_ITEMS.filter((it) => state.framingItems[it]).length} item(s)
+                      </p>
+                    </div>
+                    <div className="rounded-xl border border-border bg-card p-4">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                        Subfloor risk
+                      </p>
+                      <p className="font-heading text-base text-foreground">{subfloorRisk}</p>
+                      {state.subfloor.subfloorType && (
+                        <p className="text-xs text-muted-foreground mt-1">
+                          {state.subfloor.subfloorType}
+                        </p>
+                      )}
+                    </div>
+                    <div className="rounded-xl border border-border bg-card p-4">
+                      <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-1">
+                        Waterproofing
+                      </p>
+                      <p className="font-heading text-base text-foreground">
+                        {state.waterproofingScope || "Not sure"}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="rounded-xl border border-border bg-card p-4">
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground mb-2">
+                      Plumbing changes
+                    </p>
+                    <ul className="text-sm text-foreground space-y-1">
+                      {PLUMBING_QUESTIONS.map((q) => {
+                        const v = state.plumbing[q.key];
+                        const label = v === "yes" ? "Yes" : v === "no" ? "No" : "Not sure";
+                        return (
+                          <li key={q.key} className="flex justify-between gap-3">
+                            <span className="text-muted-foreground">{q.label}</span>
+                            <span className="font-medium">{label}</span>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+
+                  {(remediationAlert ||
+                    toiletRelocated ||
+                    tubToShower ||
+                    ventIntoAttic ||
+                    subfloorRisk === "High" ||
+                    windowNearShower) && (
+                    <div className="rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-4 space-y-2">
+                      <p className="text-xs font-semibold uppercase tracking-wider text-yellow-700 dark:text-yellow-300">
+                        Contractor verification recommended
+                      </p>
+                      <ul className="text-sm text-yellow-800 dark:text-yellow-200 list-disc pl-5 space-y-1">
+                        {remediationAlert && (
+                          <li>Visible mold or water damage requires professional remediation before work begins.</li>
+                        )}
+                        {toiletRelocated && (
+                          <li>Toilet relocation often requires drain and vent changes.</li>
+                        )}
+                        {tubToShower && (
+                          <li>Tub-to-shower conversion needs waterproofing, new drain, and valve height review.</li>
+                        )}
+                        {ventIntoAttic && (
+                          <li>Venting into an attic instead of outside often causes moisture buildup.</li>
+                        )}
+                        {subfloorRisk === "High" && (
+                          <li>Subfloor should be inspected before final material order.</li>
+                        )}
+                        {windowNearShower && (
+                          <li>Window in shower area requires waterproofing review.</li>
+                        )}
+                      </ul>
+                    </div>
+                  )}
+
+                  <p className="text-xs text-muted-foreground leading-relaxed border-t border-border pt-4">
+                    BOBOX provides planning guidance only. Existing conditions, plumbing, electrical, structural, waterproofing, and subfloor issues should be verified by qualified professionals before ordering materials or starting work.
+                  </p>
+                </div>
+              )}
             </motion.div>
           </AnimatePresence>
 
