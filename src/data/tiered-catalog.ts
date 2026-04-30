@@ -1724,7 +1724,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
-    affiliateUrl: "https://www.us.kohler.com/us/showerheads/content/showerheads.htm",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
     image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
