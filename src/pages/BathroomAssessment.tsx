@@ -130,6 +130,7 @@ type YesNoStepKey = "activeLeaks" | "crackedGrout" | "visibleMold" | "waterDamag
 type StepDef =
   | { kind: "demo"; title: string; subtitle?: string }
   | { kind: "plumbing"; title: string; subtitle?: string }
+  | { kind: "electrical"; title: string; subtitle?: string }
   | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
   | { kind: "scope"; title: string; subtitle?: string };
 
@@ -143,6 +144,11 @@ const STEPS: StepDef[] = [
     kind: "plumbing",
     title: "Plumbing changes",
     subtitle: "Moving fixtures or adding new ones can be a major cost driver. Quick check below.",
+  },
+  {
+    kind: "electrical",
+    title: "Electrical and ventilation",
+    subtitle: "Tap any electrical work that applies, then answer a few quick ventilation questions.",
   },
   {
     key: "activeLeaks",
