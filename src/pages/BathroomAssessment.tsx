@@ -984,37 +984,91 @@ const BathroomAssessment = () => {
                 </div>
               )}
 
-              {step.kind === "yesno" && (
-                <div className="space-y-3">
-                  {yesNoOptions.map((opt) => (
-                    <OptionButton
-                      key={opt.value}
-                      selected={state[step.key] === opt.value}
-                      label={opt.label}
-                      hint={opt.hint}
-                      onClick={() => set(step.key, opt.value)}
-                    />
+              {step.kind === "water" && (
+                <div className="space-y-6">
+                  {([
+                    { key: "activeLeaks", label: "Any active leaks?", hint: "Drips, pooling water, stains under fixtures, or wet spots." },
+                    { key: "crackedGrout", label: "Cracked or failing grout?", hint: "Around the tub, shower walls, and floor tile joints." },
+                    { key: "visibleMold", label: "Any visible mold?", hint: "Black, green, or pink discoloration around wet areas." },
+                    { key: "waterDamageSuspected", label: "Water damage suspected behind walls?", hint: "Soft drywall, swelling baseboards, peeling paint, or musty smell." },
+                  ] as { key: YesNoStepKey; label: string; hint: string }[]).map((q) => (
+                    <div key={q.key} className="space-y-2">
+                      <p className="text-sm font-medium text-foreground">{q.label}</p>
+                      <p className="text-xs text-muted-foreground">{q.hint}</p>
+                      <div className="grid grid-cols-3 gap-2">
+                        {(["yes", "no", "unknown"] as YesNoUnknown[]).map((v) => {
+                          const selected = state[q.key] === v;
+                          const label = v === "unknown" ? "Not sure" : v === "yes" ? "Yes" : "No";
+                          return (
+                            <button
+                              key={v}
+                              type="button"
+                              onClick={() => set(q.key, v)}
+                              className={`px-3 py-2.5 rounded-lg text-sm border-2 font-medium transition-colors ${
+                                selected
+                                  ? "border-primary bg-primary/10 text-foreground"
+                                  : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                              }`}
+                            >
+                              {label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
                   ))}
-                </div>
-              )}
 
-              {step.kind === "scope" && (
-                <div className="space-y-3">
-                  {scopeOptions.map((opt) => (
+                  <div className="pt-2 border-t border-border space-y-3">
+                    <p className="text-sm font-semibold text-foreground">Waterproofing scope likely needed</p>
+                    {scopeOptions.map((opt) => (
+                      <OptionButton
+                        key={opt.value}
+                        selected={state.waterproofingScope === opt.value}
+                        label={opt.value}
+                        hint={opt.hint}
+                        onClick={() => set("waterproofingScope", opt.value)}
+                      />
+                    ))}
                     <OptionButton
-                      key={opt.value}
-                      selected={state.waterproofingScope === opt.value}
-                      label={opt.value}
-                      hint={opt.hint}
-                      onClick={() => set("waterproofingScope", opt.value)}
+                      selected={state.waterproofingScope === ""}
+                      label="Not sure"
+                      hint="A pro can confirm during walkthrough"
+                      onClick={() => set("waterproofingScope", "")}
                     />
-                  ))}
-                  <OptionButton
-                    selected={state.waterproofingScope === ""}
-                    label="Not sure"
-                    hint="A pro can confirm during walkthrough"
-                    onClick={() => set("waterproofingScope", "")}
-                  />
+                  </div>
+
+                  <div className="pt-2 border-t border-border">
+                    <p className="text-sm font-semibold text-foreground mb-1">Accessibility</p>
+                    <p className="text-xs text-muted-foreground mb-3">Optional — tap any that apply.</p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {ACCESSIBILITY_ITEMS.map((item) => {
+                        const selected = state.accessibilityItems[item];
+                        return (
+                          <button
+                            key={item}
+                            type="button"
+                            onClick={() => toggleAccessibility(item)}
+                            className={`w-full text-left rounded-xl border-2 p-4 transition-all ${
+                              selected
+                                ? "border-primary bg-primary/10"
+                                : "border-border bg-card hover:border-primary/40"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="font-semibold text-sm text-foreground leading-snug">{item}</p>
+                              <div
+                                className={`flex-shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${
+                                  selected ? "border-primary bg-primary" : "border-border"
+                                }`}
+                              >
+                                {selected && <Check className="w-3 h-3 text-primary-foreground" />}
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
                 </div>
               )}
 
