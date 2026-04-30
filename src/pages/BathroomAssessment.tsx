@@ -55,11 +55,26 @@ const VENTILATION_QUESTIONS = [
 type VentilationKey = (typeof VENTILATION_QUESTIONS)[number]["key"];
 type VentilationScope = "None" | "Replace only" | "New install" | "Upgrade";
 
+const FRAMING_ITEMS = [
+  "Moving / removing a wall",
+  "Adding shower niche",
+  "Adding shower bench",
+  "Enlarging shower",
+  "Moving door",
+  "Replacing door",
+  "Replacing window",
+  "Window inside / near shower",
+  "Adding blocking for grab bars or glass door",
+] as const;
+type FramingItem = (typeof FRAMING_ITEMS)[number];
+type FramingScope = "None" | "Minor blocking" | "Wall modification" | "Major layout change";
+
 interface AssessmentState {
   demolitionItems: Record<DemoItem, KeepRemove>;
   plumbing: Record<PlumbingKey, YesNoUnknown>;
   electricalItems: Record<ElectricalItem, boolean>;
   ventilation: Record<VentilationKey, YesNoUnknown>;
+  framingItems: Record<FramingItem, boolean>;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -87,16 +102,39 @@ const defaultVentilation: Record<VentilationKey, YesNoUnknown> = VENTILATION_QUE
   {} as Record<VentilationKey, YesNoUnknown>,
 );
 
+const defaultFraming: Record<FramingItem, boolean> = FRAMING_ITEMS.reduce(
+  (acc, item) => ({ ...acc, [item]: false }),
+  {} as Record<FramingItem, boolean>,
+);
+
 const defaultState: AssessmentState = {
   demolitionItems: defaultDemo,
   plumbing: defaultPlumbing,
   electricalItems: defaultElectrical,
   ventilation: defaultVentilation,
+  framingItems: defaultFraming,
   activeLeaks: "no",
   crackedGrout: "no",
   visibleMold: "no",
   waterDamageSuspected: "no",
   waterproofingScope: "",
+};
+
+const computeFramingScope = (items: Record<FramingItem, boolean>): FramingScope => {
+  const wallMove = items["Moving / removing a wall"];
+  const doorMove = items["Moving door"];
+  const enlargeShower = items["Enlarging shower"];
+  const wallMods =
+    items["Adding shower niche"] || items["Adding shower bench"] || enlargeShower;
+  const minorOnly =
+    items["Adding blocking for grab bars or glass door"] ||
+    items["Replacing door"] ||
+    items["Replacing window"] ||
+    items["Window inside / near shower"];
+  if (wallMove || (doorMove && enlargeShower)) return "Major layout change";
+  if (wallMods || doorMove) return "Wall modification";
+  if (minorOnly) return "Minor blocking";
+  return "None";
 };
 
 const computeElectricalScope = (items: Record<ElectricalItem, boolean>): ElectricalScope => {
@@ -131,6 +169,7 @@ type StepDef =
   | { kind: "demo"; title: string; subtitle?: string }
   | { kind: "plumbing"; title: string; subtitle?: string }
   | { kind: "electrical"; title: string; subtitle?: string }
+  | { kind: "framing"; title: string; subtitle?: string }
   | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
   | { kind: "scope"; title: string; subtitle?: string };
 
@@ -149,6 +188,11 @@ const STEPS: StepDef[] = [
     kind: "electrical",
     title: "Electrical and ventilation",
     subtitle: "Tap any electrical work that applies, then answer a few quick ventilation questions.",
+  },
+  {
+    kind: "framing",
+    title: "Walls, framing, doors, and windows",
+    subtitle: "Tap any structural or opening changes that apply.",
   },
   {
     key: "activeLeaks",
@@ -277,6 +321,14 @@ const BathroomAssessment = () => {
     {} as Record<ElectricalItem, boolean>,
   );
 
+  const initialFramingArr = Array.isArray(initial.framingItems)
+    ? (initial.framingItems as string[])
+    : [];
+  const hydratedFraming: Record<FramingItem, boolean> = FRAMING_ITEMS.reduce(
+    (acc, item) => ({ ...acc, [item]: initialFramingArr.includes(item) }),
+    {} as Record<FramingItem, boolean>,
+  );
+
   const [state, setState] = useState<AssessmentState>({
     ...defaultState,
     activeLeaks: (initial.activeLeaks as YesNoUnknown) ?? defaultState.activeLeaks,
@@ -298,6 +350,7 @@ const BathroomAssessment = () => {
       ...defaultVentilation,
       ...((initial.ventilation as Record<VentilationKey, YesNoUnknown> | undefined) ?? {}),
     },
+    framingItems: hydratedFraming,
   });
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -320,6 +373,11 @@ const BathroomAssessment = () => {
     [state.ventilation],
   );
 
+  const framingScope = useMemo(
+    () => computeFramingScope(state.framingItems),
+    [state.framingItems],
+  );
+
   const remediationAlert = useMemo(
     () =>
       state.visibleMold === "yes" ||
@@ -327,6 +385,8 @@ const BathroomAssessment = () => {
       state.demolitionItems["Suspected mold or water damage"] === "remove",
     [state.visibleMold, state.waterDamageSuspected, state.demolitionItems],
   );
+
+  const windowNearShower = state.framingItems["Window inside / near shower"];
 
   const ventIntoAttic = state.ventilation.ventsOutside === "no";
 
@@ -348,6 +408,12 @@ const BathroomAssessment = () => {
       electricalItems: { ...s.electricalItems, [item]: !s.electricalItems[item] },
     }));
 
+  const toggleFraming = (item: FramingItem) =>
+    setState((s) => ({
+      ...s,
+      framingItems: { ...s.framingItems, [item]: !s.framingItems[item] },
+    }));
+
   const toggleDemo = (item: DemoItem) =>
     setState((s) => ({
       ...s,
@@ -362,6 +428,7 @@ const BathroomAssessment = () => {
   const handleNext = () => {
     if (isLast) {
       const electricalItemsArr = ELECTRICAL_ITEMS.filter((item) => state.electricalItems[item]);
+      const framingItemsArr = FRAMING_ITEMS.filter((item) => state.framingItems[item]);
       updateProject({
         assessment: {
           activeLeaks: state.activeLeaks,
@@ -376,6 +443,8 @@ const BathroomAssessment = () => {
           electricalScope,
           ventilation: state.ventilation,
           ventilationScope,
+          framingItems: framingItemsArr,
+          framingScope,
         },
       });
       markStepComplete("assessment");
@@ -607,6 +676,45 @@ const BathroomAssessment = () => {
                 </div>
               )}
 
+              {step.kind === "framing" && (
+                <div className="space-y-4">
+                  <div className="grid grid-cols-2 gap-3">
+                    {FRAMING_ITEMS.map((item) => {
+                      const selected = state.framingItems[item];
+                      return (
+                        <button
+                          key={item}
+                          type="button"
+                          onClick={() => toggleFraming(item)}
+                          className={`w-full text-left rounded-xl border-2 p-4 transition-all ${
+                            selected
+                              ? "border-primary bg-primary/10"
+                              : "border-border bg-card hover:border-primary/40"
+                          }`}
+                        >
+                          <div className="flex items-start justify-between gap-2">
+                            <p className="font-semibold text-sm text-foreground leading-snug">
+                              {item}
+                            </p>
+                            <div
+                              className={`flex-shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${
+                                selected ? "border-primary bg-primary" : "border-border"
+                              }`}
+                            >
+                              {selected && <Check className="w-3 h-3 text-primary-foreground" />}
+                            </div>
+                          </div>
+                        </button>
+                      );
+                    })}
+                  </div>
+                  <div className="flex items-center justify-between rounded-xl bg-secondary/60 border border-border p-3">
+                    <span className="text-sm text-muted-foreground">Framing scope</span>
+                    <span className="font-heading text-base text-foreground">{framingScope}</span>
+                  </div>
+                </div>
+              )}
+
               {step.kind === "yesno" && (
                 <div className="space-y-3">
                   {yesNoOptions.map((opt) => (
@@ -695,6 +803,20 @@ const BathroomAssessment = () => {
               <Info className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-yellow-700 dark:text-yellow-300 leading-relaxed">
                 Venting into an attic instead of outside often causes moisture buildup — worth verifying with your contractor.
+              </p>
+            </motion.div>
+          )}
+
+          {windowNearShower && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              role="alert"
+              className="mt-3 flex gap-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-4"
+            >
+              <Info className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-yellow-700 dark:text-yellow-300 leading-relaxed">
+                Window in shower area requires waterproofing review.
               </p>
             </motion.div>
           )}
