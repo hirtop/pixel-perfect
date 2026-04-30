@@ -212,6 +212,7 @@ const BathroomAssessment = () => {
     ...defaultState,
     ...initial,
     demolitionItems: { ...defaultDemo, ...(initial.demolitionItems as Record<DemoItem, KeepRemove> | undefined) },
+    plumbing: { ...defaultPlumbing, ...(initial.plumbing as Record<PlumbingKey, YesNoUnknown> | undefined) },
   });
   const [stepIndex, setStepIndex] = useState(0);
 
