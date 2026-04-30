@@ -46,6 +46,8 @@ export interface ProjectData {
     visibleMold?: "yes" | "no" | "unknown";
     waterDamageSuspected?: "yes" | "no" | "unknown";
     waterproofingScope?: "None" | "Tub surround" | "Shower walls" | "Full shower system";
+    demolitionItems?: Record<string, "keep" | "remove">;
+    demolitionLevel?: "Light" | "Medium" | "Full Gut";
   };
   style_preferences: {
     style?: string;
