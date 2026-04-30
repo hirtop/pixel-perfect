@@ -1708,7 +1708,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
-    affiliateUrl: "https://www.moen.com/bathroom/shower-spa",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
     image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
@@ -1724,7 +1724,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Value Pick",
-    affiliateUrl: "https://www.us.kohler.com/us/showerheads/content/showerheads.htm",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
     image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
   {
@@ -1741,7 +1741,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "Ceiling mount requires rerouting supply pipe — adds ~$200",
     tag: "Upgrade",
-    affiliateUrl: "https://www.deltafaucet.com/bathroom/showering",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
     image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
 
