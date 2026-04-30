@@ -589,6 +589,7 @@ const BathroomAssessment = () => {
     if (isLast) {
       const electricalItemsArr = ELECTRICAL_ITEMS.filter((item) => state.electricalItems[item]);
       const framingItemsArr = FRAMING_ITEMS.filter((item) => state.framingItems[item]);
+      const accessibilityItemsArr = ACCESSIBILITY_ITEMS.filter((item) => state.accessibilityItems[item]);
       updateProject({
         assessment: {
           activeLeaks: state.activeLeaks,
@@ -617,6 +618,7 @@ const BathroomAssessment = () => {
           },
           subfloorRisk,
           complexity,
+          accessibilityItems: accessibilityItemsArr,
         },
       });
 
@@ -656,6 +658,7 @@ const BathroomAssessment = () => {
         },
         waterproofingScope: state.waterproofingScope || null,
         complexityScore: complexity,
+        accessibilityItems: ACCESSIBILITY_ITEMS.filter((item) => state.accessibilityItems[item]),
         scopeSummary,
         createdAt: new Date().toISOString(),
       };
