@@ -212,6 +212,7 @@ type StepDef =
   | { kind: "plumbing"; title: string; subtitle?: string }
   | { kind: "electrical"; title: string; subtitle?: string }
   | { kind: "framing"; title: string; subtitle?: string }
+  | { kind: "subfloor"; title: string; subtitle?: string }
   | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
   | { kind: "scope"; title: string; subtitle?: string };
 
@@ -235,6 +236,11 @@ const STEPS: StepDef[] = [
     kind: "framing",
     title: "Walls, framing, doors, and windows",
     subtitle: "Tap any structural or opening changes that apply.",
+  },
+  {
+    kind: "subfloor",
+    title: "Floor and subfloor condition",
+    subtitle: "A few quick checks to flag any subfloor risk before materials are ordered.",
   },
   {
     key: "activeLeaks",
