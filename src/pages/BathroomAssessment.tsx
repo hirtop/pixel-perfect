@@ -70,9 +70,12 @@ const computeDemolitionLevel = (items: Record<DemoItem, KeepRemove>): Demolition
   return "Light";
 };
 
+type YesNoStepKey = "activeLeaks" | "crackedGrout" | "visibleMold" | "waterDamageSuspected";
+
 type StepDef =
   | { kind: "demo"; title: string; subtitle?: string }
-  | { key: keyof Omit<AssessmentState, "demolitionItems" | "waterproofingScope">; kind: "yesno"; title: string; subtitle?: string }
+  | { kind: "plumbing"; title: string; subtitle?: string }
+  | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
   | { kind: "scope"; title: string; subtitle?: string };
 
 const STEPS: StepDef[] = [
@@ -80,6 +83,11 @@ const STEPS: StepDef[] = [
     kind: "demo",
     title: "What stays and what goes?",
     subtitle: "Tap each item to mark it Keep or Remove. This sets your demolition scope.",
+  },
+  {
+    kind: "plumbing",
+    title: "Plumbing changes",
+    subtitle: "Moving fixtures or adding new ones can be a major cost driver. Quick check below.",
   },
   {
     key: "activeLeaks",
