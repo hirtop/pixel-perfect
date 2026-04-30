@@ -609,6 +609,7 @@ const BathroomAssessment = () => {
               : {}),
           },
           subfloorRisk,
+          complexity,
         },
       });
       markStepComplete("assessment");
