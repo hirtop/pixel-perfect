@@ -71,9 +71,32 @@ const SHOP_PRODUCTS_FALLBACK: ShopProduct[] = [
   { id: "p38", category: "Shower Doors", brand: "Kohler", name: 'Revel 70" High x 43-1/8" - 48" Wide Pivot Frameless Shower Door', price: 834.93, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-707551-l-bnk-3980066.jpg", url: "https://www.fergusonhome.com/kohler-k-707551-l/s1127268?uid=2707429", retailer: "Ferguson Home", bestFor: "Guest Bath" },
   { id: "p39", category: "Shower Doors", brand: "DreamLine", name: 'Enigma-X 76" High x 60" Wide Sliding Frameless Shower Door', price: 1319.99, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/dreamline/dreamline-shdr-61607610-07-1093561.jpg", url: "https://www.fergusonhome.com/dreamline-shdr-61607610/s709085?uid=1725914", retailer: "Ferguson Home", bestFor: "Spa Bath" },
   // Tile
-  { id: "p40", category: "Tile", brand: "Daltile", name: 'Dignitary 12" x 24" Rectangle Floor and Wall Tile — Warm Gray Matte', price: 2.19, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-dr1012241p-712.jpg", url: "https://www.fergusonhome.com/daltile-dr1012241p/s1921316", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
-  { id: "p41", category: "Tile", brand: "Bedrosians", name: 'Cloe 2.5" x 8" Glossy White Ceramic Wall Tile', price: 3.49, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/bedrosians/bedrosians-decclowhi28g-8497430.jpg", url: "https://www.fergusonhome.com/bedrosians-decclowhi28g/s1925516", retailer: "Ferguson Home", bestFor: "Guest Bath" },
-  { id: "p42", category: "Tile", brand: "Daltile", name: 'Florentine 12" x 24" Marble Look Polished Porcelain Floor & Wall Tile', price: 4.49, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-fl061224f1pk-1300.jpg", url: "https://www.fergusonhome.com/daltile-fl061224f1pk/s1921325", retailer: "Ferguson Home", bestFor: "Spa Bath" },
+  { id: "p40", category: "Shower Floor Tile", brand: "Daltile", name: 'Dignitary 12" x 24" Rectangle Floor and Wall Tile — Warm Gray Matte', price: 2.19, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-dr1012241p-712.jpg", url: "https://www.fergusonhome.com/daltile-dr1012241p/s1921316", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
+  { id: "p41", category: "Shower Wall Tile", brand: "Bedrosians", name: 'Cloe 2.5" x 8" Glossy White Ceramic Wall Tile', price: 3.49, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/bedrosians/bedrosians-decclowhi28g-8497430.jpg", url: "https://www.fergusonhome.com/bedrosians-decclowhi28g/s1925516", retailer: "Ferguson Home", bestFor: "Guest Bath" },
+  { id: "p42", category: "Main Floor Tile", brand: "Daltile", name: 'Florentine 12" x 24" Marble Look Polished Porcelain Floor & Wall Tile', price: 4.49, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-fl061224f1pk-1300.jpg", url: "https://www.fergusonhome.com/daltile-fl061224f1pk/s1921325", retailer: "Ferguson Home", bestFor: "Spa Bath" },
+
+  // Shower Wall Tile (additional)
+  { id: "p43", category: "Shower Wall Tile", brand: "Daltile", name: 'Mesmerist 3" x 12" Rectangle Wall Tile — Glossy White', price: 7.17, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-mm303121p2-2072260.jpg", url: "https://www.fergusonhome.com/daltile-mm3121p2/s1809020?uid=4283918", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
+  { id: "p44", category: "Shower Wall Tile", brand: "Bedrosians", name: 'Marin 3" x 10" Rectangle Floor and Wall Tile — Glossy Visual', price: 8.79, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/bedrosians/bedrosians-100003177-8497430.jpg", url: "https://www.fergusonhome.com/bedrosians-1000032-51/s1903246?uid=4495711", retailer: "Ferguson Home", bestFor: "Guest Bath" },
+  // Shower Floor Tile (additional)
+  { id: "p45", category: "Shower Floor Tile", brand: "Daltile", name: 'Memoir 12" x 12" Square Floor and Wall Tile — Matte Visual', price: 3.13, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-me1212z1p2-cosmo-blue.jpg", url: "https://www.fergusonhome.com/daltile-me1212z1p2-cosmo/s1814869?uid=4298141", retailer: "Ferguson Home", bestFor: "Any Bath" },
+  { id: "p46", category: "Shower Floor Tile", brand: "Daltile", name: 'Color Wheel Linear 4-1/4" x 12" Rectangle Wall Tile — Glossy', price: 4.13, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-0190412mod1p1-2759974.jpg", url: "https://www.fergusonhome.com/daltile-412mod1l/s1649399?uid=3906856", retailer: "Ferguson Home", bestFor: "Modern Bath" },
+  // Main Floor Tile (additional)
+  { id: "p47", category: "Main Floor Tile", brand: "Daltile", name: 'Color Wheel Classic 4" x 4" Wall Tile — Glossy Visual', price: 2.67, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-k175441p1-6434442.jpg", url: "https://www.fergusonhome.com/daltile-441p-g/s1699323?uid=4010534", retailer: "Ferguson Home", bestFor: "Any Bath" },
+  { id: "p48", category: "Main Floor Tile", brand: "Daltile", name: 'Color Wheel Classic 3" x 6" Rectangle Wall Tile — Glossy Visual', price: 3.25, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-019036mod1p4-6434442.jpg", url: "https://www.fergusonhome.com/daltile-36mod1p-g/s1699315?uid=4010456", retailer: "Ferguson Home", bestFor: "Guest Bath" },
+  // Accent Tile
+  { id: "p49", category: "Accent Tile", brand: "Daltile", name: 'Remedy 2" x 10" Rectangle Wall Tile — Glossy Visual', price: 10.49, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-rd21391p-2072260.jpg", url: "https://www.fergusonhome.com/daltile-rd39p/s1742564?uid=4139022", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
+  { id: "p50", category: "Accent Tile", brand: "Daltile", name: 'Mesmerist 3" x 12" Rectangle Wall Tile — Cobalt Blue Glossy', price: 7.17, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-mm303121p2-2072260.jpg", url: "https://www.fergusonhome.com/daltile-mm3121p2/s1809020?uid=4283918", retailer: "Ferguson Home", bestFor: "Spa Bath" },
+  { id: "p51", category: "Accent Tile", brand: "Bedrosians", name: 'Cloe 2.5" x 8" Rectangle Wall Tile — Glossy Navy Blue', price: 8.89, priceNote: "per sq ft", image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/bedrosians/bedrosians-decclowhi28g-8497430.jpg", url: "https://www.fergusonhome.com/bedrosians-decclo28g/s1903313?uid=4495816", retailer: "Ferguson Home", bestFor: "Contemporary Bath" },
+  // Shower Valve
+  { id: "p52", category: "Shower Valve", brand: "Moen", name: "Cia Shower Only Trim Package with 1.75 GPM Single Function Shower Head", price: 489.74, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/moen/moen-ut2262epbg-7505914.jpg", url: "https://www.fergusonhome.com/moen-ut2262ep/s1797348?uid=4249004", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
+  { id: "p53", category: "Shower Valve", brand: "Kohler", name: "Purist Shower Only Trim Package with 2.5 GPM Single Function Shower Head", price: 564.18, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler_k_ts14422_4_cp.jpg", url: "https://www.fergusonhome.com/kohler-k-ts14422-4/s1245945?uid=2976114", retailer: "Ferguson Home", bestFor: "Modern Bath" },
+  { id: "p54", category: "Shower Valve", brand: "Pfister", name: "Contempra Single Handle Tub and Shower Trim Package with Single Function Rain Shower Head", price: 347.78, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/pfister/pfister-lg89-8ncbg-155299.jpg", url: "https://www.fergusonhome.com/pfister-lg89-8nc/s1428323?uid=3357601", retailer: "Ferguson Home", bestFor: "Guest Bath" },
+  // Tub Valve
+  { id: "p55", category: "Tub Valve", brand: "Delta", name: "Trinsic Double Handle Wall Mounted Tub Filler Trim — Less Rough In", price: 1099, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-t5759-czwl-4290583.jpg", url: "https://www.fergusonhome.com/delta-t5759-wl/s1516902?uid=3558989", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
+  { id: "p56", category: "Tub Valve", brand: "Delta", name: "Broderick Two Handle Wall Mounted Tub Filler with Hand Shower — Less Rough-In", price: 889, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-t5784-cz-pr-lhp-wl-9217950.jpg", url: "https://www.fergusonhome.com/delta-t5784-lhp-wl/s1971963?uid=4683164", retailer: "Ferguson Home", bestFor: "Guest Bath" },
+  { id: "p57", category: "Tub Valve", brand: "Kohler", name: "Tempered Floor Mounted Tub Filler with Built-In Diverter — Includes Hand Shower", price: 1814.63, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-t22025-4-2mb-1606409.jpg", url: "https://www.fergusonhome.com/kohler-k-t22025-4/s1645348?uid=4325493", retailer: "Ferguson Home", bestFor: "Spa Bath" },
+
 ];
 
 // ─── Categories ─────────────────────────────────────────────────────
@@ -87,7 +110,12 @@ const CATEGORIES = [
   "Shower Doors",
   "Sinks",
   "Mirrors",
-  "Tile",
+  "Shower Wall Tile",
+  "Shower Floor Tile",
+  "Main Floor Tile",
+  "Accent Tile",
+  "Shower Valve",
+  "Tub Valve",
   "Lighting",
   "Heated Floors",
 ] as const;
@@ -104,7 +132,12 @@ const DB_TO_UI: Record<string, ShopCategory> = {
   "Shower Doors": "Shower Doors",
   Sinks: "Sinks",
   Mirrors: "Mirrors",
-  Tile: "Tile",
+  "Shower Wall Tile": "Shower Wall Tile",
+  "Shower Floor Tile": "Shower Floor Tile",
+  "Main Floor Tile": "Main Floor Tile",
+  "Accent Tile": "Accent Tile",
+  "Shower Valve": "Shower Valve",
+  "Tub Valve": "Tub Valve",
   Lighting: "Lighting",
   "Heated Floors": "Heated Floors",
 };
@@ -280,7 +313,12 @@ const CATEGORY_EMOJI: Record<ShopCategory, string> = {
   "Shower Doors": "🚿",
   Sinks: "🪣",
   Mirrors: "🪞",
-  Tile: "⬜",
+  "Shower Wall Tile": "⬜",
+  "Shower Floor Tile": "⬜",
+  "Main Floor Tile": "⬜",
+  "Accent Tile": "🎨",
+  "Shower Valve": "🚿",
+  "Tub Valve": "🛁",
   Lighting: "💡",
   "Heated Floors": "🌡️",
 };
