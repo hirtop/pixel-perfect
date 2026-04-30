@@ -579,7 +579,7 @@ const BathroomAssessment = () => {
 
   const isLast = stepIndex === totalSteps - 1;
 
-  const handleNext = () => {
+  const handleNext = async () => {
     if (isLast) {
       const electricalItemsArr = ELECTRICAL_ITEMS.filter((item) => state.electricalItems[item]);
       const framingItemsArr = FRAMING_ITEMS.filter((item) => state.framingItems[item]);
