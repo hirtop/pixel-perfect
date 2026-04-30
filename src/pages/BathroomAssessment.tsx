@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer, Wrench, Info } from "lucide-react";
+import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer, Wrench, Info, Zap, Wind } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 
@@ -33,9 +33,33 @@ const PLUMBING_QUESTIONS = [
 ] as const;
 type PlumbingKey = (typeof PLUMBING_QUESTIONS)[number]["key"];
 
+const ELECTRICAL_ITEMS = [
+  "New vanity lights",
+  "New recessed lights",
+  "New outlets / GFCI",
+  "Heated floor",
+  "Smart mirror",
+  "Bidet outlet",
+  "Move switches",
+] as const;
+type ElectricalItem = (typeof ELECTRICAL_ITEMS)[number];
+type ElectricalScope = "None" | "Minor" | "Moderate" | "Major";
+
+const VENTILATION_QUESTIONS = [
+  { key: "hasExhaustFan", label: "Does the bathroom have an exhaust fan?" },
+  { key: "fanWorking", label: "Is it working?" },
+  { key: "ventsOutside", label: "Does it vent outside (not into attic)?" },
+  { key: "replaceOrAddFan", label: "Replace or add a new fan?" },
+  { key: "addHumiditySensor", label: "Add a humidity sensor?" },
+] as const;
+type VentilationKey = (typeof VENTILATION_QUESTIONS)[number]["key"];
+type VentilationScope = "None" | "Replace only" | "New install" | "Upgrade";
+
 interface AssessmentState {
   demolitionItems: Record<DemoItem, KeepRemove>;
   plumbing: Record<PlumbingKey, YesNoUnknown>;
+  electricalItems: Record<ElectricalItem, boolean>;
+  ventilation: Record<VentilationKey, YesNoUnknown>;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -53,14 +77,45 @@ const defaultPlumbing: Record<PlumbingKey, YesNoUnknown> = PLUMBING_QUESTIONS.re
   {} as Record<PlumbingKey, YesNoUnknown>,
 );
 
+const defaultElectrical: Record<ElectricalItem, boolean> = ELECTRICAL_ITEMS.reduce(
+  (acc, item) => ({ ...acc, [item]: false }),
+  {} as Record<ElectricalItem, boolean>,
+);
+
+const defaultVentilation: Record<VentilationKey, YesNoUnknown> = VENTILATION_QUESTIONS.reduce(
+  (acc, q) => ({ ...acc, [q.key]: "unknown" }),
+  {} as Record<VentilationKey, YesNoUnknown>,
+);
+
 const defaultState: AssessmentState = {
   demolitionItems: defaultDemo,
   plumbing: defaultPlumbing,
+  electricalItems: defaultElectrical,
+  ventilation: defaultVentilation,
   activeLeaks: "no",
   crackedGrout: "no",
   visibleMold: "no",
   waterDamageSuspected: "no",
   waterproofingScope: "",
+};
+
+const computeElectricalScope = (items: Record<ElectricalItem, boolean>): ElectricalScope => {
+  const n = Object.values(items).filter(Boolean).length;
+  if (n >= 5) return "Major";
+  if (n >= 3) return "Moderate";
+  if (n >= 1) return "Minor";
+  return "None";
+};
+
+const computeVentilationScope = (v: Record<VentilationKey, YesNoUnknown>): VentilationScope => {
+  const hasFan = v.hasExhaustFan === "yes";
+  const working = v.fanWorking === "yes";
+  const replace = v.replaceOrAddFan === "yes";
+  const humidity = v.addHumiditySensor === "yes";
+  if (!hasFan && replace) return "New install";
+  if (humidity || (replace && hasFan && working)) return "Upgrade";
+  if (replace) return "Replace only";
+  return "None";
 };
 
 const computeDemolitionLevel = (items: Record<DemoItem, KeepRemove>): DemolitionLevel => {
@@ -75,6 +130,7 @@ type YesNoStepKey = "activeLeaks" | "crackedGrout" | "visibleMold" | "waterDamag
 type StepDef =
   | { kind: "demo"; title: string; subtitle?: string }
   | { kind: "plumbing"; title: string; subtitle?: string }
+  | { kind: "electrical"; title: string; subtitle?: string }
   | { key: YesNoStepKey; kind: "yesno"; title: string; subtitle?: string }
   | { kind: "scope"; title: string; subtitle?: string };
 
@@ -88,6 +144,11 @@ const STEPS: StepDef[] = [
     kind: "plumbing",
     title: "Plumbing changes",
     subtitle: "Moving fixtures or adding new ones can be a major cost driver. Quick check below.",
+  },
+  {
+    kind: "electrical",
+    title: "Electrical and ventilation",
+    subtitle: "Tap any electrical work that applies, then answer a few quick ventilation questions.",
   },
   {
     key: "activeLeaks",
@@ -207,12 +268,36 @@ const BathroomAssessment = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
 
-  const initial = (project?.assessment as Partial<AssessmentState>) || {};
+  const initial = (project?.assessment ?? {}) as Record<string, unknown>;
+  const initialElectricalArr = Array.isArray(initial.electricalItems)
+    ? (initial.electricalItems as string[])
+    : [];
+  const hydratedElectrical: Record<ElectricalItem, boolean> = ELECTRICAL_ITEMS.reduce(
+    (acc, item) => ({ ...acc, [item]: initialElectricalArr.includes(item) }),
+    {} as Record<ElectricalItem, boolean>,
+  );
+
   const [state, setState] = useState<AssessmentState>({
     ...defaultState,
-    ...initial,
-    demolitionItems: { ...defaultDemo, ...(initial.demolitionItems as Record<DemoItem, KeepRemove> | undefined) },
-    plumbing: { ...defaultPlumbing, ...(initial.plumbing as Record<PlumbingKey, YesNoUnknown> | undefined) },
+    activeLeaks: (initial.activeLeaks as YesNoUnknown) ?? defaultState.activeLeaks,
+    crackedGrout: (initial.crackedGrout as YesNoUnknown) ?? defaultState.crackedGrout,
+    visibleMold: (initial.visibleMold as YesNoUnknown) ?? defaultState.visibleMold,
+    waterDamageSuspected:
+      (initial.waterDamageSuspected as YesNoUnknown) ?? defaultState.waterDamageSuspected,
+    waterproofingScope: (initial.waterproofingScope as WaterproofingScope) ?? "",
+    demolitionItems: {
+      ...defaultDemo,
+      ...((initial.demolitionItems as Record<DemoItem, KeepRemove> | undefined) ?? {}),
+    },
+    plumbing: {
+      ...defaultPlumbing,
+      ...((initial.plumbing as Record<PlumbingKey, YesNoUnknown> | undefined) ?? {}),
+    },
+    electricalItems: hydratedElectrical,
+    ventilation: {
+      ...defaultVentilation,
+      ...((initial.ventilation as Record<VentilationKey, YesNoUnknown> | undefined) ?? {}),
+    },
   });
   const [stepIndex, setStepIndex] = useState(0);
 
@@ -225,6 +310,16 @@ const BathroomAssessment = () => {
     [state.demolitionItems],
   );
 
+  const electricalScope = useMemo(
+    () => computeElectricalScope(state.electricalItems),
+    [state.electricalItems],
+  );
+
+  const ventilationScope = useMemo(
+    () => computeVentilationScope(state.ventilation),
+    [state.ventilation],
+  );
+
   const remediationAlert = useMemo(
     () =>
       state.visibleMold === "yes" ||
@@ -232,6 +327,8 @@ const BathroomAssessment = () => {
       state.demolitionItems["Suspected mold or water damage"] === "remove",
     [state.visibleMold, state.waterDamageSuspected, state.demolitionItems],
   );
+
+  const ventIntoAttic = state.ventilation.ventsOutside === "no";
 
   const toiletRelocated = state.plumbing.toiletSameLocation === "no";
   const tubToShower = state.plumbing.tubToShowerConversion === "yes";
@@ -241,6 +338,15 @@ const BathroomAssessment = () => {
 
   const setPlumbing = (key: PlumbingKey, value: YesNoUnknown) =>
     setState((s) => ({ ...s, plumbing: { ...s.plumbing, [key]: value } }));
+
+  const setVentilation = (key: VentilationKey, value: YesNoUnknown) =>
+    setState((s) => ({ ...s, ventilation: { ...s.ventilation, [key]: value } }));
+
+  const toggleElectrical = (item: ElectricalItem) =>
+    setState((s) => ({
+      ...s,
+      electricalItems: { ...s.electricalItems, [item]: !s.electricalItems[item] },
+    }));
 
   const toggleDemo = (item: DemoItem) =>
     setState((s) => ({
@@ -255,12 +361,21 @@ const BathroomAssessment = () => {
 
   const handleNext = () => {
     if (isLast) {
-      const { waterproofingScope, ...rest } = state;
+      const electricalItemsArr = ELECTRICAL_ITEMS.filter((item) => state.electricalItems[item]);
       updateProject({
         assessment: {
-          ...rest,
+          activeLeaks: state.activeLeaks,
+          crackedGrout: state.crackedGrout,
+          visibleMold: state.visibleMold,
+          waterDamageSuspected: state.waterDamageSuspected,
+          ...(state.waterproofingScope ? { waterproofingScope: state.waterproofingScope } : {}),
+          demolitionItems: state.demolitionItems,
           demolitionLevel,
-          ...(waterproofingScope ? { waterproofingScope } : {}),
+          plumbing: state.plumbing,
+          electricalItems: electricalItemsArr,
+          electricalScope,
+          ventilation: state.ventilation,
+          ventilationScope,
         },
       });
       markStepComplete("assessment");
@@ -411,6 +526,87 @@ const BathroomAssessment = () => {
                 </div>
               )}
 
+              {step.kind === "electrical" && (
+                <div className="space-y-6">
+                  <div>
+                    <p className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                      <Zap className="h-4 w-4 text-primary" />
+                      Electrical work — tap any that apply
+                    </p>
+                    <div className="grid grid-cols-2 gap-3">
+                      {ELECTRICAL_ITEMS.map((item) => {
+                        const selected = state.electricalItems[item];
+                        return (
+                          <button
+                            key={item}
+                            type="button"
+                            onClick={() => toggleElectrical(item)}
+                            className={`w-full text-left rounded-xl border-2 p-4 transition-all ${
+                              selected
+                                ? "border-primary bg-primary/10"
+                                : "border-border bg-card hover:border-primary/40"
+                            }`}
+                          >
+                            <div className="flex items-start justify-between gap-2">
+                              <p className="font-semibold text-sm text-foreground leading-snug">{item}</p>
+                              <div
+                                className={`flex-shrink-0 w-5 h-5 rounded-md border-2 flex items-center justify-center transition-colors ${
+                                  selected ? "border-primary bg-primary" : "border-border"
+                                }`}
+                              >
+                                {selected && <Check className="w-3 h-3 text-primary-foreground" />}
+                              </div>
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                    <div className="mt-4 flex items-center justify-between rounded-xl bg-secondary/60 border border-border p-3">
+                      <span className="text-sm text-muted-foreground">Electrical scope</span>
+                      <span className="font-heading text-base text-foreground">{electricalScope}</span>
+                    </div>
+                  </div>
+
+                  <div className="pt-2 border-t border-border">
+                    <p className="text-sm font-semibold text-foreground mb-3 flex items-center gap-2">
+                      <Wind className="h-4 w-4 text-primary" />
+                      Ventilation
+                    </p>
+                    <div className="space-y-4">
+                      {VENTILATION_QUESTIONS.map((q) => (
+                        <div key={q.key} className="space-y-2">
+                          <p className="text-sm font-medium text-foreground">{q.label}</p>
+                          <div className="grid grid-cols-3 gap-2">
+                            {(["yes", "no", "unknown"] as YesNoUnknown[]).map((v) => {
+                              const selected = state.ventilation[q.key] === v;
+                              const label = v === "unknown" ? "Not sure" : v === "yes" ? "Yes" : "No";
+                              return (
+                                <button
+                                  key={v}
+                                  type="button"
+                                  onClick={() => setVentilation(q.key, v)}
+                                  className={`px-3 py-2.5 rounded-lg text-sm border-2 font-medium transition-colors ${
+                                    selected
+                                      ? "border-primary bg-primary/10 text-foreground"
+                                      : "border-border bg-card text-muted-foreground hover:border-primary/40"
+                                  }`}
+                                >
+                                  {label}
+                                </button>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="mt-4 flex items-center justify-between rounded-xl bg-secondary/60 border border-border p-3">
+                      <span className="text-sm text-muted-foreground">Ventilation scope</span>
+                      <span className="font-heading text-base text-foreground">{ventilationScope}</span>
+                    </div>
+                  </div>
+                </div>
+              )}
+
               {step.kind === "yesno" && (
                 <div className="space-y-3">
                   {yesNoOptions.map((opt) => (
@@ -485,6 +681,20 @@ const BathroomAssessment = () => {
               <Info className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
               <p className="text-sm text-yellow-700 dark:text-yellow-300 leading-relaxed">
                 Tub-to-shower requires waterproofing, new drain, and valve height review.
+              </p>
+            </motion.div>
+          )}
+
+          {ventIntoAttic && (
+            <motion.div
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              role="alert"
+              className="mt-3 flex gap-3 rounded-xl border border-yellow-500/40 bg-yellow-500/10 p-4"
+            >
+              <Info className="h-5 w-5 text-yellow-600 dark:text-yellow-400 flex-shrink-0 mt-0.5" />
+              <p className="text-sm text-yellow-700 dark:text-yellow-300 leading-relaxed">
+                Venting into an attic instead of outside often causes moisture buildup — worth verifying with your contractor.
               </p>
             </motion.div>
           )}
