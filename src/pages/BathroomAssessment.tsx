@@ -1,14 +1,29 @@
 import { useMemo, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 
 type YesNoUnknown = "yes" | "no" | "unknown";
 type WaterproofingScope = "None" | "Tub surround" | "Shower walls" | "Full shower system";
+type KeepRemove = "keep" | "remove";
+type DemolitionLevel = "Light" | "Medium" | "Full Gut";
+
+const DEMO_ITEMS = [
+  "Vanity",
+  "Toilet",
+  "Tub/Shower",
+  "Floor Tile",
+  "Wall Tile",
+  "Drywall/Backer Board",
+  "Ceiling",
+  "Suspected mold or water damage",
+] as const;
+type DemoItem = (typeof DEMO_ITEMS)[number];
 
 interface AssessmentState {
+  demolitionItems: Record<DemoItem, KeepRemove>;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -16,7 +31,13 @@ interface AssessmentState {
   waterproofingScope: WaterproofingScope | "";
 }
 
+const defaultDemo: Record<DemoItem, KeepRemove> = DEMO_ITEMS.reduce(
+  (acc, item) => ({ ...acc, [item]: "keep" }),
+  {} as Record<DemoItem, KeepRemove>,
+);
+
 const defaultState: AssessmentState = {
+  demolitionItems: defaultDemo,
   activeLeaks: "no",
   crackedGrout: "no",
   visibleMold: "no",
@@ -24,11 +45,24 @@ const defaultState: AssessmentState = {
   waterproofingScope: "",
 };
 
+const computeDemolitionLevel = (items: Record<DemoItem, KeepRemove>): DemolitionLevel => {
+  const removed = Object.values(items).filter((v) => v === "remove").length;
+  if (removed >= 5) return "Full Gut";
+  if (removed >= 3) return "Medium";
+  return "Light";
+};
+
 type StepDef =
-  | { key: keyof AssessmentState; kind: "yesno"; title: string; subtitle?: string }
-  | { key: "waterproofingScope"; kind: "scope"; title: string; subtitle?: string };
+  | { kind: "demo"; title: string; subtitle?: string }
+  | { key: keyof Omit<AssessmentState, "demolitionItems" | "waterproofingScope">; kind: "yesno"; title: string; subtitle?: string }
+  | { kind: "scope"; title: string; subtitle?: string };
 
 const STEPS: StepDef[] = [
+  {
+    kind: "demo",
+    title: "What stays and what goes?",
+    subtitle: "Tap each item to mark it Keep or Remove. This sets your demolition scope.",
+  },
   {
     key: "activeLeaks",
     kind: "yesno",
@@ -54,7 +88,6 @@ const STEPS: StepDef[] = [
     subtitle: "Soft drywall, swelling baseboards, peeling paint, or musty smell.",
   },
   {
-    key: "waterproofingScope",
     kind: "scope",
     title: "Waterproofing scope likely needed",
     subtitle: "Best estimate of what wet-area work the existing bathroom needs.",
@@ -108,37 +141,92 @@ const OptionButton = ({
   </button>
 );
 
+const DemoCard = ({
+  item,
+  state,
+  onToggle,
+}: {
+  item: DemoItem;
+  state: KeepRemove;
+  onToggle: () => void;
+}) => {
+  const isRemove = state === "remove";
+  return (
+    <button
+      type="button"
+      onClick={onToggle}
+      className={`w-full text-left rounded-xl border-2 p-4 transition-all ${
+        isRemove
+          ? "border-destructive bg-destructive/10"
+          : "border-border bg-card hover:border-primary/40"
+      }`}
+    >
+      <div className="flex items-start justify-between gap-2">
+        <p className="font-semibold text-sm text-foreground leading-snug">{item}</p>
+        <span
+          className={`text-[10px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded ${
+            isRemove
+              ? "bg-destructive text-destructive-foreground"
+              : "bg-secondary text-muted-foreground"
+          }`}
+        >
+          {isRemove ? "Remove" : "Keep"}
+        </span>
+      </div>
+    </button>
+  );
+};
+
 const BathroomAssessment = () => {
   const { project, updateProject, markStepComplete } = useProject();
   const navigate = useNavigate();
 
   const initial = (project?.assessment as Partial<AssessmentState>) || {};
-  const [state, setState] = useState<AssessmentState>({ ...defaultState, ...initial });
+  const [state, setState] = useState<AssessmentState>({
+    ...defaultState,
+    ...initial,
+    demolitionItems: { ...defaultDemo, ...(initial.demolitionItems as Record<DemoItem, KeepRemove> | undefined) },
+  });
   const [stepIndex, setStepIndex] = useState(0);
 
   const totalSteps = STEPS.length;
   const step = STEPS[stepIndex];
   const progress = ((stepIndex + 1) / totalSteps) * 100;
 
+  const demolitionLevel = useMemo(
+    () => computeDemolitionLevel(state.demolitionItems),
+    [state.demolitionItems],
+  );
+
   const remediationAlert = useMemo(
-    () => state.visibleMold === "yes" || state.waterDamageSuspected === "yes",
-    [state.visibleMold, state.waterDamageSuspected],
+    () =>
+      state.visibleMold === "yes" ||
+      state.waterDamageSuspected === "yes" ||
+      state.demolitionItems["Suspected mold or water damage"] === "remove",
+    [state.visibleMold, state.waterDamageSuspected, state.demolitionItems],
   );
 
   const set = <K extends keyof AssessmentState>(key: K, value: AssessmentState[K]) =>
     setState((s) => ({ ...s, [key]: value }));
 
+  const toggleDemo = (item: DemoItem) =>
+    setState((s) => ({
+      ...s,
+      demolitionItems: {
+        ...s.demolitionItems,
+        [item]: s.demolitionItems[item] === "remove" ? "keep" : "remove",
+      },
+    }));
+
   const isLast = stepIndex === totalSteps - 1;
-  const currentValue = state[step.key];
-  const canAdvance = step.kind === "scope" ? currentValue !== "" : true;
 
   const handleNext = () => {
-    if (!canAdvance) return;
     if (isLast) {
       const { waterproofingScope, ...rest } = state;
       updateProject({
         assessment: {
           ...rest,
+          demolitionLevel,
           ...(waterproofingScope ? { waterproofingScope } : {}),
         },
       });
@@ -186,7 +274,6 @@ const BathroomAssessment = () => {
 
       <main className="pt-28 pb-20 px-6">
         <div className="max-w-2xl mx-auto">
-          {/* Header */}
           <div className="text-center mb-8">
             <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">
               Existing Bathroom Assessment
@@ -196,7 +283,6 @@ const BathroomAssessment = () => {
             </h1>
           </div>
 
-          {/* Progress bar */}
           <div className="mb-10">
             <div className="flex items-center justify-between text-xs text-muted-foreground mb-2">
               <span>
@@ -214,10 +300,9 @@ const BathroomAssessment = () => {
             </div>
           </div>
 
-          {/* Step card */}
           <AnimatePresence mode="wait">
             <motion.div
-              key={step.key}
+              key={stepIndex}
               initial={{ opacity: 0, y: 12 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -12 }}
@@ -231,6 +316,30 @@ const BathroomAssessment = () => {
                 <p className="text-sm text-muted-foreground mb-6 leading-relaxed">
                   {step.subtitle}
                 </p>
+              )}
+
+              {step.kind === "demo" && (
+                <>
+                  <div className="grid grid-cols-2 gap-3">
+                    {DEMO_ITEMS.map((item) => (
+                      <DemoCard
+                        key={item}
+                        item={item}
+                        state={state.demolitionItems[item]}
+                        onToggle={() => toggleDemo(item)}
+                      />
+                    ))}
+                  </div>
+                  <div className="mt-6 flex items-center justify-between rounded-xl bg-secondary/60 border border-border p-4">
+                    <div className="flex items-center gap-2.5">
+                      <Hammer className="h-4 w-4 text-primary" />
+                      <span className="text-sm text-muted-foreground">Demolition level</span>
+                    </div>
+                    <span className="font-heading text-base text-foreground">
+                      {demolitionLevel}
+                    </span>
+                  </div>
+                </>
               )}
 
               {step.kind === "yesno" && (
@@ -269,7 +378,6 @@ const BathroomAssessment = () => {
             </motion.div>
           </AnimatePresence>
 
-          {/* Remediation alert (always visible once triggered) */}
           {remediationAlert && (
             <motion.div
               initial={{ opacity: 0, y: 8 }}
@@ -284,7 +392,6 @@ const BathroomAssessment = () => {
             </motion.div>
           )}
 
-          {/* Footer controls */}
           <div className="mt-8 flex items-center justify-between gap-4">
             <Button
               variant="ghost"
@@ -298,7 +405,6 @@ const BathroomAssessment = () => {
             <Button
               size="lg"
               onClick={handleNext}
-              disabled={!canAdvance && step.kind === "scope" && state.waterproofingScope !== ""}
               className="px-8 h-12 text-base font-semibold rounded-lg"
             >
               {isLast ? "Continue to Style & Budget" : "Next"}
