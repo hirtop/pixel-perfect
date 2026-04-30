@@ -58,9 +58,6 @@ const SHOP_PRODUCTS_FALLBACK: ShopProduct[] = [
   { id: "p28", category: "Heated Floors", brand: "WarmlyYours", name: "SmartHome Nuheat Floor Heating Mat 120V — 15 sq ft", price: 299, priceNote: "starting at", image: "https://images.fergusonhome.com/is/image/FergusonHome/1809768", url: "https://www.fergusonhome.com/warmlyyours-wshm-120-15011/s754295?uid=1809768", retailer: "Ferguson Home", bestFor: "Any Bath", featured: true },
   { id: "p29", category: "Heated Floors", brand: "WarmlyYours", name: "Membrane Thermostat in Matte Black", price: 189, image: "https://images.fergusonhome.com/is/image/FergusonHome/3010925", url: "https://www.fergusonhome.com/warmlyyours-tc-mem-bl-162/s1259204?uid=3010925", retailer: "Ferguson Home", bestFor: "Any Bath" },
   { id: "p30", category: "Heated Floors", brand: "WarmlyYours", name: "Tempzone Cable System 240V — 37 sq ft", price: 349, priceNote: "starting at", image: "https://images.fergusonhome.com/is/image/FergusonHome/4949031", url: "https://www.fergusonhome.com/warmlyyours-tct240-3-7w-595-fs/s2057047?uid=4949031", retailer: "Ferguson Home", bestFor: "Master Bath" },
-];
-
-
   // Sinks
   { id: "p31", category: "Sinks", brand: "Kohler", name: 'Caxton 21-1/4" x 17-1/4" Undermount Bathroom Sink with Overflow', price: 116.25, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-2211-0.jpg", url: "https://www.fergusonhome.com/kohler-k-2211/s560195?uid=163516", retailer: "Ferguson Home", bestFor: "Master Bath", featured: true },
   { id: "p32", category: "Sinks", brand: "Signature Hardware", name: 'Myers 23" Porcelain Undermount Bathroom Sink', price: 179, image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/sh-447959-myers-sink-wh-18-beauty08.jpg", url: "https://www.fergusonhome.com/signature-hardware-447959/s1581049?uid=4067898", retailer: "Ferguson Home", bestFor: "Guest Bath" },
