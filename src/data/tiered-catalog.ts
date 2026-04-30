@@ -319,7 +319,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/bathroom-sinks/c131345",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-2211-0-9163879.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-26080-0-9611322.jpg",
   },
   {
     id: "bal-sink-02",
@@ -335,7 +335,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/bathroom-sinks/c131345",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-2211-0-9163879.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-26080-0-9611322.jpg",
   },
   {
     id: "bal-sink-03",
@@ -351,7 +351,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Value Pick",
     affiliateUrl: "https://www.fergusonhome.com/bathroom-sinks/c131345",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-2211-0-9163879.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-26080-0-9611322.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -615,7 +615,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Tempered glass with polished edge — shelf holds everyday items",
     finish: "Polished Edge",
     spec: '36" W × 28" H, ½" tempered glass, 4" integrated shelf',
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-99007-m-chr-5129969.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-26080-0-9611322.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -631,7 +631,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Round shape softens angular tile and vanity lines",
     finish: "Antiqued Brass",
     spec: '30" diameter, solid brass frame, flush mount',
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-99007-m-chr-5129969.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-26080-0-9611322.jpg",
     isDefault: false,
     laborDelta: 0,
     tag: "Trending",
@@ -647,7 +647,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: 'Mirror-front hides 4" of storage — keeps counter clear',
     finish: "Mirror Front",
     spec: '30" W × 26" H × 4" D, recessed mount, slow-close hinges',
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-99007-m-chr-5129969.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-26080-0-9611322.jpg",
     isDefault: false,
     laborDelta: 350,
     laborNote: "Recessed install requires wall cavity cut — adds ~$350",
@@ -769,7 +769,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Fewer grout lines means easier cleaning and a more seamless look",
     finish: "Warm Gray Matte",
     spec: '24" × 48" rectified panels, ~60 sq ft coverage, rated for wet areas',
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
     isDefault: true,
     laborDelta: 0,
     tag: "Recommended",
@@ -785,7 +785,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Taller format than standard subway — fewer grout lines, more modern proportion",
     finish: "Glossy White",
     spec: '4" × 12" ceramic, ~60 sq ft, stacked or offset pattern',
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
     isDefault: false,
     laborDelta: 100,
     laborNote: "Mid-size tile — slightly more cuts than large-format, adds ~$100",
@@ -802,7 +802,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Marble aesthetic without the sealing — porcelain is lower maintenance",
     finish: "Calacatta Matte",
     spec: '12" × 24" rectified porcelain, ~60 sq ft, rated for wet areas',
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
     isDefault: false,
     laborDelta: 0,
     tag: "Upgrade",
@@ -929,7 +929,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/flooring/c108807",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
   {
     id: "bal-ftile-02",
@@ -945,7 +945,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Value Pick",
     affiliateUrl: "https://www.fergusonhome.com/flooring/c108807",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
   {
     id: "bal-ftile-03",
@@ -962,7 +962,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Pattern alignment adds ~$150 labor",
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/flooring/c108807",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1084,7 +1084,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
   {
     id: "bal-sftile-02",
@@ -1100,7 +1100,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
   {
     id: "bal-sftile-03",
@@ -1117,7 +1117,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Linear drain prep adds ~$100 labor",
     tag: "Upgrade",
     affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -1258,7 +1258,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Liner placement adds ~$80 labor",
     tag: "Elegant Detail",
     affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
   {
     id: "bal-accent-03",
@@ -1275,7 +1275,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Feature panel layout adds ~$150 labor",
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/shower-tile/c126334",
-    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-ri01-3x12gl1p.jpg",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-480976-8134424.jpg",
   },
 
   // ── Premium ───────────────────────────────────────────────────────
