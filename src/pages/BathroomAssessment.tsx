@@ -33,9 +33,33 @@ const PLUMBING_QUESTIONS = [
 ] as const;
 type PlumbingKey = (typeof PLUMBING_QUESTIONS)[number]["key"];
 
+const ELECTRICAL_ITEMS = [
+  "New vanity lights",
+  "New recessed lights",
+  "New outlets / GFCI",
+  "Heated floor",
+  "Smart mirror",
+  "Bidet outlet",
+  "Move switches",
+] as const;
+type ElectricalItem = (typeof ELECTRICAL_ITEMS)[number];
+type ElectricalScope = "None" | "Minor" | "Moderate" | "Major";
+
+const VENTILATION_QUESTIONS = [
+  { key: "hasExhaustFan", label: "Does the bathroom have an exhaust fan?" },
+  { key: "fanWorking", label: "Is it working?" },
+  { key: "ventsOutside", label: "Does it vent outside (not into attic)?" },
+  { key: "replaceOrAddFan", label: "Replace or add a new fan?" },
+  { key: "addHumiditySensor", label: "Add a humidity sensor?" },
+] as const;
+type VentilationKey = (typeof VENTILATION_QUESTIONS)[number]["key"];
+type VentilationScope = "None" | "Replace only" | "New install" | "Upgrade";
+
 interface AssessmentState {
   demolitionItems: Record<DemoItem, KeepRemove>;
   plumbing: Record<PlumbingKey, YesNoUnknown>;
+  electricalItems: Record<ElectricalItem, boolean>;
+  ventilation: Record<VentilationKey, YesNoUnknown>;
   activeLeaks: YesNoUnknown;
   crackedGrout: YesNoUnknown;
   visibleMold: YesNoUnknown;
@@ -53,14 +77,45 @@ const defaultPlumbing: Record<PlumbingKey, YesNoUnknown> = PLUMBING_QUESTIONS.re
   {} as Record<PlumbingKey, YesNoUnknown>,
 );
 
+const defaultElectrical: Record<ElectricalItem, boolean> = ELECTRICAL_ITEMS.reduce(
+  (acc, item) => ({ ...acc, [item]: false }),
+  {} as Record<ElectricalItem, boolean>,
+);
+
+const defaultVentilation: Record<VentilationKey, YesNoUnknown> = VENTILATION_QUESTIONS.reduce(
+  (acc, q) => ({ ...acc, [q.key]: "unknown" }),
+  {} as Record<VentilationKey, YesNoUnknown>,
+);
+
 const defaultState: AssessmentState = {
   demolitionItems: defaultDemo,
   plumbing: defaultPlumbing,
+  electricalItems: defaultElectrical,
+  ventilation: defaultVentilation,
   activeLeaks: "no",
   crackedGrout: "no",
   visibleMold: "no",
   waterDamageSuspected: "no",
   waterproofingScope: "",
+};
+
+const computeElectricalScope = (items: Record<ElectricalItem, boolean>): ElectricalScope => {
+  const n = Object.values(items).filter(Boolean).length;
+  if (n >= 5) return "Major";
+  if (n >= 3) return "Moderate";
+  if (n >= 1) return "Minor";
+  return "None";
+};
+
+const computeVentilationScope = (v: Record<VentilationKey, YesNoUnknown>): VentilationScope => {
+  const hasFan = v.hasExhaustFan === "yes";
+  const working = v.fanWorking === "yes";
+  const replace = v.replaceOrAddFan === "yes";
+  const humidity = v.addHumiditySensor === "yes";
+  if (!hasFan && replace) return "New install";
+  if (humidity || (replace && hasFan && working)) return "Upgrade";
+  if (replace) return "Replace only";
+  return "None";
 };
 
 const computeDemolitionLevel = (items: Record<DemoItem, KeepRemove>): DemolitionLevel => {
