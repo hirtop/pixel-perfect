@@ -436,6 +436,14 @@ const BathroomAssessment = () => {
     {} as Record<FramingItem, boolean>,
   );
 
+  const initialAccessibilityArr = Array.isArray(initial.accessibilityItems)
+    ? (initial.accessibilityItems as string[])
+    : [];
+  const hydratedAccessibility: Record<AccessibilityItem, boolean> = ACCESSIBILITY_ITEMS.reduce(
+    (acc, item) => ({ ...acc, [item]: initialAccessibilityArr.includes(item) }),
+    {} as Record<AccessibilityItem, boolean>,
+  );
+
   const [state, setState] = useState<AssessmentState>({
     ...defaultState,
     activeLeaks: (initial.activeLeaks as YesNoUnknown) ?? defaultState.activeLeaks,
