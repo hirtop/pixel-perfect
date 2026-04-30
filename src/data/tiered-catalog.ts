@@ -1741,7 +1741,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 200,
     laborNote: "Ceiling mount requires rerouting supply pipe — adds ~$200",
     tag: "Upgrade",
-    affiliateUrl: "https://www.deltafaucet.com/bathroom/showering",
+    affiliateUrl: "https://www.fergusonhome.com/showers/c109703",
     image: "https://images.unsplash.com/photo-1600566752355-35792bedcfea?w=400&q=80",
   },
 
