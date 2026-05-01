@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import { useProject } from "@/contexts/ProjectContext";
-import { tieredCatalog, STATIC_ITEMS, type TieredProduct, type ProductTier } from "@/data/tiered-catalog";
+import { tieredCatalog, type TieredProduct, type ProductTier } from "@/data/tiered-catalog";
 import { formatPrice } from "@/data/products";
 import { cn } from "@/lib/utils";
 
