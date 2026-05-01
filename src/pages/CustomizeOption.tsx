@@ -344,7 +344,7 @@ const CustomizeOption = () => {
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </Link>
           <div className="flex items-center gap-4">
-            <Link to={`/package/${pkgTier}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <Link to={`/package/${rawLower === "essential" ? "essential" : pkgTier}`} className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
               <ArrowLeft className="h-3.5 w-3.5" /> Back to Package Detail
             </Link>
             <Link to="/" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
