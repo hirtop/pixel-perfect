@@ -9,11 +9,7 @@ import { formatPrice } from "@/data/products";
 import { cn } from "@/lib/utils";
 
 const CATEGORY_ORDER = [
-  "Vanities",
   "Sinks",
-  "Faucets",
-  "Mirrors",
-  "Shower Wall Tile",
   "Shower Floor Tile",
   "Main Floor Tile",
   "Accent Tile",
@@ -22,8 +18,6 @@ const CATEGORY_ORDER = [
   "Shower Systems",
   "Bathtubs",
   "Tub Valve",
-  "Shower Niche",
-  "Lighting",
 ] as const;
 
 const TIER_BADGE: Record<ProductTier, string> = {
