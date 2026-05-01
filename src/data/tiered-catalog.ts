@@ -758,6 +758,64 @@ export const tieredCatalog: TieredProduct[] = [
   // ── Balanced ──────────────────────────────────────────────────────
 
   // ── Premium ───────────────────────────────────────────────────────
+
+  // ════════════════════════════════════════════════════════════════════
+  // LIGHTING
+  // ════════════════════════════════════════════════════════════════════
+
+  // ── Budget ────────────────────────────────────────────────────────
+
+  // ── Balanced ──────────────────────────────────────────────────────
+  {
+    id: "bal-light-01",
+    name: "Redondo 4 Light 33 inch Wide Bathroom Vanity Light",
+    category: "Lighting",
+    tier: "Balanced",
+    vendor: "Millennium Lighting",
+    price: 273.60,
+    description: "Four globe vanity light in modern gold — warm, diffused glow for bath tasks",
+    finish: "Modern Gold",
+    spec: "33 inch W, 4 lights, E26 bulbs, UL listed for damp locations",
+    isDefault: true,
+    laborDelta: 0,
+    tag: "Recommended",
+    affiliateUrl: "https://www.fergusonhome.com/millennium-lighting-30304/s2008976?uid=4764569",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/millenniumlighting/millennium-lighting-30304-mg-8134424.jpg",
+  },
+  {
+    id: "bal-light-02",
+    name: "4 Light Bathroom Vanity Light from the Agilis Collection",
+    category: "Lighting",
+    tier: "Balanced",
+    vendor: "Minka Lavery",
+    price: 215.79,
+    description: "Classic 4-light bar in matte black — timeless style for any bath",
+    finish: "Matte Black",
+    spec: "27 inch W, 4 lights, E26 bulbs, UL listed for damp locations",
+    isDefault: false,
+    laborDelta: 0,
+    tag: "Popular",
+    affiliateUrl: "https://www.fergusonhome.com/minka-lavery-ml-6814/s614304?uid=347812",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/minkalavery/4_Light_Bath_6814-66.jpg",
+  },
+  {
+    id: "bal-light-03",
+    name: "Spec 24 inch Wide LED Bath Bar ADA Compliant",
+    category: "Lighting",
+    tier: "Balanced",
+    vendor: "Maxim",
+    price: 109.80,
+    description: "Slim integrated LED bar — efficient, bright, and ADA-compliant",
+    finish: "Polished Chrome",
+    spec: "24 inch W, integrated LED, 3000K, ADA compliant",
+    isDefault: false,
+    laborDelta: 0,
+    tag: "Best Value",
+    affiliateUrl: "https://www.fergusonhome.com/maxim-52002/s1511390?uid=3543914",
+    image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/maxim/maxim_52002pc.jpg",
+  },
+
+  // ── Premium ───────────────────────────────────────────────────────
 ];
 
 // ─── Helpers ────────────────────────────────────────────────────────
