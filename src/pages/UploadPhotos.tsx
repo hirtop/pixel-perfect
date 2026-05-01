@@ -51,6 +51,16 @@ const UploadPhotos = () => {
   });
   const [restoredPhotos, setRestoredPhotos] = useState<RestoredPhoto[]>([]);
   const [pendingUploadCount, setPendingUploadCount] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveLater = async () => {
+    setIsSaving(true);
+    try {
+      await saveProject();
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const notesRef = useRef(notes);
   notesRef.current = notes;
@@ -595,6 +605,13 @@ const UploadPhotos = () => {
               <Link to="/start" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ArrowLeft className="h-3.5 w-3.5" /> Back to Project Setup
               </Link>
+              <button
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                onClick={handleSaveLater}
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving…" : "Save and finish later"}
+              </button>
             </div>
 
             <p className="text-center text-xs text-muted-foreground">You can add more details later.</p>

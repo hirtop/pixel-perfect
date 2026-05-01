@@ -416,7 +416,7 @@ const DemoCard = ({
 };
 
 const BathroomAssessment = () => {
-  const { project, updateProject, markStepComplete } = useProject();
+  const { project, updateProject, markStepComplete, saveProject } = useProject();
   const navigate = useNavigate();
 
   const initial = (project?.assessment ?? {}) as Record<string, unknown>;
@@ -473,6 +473,16 @@ const BathroomAssessment = () => {
     },
   });
   const [stepIndex, setStepIndex] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveLater = async () => {
+    setIsSaving(true);
+    try {
+      await saveProject();
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const totalSteps = STEPS.length;
   const step = STEPS[stepIndex];
@@ -1362,14 +1372,23 @@ const BathroomAssessment = () => {
               </Button>
             )}
 
-            <Button
-              size="lg"
-              onClick={handleNext}
-              className="px-8 h-12 text-base font-semibold rounded-lg"
-            >
-              {isLast ? "Continue to Style & Budget" : "Next"}
-              <ArrowRight className="h-4 w-4 ml-1.5" />
-            </Button>
+            <div className="flex items-center gap-5">
+              <button
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                onClick={handleSaveLater}
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving…" : "Save and finish later"}
+              </button>
+              <Button
+                size="lg"
+                onClick={handleNext}
+                className="px-8 h-12 text-base font-semibold rounded-lg"
+              >
+                {isLast ? "Continue to Style & Budget" : "Next"}
+                <ArrowRight className="h-4 w-4 ml-1.5" />
+              </Button>
+            </div>
           </div>
         </div>
       </main>
