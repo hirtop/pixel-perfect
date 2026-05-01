@@ -485,8 +485,9 @@ const CustomizeOption = () => {
                                         <img src={alt.image} alt={alt.name} className="w-full h-full object-cover" width={640} height={512} loading="lazy" />
                                       </div>
                                     ) : (
-                                      <div className="w-full aspect-[3/2] rounded-lg bg-secondary flex items-center justify-center">
-                                        <span className="text-xs text-muted-foreground font-medium tracking-wide">{cat.name}</span>
+                                      <div className="w-full aspect-[3/2] rounded-lg bg-gradient-to-br from-secondary to-secondary/40 flex flex-col items-center justify-center gap-1 px-3 text-center">
+                                        <span className="text-[11px] text-muted-foreground font-medium uppercase tracking-wider opacity-70">{cat.name}</span>
+                                        <span className="text-[10px] text-muted-foreground opacity-60">Product image coming soon</span>
                                       </div>
                                     )}
                                     <div className="flex-1">
@@ -502,7 +503,7 @@ const CustomizeOption = () => {
                                       {alt.spec && (
                                         <p className="text-[11px] text-muted-foreground">{alt.spec}</p>
                                       )}
-                                      {alt.affiliateUrl && (
+                                      {isVerifiedProductLink(alt.affiliateUrl) ? (
                                         <a
                                           href={alt.affiliateUrl}
                                           target="_blank"
@@ -514,6 +515,10 @@ const CustomizeOption = () => {
                                             <ExternalLink className="h-3 w-3" />
                                           </span>
                                         </a>
+                                      ) : (
+                                        <p className="text-[11px] text-muted-foreground italic mt-1">
+                                          {ALLOWANCE_LINK_NOTE}
+                                        </p>
                                       )}
                                       {alt.disclaimer && (
                                         <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-1">{alt.disclaimer}</p>
