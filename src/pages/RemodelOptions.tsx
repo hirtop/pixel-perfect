@@ -17,6 +17,7 @@ import premiumImg from "@/assets/package-premium.jpg";
 const packages = [
   {
     name: "Budget",
+    displayName: "Essential",
     image: budgetImg,
     summary: "Replace the vanity, re-tile, and update fixtures — all on existing plumbing in about a week.",
     highlights: [
@@ -30,6 +31,7 @@ const packages = [
   },
   {
     name: "Balanced",
+    displayName: "Balanced",
     image: balancedImg,
     summary: "Step up to quartz, porcelain, and coordinated hardware for a room that looks and feels meaningfully different.",
     highlights: [
@@ -44,6 +46,7 @@ const packages = [
   },
   {
     name: "Premium",
+    displayName: "Premium",
     image: premiumImg,
     summary: "Natural stone, designer hardware, and the flexibility to rethink the layout — not just the finishes.",
     highlights: [
