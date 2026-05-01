@@ -1,6 +1,6 @@
 import { useEffect, useMemo } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { Check } from "lucide-react";
+import { ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import { useProject } from "@/contexts/ProjectContext";
@@ -116,6 +116,17 @@ export default function Shop() {
     void saveProject({ silent: true });
   };
 
+  // ─── Back-to-Customize destination ────────────────────────────────
+  // Prefer the saved tier; map internal "budget" → public "essential".
+  const savedTierLower = project.selected_package?.tier?.toLowerCase();
+  const customizeBackTier =
+    savedTierLower === "budget"
+      ? "essential"
+      : savedTierLower === "balanced" || savedTierLower === "premium"
+        ? savedTierLower
+        : "balanced";
+  const customizeBackHref = `/customize/${customizeBackTier}`;
+
   return (
     <div className="min-h-screen bg-background pb-32">
       {/* Nav */}
@@ -128,12 +139,27 @@ export default function Shop() {
             </span>
           </Link>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
+            <Link to={customizeBackHref} className="hover:text-foreground transition-colors flex items-center gap-1.5">
+              <ArrowLeft className="h-3.5 w-3.5" /> Back to Customize
+            </Link>
             <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
             <Link to="/shop" className="text-foreground">Shop</Link>
           </div>
           <AccountMenu />
         </div>
       </nav>
+
+      {/* Mobile back link (md:hidden) */}
+      <div className="md:hidden border-b border-border bg-background/80">
+        <div className="max-w-7xl mx-auto px-6 py-2">
+          <Link
+            to={customizeBackHref}
+            className="inline-flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+          >
+            <ArrowLeft className="h-3.5 w-3.5" /> Back to Customize
+          </Link>
+        </div>
+      </div>
 
       {/* Header */}
       <header className="border-b border-border">

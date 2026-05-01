@@ -247,7 +247,7 @@ const PackageDetail = () => {
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button size="lg" className="h-12 px-8 text-base font-semibold rounded-lg" asChild>
-                  <Link to={`/customize/${pkgTier}`}>Customize This Option</Link>
+                  <Link to={`/customize/${rawLower === "essential" ? "essential" : pkgTier}`}>Customize This Option</Link>
                 </Button>
                 <Button size="lg" variant="secondary" className="h-12 px-8 text-base rounded-lg" asChild>
                   <Link to="/options">Compare Other Options</Link>
