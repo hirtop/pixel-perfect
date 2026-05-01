@@ -10,9 +10,12 @@ import { cn } from "@/lib/utils";
 
 const CATEGORY_ORDER = [
   "Vanities",
+  "Faucets",
+  "Mirrors",
   "Sinks",
-  "Shower Floor Tile",
   "Main Floor Tile",
+  "Shower Floor Tile",
+  "Shower Wall Tile",
   "Accent Tile",
   "Shower Doors",
   "Shower Valve",
