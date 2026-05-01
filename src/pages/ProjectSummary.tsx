@@ -293,7 +293,15 @@ const ProjectSummary = () => {
           })()}
 
           <section className="mb-12">
-            <h2 className="font-heading text-xl text-foreground mb-5">Your Selected Package Includes</h2>
+            <div className="flex items-center justify-between mb-5 gap-3">
+              <h2 className="font-heading text-xl text-foreground">Your Selected Package Includes</h2>
+              <Link
+                to={editSelectionsHref}
+                className="text-sm font-medium text-primary hover:underline whitespace-nowrap"
+              >
+                Edit selections →
+              </Link>
+            </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
               {packageItems.map((p) => (
                 <div key={p.name} className="rounded-lg border border-border bg-secondary/20 px-4 py-3.5">
