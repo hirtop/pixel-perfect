@@ -60,7 +60,7 @@ export default function Shop() {
     const map: Record<string, TieredProduct[]> = {};
     for (const cat of CATEGORY_ORDER) {
       const items =
-        cat === "Lighting"
+        (cat as string) === "Lighting"
           ? lightingProducts
           : tieredCatalog.filter((p) => p.category === cat);
       if (items.length > 0) map[cat] = items;
