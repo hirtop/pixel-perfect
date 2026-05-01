@@ -684,7 +684,7 @@ const BathroomAssessment = () => {
       }
 
       markStepComplete("assessment");
-      navigate("/style-budget");
+      navigate("/shop");
       return;
     }
     setStepIndex((i) => i + 1);
