@@ -413,7 +413,7 @@ export const tieredCatalog: TieredProduct[] = [
     category: "Main Floor Tile",
     tier: "Balanced",
     vendor: "Daltile",
-    price: 950,
+    price: 9.80,
     description: "Natural slate texture in a durable porcelain — great for heated floors",
     finish: "Slate Gray Unpolished",
     spec: '12" x 12" unpolished visual, 5.82 SF/carton',
