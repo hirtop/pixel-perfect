@@ -9,6 +9,7 @@ import { formatPrice } from "@/data/products";
 import { cn } from "@/lib/utils";
 
 const CATEGORY_ORDER = [
+  "Vanities",
   "Sinks",
   "Shower Floor Tile",
   "Main Floor Tile",
