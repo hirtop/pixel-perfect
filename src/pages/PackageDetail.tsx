@@ -31,6 +31,13 @@ const tierNameMap: Record<string, ProductTier> = {
   premium: "Premium",
 };
 
+// User-facing label only. Internal IDs/keys remain "Budget".
+const tierDisplayNameMap: Record<ProductTier, string> = {
+  Budget: "Essential",
+  Balanced: "Balanced",
+  Premium: "Premium",
+};
+
 const VALID_TIERS = new Set(["budget", "balanced", "premium"]);
 
 const PRODUCT_PRICES: Record<string, string> = {
@@ -102,7 +109,8 @@ const PackageDetail = () => {
   const savedTier = project.selected_package.tier?.toLowerCase();
   const pkgTier = urlTierIsValid ? urlTier : (savedTier || "balanced");
   const tier: ProductTier = tierNameMap[pkgTier] || "Balanced";
-  const pkgName = tier; // capitalized name matches tier
+  const pkgName = tier; // capitalized name matches tier (catalog key)
+  const displayName = tierDisplayNameMap[tier] || tier; // user-facing label
 
   const finishDir = project.style_preferences.finish || "";
   const insights = getBathroomInsights(project);
@@ -191,14 +199,14 @@ const PackageDetail = () => {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-16">
             <div>
               <div className="rounded-2xl overflow-hidden aspect-[4/3]">
-                <img src={heroImg} alt={`${pkgName} package bathroom remodel`} className="w-full h-full object-cover" width={800} height={600} />
+                <img src={heroImg} alt={`${displayName} package bathroom remodel`} className="w-full h-full object-cover" width={800} height={600} />
               </div>
             </div>
 
             <div className="flex flex-col justify-center space-y-6">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{pkgName} Package</p>
-                <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">{pkgName} Remodel</h1>
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{displayName} Package</p>
+                <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">{displayName} Remodel</h1>
                 <p className="text-muted-foreground text-base leading-relaxed max-w-md">
                   {pricing.description}
                 </p>
