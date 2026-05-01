@@ -31,6 +31,13 @@ const TIER_BADGE: Record<ProductTier, string> = {
   Premium: "bg-purple-500/15 text-purple-600 dark:text-purple-400",
 };
 
+// User-facing label only. Internal IDs/keys remain "Budget".
+const TIER_DISPLAY_NAME: Record<ProductTier, string> = {
+  Budget: "Essential",
+  Balanced: "Balanced",
+  Premium: "Premium",
+};
+
 interface CategorySelection {
   name: string;
   selected: string;
@@ -185,7 +192,7 @@ export default function Shop() {
                             TIER_BADGE[p.tier],
                           )}
                         >
-                          {p.tier}
+                          {TIER_DISPLAY_NAME[p.tier] || p.tier}
                         </span>
 
                         <h3 className="font-bold text-sm text-foreground leading-snug line-clamp-2 mb-1">

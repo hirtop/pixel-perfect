@@ -17,6 +17,7 @@ import premiumImg from "@/assets/package-premium.jpg";
 const packages = [
   {
     name: "Budget",
+    displayName: "Essential",
     image: budgetImg,
     summary: "Replace the vanity, re-tile, and update fixtures — all on existing plumbing in about a week.",
     highlights: [
@@ -30,6 +31,7 @@ const packages = [
   },
   {
     name: "Balanced",
+    displayName: "Balanced",
     image: balancedImg,
     summary: "Step up to quartz, porcelain, and coordinated hardware for a room that looks and feels meaningfully different.",
     highlights: [
@@ -44,6 +46,7 @@ const packages = [
   },
   {
     name: "Premium",
+    displayName: "Premium",
     image: premiumImg,
     summary: "Natural stone, designer hardware, and the flexibility to rethink the layout — not just the finishes.",
     highlights: [
@@ -168,7 +171,7 @@ const RemodelOptions = () => {
                   }`}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
-                    <img src={pkg.image} alt={`${pkg.name} bathroom remodel`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width={800} height={600} loading={i === 0 ? undefined : "lazy"} />
+                    <img src={pkg.image} alt={`${pkg.displayName} bathroom remodel`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width={800} height={600} loading={i === 0 ? undefined : "lazy"} />
                     {(isSelected || isPreferred) ? (
                       <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
                         <Check className="h-3 w-3" /> Your Selection
@@ -180,7 +183,7 @@ const RemodelOptions = () => {
 
                   <div className="p-6 space-y-4">
                     <div>
-                      <h2 className="font-heading text-xl text-foreground mb-1">{pkg.name}</h2>
+                      <h2 className="font-heading text-xl text-foreground mb-1">{pkg.displayName}</h2>
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
                     </div>
 

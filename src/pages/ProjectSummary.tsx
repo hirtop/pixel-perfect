@@ -71,7 +71,7 @@ const ProjectSummary = () => {
 
   const summaryFields = [
     { label: "Project Name", value: project.name || "Untitled Project" },
-    { label: "Selected Package", value: project.selected_package.name || "Not yet selected" },
+    { label: "Selected Package", value: (project.selected_package.name === "Budget" ? "Essential" : project.selected_package.name) || "Not yet selected" },
     { label: "Style Direction", value: project.style_preferences.style || "Not yet selected" },
     { label: "Finish Preference", value: project.style_preferences.finish || "Not yet selected" },
     { label: "Budget Comfort", value: project.style_preferences.budget_level || "Not yet selected" },
