@@ -8,7 +8,7 @@
 
 import type { ProductCategory } from "./products";
 
-// ─── Product images ─────────────────────────────────────────────────
+// ─── Product images ─────────────────────────────────────────────────h
 // Budget defaults
 // Balanced defaults
 // Premium defaults
@@ -127,6 +127,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Warm wood-look laminate with engineered quartz top — resists moisture",
     finish: "Honey Oak Laminate",
     spec: '36" W × 22" D, soft-close drawers, pre-drilled single-hole',
+        image: "https://mobileimages.lowes.com/productimages/ab181bc3-3d02-496a-a285-f791e5a3aeb4/73712305.jpeg?size=xl",
     isDefault: false,
     laborDelta: 0,
   },
@@ -209,6 +210,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Clean-line lacquer finish with concealed hardware — modern architectural look",
     finish: "Matte White / Quartz",
     spec: '48" W × 21" D, wall-mount requires in-wall blocking',
+        image: "https://images.thdstatic.com/productImages/29c77bca-6d56-57a4-94c0-0bcc93ed6efc/svn/duravit-bathroom-vanities-with-tops-lc6928o2222-64_600.jpg",
     isDefault: false,
     laborDelta: 250,
     laborNote: "Wall-mount needs in-wall blocking — adds ~$250",
@@ -413,6 +415,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Slim profile with Pforever Seal — no-drip ceramic disc valve",
     finish: "Brushed Nickel",
     spec: 'Single-hole, ceramic disc, 1.2 GPM, 4" deck plate included',
+        image: "https://images.thdstatic.com/productImages/38aa35f8-6d3d-4ccc-bd81-1551677ecb84/svn/polished-chrome-pfister-single-hole-bathroom-faucets-lf-042-lrcc-64_600.jpg",
     isDefault: false,
     laborDelta: 0,
   },
@@ -527,6 +530,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Architectural wall-mount with articulating spout — hand-finished",
     finish: "Luxe Gold",
     spec: "Wall-mount, solid brass, 1.2 GPM",
+        image: "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/hansgrohe/hansgrohe-04774670-8783533.jpg",
     isDefault: false,
     laborDelta: 280,
     laborNote: "Wall-mount requires in-wall valve rough-in — adds ~$280",
@@ -564,6 +568,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Round shape softens angular vanity and tile lines",
     finish: "Matte Black Frame",
     spec: '24" diameter, thin steel frame, keyhole mount',
+        image: "https://mobileimages.lowes.com/productimages/8afbefbb-8553-44de-ade4-724dbca5f9d1/64626934.jpg?size=xl",
     isDefault: false,
     laborDelta: 0,
   },
@@ -677,6 +682,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Combines recessed storage with integrated LED — two functions in one",
     finish: "Mirror Front / LED",
     spec: '30" W × 30" H × 4" D, recessed, dimmable LED, slow-close',
+        image: "https://www.robern.com/media/51hmwny5/mseriesreserve_mr1630d4fpe0.jpg",
     isDefault: false,
     laborDelta: 400,
     laborNote: "Recessed install plus electrical for LED — adds ~$400",
@@ -731,6 +737,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Elongated subway format — modern look at budget pricing",
     finish: "Glossy White",
     spec: '4" × 16" ceramic, ~60 sq ft',
+        image: "https://images.thdstatic.com/productImages/95d150de-a42b-449c-835c-3e34c3ec0911/svn/matrix-white-msi-ceramic-tile-nmatwhite4x16c-64_600.jpg",
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
@@ -833,6 +840,7 @@ export const tieredCatalog: TieredProduct[] = [
     description: "Kiln-fired in Sausalito — rich glaze variation that changes with the light",
     finish: "Sea Glass (varied glaze)",
     spec: '3" × 6" handmade, ~60 sq ft, glaze variation is intentional',
+        image: "https://images.thdstatic.com/productImages/51e7b61f-b711-4f9c-bc39-609afc13fd7a/svn/seafoam-ivy-hill-tile-glass-tile-ext3rd100925-64_600.jpg",
     isDefault: false,
     laborDelta: 600,
     laborNote: "Handmade tiles need careful sorting and slower setting — adds ~$600",
