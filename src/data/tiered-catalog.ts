@@ -27,6 +27,13 @@ export interface TieredProduct {
   tier: ProductTier;
   vendor: string;
   price: number;
+  /**
+   * Optional. When present, this is the estimated material allowance for the
+   * typical project size (e.g. ~12 sq ft of shower floor tile) and should be
+   * used for project totals. `price` remains the vendor unit price shown on
+   * the product card. Use `getProductTotalPrice()` to pick the right value.
+   */
+  estimatedProjectPrice?: number;
   description: string;
   finish: string;
   spec: string;
@@ -49,6 +56,14 @@ export const TIER_BASE_LABOR: Record<ProductTier, number> = {
   Balanced: 6500,
   Premium: 9000,
 };
+
+/**
+ * Returns the price to use for project totals (Materials Total, package totals).
+ * Falls back to vendor unit price when no estimated allowance is defined.
+ */
+export const getProductTotalPrice = (
+  product: Pick<TieredProduct, "price" | "estimatedProjectPrice">,
+): number => product.estimatedProjectPrice ?? product.price;
 
 export const SHIPPING_ESTIMATE = 600;
 
@@ -457,6 +472,7 @@ export const tieredCatalog: TieredProduct[] = [
     tier: "Balanced",
     vendor: "Daltile",
     price: 29.98,
+    estimatedProjectPrice: 178,
     description: "Hexagonal mosaic conforms well to shower slopes",
     finish: "Warm Gray Matte",
     spec: 'Sold by sheet (2.02 sq ft) at $14.84/sq ft · estimated ~$178 for 12 sq ft shower floor',
@@ -473,6 +489,7 @@ export const tieredCatalog: TieredProduct[] = [
     tier: "Balanced",
     vendor: "Bedrosians",
     price: 161.95,
+    estimatedProjectPrice: 568,
     description: "Round mosaic conforms to shower slopes and adds visual contrast",
     finish: "Matte",
     spec: 'Sold by carton (3.42 sq ft) at $47.35/sq ft · estimated ~$568 for 12 sq ft shower floor (Bedrosians Makoto)',
@@ -489,6 +506,7 @@ export const tieredCatalog: TieredProduct[] = [
     tier: "Balanced",
     vendor: "Merola",
     price: 125.35,
+    estimatedProjectPrice: 150,
     description: "Marble-look hex mosaic — bright, classic shower floor pattern",
     finish: "Polished White Marble Visual",
     spec: 'Sold by carton (10 sq ft) at $12.54/sq ft · estimated ~$150 for 12 sq ft shower floor (Merola Flo)',
@@ -925,7 +943,7 @@ export const getTierAlternatives = (tier: ProductTier, category: ProductCategory
 
 /** Sum of default material prices for customizable items in a tier */
 export const getTierDefaultMaterialTotal = (tier: ProductTier): number =>
-  getTierDefaults(tier).reduce((sum, p) => sum + p.price, 0);
+  getTierDefaults(tier).reduce((sum, p) => sum + getProductTotalPrice(p), 0);
 
 /** Compute labor total from base + product deltas */
 export const computeLaborTotal = (tier: ProductTier, productLaborDeltas: number[]): number =>

@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import { useProject } from "@/contexts/ProjectContext";
-import { tieredCatalog, type TieredProduct, type ProductTier } from "@/data/tiered-catalog";
+import { tieredCatalog, getProductTotalPrice, type TieredProduct, type ProductTier } from "@/data/tiered-catalog";
 import { formatPrice } from "@/data/products";
 import { cn } from "@/lib/utils";
 
@@ -82,7 +82,7 @@ export default function Shop() {
     for (const [category, items] of Object.entries(grouped)) {
       const product = items.find((p) => p.tier === userTier);
       if (!product) continue;
-      next.push({ name: category, selected: product.id, price: product.price });
+      next.push({ name: category, selected: product.id, price: getProductTotalPrice(product) });
     }
     if (next.length === 0) return;
     updateProject({
@@ -96,7 +96,7 @@ export default function Shop() {
     const others = selections.filter((s) => s.name !== categoryName);
     const next: CategorySelection[] = [
       ...others,
-      { name: categoryName, selected: product.id, price: product.price },
+      { name: categoryName, selected: product.id, price: getProductTotalPrice(product) },
     ];
     updateProject({
       customizations: { ...project.customizations, categories: next },
