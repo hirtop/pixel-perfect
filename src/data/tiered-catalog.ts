@@ -27,6 +27,13 @@ export interface TieredProduct {
   tier: ProductTier;
   vendor: string;
   price: number;
+  /**
+   * Optional. When present, this is the estimated material allowance for the
+   * typical project size (e.g. ~12 sq ft of shower floor tile) and should be
+   * used for project totals. `price` remains the vendor unit price shown on
+   * the product card. Use `getProductTotalPrice()` to pick the right value.
+   */
+  estimatedProjectPrice?: number;
   description: string;
   finish: string;
   spec: string;
