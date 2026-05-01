@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -82,6 +82,48 @@ export default function Shop() {
   }, [selections]);
 
   const total = selections.reduce((sum, s) => sum + (s.price || 0), 0);
+
+  // ─── Preferred tier (from onboarding /style-budget) ───────────────
+  const preferredTier: ProductTier = useMemo(() => {
+    const lvl = (project.style_preferences?.budget_level || "").toLowerCase();
+    const pkgTier = (project.selected_package?.tier || "").toLowerCase();
+    const src = lvl || pkgTier;
+    if (src.includes("budget")) return "Budget";
+    if (src.includes("premium")) return "Premium";
+    return "Balanced";
+  }, [project.style_preferences?.budget_level, project.selected_package?.tier]);
+
+  // ─── Target budget (parsed from style_preferences.budget) ─────────
+  const targetBudget = useMemo(() => {
+    const raw = project.style_preferences?.budget || "";
+    const num = Number(String(raw).replace(/[^0-9.]/g, ""));
+    return Number.isFinite(num) && num > 0 ? num : 0;
+  }, [project.style_preferences?.budget]);
+
+  // ─── Auto pre-selection on first arrival ──────────────────────────
+  const didPreselectRef = useRef(false);
+  useEffect(() => {
+    if (didPreselectRef.current) return;
+    if (Object.keys(grouped).length === 0) return;
+    if (selections.length > 0) {
+      didPreselectRef.current = true;
+      return;
+    }
+    const next: CategorySelection[] = Object.entries(grouped).map(([cat, items]) => {
+      const pick =
+        items.find((p) => p.tier === preferredTier && p.isDefault) ||
+        items.find((p) => p.tier === preferredTier) ||
+        items.find((p) => p.isDefault) ||
+        items[0];
+      return { name: cat, selected: pick.id, price: pick.price };
+    });
+    didPreselectRef.current = true;
+    updateProject({
+      customizations: { ...project.customizations, categories: next },
+    });
+    void saveProject({ silent: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [grouped, preferredTier]);
 
   const handleSelect = (categoryName: string, product: TieredProduct) => {
     const others = selections.filter((s) => s.name !== categoryName);
@@ -229,15 +271,61 @@ export default function Shop() {
 
       {/* Sticky total bar */}
       <div className="fixed bottom-0 inset-x-0 z-50 border-t border-border bg-background/95 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Materials Total
-            </p>
-            <p className="font-heading text-2xl text-foreground">{formatPrice(total)}</p>
-            <p className="text-xs text-muted-foreground">
-              {selections.length} of {Object.keys(grouped).length} categories selected
-            </p>
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-baseline justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                  Materials Total
+                </p>
+                <p className="font-heading text-2xl text-foreground">{formatPrice(total)}</p>
+              </div>
+              {targetBudget > 0 && (
+                <div className="text-right">
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                    Target · {preferredTier}
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">
+                    {formatPrice(targetBudget)}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {targetBudget > 0 && (() => {
+              const pct = Math.min(100, Math.round((total / targetBudget) * 100));
+              const over = total > targetBudget;
+              const remaining = targetBudget - total;
+              return (
+                <div className="mt-2">
+                  <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                    <div
+                      className={cn(
+                        "h-full transition-all",
+                        over ? "bg-destructive" : "bg-primary",
+                      )}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <p
+                    className={cn(
+                      "text-xs mt-1",
+                      over ? "text-destructive" : "text-muted-foreground",
+                    )}
+                  >
+                    {over
+                      ? `Over budget by ${formatPrice(Math.abs(remaining))}`
+                      : `${formatPrice(remaining)} remaining · ${selections.length} of ${Object.keys(grouped).length} categories selected`}
+                  </p>
+                </div>
+              );
+            })()}
+
+            {targetBudget === 0 && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {selections.length} of {Object.keys(grouped).length} categories selected
+              </p>
+            )}
           </div>
           <Button size="lg" onClick={() => navigate("/summary")}>
             Continue to Summary →
