@@ -271,15 +271,61 @@ export default function Shop() {
 
       {/* Sticky total bar */}
       <div className="fixed bottom-0 inset-x-0 z-50 border-t border-border bg-background/95 backdrop-blur-md">
-        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
-          <div>
-            <p className="text-xs uppercase tracking-wider text-muted-foreground">
-              Materials Total
-            </p>
-            <p className="font-heading text-2xl text-foreground">{formatPrice(total)}</p>
-            <p className="text-xs text-muted-foreground">
-              {selections.length} of {Object.keys(grouped).length} categories selected
-            </p>
+        <div className="max-w-7xl mx-auto px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+          <div className="flex-1 min-w-0">
+            <div className="flex items-baseline justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                  Materials Total
+                </p>
+                <p className="font-heading text-2xl text-foreground">{formatPrice(total)}</p>
+              </div>
+              {targetBudget > 0 && (
+                <div className="text-right">
+                  <p className="text-xs uppercase tracking-wider text-muted-foreground">
+                    Target · {preferredTier}
+                  </p>
+                  <p className="text-sm font-semibold text-foreground">
+                    {formatPrice(targetBudget)}
+                  </p>
+                </div>
+              )}
+            </div>
+
+            {targetBudget > 0 && (() => {
+              const pct = Math.min(100, Math.round((total / targetBudget) * 100));
+              const over = total > targetBudget;
+              const remaining = targetBudget - total;
+              return (
+                <div className="mt-2">
+                  <div className="h-1.5 w-full rounded-full bg-muted overflow-hidden">
+                    <div
+                      className={cn(
+                        "h-full transition-all",
+                        over ? "bg-destructive" : "bg-primary",
+                      )}
+                      style={{ width: `${pct}%` }}
+                    />
+                  </div>
+                  <p
+                    className={cn(
+                      "text-xs mt-1",
+                      over ? "text-destructive" : "text-muted-foreground",
+                    )}
+                  >
+                    {over
+                      ? `Over budget by ${formatPrice(Math.abs(remaining))}`
+                      : `${formatPrice(remaining)} remaining · ${selections.length} of ${Object.keys(grouped).length} categories selected`}
+                  </p>
+                </div>
+              );
+            })()}
+
+            {targetBudget === 0 && (
+              <p className="text-xs text-muted-foreground mt-1">
+                {selections.length} of {Object.keys(grouped).length} categories selected
+              </p>
+            )}
           </div>
           <Button size="lg" onClick={() => navigate("/summary")}>
             Continue to Summary →
