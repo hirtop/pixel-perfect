@@ -27,9 +27,9 @@ const CATEGORY_ORDER = [
 ] as const;
 
 const TIER_BADGE: Record<ProductTier, string> = {
-  Budget: "bg-secondary text-secondary-foreground",
-  Balanced: "bg-accent text-accent-foreground",
-  Premium: "bg-primary/15 text-primary",
+  Budget: "bg-emerald-500/15 text-emerald-600 dark:text-emerald-400",
+  Balanced: "bg-blue-500/15 text-blue-600 dark:text-blue-400",
+  Premium: "bg-purple-500/15 text-purple-600 dark:text-purple-400",
 };
 
 interface CategorySelection {
