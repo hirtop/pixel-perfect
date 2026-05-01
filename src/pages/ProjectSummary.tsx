@@ -69,9 +69,24 @@ const ProjectSummary = () => {
     Number.isFinite(targetBudgetNum) &&
     targetBudgetNum > 0;
 
+  const rawPkgName = project.selected_package.name;
+  const displayPkgName = rawPkgName && rawPkgName.toLowerCase() === "budget"
+    ? "Essential"
+    : (rawPkgName || "Not yet selected");
+
+  // Resolve customize route, mapping internal "budget" → public "essential".
+  const tierLower = project.selected_package.tier?.toLowerCase();
+  const customizeTierSlug =
+    tierLower === "budget"
+      ? "essential"
+      : tierLower === "balanced" || tierLower === "premium"
+        ? tierLower
+        : "balanced";
+  const editSelectionsHref = `/customize/${customizeTierSlug}`;
+
   const summaryFields = [
     { label: "Project Name", value: project.name || "Untitled Project" },
-    { label: "Selected Package", value: (project.selected_package.name === "Budget" ? "Essential" : project.selected_package.name) || "Not yet selected" },
+    { label: "Selected Package", value: displayPkgName },
     { label: "Style Direction", value: project.style_preferences.style || "Not yet selected" },
     { label: "Finish Preference", value: project.style_preferences.finish || "Not yet selected" },
     { label: "Budget Comfort", value: project.style_preferences.budget_level || "Not yet selected" },
