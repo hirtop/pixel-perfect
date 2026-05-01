@@ -631,6 +631,9 @@ const CustomizeOption = () => {
             </div>
           </div>
         </motion.div>
+        <p className="mt-8 mb-24 text-[11px] text-muted-foreground text-center max-w-3xl mx-auto leading-relaxed px-6">
+          {ESTIMATED_PRICE_DISCLAIMER}
+        </p>
       </main>
       <ShoppingAssistantFab />
     </div>
