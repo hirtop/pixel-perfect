@@ -38,6 +38,7 @@ export interface TieredProduct {
   disclaimer?: string;
   affiliateUrl?: string;
   width_inches?: number;
+  faucet_holes?: 'single-hole' | 'centerset' | 'widespread';
 }
 
 // ─── Tier base labor (before product-specific deltas) ───────────────
@@ -104,6 +105,7 @@ export const tieredCatalog: TieredProduct[] = [
     tag: "Recommended",
     affiliateUrl: "https://www.homedepot.com/b/Glacier-Bay/N-5yc1vZcd5fZ4i",
     width_inches: 36,
+    faucet_holes: 'single-hole',
   },
   {
     id: "bud-vanity-02",
@@ -120,6 +122,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Budget Pick",
     width_inches: 30,
+    faucet_holes: 'single-hole',
   },
   {
     id: "bud-vanity-03",
@@ -135,6 +138,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     width_inches: 36,
+    faucet_holes: 'single-hole',
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -154,6 +158,7 @@ export const tieredCatalog: TieredProduct[] = [
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/james-martin-vanities-d100-v48/s1997936?uid=4727863",
     width_inches: 48,
+    faucet_holes: 'widespread',
   },
   {
     id: "bal-vanity-02",
@@ -171,6 +176,7 @@ export const tieredCatalog: TieredProduct[] = [
     tag: "Value Pick",
     affiliateUrl: "https://www.fergusonhome.com/james-martin-vanities-330-v48-3wz/s1963933?uid=4938910",
     width_inches: 42,
+    faucet_holes: 'centerset',
   },
   {
     id: "bal-vanity-03",
@@ -188,6 +194,7 @@ export const tieredCatalog: TieredProduct[] = [
     tag: "Upgrade",
     affiliateUrl: "https://www.fergusonhome.com/james-martin-vanities-330-v72-3wz/s1925137?uid=4549287",
     width_inches: 48,
+    faucet_holes: 'widespread',
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -208,6 +215,7 @@ export const tieredCatalog: TieredProduct[] = [
     disclaimer: "Marble top requires periodic sealing (every 6–12 months)",
     affiliateUrl: "https://www.jamesmartinvanities.com/collections/all",
     width_inches: 60,
+    faucet_holes: 'widespread',
   },
   {
     id: "pre-vanity-02",
@@ -225,6 +233,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Wall-mount needs in-wall blocking — adds ~$250",
     tag: "Modern Pick",
     width_inches: 48,
+    faucet_holes: 'single-hole',
   },
   {
     id: "pre-vanity-03",
@@ -242,6 +251,7 @@ export const tieredCatalog: TieredProduct[] = [
     tag: "Designer Pick",
     disclaimer: "Marble top requires periodic sealing (every 6–12 months)",
     width_inches: 48,
+    faucet_holes: 'widespread',
   },
 
   // ════════════════════════════════════════════════════════════════════
