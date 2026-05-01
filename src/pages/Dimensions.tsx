@@ -302,6 +302,22 @@ const Dimensions = () => {
     navigate("/assessment");
   };
 
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveLater = async () => {
+    if (debounceRef.current) {
+      clearTimeout(debounceRef.current);
+      debounceRef.current = null;
+    }
+    setIsSaving(true);
+    try {
+      await persistDims(dimsRef.current);
+      await saveProject();
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
