@@ -23,6 +23,11 @@ import {
   type ProductTier,
   type TieredProduct,
 } from "@/data/products";
+import {
+  isVerifiedProductLink,
+  ALLOWANCE_LINK_NOTE,
+  ESTIMATED_PRICE_DISCLAIMER,
+} from "@/lib/verifiedLink";
 
 // ─── Local types for component state ────────────────────────────────
 
@@ -442,7 +447,7 @@ const CustomizeOption = () => {
                             </p>
                           )}
                         </div>
-                        {cat.affiliateUrl && cat.vendor !== "—" && (
+                        {isVerifiedProductLink(cat.affiliateUrl) && cat.vendor !== "—" ? (
                           <a
                             href={cat.affiliateUrl}
                             target="_blank"
@@ -454,6 +459,12 @@ const CustomizeOption = () => {
                               <ExternalLink className="h-3 w-3" />
                             </span>
                           </a>
+                        ) : (
+                          cat.vendor !== "—" && (
+                            <p className="text-[11px] text-muted-foreground italic mt-2">
+                              {ALLOWANCE_LINK_NOTE}
+                            </p>
+                          )
                         )}
                         {cat.disclaimer && <p className="text-[10px] text-amber-600 dark:text-amber-400 mt-1">{cat.disclaimer}</p>}
                       </div>
