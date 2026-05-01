@@ -57,19 +57,20 @@ export interface StaticItem {
   name: string;
   vendor: string;
   price: number;
+    image?: string;
 }
 
 export const STATIC_ITEMS: Record<ProductTier, StaticItem[]> = {
   Budget: [
-    { category: "Lighting", name: '24" LED Vanity Bar', vendor: "Hampton Bay", price: 280 },
+    { category: "Lighting", name: '24" LED Vanity Bar', vendor: "Hampton Bay", price: 280, image: 'https://images.unsplash.com/photo-1507652313519-d4e9174996dd?w=400&auto=format&fit=crop' },
     { category: "Toilet", name: "Cadet PRO Round-Front Toilet", vendor: "American Standard", price: 420 },
   ],
   Balanced: [
-    { category: "Lighting", name: "Dual Wall Sconces — Frosted Glass", vendor: "Kichler", price: 520 },
+    { category: "Lighting", name: "Dual Wall Sconces — Frosted Glass", vendor: "Kichler", price: 520, image: 'https://images.unsplash.com/photo-1552321554-5fefe8c9ef14?w=400&auto=format&fit=crop' },
     { category: "Toilet", name: "Drake II Elongated Toilet", vendor: "TOTO", price: 650 },
   ],
   Premium: [
-    { category: "Lighting", name: "Brass Pendant Sconces (Pair)", vendor: "Schoolhouse Electric", price: 810 },
+    { category: "Lighting", name: "Brass Pendant Sconces (Pair)", vendor: "Schoolhouse Electric", price: 810, image: 'https://images.unsplash.com/photo-1524484485831-a92ffc0de03f?w=400&auto=format&fit=crop' },
     { category: "Toilet", name: "Starck 3 Wall-Hung Toilet", vendor: "Duravit", price: 1050 },
   ],
 };
