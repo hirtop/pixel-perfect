@@ -48,7 +48,7 @@ const lightingProducts: TieredProduct[] = (Object.keys(STATIC_ITEMS) as ProductT
       category: "Lighting",
       tier,
       vendor: item.vendor,
-      price: item.price,
+      price: item.price, image: item.image,
       description: "",
       finish: "",
       spec: "",
