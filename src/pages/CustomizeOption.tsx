@@ -179,7 +179,9 @@ const CustomizeOption = () => {
   const { project, updateProject, markStepComplete, isLoaded } = useProject();
   const navigate = useNavigate();
   const { id: urlTierRaw } = useParams<{ id: string }>();
-  const urlTier = (urlTierRaw || "").toLowerCase();
+  const rawLower = (urlTierRaw || "").toLowerCase();
+  // Alias legacy/marketing names to canonical tier IDs.
+  const urlTier = rawLower === "essential" ? "budget" : rawLower;
   const urlTierIsValid = VALID_TIERS.has(urlTier);
   const isInitialMount = useRef(true);
   const insights = getBathroomInsights(project);
