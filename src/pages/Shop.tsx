@@ -85,13 +85,14 @@ export default function Shop() {
 
   // ─── Preferred tier (from onboarding /style-budget) ───────────────
   const preferredTier: ProductTier = useMemo(() => {
-    const lvl = (project.style_preferences?.budget_level || "").toLowerCase();
-    const pkgTier = (project.selected_package?.tier || "").toLowerCase();
-    const src = lvl || pkgTier;
-    if (src.includes("budget")) return "Budget";
-    if (src.includes("premium")) return "Premium";
-    return "Balanced";
-  }, [project.style_preferences?.budget_level, project.selected_package?.tier]);
+    const budgetLevelMap: Record<string, ProductTier> = {
+      "Budget-Conscious": "Budget",
+      "Balanced": "Balanced",
+      "Premium": "Premium",
+    };
+    const lvl = project.style_preferences?.budget_level || "";
+    return budgetLevelMap[lvl] || "Balanced";
+  }, [project.style_preferences?.budget_level]);
 
   // ─── Target budget (parsed from style_preferences.budget) ─────────
   const targetBudget = useMemo(() => {
