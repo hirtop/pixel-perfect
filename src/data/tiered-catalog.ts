@@ -57,6 +57,14 @@ export const TIER_BASE_LABOR: Record<ProductTier, number> = {
   Premium: 9000,
 };
 
+/**
+ * Returns the price to use for project totals (Materials Total, package totals).
+ * Falls back to vendor unit price when no estimated allowance is defined.
+ */
+export const getProductTotalPrice = (
+  product: Pick<TieredProduct, "price" | "estimatedProjectPrice">,
+): number => product.estimatedProjectPrice ?? product.price;
+
 export const SHIPPING_ESTIMATE = 600;
 
 // ─── Non-customizable static items per tier ─────────────────────────
