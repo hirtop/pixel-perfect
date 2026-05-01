@@ -271,10 +271,10 @@ export default function Shop() {
                 </p>
                 <p className="font-heading text-2xl text-foreground">{formatPrice(total)}</p>
               </div>
-              {targetBudget > 0 && (
+              {targetBudget !== null && targetBudget > 0 && (
                 <div className="text-right">
                   <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                    Target · {preferredTier}
+                    {userTier ? `Target · ${userTier}` : "Target"}
                   </p>
                   <p className="text-sm font-semibold text-foreground">
                     {formatPrice(targetBudget)}
@@ -283,7 +283,7 @@ export default function Shop() {
               )}
             </div>
 
-            {targetBudget > 0 && (() => {
+            {targetBudget !== null && targetBudget > 0 ? (() => {
               const pct = Math.min(100, Math.round((total / targetBudget) * 100));
               const over = total > targetBudget;
               const remaining = targetBudget - total;
@@ -310,9 +310,7 @@ export default function Shop() {
                   </p>
                 </div>
               );
-            })()}
-
-            {targetBudget === 0 && (
+            })() : (
               <p className="text-xs text-muted-foreground mt-1">
                 {selections.length} of {Object.keys(grouped).length} categories selected
               </p>
