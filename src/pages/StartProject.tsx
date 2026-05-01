@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useProject } from "@/contexts/ProjectContext";
 
 const bathroomTypes = ["Primary Bathroom", "Guest Bathroom", "Powder Room", "Other"];
-const propertyTypes = ["House", "Condo", "Apartment", "Other"];
+
 const bathingSetupOptions = ["Shower only", "Shower + sink (no tub)", "Tub only", "Tub + shower", "Neither / powder room"];
 const styleOptions = ["Modern", "Spa", "Traditional", "Minimal", "Luxury", "Transitional"];
 
