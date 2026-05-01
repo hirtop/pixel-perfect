@@ -67,6 +67,13 @@ const tierNameMap: Record<string, ProductTier> = {
   premium: "Premium",
 };
 
+// User-facing label only. Internal IDs/keys remain "Budget".
+const tierDisplayNameMap: Record<ProductTier, string> = {
+  Budget: "Essential",
+  Balanced: "Balanced",
+  Premium: "Premium",
+};
+
 const buildCategoriesForTier = (
   tier: ProductTier,
   roomWidthInches: number = 0,
@@ -350,7 +357,7 @@ const CustomizeOption = () => {
           className="max-w-6xl mx-auto"
         >
           <div className="mb-8">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{tier} Package</p>
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{tierDisplayNameMap[tier] || tier} Package</p>
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">Customize Your Selections</h1>
             <p className="text-muted-foreground text-base max-w-lg leading-relaxed">
               Swap products below and see how each change affects your estimate.
