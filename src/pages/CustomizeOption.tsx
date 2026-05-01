@@ -65,28 +65,58 @@ const tierNameMap: Record<string, ProductTier> = {
   premium: "Premium",
 };
 
-const buildCategoriesForTier = (tier: ProductTier): Category[] => {
+const buildCategoriesForTier = (tier: ProductTier, roomWidthInches: number = 0): Category[] => {
+  const fitsRoom = (p: TieredProduct) => {
+    if (p.category !== "Vanities") return true;
+    if (roomWidthInches <= 0) return true;
+    if (typeof p.width_inches !== "number") return true;
+    return p.width_inches <= roomWidthInches;
+  };
+
   const defaults = getTierDefaults(tier);
   return defaults
     .filter((p) => CUSTOMIZABLE_CATEGORIES.includes(p.category))
     .map((product) => {
-      const alts = getTierAlternatives(tier, product.category);
+      let allAlts = getTierAlternatives(tier, product.category);
+      let chosen: TieredProduct = product;
+
+      if (product.category === "Vanities" && roomWidthInches > 0) {
+        const defaultFits = fitsRoom(product);
+        const fittingAlts = allAlts.filter(fitsRoom);
+        if (!defaultFits) {
+          if (fittingAlts.length > 0) {
+            // Promote first fitting alternative as the new default.
+            chosen = fittingAlts[0];
+            allAlts = [
+              // Remaining fitting alts (excluding promoted one)
+              ...fittingAlts.slice(1),
+            ];
+          } else {
+            // No fitting alternatives — keep original default; clear alts to
+            // avoid showing oversize options.
+            allAlts = [];
+          }
+        } else {
+          allAlts = fittingAlts;
+        }
+      }
+
       return {
-        name: product.category,
-        selected: product.name,
-        selectedId: product.id,
-        reason: product.description,
-        price: product.price,
-        basePrice: product.price,
-        vendor: product.vendor,
-        image: product.image,
-        tag: product.tag,
-        spec: product.spec,
-        finish: product.finish,
-        disclaimer: product.disclaimer,
-        affiliateUrl: product.affiliateUrl,
+        name: chosen.category,
+        selected: chosen.name,
+        selectedId: chosen.id,
+        reason: chosen.description,
+        price: chosen.price,
+        basePrice: chosen.price,
+        vendor: chosen.vendor,
+        image: chosen.image,
+        tag: chosen.tag,
+        spec: chosen.spec,
+        finish: chosen.finish,
+        disclaimer: chosen.disclaimer,
+        affiliateUrl: chosen.affiliateUrl,
         laborDelta: 0,
-        alternatives: alts.map((a) => ({
+        alternatives: allAlts.map((a) => ({
           id: a.id,
           name: a.name,
           desc: a.description,
@@ -150,7 +180,17 @@ const CustomizeOption = () => {
   const shouldRedirectInvalidUrl = isLoaded && !urlTierIsValid;
 
 
-  const initialCategories = useMemo(() => buildCategoriesForTier(tier), [tier]);
+  const roomWidthInches = useMemo(() => {
+    const d = project.dimensions ?? {};
+    const ft = parseInt((d as any).width_ft || "0", 10) || 0;
+    const inch = parseInt((d as any).width_in || "0", 10) || 0;
+    return ft * 12 + inch;
+  }, [project.dimensions]);
+
+  const initialCategories = useMemo(
+    () => buildCategoriesForTier(tier, roomWidthInches),
+    [tier, roomWidthInches]
+  );
 
   const otherItemsTotal = useMemo(() => getStaticItemsTotal(tier), [tier]);
   const baseLaborForTier = TIER_BASE_LABOR[tier];

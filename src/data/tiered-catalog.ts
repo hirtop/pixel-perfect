@@ -37,6 +37,7 @@ export interface TieredProduct {
   tag?: string;
   disclaimer?: string;
   affiliateUrl?: string;
+  width_inches?: number;
 }
 
 // ─── Tier base labor (before product-specific deltas) ───────────────
@@ -102,6 +103,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.homedepot.com/b/Glacier-Bay/N-5yc1vZcd5fZ4i",
+    width_inches: 36,
   },
   {
     id: "bud-vanity-02",
@@ -117,6 +119,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
+    width_inches: 30,
   },
   {
     id: "bud-vanity-03",
@@ -131,6 +134,7 @@ export const tieredCatalog: TieredProduct[] = [
         image: "https://mobileimages.lowes.com/productimages/ab181bc3-3d02-496a-a285-f791e5a3aeb4/73712305.jpeg?size=xl",
     isDefault: false,
     laborDelta: 0,
+    width_inches: 36,
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -149,6 +153,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/james-martin-vanities-d100-v48/s1997936?uid=4727863",
+    width_inches: 48,
   },
   {
     id: "bal-vanity-02",
@@ -165,6 +170,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Value Pick",
     affiliateUrl: "https://www.fergusonhome.com/james-martin-vanities-330-v48-3wz/s1963933?uid=4938910",
+    width_inches: 42,
   },
   {
     id: "bal-vanity-03",
@@ -181,6 +187,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Upgrade",
     affiliateUrl: "https://www.fergusonhome.com/james-martin-vanities-330-v72-3wz/s1925137?uid=4549287",
+    width_inches: 48,
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -200,6 +207,7 @@ export const tieredCatalog: TieredProduct[] = [
     tag: "Recommended",
     disclaimer: "Marble top requires periodic sealing (every 6–12 months)",
     affiliateUrl: "https://www.jamesmartinvanities.com/collections/all",
+    width_inches: 60,
   },
   {
     id: "pre-vanity-02",
@@ -216,6 +224,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 250,
     laborNote: "Wall-mount needs in-wall blocking — adds ~$250",
     tag: "Modern Pick",
+    width_inches: 48,
   },
   {
     id: "pre-vanity-03",
@@ -232,6 +241,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Designer Pick",
     disclaimer: "Marble top requires periodic sealing (every 6–12 months)",
+    width_inches: 48,
   },
 
   // ════════════════════════════════════════════════════════════════════
