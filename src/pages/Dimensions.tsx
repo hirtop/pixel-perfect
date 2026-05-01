@@ -421,6 +421,13 @@ const Dimensions = () => {
               <Link to="/upload" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
                 <ArrowLeft className="h-3.5 w-3.5" /> Back to Photos
               </Link>
+              <button
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
+                onClick={handleSaveLater}
+                disabled={isSaving}
+              >
+                {isSaving ? "Saving…" : "Save and finish later"}
+              </button>
             </div>
           </div>
         </motion.div>
