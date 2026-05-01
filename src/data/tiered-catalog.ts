@@ -191,7 +191,7 @@ export const tieredCatalog: TieredProduct[] = [
     category: "Sinks",
     tier: "Balanced",
     vendor: "Kohler",
-    price: 187,
+    price: 219.60,
     description: "Timeless Archer profile — oval basin with built-in overflow",
     finish: "White",
     spec: '22" × 16" semi-recessed, overflow included',
