@@ -429,7 +429,7 @@ export const tieredCatalog: TieredProduct[] = [
     category: "Main Floor Tile",
     tier: "Balanced",
     vendor: "Daltile",
-    price: 1100,
+    price: 4.62,
     description: "Marble-look floor tile — timeless visual with easy maintenance",
     finish: "Carrara Marble Look",
     spec: '12" x 24" unpolished marble visual, 17.02 SF/carton',
