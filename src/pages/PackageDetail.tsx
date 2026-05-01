@@ -92,7 +92,8 @@ const PRODUCT_FIT_REASONS: Record<string, string> = {
 const PackageDetail = () => {
   const { project, updateProject, markStepComplete, isLoaded } = useProject();
   const { id: urlTierRaw } = useParams<{ id: string }>();
-  const urlTier = (urlTierRaw || "").toLowerCase();
+  const rawLower = (urlTierRaw || "").toLowerCase();
+  const urlTier = rawLower === "essential" ? "budget" : rawLower;
   const urlTierIsValid = VALID_TIERS.has(urlTier);
 
   // URL is the source of truth for which tier to render. Fall back to saved
