@@ -106,7 +106,7 @@ const ProjectSnapshot = ({ snapshot, onNextStepClick }: Props) => {
               onClick={() => onNextStepClick(snapshot.nextStep.highlightTier)}
               className="inline-flex items-center gap-1 mt-3 text-xs font-semibold text-primary hover:text-primary/80 transition-colors group"
             >
-              Jump to {snapshot.nextStep.highlightTier}
+              Jump to {snapshot.nextStep.highlightTier === "Budget" ? "Essential" : snapshot.nextStep.highlightTier}
               <ArrowRight className="h-3 w-3 transition-transform group-hover:translate-x-0.5" />
             </button>
           )}
