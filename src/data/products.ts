@@ -73,6 +73,7 @@ export {
   computeLaborTotal,
   getStaticItemsTotal,
   TIER_BASE_LABOR,
+  getProductTotalPrice,
   SHIPPING_ESTIMATE,
   STATIC_ITEMS,
 } from "./tiered-catalog";
