@@ -60,12 +60,24 @@ const ProjectSummary = () => {
     project.selected_package.tier?.toLowerCase() || "balanced"
   ] || balancedImg;
 
+  const targetBudgetRaw = project.style_preferences.budget;
+  const targetBudgetNum = Number(targetBudgetRaw);
+  const showTargetBudget =
+    targetBudgetRaw !== undefined &&
+    targetBudgetRaw !== null &&
+    String(targetBudgetRaw).trim() !== "" &&
+    Number.isFinite(targetBudgetNum) &&
+    targetBudgetNum > 0;
+
   const summaryFields = [
     { label: "Project Name", value: project.name || "Untitled Project" },
     { label: "Selected Package", value: project.selected_package.name || "Not yet selected" },
     { label: "Style Direction", value: project.style_preferences.style || "Not yet selected" },
     { label: "Finish Preference", value: project.style_preferences.finish || "Not yet selected" },
     { label: "Budget Comfort", value: project.style_preferences.budget_level || "Not yet selected" },
+    ...(showTargetBudget
+      ? [{ label: "Target Budget", value: `$${targetBudgetNum.toLocaleString()}` }]
+      : []),
     { label: "Bathroom Type", value: project.bathroom_type || "Not yet selected" },
     { label: "Bathing Setup", value: project.bathing_setup || "Not yet selected" },
   ];
