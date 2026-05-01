@@ -148,13 +148,13 @@ export default function Shop() {
                     <article
                       key={p.id}
                       className={cn(
-                        "snap-start shrink-0 w-64 rounded-2xl border bg-card p-3 flex flex-col transition-all",
+                        "snap-start shrink-0 w-64 rounded-2xl border bg-card flex flex-col overflow-hidden transition-all",
                         isSelected
                           ? "border-primary ring-2 ring-primary/40"
                           : "border-border hover:border-muted-foreground/40",
                       )}
                     >
-                      <div className="aspect-square rounded-xl overflow-hidden bg-muted mb-3">
+                      <div className="h-[200px] w-full bg-muted overflow-hidden">
                         {p.image ? (
                           <img
                             src={p.image}
@@ -169,39 +169,45 @@ export default function Shop() {
                         )}
                       </div>
 
-                      <div className="flex items-center justify-between mb-2">
+                      <div className="p-4 flex flex-col flex-1">
                         <span
                           className={cn(
-                            "text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full",
+                            "self-start text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full mb-2",
                             TIER_BADGE[p.tier],
                           )}
                         >
                           {p.tier}
                         </span>
-                        <span className="text-sm font-bold text-foreground">
-                          {formatPrice(p.price)}
-                        </span>
-                      </div>
 
-                      <h3 className="font-medium text-sm text-foreground leading-snug line-clamp-2 mb-1">
-                        {p.name}
-                      </h3>
-                      <p className="text-xs text-muted-foreground mb-3">{p.vendor}</p>
-
-                      <Button
-                        size="sm"
-                        variant={isSelected ? "default" : "outline"}
-                        className="mt-auto w-full"
-                        onClick={() => handleSelect(category, p)}
-                      >
-                        {isSelected ? (
-                          <>
-                            <Check className="h-4 w-4 mr-1" /> Selected
-                          </>
-                        ) : (
-                          "Select"
+                        <h3 className="font-bold text-sm text-foreground leading-snug line-clamp-2 mb-1">
+                          {p.name}
+                        </h3>
+                        <p className="text-xs text-muted-foreground mb-1">{p.vendor}</p>
+                        {p.spec && (
+                          <p className="text-xs text-muted-foreground line-clamp-2 mb-3">
+                            {p.spec}
+                          </p>
                         )}
-                      </Button>
+
+                        <p className="text-xl font-bold text-primary mb-3 mt-auto">
+                          {formatPrice(p.price)}
+                        </p>
+
+                        <Button
+                          size="sm"
+                          variant={isSelected ? "default" : "outline"}
+                          className="w-full"
+                          onClick={() => handleSelect(category, p)}
+                        >
+                          {isSelected ? (
+                            <>
+                              <Check className="h-4 w-4 mr-1" /> Selected
+                            </>
+                          ) : (
+                            "Select"
+                          )}
+                        </Button>
+                      </div>
                     </article>
                   );
                 })}
