@@ -473,6 +473,16 @@ const BathroomAssessment = () => {
     },
   });
   const [stepIndex, setStepIndex] = useState(0);
+  const [isSaving, setIsSaving] = useState(false);
+
+  const handleSaveLater = async () => {
+    setIsSaving(true);
+    try {
+      await saveProject();
+    } finally {
+      setIsSaving(false);
+    }
+  };
 
   const totalSteps = STEPS.length;
   const step = STEPS[stepIndex];
