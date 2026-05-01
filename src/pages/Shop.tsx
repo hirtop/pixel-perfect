@@ -7,6 +7,11 @@ import { useProject } from "@/contexts/ProjectContext";
 import { tieredCatalog, getProductTotalPrice, type TieredProduct, type ProductTier } from "@/data/tiered-catalog";
 import { formatPrice } from "@/data/products";
 import { cn } from "@/lib/utils";
+import {
+  isVerifiedProductLink,
+  ALLOWANCE_LINK_NOTE,
+  ESTIMATED_PRICE_DISCLAIMER,
+} from "@/lib/verifiedLink";
 
 const CATEGORY_ORDER = [
   "Vanities",
@@ -170,7 +175,7 @@ export default function Shop() {
                           : "border-border hover:border-muted-foreground/40",
                       )}
                     >
-                      <div className="h-[200px] w-full bg-muted overflow-hidden">
+                      <div className="h-[200px] w-full bg-gradient-to-br from-muted to-muted/40 overflow-hidden">
                         {p.image ? (
                           <img
                             src={p.image}
@@ -179,8 +184,13 @@ export default function Shop() {
                             loading="lazy"
                           />
                         ) : (
-                          <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
-                            No image
+                          <div className="w-full h-full flex flex-col items-center justify-center text-muted-foreground gap-1 px-3 text-center">
+                            <div className="text-[11px] font-medium uppercase tracking-wider opacity-70">
+                              {p.category}
+                            </div>
+                            <div className="text-[10px] opacity-60">
+                              Product image coming soon
+                            </div>
                           </div>
                         )}
                       </div>
@@ -204,7 +214,7 @@ export default function Shop() {
                             {p.spec}
                           </p>
                         )}
-                        {p.affiliateUrl && p.affiliateUrl.trim() !== "" && (
+                        {isVerifiedProductLink(p.affiliateUrl) ? (
                           <a
                             href={p.affiliateUrl}
                             target="_blank"
@@ -213,9 +223,14 @@ export default function Shop() {
                           >
                             View product
                           </a>
+                        ) : (
+                          <p className="text-[11px] text-muted-foreground italic mb-3">
+                            {ALLOWANCE_LINK_NOTE}
+                          </p>
                         )}
 
                         <p className="text-xl font-bold text-primary mb-3 mt-auto">
+                          <span className="text-xs font-medium text-muted-foreground mr-1">Est.</span>
                           {formatPrice(p.price)}
                         </p>
 
@@ -241,6 +256,10 @@ export default function Shop() {
             </section>
           );
         })}
+
+        <p className="mt-10 text-[11px] text-muted-foreground text-center max-w-3xl mx-auto leading-relaxed">
+          {ESTIMATED_PRICE_DISCLAIMER}
+        </p>
       </main>
 
       {/* Sticky total bar */}
@@ -250,7 +269,7 @@ export default function Shop() {
             <div className="flex items-baseline justify-between gap-4">
               <div>
                 <p className="text-xs uppercase tracking-wider text-muted-foreground">
-                  Materials Total
+                  Materials Total (Estimated)
                 </p>
                 <p className="font-heading text-2xl text-foreground">{formatPrice(total)}</p>
               </div>
