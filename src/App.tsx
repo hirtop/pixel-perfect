@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, useLocation } from "react-router-dom";
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useParams } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -27,6 +27,11 @@ import Disclaimer from "./pages/Disclaimer.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
+
+function CustomizeRedirect() {
+  const { id } = useParams();
+  return <Navigate to={`/customize/${id ?? ""}`} replace />;
+}
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -56,6 +61,7 @@ const App = () => (
               <Route path="/options" element={<RemodelOptions />} />
               <Route path="/package/:id" element={<PackageDetail />} />
               <Route path="/customize/:id" element={<CustomizeOption />} />
+              <Route path="/customized/:id" element={<CustomizeRedirect />} />
               <Route path="/workflow" element={<Workflow />} />
               <Route path="/summary" element={<ProjectSummary />} />
               <Route path="/subcontractors" element={<Subcontractors />} />
