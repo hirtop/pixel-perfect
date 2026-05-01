@@ -397,7 +397,7 @@ export const tieredCatalog: TieredProduct[] = [
     category: "Main Floor Tile",
     tier: "Balanced",
     vendor: "Daltile",
-    price: 850,
+    price: 10.11,
     description: "Rectified edges for tight grout lines — clean modern look on the floor",
     finish: "Warm Gray Matte",
     spec: '12" x 24" rectified porcelain, ~40 sq ft, slip-rated',
