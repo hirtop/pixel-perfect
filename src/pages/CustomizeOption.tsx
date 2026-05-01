@@ -18,6 +18,7 @@ import {
   STATIC_ITEMS,
   TIER_BASE_LABOR,
   SHIPPING_ESTIMATE,
+  tieredCatalog,
   type ProductTier,
   type TieredProduct,
 } from "@/data/products";
@@ -65,12 +66,29 @@ const tierNameMap: Record<string, ProductTier> = {
   premium: "Premium",
 };
 
-const buildCategoriesForTier = (tier: ProductTier, roomWidthInches: number = 0): Category[] => {
+const buildCategoriesForTier = (
+  tier: ProductTier,
+  roomWidthInches: number = 0,
+  selectedVanityId?: string,
+): Category[] => {
   const fitsRoom = (p: TieredProduct) => {
     if (p.category !== "Vanities") return true;
     if (roomWidthInches <= 0) return true;
     if (typeof p.width_inches !== "number") return true;
     return p.width_inches <= roomWidthInches;
+  };
+
+  // Resolve selected vanity's faucet_holes to constrain Faucets.
+  const selectedVanity = selectedVanityId
+    ? tieredCatalog.find((p) => p.id === selectedVanityId && p.category === "Vanities")
+    : undefined;
+  const requiredFaucetHoles = selectedVanity?.faucet_holes;
+
+  const fitsFaucet = (p: TieredProduct) => {
+    if (p.category !== "Faucets") return true;
+    if (!requiredFaucetHoles) return true;
+    if (!p.mount_type) return true;
+    return p.mount_type === requiredFaucetHoles;
   };
 
   const defaults = getTierDefaults(tier);
@@ -94,6 +112,23 @@ const buildCategoriesForTier = (tier: ProductTier, roomWidthInches: number = 0):
           } else {
             // No fitting alternatives — keep original default; clear alts to
             // avoid showing oversize options.
+            allAlts = [];
+          }
+        } else {
+          allAlts = fittingAlts;
+        }
+      }
+
+      if (product.category === "Faucets" && requiredFaucetHoles) {
+        const defaultFits = fitsFaucet(product);
+        const fittingAlts = allAlts.filter(fitsFaucet);
+        if (!defaultFits) {
+          if (fittingAlts.length > 0) {
+            // Promote first compatible alternative as the new default.
+            chosen = fittingAlts[0];
+            allAlts = [...fittingAlts.slice(1)];
+          } else {
+            // No compatible alternatives — keep original default; clear alts.
             allAlts = [];
           }
         } else {
@@ -187,9 +222,15 @@ const CustomizeOption = () => {
     return ft * 12 + inch;
   }, [project.dimensions]);
 
+  const selectedVanityId = useMemo(() => {
+    const cats = project.customizations?.categories;
+    if (!Array.isArray(cats)) return undefined;
+    return cats.find((c) => c.name === "Vanities")?.selected;
+  }, [project.customizations]);
+
   const initialCategories = useMemo(
-    () => buildCategoriesForTier(tier, roomWidthInches),
-    [tier, roomWidthInches]
+    () => buildCategoriesForTier(tier, roomWidthInches, selectedVanityId),
+    [tier, roomWidthInches, selectedVanityId]
   );
 
   const otherItemsTotal = useMemo(() => getStaticItemsTotal(tier), [tier]);
