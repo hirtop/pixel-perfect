@@ -4,7 +4,7 @@ import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import { useProject } from "@/contexts/ProjectContext";
-import { tieredCatalog, STATIC_ITEMS, type TieredProduct, type ProductTier } from "@/data/tiered-catalog";
+import { tieredCatalog, type TieredProduct, type ProductTier } from "@/data/tiered-catalog";
 import { formatPrice } from "@/data/products";
 import { cn } from "@/lib/utils";
 
@@ -19,6 +19,7 @@ const CATEGORY_ORDER = [
   "Shower Systems",
   "Bathtubs",
   "Tub Valve",
+  "Lighting",
 ] as const;
 
 const TIER_BADGE: Record<ProductTier, string> = {
@@ -33,26 +34,6 @@ interface CategorySelection {
   price: number;
 }
 
-// Build a synthetic catalog for Lighting (it lives in STATIC_ITEMS, not tieredCatalog)
-const lightingProducts: TieredProduct[] = (Object.keys(STATIC_ITEMS) as ProductTier[]).map(
-  (tier) => {
-    const item = STATIC_ITEMS[tier].find((s) => s.category === "Lighting")!;
-    return {
-      id: `static-lighting-${tier.toLowerCase()}`,
-      name: item.name,
-      category: "Lighting",
-      tier,
-      vendor: item.vendor,
-      price: item.price, image: item.image,
-      description: "",
-      finish: "",
-      spec: "",
-      isDefault: tier === "Balanced",
-      laborDelta: 0,
-    };
-  },
-);
-
 export default function Shop() {
   const navigate = useNavigate();
   const { project, updateProject, saveProject } = useProject();
@@ -60,10 +41,7 @@ export default function Shop() {
   const grouped = useMemo(() => {
     const map: Record<string, TieredProduct[]> = {};
     for (const cat of CATEGORY_ORDER) {
-      const items =
-        (cat as string) === "Lighting"
-          ? lightingProducts
-          : tieredCatalog.filter((p) => p.category === cat);
+      const items = tieredCatalog.filter((p) => p.category === cat);
       if (items.length > 0) map[cat] = items;
     }
     return map;
