@@ -19,6 +19,7 @@ const CATEGORY_ORDER = [
   "Shower Systems",
   "Bathtubs",
   "Tub Valve",
+  "Lighting",
 ] as const;
 
 const TIER_BADGE: Record<ProductTier, string> = {
