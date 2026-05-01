@@ -39,6 +39,7 @@ export interface TieredProduct {
   affiliateUrl?: string;
   width_inches?: number;
   faucet_holes?: 'single-hole' | 'centerset' | 'widespread';
+  mount_type?: 'single-hole' | 'centerset' | 'widespread' | 'wall-mount';
 }
 
 // ─── Tier base labor (before product-specific deltas) ───────────────
@@ -425,6 +426,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.moen.com/products/banbury",
+    mount_type: 'centerset',
   },
   {
     id: "bud-faucet-02",
@@ -439,6 +441,7 @@ export const tieredCatalog: TieredProduct[] = [
         image: "https://images.thdstatic.com/productImages/38aa35f8-6d3d-4ccc-bd81-1551677ecb84/svn/polished-chrome-pfister-single-hole-bathroom-faucets-lf-042-lrcc-64_600.jpg",
     isDefault: false,
     laborDelta: 0,
+    mount_type: 'widespread',
   },
   {
     id: "bud-faucet-03",
@@ -454,6 +457,7 @@ export const tieredCatalog: TieredProduct[] = [
     isDefault: false,
     laborDelta: 0,
     tag: "Budget Pick",
+    mount_type: 'single-hole',
   },
 
   // ── Balanced ──────────────────────────────────────────────────────
@@ -472,6 +476,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Recommended",
     affiliateUrl: "https://www.fergusonhome.com/signature-hardware-948569/s1707269?uid=4027790",
+    mount_type: 'centerset',
   },
   {
     id: "bal-faucet-02",
@@ -489,6 +494,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Wider spread may need vanity top re-drill — adds ~$120",
     tag: "Upgrade",
     affiliateUrl: "https://www.fergusonhome.com/delta-2597lf-mpu/s776562?uid=2003601",
+    mount_type: 'single-hole',
   },
   {
     id: "bal-faucet-03",
@@ -505,6 +511,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 0,
     tag: "Trending",
     affiliateUrl: "https://www.fergusonhome.com/kohler-k-14402-4a/s559752?uid=4126511",
+    mount_type: 'single-hole',
   },
 
   // ── Premium ───────────────────────────────────────────────────────
@@ -524,6 +531,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborNote: "Widespread needs 3-hole vanity top — adds ~$120 if drilling required",
     tag: "Recommended",
     affiliateUrl: "https://www.rohlhome.com/bathroom-faucets",
+    mount_type: 'widespread',
   },
   {
     id: "pre-faucet-02",
@@ -540,6 +548,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 280,
     laborNote: "Wall-mount requires in-wall valve rough-in — adds ~$280",
     tag: "Modern Pick",
+    mount_type: 'wall-mount',
   },
   {
     id: "pre-faucet-03",
@@ -556,6 +565,7 @@ export const tieredCatalog: TieredProduct[] = [
     laborDelta: 280,
     laborNote: "Wall-mount requires in-wall valve rough-in — adds ~$280",
     tag: "Designer Pick",
+    mount_type: 'wall-mount',
   },
 
   // ════════════════════════════════════════════════════════════════════
