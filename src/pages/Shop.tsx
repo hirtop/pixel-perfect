@@ -83,6 +83,48 @@ export default function Shop() {
 
   const total = selections.reduce((sum, s) => sum + (s.price || 0), 0);
 
+  // ─── Preferred tier (from onboarding /style-budget) ───────────────
+  const preferredTier: ProductTier = useMemo(() => {
+    const lvl = (project.style_preferences?.budget_level || "").toLowerCase();
+    const pkgTier = (project.selected_package?.tier || "").toLowerCase();
+    const src = lvl || pkgTier;
+    if (src.includes("budget")) return "Budget";
+    if (src.includes("premium")) return "Premium";
+    return "Balanced";
+  }, [project.style_preferences?.budget_level, project.selected_package?.tier]);
+
+  // ─── Target budget (parsed from style_preferences.budget) ─────────
+  const targetBudget = useMemo(() => {
+    const raw = project.style_preferences?.budget || "";
+    const num = Number(String(raw).replace(/[^0-9.]/g, ""));
+    return Number.isFinite(num) && num > 0 ? num : 0;
+  }, [project.style_preferences?.budget]);
+
+  // ─── Auto pre-selection on first arrival ──────────────────────────
+  const didPreselectRef = useRef(false);
+  useEffect(() => {
+    if (didPreselectRef.current) return;
+    if (Object.keys(grouped).length === 0) return;
+    if (selections.length > 0) {
+      didPreselectRef.current = true;
+      return;
+    }
+    const next: CategorySelection[] = Object.entries(grouped).map(([cat, items]) => {
+      const pick =
+        items.find((p) => p.tier === preferredTier && p.isDefault) ||
+        items.find((p) => p.tier === preferredTier) ||
+        items.find((p) => p.isDefault) ||
+        items[0];
+      return { name: cat, selected: pick.id, price: pick.price };
+    });
+    didPreselectRef.current = true;
+    updateProject({
+      customizations: { ...project.customizations, categories: next },
+    });
+    void saveProject({ silent: true });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [grouped, preferredTier]);
+
   const handleSelect = (categoryName: string, product: TieredProduct) => {
     const others = selections.filter((s) => s.name !== categoryName);
     const next: CategorySelection[] = [
