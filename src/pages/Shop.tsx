@@ -256,6 +256,10 @@ export default function Shop() {
             </section>
           );
         })}
+
+        <p className="mt-10 text-[11px] text-muted-foreground text-center max-w-3xl mx-auto leading-relaxed">
+          {ESTIMATED_PRICE_DISCLAIMER}
+        </p>
       </main>
 
       {/* Sticky total bar */}
