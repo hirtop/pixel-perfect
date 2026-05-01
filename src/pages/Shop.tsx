@@ -188,6 +188,16 @@ export default function Shop() {
                             {p.spec}
                           </p>
                         )}
+                        {p.affiliateUrl && p.affiliateUrl.trim() !== "" && (
+                          <a
+                            href={p.affiliateUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs text-muted-foreground underline hover:text-foreground mb-3"
+                          >
+                            View product
+                          </a>
+                        )}
 
                         <p className="text-xl font-bold text-primary mb-3 mt-auto">
                           {formatPrice(p.price)}
