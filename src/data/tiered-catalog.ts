@@ -943,7 +943,7 @@ export const getTierAlternatives = (tier: ProductTier, category: ProductCategory
 
 /** Sum of default material prices for customizable items in a tier */
 export const getTierDefaultMaterialTotal = (tier: ProductTier): number =>
-  getTierDefaults(tier).reduce((sum, p) => sum + p.price, 0);
+  getTierDefaults(tier).reduce((sum, p) => sum + getProductTotalPrice(p), 0);
 
 /** Compute labor total from base + product deltas */
 export const computeLaborTotal = (tier: ProductTier, productLaborDeltas: number[]): number =>
