@@ -1,14 +1,105 @@
-import { Link } from "react-router-dom";
+import { useMemo } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
-import ShopProducts from "@/components/ShopProducts";
+import { useProject } from "@/contexts/ProjectContext";
+import { tieredCatalog, STATIC_ITEMS, type TieredProduct, type ProductTier } from "@/data/tiered-catalog";
+import { formatPrice } from "@/data/products";
+import { cn } from "@/lib/utils";
+
+const CATEGORY_ORDER = [
+  "Vanities",
+  "Sinks",
+  "Faucets",
+  "Mirrors",
+  "Shower Wall Tile",
+  "Shower Floor Tile",
+  "Main Floor Tile",
+  "Accent Tile",
+  "Shower Doors",
+  "Shower Valve",
+  "Shower Systems",
+  "Bathtubs",
+  "Tub Valve",
+  "Shower Niche",
+  "Lighting",
+] as const;
+
+const TIER_BADGE: Record<ProductTier, string> = {
+  Budget: "bg-secondary text-secondary-foreground",
+  Balanced: "bg-accent text-accent-foreground",
+  Premium: "bg-primary/15 text-primary",
+};
+
+interface CategorySelection {
+  name: string;
+  selected: string;
+  price: number;
+}
+
+// Build a synthetic catalog for Lighting (it lives in STATIC_ITEMS, not tieredCatalog)
+const lightingProducts: TieredProduct[] = (Object.keys(STATIC_ITEMS) as ProductTier[]).map(
+  (tier) => {
+    const item = STATIC_ITEMS[tier].find((s) => s.category === "Lighting")!;
+    return {
+      id: `static-lighting-${tier.toLowerCase()}`,
+      name: item.name,
+      category: "Lighting",
+      tier,
+      vendor: item.vendor,
+      price: item.price,
+      description: "",
+      finish: "",
+      spec: "",
+      isDefault: tier === "Balanced",
+      laborDelta: 0,
+    };
+  },
+);
 
 export default function Shop() {
+  const navigate = useNavigate();
+  const { project, updateProject, saveProject } = useProject();
+
+  const grouped = useMemo(() => {
+    const map: Record<string, TieredProduct[]> = {};
+    for (const cat of CATEGORY_ORDER) {
+      const items =
+        cat === "Lighting"
+          ? lightingProducts
+          : tieredCatalog.filter((p) => p.category === cat);
+      if (items.length > 0) map[cat] = items;
+    }
+    return map;
+  }, []);
+
+  const selections: CategorySelection[] = project.customizations.categories || [];
+  const selectedByCategory = useMemo(() => {
+    const m: Record<string, CategorySelection> = {};
+    for (const s of selections) m[s.name] = s;
+    return m;
+  }, [selections]);
+
+  const total = selections.reduce((sum, s) => sum + (s.price || 0), 0);
+
+  const handleSelect = (categoryName: string, product: TieredProduct) => {
+    const others = selections.filter((s) => s.name !== categoryName);
+    const next: CategorySelection[] = [
+      ...others,
+      { name: categoryName, selected: product.id, price: product.price },
+    ];
+    updateProject({
+      customizations: { ...project.customizations, categories: next },
+    });
+    void saveProject({ silent: true });
+  };
+
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-32">
       {/* Nav */}
-      <nav className="sticky top-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
-        <div className="max-w-6xl mx-auto flex items-center justify-between px-6 h-16">
+      <nav className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
+        <div className="max-w-7xl mx-auto flex items-center justify-between px-6 h-16">
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
             BOBOX{" "}
             <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">
@@ -16,45 +107,127 @@ export default function Shop() {
             </span>
           </Link>
           <div className="hidden md:flex items-center gap-8 text-sm font-medium text-muted-foreground">
-            <Link to="/" className="hover:text-foreground transition-colors">
-              Home
-            </Link>
-            <Link to="/shop" className="text-foreground">
-              Shop
-            </Link>
+            <Link to="/" className="hover:text-foreground transition-colors">Home</Link>
+            <Link to="/shop" className="text-foreground">Shop</Link>
           </div>
-          <div className="flex items-center gap-3">
-            <AccountMenu />
-            <Button size="sm" asChild>
-              <Link to="/start">Start Your Project</Link>
-            </Button>
-          </div>
+          <AccountMenu />
         </div>
       </nav>
 
-      {/* Page intro */}
-      <header className="bg-card border-b border-border">
-        <div className="container mx-auto px-6 py-16 text-center max-w-2xl">
-          <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
-            Shop Products
-          </p>
-          <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-4">
-            Curated Products for Your Remodel
+      {/* Header */}
+      <header className="border-b border-border">
+        <div className="max-w-7xl mx-auto px-6 py-12 text-center">
+          <h1 className="font-heading text-4xl md:text-5xl text-foreground mb-3">
+            Build Your Bathroom
           </h1>
-          <p className="text-muted-foreground leading-relaxed">
-            Handpicked fixtures and finishes from trusted brands. Browse by
-            category and shop directly from our retail partners.
+          <p className="text-muted-foreground max-w-xl mx-auto">
+            Select one product per category. Mix and match across any budget level.
           </p>
         </div>
       </header>
 
-      <ShopProducts hideHeader />
+      {/* Categories */}
+      <main className="max-w-7xl mx-auto px-6 py-10 space-y-12">
+        {Object.entries(grouped).map(([category, products]) => {
+          const sel = selectedByCategory[category];
+          return (
+            <section key={category}>
+              <div className="flex items-baseline justify-between mb-4">
+                <h2 className="font-heading text-2xl text-foreground">{category}</h2>
+                {sel && (
+                  <span className="text-xs text-muted-foreground">
+                    Selected · {formatPrice(sel.price)}
+                  </span>
+                )}
+              </div>
 
-      <footer className="bg-foreground text-primary-foreground/70 py-12">
-        <div className="container mx-auto px-6 text-center text-sm">
-          © {new Date().getFullYear()} BOBOX Remodel. All rights reserved.
+              <div className="flex gap-4 overflow-x-auto pb-3 -mx-6 px-6 snap-x">
+                {products.map((p) => {
+                  const isSelected = sel?.selected === p.id;
+                  return (
+                    <article
+                      key={p.id}
+                      className={cn(
+                        "snap-start shrink-0 w-64 rounded-2xl border bg-card p-3 flex flex-col transition-all",
+                        isSelected
+                          ? "border-primary ring-2 ring-primary/40"
+                          : "border-border hover:border-muted-foreground/40",
+                      )}
+                    >
+                      <div className="aspect-square rounded-xl overflow-hidden bg-muted mb-3">
+                        {p.image ? (
+                          <img
+                            src={p.image}
+                            alt={p.name}
+                            className="w-full h-full object-cover"
+                            loading="lazy"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center text-muted-foreground text-xs">
+                            No image
+                          </div>
+                        )}
+                      </div>
+
+                      <div className="flex items-center justify-between mb-2">
+                        <span
+                          className={cn(
+                            "text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full",
+                            TIER_BADGE[p.tier],
+                          )}
+                        >
+                          {p.tier}
+                        </span>
+                        <span className="text-sm font-bold text-foreground">
+                          {formatPrice(p.price)}
+                        </span>
+                      </div>
+
+                      <h3 className="font-medium text-sm text-foreground leading-snug line-clamp-2 mb-1">
+                        {p.name}
+                      </h3>
+                      <p className="text-xs text-muted-foreground mb-3">{p.vendor}</p>
+
+                      <Button
+                        size="sm"
+                        variant={isSelected ? "default" : "outline"}
+                        className="mt-auto w-full"
+                        onClick={() => handleSelect(category, p)}
+                      >
+                        {isSelected ? (
+                          <>
+                            <Check className="h-4 w-4 mr-1" /> Selected
+                          </>
+                        ) : (
+                          "Select"
+                        )}
+                      </Button>
+                    </article>
+                  );
+                })}
+              </div>
+            </section>
+          );
+        })}
+      </main>
+
+      {/* Sticky total bar */}
+      <div className="fixed bottom-0 inset-x-0 z-50 border-t border-border bg-background/95 backdrop-blur-md">
+        <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between gap-4">
+          <div>
+            <p className="text-xs uppercase tracking-wider text-muted-foreground">
+              Materials Total
+            </p>
+            <p className="font-heading text-2xl text-foreground">{formatPrice(total)}</p>
+            <p className="text-xs text-muted-foreground">
+              {selections.length} of {Object.keys(grouped).length} categories selected
+            </p>
+          </div>
+          <Button size="lg" onClick={() => navigate("/summary")}>
+            Continue to Summary →
+          </Button>
         </div>
-      </footer>
+      </div>
     </div>
   );
 }
