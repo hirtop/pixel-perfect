@@ -416,7 +416,7 @@ const DemoCard = ({
 };
 
 const BathroomAssessment = () => {
-  const { project, updateProject, markStepComplete } = useProject();
+  const { project, updateProject, markStepComplete, saveProject } = useProject();
   const navigate = useNavigate();
 
   const initial = (project?.assessment ?? {}) as Record<string, unknown>;
