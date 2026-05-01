@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { useProject } from "@/contexts/ProjectContext";
 
 const bathroomTypes = ["Primary Bathroom", "Guest Bathroom", "Powder Room", "Other"];
-const propertyTypes = ["House", "Condo", "Apartment", "Other"];
+
 const bathingSetupOptions = ["Shower only", "Shower + sink (no tub)", "Tub only", "Tub + shower", "Neither / powder room"];
 const styleOptions = ["Modern", "Spa", "Traditional", "Minimal", "Luxury", "Transitional"];
 
@@ -18,7 +18,6 @@ const StartProject = () => {
 
   const [projectName, setProjectName] = useState(project.name === "Untitled Project" ? "" : project.name);
   const [bathroomType, setBathroomType] = useState(project.bathroom_type);
-  const [propertyType, setPropertyType] = useState(project.property_type);
   const [budget, setBudget] = useState(project.style_preferences.budget || "");
   const [style, setStyle] = useState(project.style_preferences.style || "");
   const [bathingSetup, setBathingSetup] = useState(project.bathing_setup || "");
@@ -26,14 +25,12 @@ const StartProject = () => {
   useEffect(() => {
     setProjectName(project.name === "Untitled Project" ? "" : project.name);
     setBathroomType(project.bathroom_type);
-    setPropertyType(project.property_type);
     setBudget(project.style_preferences.budget || "");
     setStyle(project.style_preferences.style || "");
     setBathingSetup(project.bathing_setup || "");
   }, [
     project.name,
     project.bathroom_type,
-    project.property_type,
     project.style_preferences.budget,
     project.style_preferences.style,
     project.bathing_setup,
@@ -43,7 +40,6 @@ const StartProject = () => {
     updateProject({
       name: projectName || "Untitled Project",
       bathroom_type: bathroomType,
-      property_type: propertyType,
       bathing_setup: bathingSetup,
       style_preferences: { ...project.style_preferences, budget, style },
     });
@@ -112,25 +108,6 @@ const StartProject = () => {
                     onClick={() => setBathroomType(type)}
                     className={`rounded-lg border-2 px-4 py-3 text-sm font-semibold transition-all duration-200 ${
                       bathroomType === type
-                        ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
-                        : "border-transparent bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
-                    }`}
-                  >
-                    {type}
-                  </button>
-                ))}
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <Label className="text-sm font-medium text-foreground">Property Type</Label>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
-                {propertyTypes.map((type) => (
-                  <button
-                    key={type}
-                    onClick={() => setPropertyType(type)}
-                    className={`rounded-lg border-2 px-4 py-3 text-sm font-semibold transition-all duration-200 ${
-                      propertyType === type
                         ? "border-primary bg-primary text-primary-foreground shadow-md ring-2 ring-primary/20"
                         : "border-transparent bg-secondary/50 text-muted-foreground hover:bg-secondary hover:text-foreground"
                     }`}
