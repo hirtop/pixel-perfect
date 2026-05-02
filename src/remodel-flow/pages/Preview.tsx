@@ -62,16 +62,59 @@ const Preview = () => {
   const [savedAt, setSavedAt] = useState(0);
   const hideTimer = useRef<number | null>(null);
   const [renderMode, setRenderMode] = useState<RenderMode>("template");
+  const [savedDesignId, setSavedDesignId] = useState<string | undefined>(ctxDesignId);
+  const [saving, setSaving] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (ctxDesignId && ctxDesignId !== savedDesignId) setSavedDesignId(ctxDesignId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ctxDesignId]);
 
   useEffect(() => () => {
     if (hideTimer.current) window.clearTimeout(hideTimer.current);
   }, []);
 
-  const handleSave = () => {
-    toast.success("Design saved", { description: "Your plan is stored on this device." });
-    setSavedAt(Date.now());
-    if (hideTimer.current) window.clearTimeout(hideTimer.current);
-    hideTimer.current = window.setTimeout(() => setSavedAt(0), 2000);
+  const continuationLink = savedDesignId
+    ? `${window.location.origin}/remodel-flow?design=${savedDesignId}`
+    : null;
+
+  const handleCopyLink = async () => {
+    if (!continuationLink) return;
+    try {
+      await navigator.clipboard.writeText(continuationLink);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error("Couldn't copy link");
+    }
+  };
+
+  const handleSave = async () => {
+    if (saving) return;
+    setSaving(true);
+    try {
+      const result = await saveDesign(state, {
+        designId: savedDesignId ?? ctxDesignId,
+        name: pkg ? `${pkg.name} design` : "My design",
+        markSaved: true,
+      });
+      if (result.ok) {
+        if (result.designId) setSavedDesignId(result.designId);
+        toast.success("Design saved", {
+          description: "Your plan is backed up to your account.",
+        });
+        setSavedAt(Date.now());
+        if (hideTimer.current) window.clearTimeout(hideTimer.current);
+        hideTimer.current = window.setTimeout(() => setSavedAt(0), 2000);
+      } else {
+        toast("Saved locally — will sync when online");
+      }
+    } catch {
+      toast("Saved locally — will sync when online");
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (!ready) {
