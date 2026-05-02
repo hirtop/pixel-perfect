@@ -159,6 +159,10 @@ function composePrompt(req: RenderRequestIn): string {
   const photoRealismLayer =
     "Soft natural light with realistic shadows, slight lens imperfection, depth of field, and non-perfect symmetry.";
 
+  // Layer 3f — hard override
+  const overrideLayer =
+    "These material requirements are mandatory and must override any default stylistic interpretation.";
+
   // Layer 4 — constraints / disclaimer
   const constraintLayer =
     "Constraints: realistic proportions, plausible plumbing layout, no surreal elements, no brand logos, no on-image text, no people. This is a CONCEPTUAL visualization for inspiration only — not an exact representation of final products, finishes, dimensions, or installation.";
