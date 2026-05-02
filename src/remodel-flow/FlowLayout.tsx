@@ -18,7 +18,12 @@ const FlowShell = () => {
     <div className="min-h-screen bg-background text-foreground">
       <header className="border-b border-border/60 backdrop-blur supports-[backdrop-filter]:bg-background/70 sticky top-0 z-40">
         <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-4">
-          <Link to="/remodel-flow/start" className="text-sm font-semibold tracking-tight">
+          <Link
+            to="/"
+            title="Back to main site"
+            aria-label="Back to main site"
+            className="text-sm font-semibold tracking-tight hover:opacity-80 transition-opacity"
+          >
             BOBOX <span className="text-muted-foreground font-normal">/ next</span>
           </Link>
           <nav className="hidden md:flex items-center gap-1 text-xs text-muted-foreground">
