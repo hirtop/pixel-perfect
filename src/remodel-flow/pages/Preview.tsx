@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { RenderMode } from "../render";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ImagePlus } from "lucide-react";
@@ -59,6 +60,7 @@ const Preview = () => {
 
   const [savedAt, setSavedAt] = useState(0);
   const hideTimer = useRef<number | null>(null);
+  const [renderMode, setRenderMode] = useState<RenderMode>("template");
 
   useEffect(() => () => {
     if (hideTimer.current) window.clearTimeout(hideTimer.current);
@@ -183,14 +185,51 @@ const Preview = () => {
             Upload a photo to generate a personalized concept preview based on your selections.
           </p>
 
-          <div className="mt-7 flex justify-center">
+          {/* Render mode selector — UI only */}
+          <div className="mt-6 flex justify-center">
+            <div
+              role="radiogroup"
+              aria-label="Render mode"
+              className="inline-flex rounded-full border border-border bg-background p-1 text-xs"
+            >
+              <button
+                type="button"
+                role="radio"
+                aria-checked={renderMode === "template"}
+                onClick={() => setRenderMode("template")}
+                className={cn(
+                  "rounded-full px-4 py-1.5 transition-colors",
+                  renderMode === "template"
+                    ? "bg-foreground text-background"
+                    : "text-muted-foreground hover:text-foreground",
+                )}
+              >
+                Concept preview
+              </button>
+              <button
+                type="button"
+                role="radio"
+                aria-checked={false}
+                aria-disabled="true"
+                disabled
+                className="rounded-full px-4 py-1.5 text-muted-foreground/60 cursor-not-allowed inline-flex items-center gap-1.5"
+              >
+                Photo-based preview
+                <span className="text-[10px] uppercase tracking-wide opacity-70">
+                  Coming soon
+                </span>
+              </button>
+            </div>
+          </div>
+
+          <div className="mt-6 flex justify-center">
             <button
               type="button"
               onClick={() => {
                 const req = buildRenderRequest({
                   state,
                   resolvedState: plan.engine?.resolved_state,
-                  mode: "photo",
+                  mode: renderMode,
                 });
                 // Foundation only — no AI call yet.
                 console.groupCollapsed("[render] request prepared");
@@ -203,7 +242,7 @@ const Preview = () => {
               className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background px-7 py-3 text-sm text-foreground hover:bg-muted transition-colors"
             >
               <ImagePlus className="h-4 w-4" />
-              Upload photo for personalized preview
+              Generate concept preview
             </button>
           </div>
 
