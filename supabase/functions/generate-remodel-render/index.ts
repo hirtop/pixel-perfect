@@ -149,6 +149,16 @@ function composePrompt(req: RenderRequestIn): string {
   const focusLayer =
     "Primary focus should be the vanity and wall composition.";
 
+  // Layer 3e — real-world imperfections and photographic realism
+  const tileRealismLayer =
+    "Handmade zellige tile with slight variation in color, uneven glaze, subtle imperfections, and visible grout irregularity.";
+  const nickelRealismLayer =
+    "Brushed nickel with soft satin finish, low reflectivity, visible subtle grain, not mirror-like.";
+  const imperfectionLayer =
+    "Introduce subtle real-world imperfections: slight material variation, minor asymmetry, natural lighting falloff, non-uniform surfaces.";
+  const photoRealismLayer =
+    "Soft natural light with realistic shadows, slight lens imperfection, depth of field, and non-perfect symmetry.";
+
   // Layer 4 — constraints / disclaimer
   const constraintLayer =
     "Constraints: realistic proportions, plausible plumbing layout, no surreal elements, no brand logos, no on-image text, no people. This is a CONCEPTUAL visualization for inspiration only — not an exact representation of final products, finishes, dimensions, or installation.";
@@ -170,6 +180,10 @@ function composePrompt(req: RenderRequestIn): string {
     fixtureFinishLayer,
     deemphasisLayer,
     focusLayer,
+    tileRealismLayer,
+    nickelRealismLayer,
+    imperfectionLayer,
+    photoRealismLayer,
     constraintLayer,
   ]
     .filter(Boolean)
