@@ -31,7 +31,7 @@ const NARRATIVES: Record<string, string> = {
 
 const Preview = () => {
   const navigate = useNavigate();
-  const { state } = useFlow();
+  const { state, designId: ctxDesignId } = useFlow();
   const plan = resolvePlan(state);
   const pkg = state.tier ? PACKAGES[state.tier] : undefined;
   const ready = Boolean(state.tier && pkg);
