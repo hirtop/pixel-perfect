@@ -47,9 +47,13 @@ export const buildRenderRequest = ({
   bathroomSizeTemplate = "unknown",
 }: BuildRenderRequestArgs): RenderRequest => {
   const descriptors = resolvedState
-    ? resolvedState.slots
-        .flatMap((s) => [...(s.material_tags ?? []), ...(s.finish_tags ?? [])])
-        .filter((v, i, a) => v && a.indexOf(v) === i)
+    ? Array.from(
+        new Set(
+          resolvedState.slots
+            .map((s) => s.optionName)
+            .filter((v): v is string => Boolean(v)),
+        ),
+      )
     : [];
 
   return {
