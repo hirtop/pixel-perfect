@@ -60,6 +60,7 @@ const Preview = () => {
 
   const [savedAt, setSavedAt] = useState(0);
   const hideTimer = useRef<number | null>(null);
+  const [renderMode, setRenderMode] = useState<RenderMode>("template");
 
   useEffect(() => () => {
     if (hideTimer.current) window.clearTimeout(hideTimer.current);
