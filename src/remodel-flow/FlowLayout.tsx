@@ -24,7 +24,7 @@ const FlowShell = () => {
             aria-label="Back to main site"
             className="text-sm font-semibold tracking-tight hover:opacity-80 transition-opacity"
           >
-            BOBOX <span className="text-muted-foreground font-normal">/ next</span>
+            BOBOX
           </Link>
           <nav className="hidden md:flex items-center gap-1 text-xs text-muted-foreground">
             {STEPS.map((s, i) => (
