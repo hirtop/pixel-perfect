@@ -32,6 +32,7 @@ import FlowTier from "./remodel-flow/pages/Tier.tsx";
 import FlowPackages from "./remodel-flow/pages/Packages.tsx";
 import FlowCustomize from "./remodel-flow/pages/Customize.tsx";
 import FlowPreview from "./remodel-flow/pages/Preview.tsx";
+import FlowMyDesigns from "./remodel-flow/pages/MyDesigns.tsx";
 
 const queryClient = new QueryClient();
 
@@ -86,6 +87,7 @@ const App = () => (
                 <Route path="packages" element={<FlowPackages />} />
                 <Route path="customize" element={<FlowCustomize />} />
                 <Route path="preview" element={<FlowPreview />} />
+                <Route path="my-designs" element={<FlowMyDesigns />} />
               </Route>
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
