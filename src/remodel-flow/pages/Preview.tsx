@@ -55,8 +55,18 @@ const Preview = () => {
     .sort((a, b) => b.score - a.score)
     .slice(0, 5);
 
+  const [savedAt, setSavedAt] = useState(0);
+  const hideTimer = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (hideTimer.current) window.clearTimeout(hideTimer.current);
+  }, []);
+
   const handleSave = () => {
     toast.success("Design saved", { description: "Your plan is stored on this device." });
+    setSavedAt(Date.now());
+    if (hideTimer.current) window.clearTimeout(hideTimer.current);
+    hideTimer.current = window.setTimeout(() => setSavedAt(0), 2000);
   };
 
   return (
