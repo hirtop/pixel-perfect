@@ -139,6 +139,16 @@ function composePrompt(req: RenderRequestIn): string {
   const contrastLayer =
     "Ensure sufficient contrast between materials so different elements do not blend together.";
 
+  // Layer 3d — material specificity and focus control
+  const tileLayer =
+    "Any tile work should read as handmade zellige tile with subtle irregular edges, varied glaze, and visible texture.";
+  const fixtureFinishLayer =
+    "Metal fixtures should have a brushed nickel finish with a soft satin sheen — not chrome or polished.";
+  const deemphasisLayer =
+    "Toilet should be present but not a focal point.";
+  const focusLayer =
+    "Primary focus should be the vanity and wall composition.";
+
   // Layer 4 — constraints / disclaimer
   const constraintLayer =
     "Constraints: realistic proportions, plausible plumbing layout, no surreal elements, no brand logos, no on-image text, no people. This is a CONCEPTUAL visualization for inspiration only — not an exact representation of final products, finishes, dimensions, or installation.";
