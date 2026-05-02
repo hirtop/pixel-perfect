@@ -232,7 +232,7 @@ export default function LandingPage() {
               <Button size="lg" variant="outline" className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
                 {ctaText}
               </Button>
-              {hasSavedProject ? (
+              {hasSavedProject && (
                 <Button
                   size="lg"
                   variant="outline"
@@ -240,15 +240,6 @@ export default function LandingPage() {
                   onClick={() => { resetProject(); navigate("/start"); }}
                 >
                   <Plus className="h-4 w-4" /> Start a New Project
-                </Button>
-              ) : (
-                <Button
-                  size="lg"
-                  variant="outline"
-                  className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8"
-                  onClick={() => document.getElementById("transform")?.scrollIntoView({ behavior: "smooth", block: "start" })}
-                >
-                  See a Sample Remodel
                 </Button>
               )}
             </motion.div>
