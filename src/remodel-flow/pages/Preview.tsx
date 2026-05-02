@@ -247,12 +247,13 @@ const Preview = () => {
           <button
             type="button"
             onClick={handleCopyLink}
-            className="group inline-flex items-center gap-2 max-w-full text-xs text-muted-foreground hover:text-foreground transition-colors"
-            title="Copy continuation link"
+            className="group inline-flex items-center gap-2 text-xs text-muted-foreground hover:text-foreground transition-colors"
+            title={continuationLink}
+            aria-label={`Copy continuation link: ${continuationLink}`}
           >
             {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3 opacity-70 group-hover:opacity-100" />}
-            <span className="truncate max-w-[320px] sm:max-w-[480px] underline-offset-2 group-hover:underline">
-              {continuationLink}
+            <span className="underline-offset-2 group-hover:underline">
+              {copied ? "Link copied" : "Copy link to continue later"}
             </span>
           </button>
         </div>
