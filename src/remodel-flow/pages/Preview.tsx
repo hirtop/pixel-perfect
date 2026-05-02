@@ -66,6 +66,8 @@ const Preview = () => {
   const [savedDesignId, setSavedDesignId] = useState<string | undefined>(ctxDesignId);
   const [saving, setSaving] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [generating, setGenerating] = useState(false);
+  const [renderedB64, setRenderedB64] = useState<string | null>(null);
 
   useEffect(() => {
     if (ctxDesignId && ctxDesignId !== savedDesignId) setSavedDesignId(ctxDesignId);
