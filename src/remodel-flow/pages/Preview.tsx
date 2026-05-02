@@ -172,6 +172,44 @@ const Preview = () => {
           Design saved successfully
         </span>
       </div>
+
+      {/* AI render request foundation — UI scaffold only */}
+      <section className="mt-20 border-t border-border/60 pt-14">
+        <div className="mx-auto max-w-xl text-center">
+          <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
+            Want to see this in your bathroom?
+          </h2>
+          <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
+            Upload a photo to generate a personalized concept preview based on your selections.
+          </p>
+
+          <div className="mt-7 flex justify-center">
+            <button
+              type="button"
+              onClick={() => {
+                const req = buildRenderRequest({
+                  state,
+                  resolvedState: plan.engine?.resolved_state,
+                  mode: "photo",
+                });
+                // Foundation only — no AI call yet.
+                console.info("[render] request prepared", req);
+                toast("Personalized preview is coming soon", {
+                  description: "We're preparing the AI rendering experience.",
+                });
+              }}
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background px-7 py-3 text-sm text-foreground hover:bg-muted transition-colors"
+            >
+              <ImagePlus className="h-4 w-4" />
+              Upload photo for personalized preview
+            </button>
+          </div>
+
+          <p className="mt-4 text-xs text-muted-foreground">
+            Conceptual visualization — not an exact final result
+          </p>
+        </div>
+      </section>
     </div>
   );
 };
