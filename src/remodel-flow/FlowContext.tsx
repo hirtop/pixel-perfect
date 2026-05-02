@@ -125,6 +125,63 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const designIdRef = useRef<string | undefined>(meta.designId);
   designIdRef.current = meta.designId;
 
+  // --- Hydrate from URL ?design=... once identity is ready -------------
+  const hydratedRef = useRef(false);
+  useEffect(() => {
+    if (hydratedRef.current) return;
+    if (!identityReady) return;
+
+    let designIdParam: string | null = null;
+    try {
+      designIdParam = new URLSearchParams(window.location.search).get("design");
+    } catch {
+      designIdParam = null;
+    }
+    if (!designIdParam) {
+      hydratedRef.current = true;
+      return;
+    }
+
+    hydratedRef.current = true;
+    let cancelled = false;
+    (async () => {
+      try {
+        const result = await loadDesign(designIdParam!);
+        if (cancelled) return;
+        if (result.ok && result.state) {
+          const hydratedState: RemodelFlowState = {
+            ...defaultState,
+            ...result.state,
+            selections: result.state.selections ?? {},
+          };
+          setState(hydratedState);
+          setMeta((m) => ({
+            ...m,
+            designId: result.meta?.id ?? designIdParam!,
+            pendingSync: false,
+            lastSyncedAt: new Date().toISOString(),
+          }));
+          // Seed the autosave hash so the hydrated state isn't immediately
+          // re-saved as a "change".
+          lastSavedHashRef.current = stableStringify(hydratedState);
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(hydratedState));
+          } catch {
+            /* ignore quota */
+          }
+        } else {
+          console.warn("[FlowContext] design not found, falling back to local state:", designIdParam);
+        }
+      } catch (err) {
+        console.warn("[FlowContext] loadDesign threw, falling back to local state:", err);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [identityReady]);
+  // ---------------------------------------------------------------------
+
   useEffect(() => {
     if (!identityReady || !userId) return;
 
