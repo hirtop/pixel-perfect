@@ -55,7 +55,18 @@ export default function MyDesigns() {
       {loading ? (
         <p className="text-sm text-muted-foreground">Loading…</p>
       ) : items.length === 0 ? (
-        <p className="text-sm text-muted-foreground">No saved designs yet.</p>
+        <div className="flex flex-col items-center gap-4 py-8 text-center">
+          <p className="text-sm text-muted-foreground">
+            You haven't saved any designs yet.
+          </p>
+          <button
+            type="button"
+            onClick={() => navigate("/remodel-flow/start")}
+            className="text-sm font-medium text-foreground underline-offset-4 hover:underline"
+          >
+            Start a new design
+          </button>
+        </div>
       ) : (
         <ul className="divide-y divide-border">
           {items.map((it) => (
