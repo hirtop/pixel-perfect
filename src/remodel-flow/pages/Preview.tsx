@@ -210,6 +210,39 @@ const Preview = () => {
           <p className="mt-4 text-xs text-muted-foreground">
             Conceptual visualization — not an exact final result
           </p>
+
+          {/* Render preview summary — what will be rendered */}
+          {(() => {
+            const slots = plan.engine?.resolved_state?.slots ?? [];
+            const productNames = Array.from(
+              new Set(
+                slots
+                  .map((s) => s.optionName)
+                  .filter((v): v is string => Boolean(v)),
+              ),
+            ).slice(0, 5);
+            const styleLabel = state.style
+              ? state.style.charAt(0).toUpperCase() + state.style.slice(1)
+              : "—";
+            return (
+              <div className="mt-8 text-xs text-muted-foreground space-y-1.5">
+                <div>
+                  <span className="opacity-70">Style: </span>
+                  <span className="text-foreground">{styleLabel}</span>
+                </div>
+                <div>
+                  <span className="opacity-70">Package: </span>
+                  <span className="text-foreground">{pkg?.name ?? "—"}</span>
+                </div>
+                {productNames.length > 0 && (
+                  <div>
+                    <span className="opacity-70">Includes: </span>
+                    <span className="text-foreground">{productNames.join(" · ")}</span>
+                  </div>
+                )}
+              </div>
+            );
+          })()}
         </div>
       </section>
     </div>
