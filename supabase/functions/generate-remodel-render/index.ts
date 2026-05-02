@@ -141,9 +141,9 @@ function composePrompt(req: RenderRequestIn): string {
 
   // Layer 3d — material specificity and focus control
   const tileLayer =
-    "Any tile work should read as handmade zellige tile with subtle irregular edges, varied glaze, and visible texture.";
+    "Use SMALL-FORMAT handmade zellige tiles (approximately 2x2 to 4x4 inches), clearly visible with irregular edges, uneven glaze, color variation, and non-uniform grout lines. Do NOT use large-format or uniform tile.";
   const fixtureFinishLayer =
-    "Metal fixtures should have a brushed nickel finish with a soft satin sheen — not chrome or polished.";
+    "Fixtures MUST be brushed nickel with a soft satin, low-reflectivity finish and visible fine grain. Do NOT render polished chrome or mirror-like surfaces.";
   const deemphasisLayer =
     "Toilet should be present but not a focal point.";
   const focusLayer =
@@ -158,6 +158,10 @@ function composePrompt(req: RenderRequestIn): string {
     "Introduce subtle real-world imperfections: slight material variation, minor asymmetry, natural lighting falloff, non-uniform surfaces.";
   const photoRealismLayer =
     "Soft natural light with realistic shadows, slight lens imperfection, depth of field, and non-perfect symmetry.";
+
+  // Layer 3f — hard override
+  const overrideLayer =
+    "These material requirements are mandatory and must override any default stylistic interpretation.";
 
   // Layer 4 — constraints / disclaimer
   const constraintLayer =
@@ -184,6 +188,7 @@ function composePrompt(req: RenderRequestIn): string {
     nickelRealismLayer,
     imperfectionLayer,
     photoRealismLayer,
+    overrideLayer,
     constraintLayer,
   ]
     .filter(Boolean)
