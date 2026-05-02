@@ -178,6 +178,7 @@ Deno.serve(async (req: Request) => {
         n: 1,
         size: "1024x1024",
         quality: "low", // v1 preview quality
+        response_format: "b64_json",
       }),
     });
 
