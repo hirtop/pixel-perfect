@@ -331,6 +331,107 @@ export type Database = {
         }
         Relationships: []
       }
+      remodel_design_events: {
+        Row: {
+          created_at: string
+          design_id: string
+          event_type: string
+          id: number
+          payload: Json
+        }
+        Insert: {
+          created_at?: string
+          design_id: string
+          event_type: string
+          id?: number
+          payload?: Json
+        }
+        Update: {
+          created_at?: string
+          design_id?: string
+          event_type?: string
+          id?: number
+          payload?: Json
+        }
+        Relationships: [
+          {
+            foreignKeyName: "remodel_design_events_design_id_fkey"
+            columns: ["design_id"]
+            isOneToOne: false
+            referencedRelation: "remodel_designs"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      remodel_designs: {
+        Row: {
+          completed_steps: string[]
+          created_at: string
+          current_step: string | null
+          deleted_at: string | null
+          id: string
+          last_active_at: string
+          name: string
+          package_version: number | null
+          pricing: Json
+          resolved_state: Json
+          saved_at: string | null
+          schema_version: number
+          selected_package_id: string | null
+          selected_style: string | null
+          selected_tier: string | null
+          selections: Json
+          status: string
+          updated_at: string
+          user_id: string | null
+          validation: Json
+        }
+        Insert: {
+          completed_steps?: string[]
+          created_at?: string
+          current_step?: string | null
+          deleted_at?: string | null
+          id?: string
+          last_active_at?: string
+          name?: string
+          package_version?: number | null
+          pricing?: Json
+          resolved_state?: Json
+          saved_at?: string | null
+          schema_version?: number
+          selected_package_id?: string | null
+          selected_style?: string | null
+          selected_tier?: string | null
+          selections?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          validation?: Json
+        }
+        Update: {
+          completed_steps?: string[]
+          created_at?: string
+          current_step?: string | null
+          deleted_at?: string | null
+          id?: string
+          last_active_at?: string
+          name?: string
+          package_version?: number | null
+          pricing?: Json
+          resolved_state?: Json
+          saved_at?: string | null
+          schema_version?: number
+          selected_package_id?: string | null
+          selected_style?: string | null
+          selected_tier?: string | null
+          selections?: Json
+          status?: string
+          updated_at?: string
+          user_id?: string | null
+          validation?: Json
+        }
+        Relationships: []
+      }
       suppressed_emails: {
         Row: {
           created_at: string
