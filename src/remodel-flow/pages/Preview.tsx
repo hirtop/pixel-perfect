@@ -312,30 +312,51 @@ const Preview = () => {
           <div className="mt-6 flex justify-center">
             <button
               type="button"
-              onClick={() => {
+              disabled={generating}
+              onClick={async () => {
                 const req = buildRenderRequest({
                   state,
                   resolvedState: plan.engine?.resolved_state,
                   mode: renderMode,
                 });
-                // Foundation only — no AI call yet.
-                console.groupCollapsed("[render] request prepared");
-                console.log(JSON.stringify(req, null, 2));
-                console.groupEnd();
-                toast("Personalized preview is coming soon", {
-                  description: "We're preparing the AI rendering experience.",
-                });
+                setGenerating(true);
+                setRenderedB64(null);
+                try {
+                  const { data, error } = await supabase.functions.invoke(
+                    "generate-remodel-render",
+                    { body: { render_request: req } },
+                  );
+                  if (error) throw error;
+                  const b64 = (data as any)?.b64_json;
+                  if (!b64) throw new Error("No image returned");
+                  setRenderedB64(b64);
+                } catch (e) {
+                  console.error("[render] failed", e);
+                  toast.error("Unable to generate preview. Please try again.");
+                } finally {
+                  setGenerating(false);
+                }
               }}
-              className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background px-7 py-3 text-sm text-foreground hover:bg-muted transition-colors"
+              className="inline-flex items-center justify-center gap-2 rounded-full border border-border bg-background px-7 py-3 text-sm text-foreground hover:bg-muted transition-colors disabled:opacity-60 disabled:cursor-not-allowed"
             >
               <ImagePlus className="h-4 w-4" />
-              Generate concept preview
+              {generating ? "Generating…" : "Generate concept preview"}
             </button>
           </div>
 
           <p className="mt-4 text-xs text-muted-foreground">
             Conceptual visualization — not an exact final result
           </p>
+
+          {renderedB64 && (
+            <div className="mt-8 overflow-hidden rounded-3xl bg-muted/40">
+              <img
+                src={`data:image/png;base64,${renderedB64}`}
+                alt="AI-generated bathroom concept preview"
+                className="w-full h-auto block"
+              />
+            </div>
+          )}
 
           {/* Render preview summary — what will be rendered */}
           {(() => {
