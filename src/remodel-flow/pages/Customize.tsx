@@ -4,7 +4,7 @@ import { CATEGORIES, PACKAGES, TIER_BINS, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { cn } from "@/lib/utils";
-import { ArrowDown, ArrowUp, Star } from "lucide-react";
+import { ArrowDown, ArrowUp, Check, Star } from "lucide-react";
 
 const fmt = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
@@ -157,6 +157,15 @@ const Customize = () => {
                               {pct}% · {label}
                             </span>
                           </p>
+                        )}
+                        {isCurrent && (
+                          <span
+                            aria-label="Selected"
+                            className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-foreground text-background px-2 py-0.5 text-[10px] font-medium"
+                          >
+                            <Check size={10} strokeWidth={3} />
+                            Selected
+                          </span>
                         )}
                       </FlowCard>
                     );
