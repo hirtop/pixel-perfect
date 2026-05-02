@@ -193,7 +193,9 @@ const Preview = () => {
                   mode: "photo",
                 });
                 // Foundation only — no AI call yet.
-                console.info("[render] request prepared", req);
+                console.groupCollapsed("[render] request prepared");
+                console.log(JSON.stringify(req, null, 2));
+                console.groupEnd();
                 toast("Personalized preview is coming soon", {
                   description: "We're preparing the AI rendering experience.",
                 });
