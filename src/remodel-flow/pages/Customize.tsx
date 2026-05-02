@@ -72,6 +72,9 @@ const Customize = () => {
             const bestVisible = ranked.find((r) => visibleIds.has(r.option.id));
             const bestId = bestVisible?.option.id;
 
+            // Price delta baseline: currently-selected option in this slot.
+            const currentPrice = getOption(cat.id, currentId)?.estPrice ?? 0;
+
             return (
               <section key={cat.id}>
                 <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{cat.name}</p>
