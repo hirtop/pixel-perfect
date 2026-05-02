@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import type { RenderMode } from "../render";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ImagePlus } from "lucide-react";
+import { ImagePlus, Copy, Check } from "lucide-react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES } from "../catalog";
 import { resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import { buildRenderRequest } from "../render";
+import { saveDesign } from "../persistence/client";
 import { cn } from "@/lib/utils";
 import heroBathroom from "../assets/hero-bathroom.jpg";
 
@@ -30,7 +31,7 @@ const NARRATIVES: Record<string, string> = {
 
 const Preview = () => {
   const navigate = useNavigate();
-  const { state } = useFlow();
+  const { state, designId: ctxDesignId } = useFlow();
   const plan = resolvePlan(state);
   const pkg = state.tier ? PACKAGES[state.tier] : undefined;
   const ready = Boolean(state.tier && pkg);
@@ -61,16 +62,59 @@ const Preview = () => {
   const [savedAt, setSavedAt] = useState(0);
   const hideTimer = useRef<number | null>(null);
   const [renderMode, setRenderMode] = useState<RenderMode>("template");
+  const [savedDesignId, setSavedDesignId] = useState<string | undefined>(ctxDesignId);
+  const [saving, setSaving] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    if (ctxDesignId && ctxDesignId !== savedDesignId) setSavedDesignId(ctxDesignId);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [ctxDesignId]);
 
   useEffect(() => () => {
     if (hideTimer.current) window.clearTimeout(hideTimer.current);
   }, []);
 
-  const handleSave = () => {
-    toast.success("Design saved", { description: "Your plan is stored on this device." });
-    setSavedAt(Date.now());
-    if (hideTimer.current) window.clearTimeout(hideTimer.current);
-    hideTimer.current = window.setTimeout(() => setSavedAt(0), 2000);
+  const continuationLink = savedDesignId
+    ? `${window.location.origin}/remodel-flow?design=${savedDesignId}`
+    : null;
+
+  const handleCopyLink = async () => {
+    if (!continuationLink) return;
+    try {
+      await navigator.clipboard.writeText(continuationLink);
+      setCopied(true);
+      window.setTimeout(() => setCopied(false), 1500);
+    } catch {
+      toast.error("Couldn't copy link");
+    }
+  };
+
+  const handleSave = async () => {
+    if (saving) return;
+    setSaving(true);
+    try {
+      const result = await saveDesign(state, {
+        designId: savedDesignId ?? ctxDesignId,
+        name: pkg ? `${pkg.name} design` : "My design",
+        markSaved: true,
+      });
+      if (result.ok) {
+        if (result.designId) setSavedDesignId(result.designId);
+        toast.success("Design saved", {
+          description: "Your plan is backed up to your account.",
+        });
+        setSavedAt(Date.now());
+        if (hideTimer.current) window.clearTimeout(hideTimer.current);
+        hideTimer.current = window.setTimeout(() => setSavedAt(0), 2000);
+      } else {
+        toast("Saved locally — will sync when online");
+      }
+    } catch {
+      toast("Saved locally — will sync when online");
+    } finally {
+      setSaving(false);
+    }
   };
 
   if (!ready) {
@@ -172,9 +216,10 @@ const Preview = () => {
         <button
           type="button"
           onClick={handleSave}
-          className="inline-flex items-center justify-center rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors min-w-[180px]"
+          disabled={saving}
+          className="inline-flex items-center justify-center rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors min-w-[180px] disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Save design
+          {saving ? "Saving…" : "Save design"}
         </button>
         <button
           type="button"
@@ -195,6 +240,23 @@ const Preview = () => {
           Design saved successfully
         </span>
       </div>
+
+      {/* Continuation link — subtle, only visible after a successful save */}
+      {continuationLink && (
+        <div className="mt-2 flex justify-center">
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            className="group inline-flex items-center gap-2 max-w-full text-xs text-muted-foreground hover:text-foreground transition-colors"
+            title="Copy continuation link"
+          >
+            {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3 opacity-70 group-hover:opacity-100" />}
+            <span className="truncate max-w-[320px] sm:max-w-[480px] underline-offset-2 group-hover:underline">
+              {continuationLink}
+            </span>
+          </button>
+        </div>
+      )}
 
       {/* AI render request foundation — UI scaffold only */}
       <section className="mt-20 border-t border-border/60 pt-14">
