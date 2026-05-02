@@ -15,13 +15,18 @@ export interface StyleProfile {
   descriptors: string[];
 }
 
+export type RenderIntent = "concept";
+
 export interface RenderRequest {
   render_session_id: string;
   mode: RenderMode;
-  package_id?: string;
+  render_intent: RenderIntent;
+  variation_index: number;
+  selected_package_id?: string;
   selected_style?: StyleId;
   selected_tier?: TierId;
-  resolved_state?: ResolvedState;
+  /** Engine-resolved slot state (slots, not flattened product_bins). */
+  resolved_state?: { slots: ResolvedState["slots"] };
   style_profile: StyleProfile;
   bathroom_size_template: BathroomSizeTemplate;
 }
