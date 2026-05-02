@@ -105,7 +105,23 @@ const Customize = () => {
                           </span>
                         )}
                         <p className="text-sm font-medium text-foreground pr-16">{opt.name}</p>
-                        <p className="mt-2 text-xs text-muted-foreground">{fmt(opt.estPrice)}</p>
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          {fmt(opt.estPrice)}
+                          <span
+                            className={cn(
+                              "ml-2 text-[10px] font-medium tabular-nums",
+                              isCurrent || delta === 0
+                                ? "text-muted-foreground"
+                                : delta > 0
+                                  ? "text-destructive"
+                                  : "text-emerald-600 dark:text-emerald-500",
+                            )}
+                          >
+                            {isCurrent || delta === 0
+                              ? "Included"
+                              : `${delta > 0 ? "+" : "−"}${fmt(Math.abs(delta))}`}
+                          </span>
+                        </p>
                         {state.style && (
                           <p className="mt-2">
                             <span className={badgeClasses(label)} title={`${label} for ${state.style}`}>
