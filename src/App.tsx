@@ -25,6 +25,13 @@ import Contact from "./pages/Contact.tsx";
 import Shop from "./pages/Shop.tsx";
 import Disclaimer from "./pages/Disclaimer.tsx";
 import NotFound from "./pages/NotFound.tsx";
+import FlowLayout from "./remodel-flow/FlowLayout.tsx";
+import FlowStart from "./remodel-flow/pages/Start.tsx";
+import FlowStyle from "./remodel-flow/pages/Style.tsx";
+import FlowTier from "./remodel-flow/pages/Tier.tsx";
+import FlowPackages from "./remodel-flow/pages/Packages.tsx";
+import FlowCustomize from "./remodel-flow/pages/Customize.tsx";
+import FlowPreview from "./remodel-flow/pages/Preview.tsx";
 
 const queryClient = new QueryClient();
 
@@ -70,6 +77,16 @@ const App = () => (
               <Route path="/contact" element={<Contact />} />
               <Route path="/shop" element={<Shop />} />
               <Route path="/disclaimer" element={<Disclaimer />} />
+              {/* Isolated next-gen remodel flow */}
+              <Route path="/remodel-flow" element={<FlowLayout />}>
+                <Route index element={<Navigate to="/remodel-flow/start" replace />} />
+                <Route path="start" element={<FlowStart />} />
+                <Route path="style" element={<FlowStyle />} />
+                <Route path="tier" element={<FlowTier />} />
+                <Route path="packages" element={<FlowPackages />} />
+                <Route path="customize" element={<FlowCustomize />} />
+                <Route path="preview" element={<FlowPreview />} />
+              </Route>
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
             </Routes>
