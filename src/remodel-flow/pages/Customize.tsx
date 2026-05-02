@@ -1,8 +1,9 @@
 import { useFlow } from "../FlowContext";
-import { CATEGORIES, PACKAGES } from "../catalog";
-import { resolvePlan, styleScore, styleMatchLabel } from "../resolver";
+import { CATEGORIES, PACKAGES, TIER_BINS, getOption } from "../catalog";
+import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { cn } from "@/lib/utils";
+import { Star } from "lucide-react";
 
 const fmt = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
@@ -28,7 +29,7 @@ const Customize = () => {
     );
   }
 
-  // Global Style Match: average per-slot style fit of the currently chosen options.
+  // Global Style Match: average per-slot style fit of currently chosen options.
   const chosenScores = CATEGORIES.map((cat) => {
     const id = state.selections[cat.id] ?? pkg.defaults[cat.id];
     const opt = cat.options.find((o) => o.id === id) ?? cat.dynamic_pool?.find((o) => o.id === id);
@@ -51,6 +52,26 @@ const Customize = () => {
         <div className="space-y-8">
           {CATEGORIES.map((cat) => {
             const currentId = state.selections[cat.id] ?? pkg.defaults[cat.id];
+
+            // Engine-ranked best candidate among the visible options for this slot.
+            const allowedBins =
+              pkg.slots?.[cat.id]?.preferred_bins ??
+              cat.swap_config?.allowed_bins ??
+              (state.tier ? TIER_BINS[state.tier] : undefined);
+            const defaultId = pkg.defaults[cat.id];
+            const anchorPrice = defaultId ? getOption(cat.id, defaultId)?.estPrice ?? 0 : 0;
+            const ranked = rank_candidates({
+              categoryId: cat.id,
+              style: state.style,
+              allowedBins,
+              anchorPrice,
+              userOverrideId: state.selections[cat.id],
+            });
+            // Restrict "best" highlight to the visible option set (not dynamic pool).
+            const visibleIds = new Set(cat.options.map((o) => o.id));
+            const bestVisible = ranked.find((r) => visibleIds.has(r.option.id));
+            const bestId = bestVisible?.option.id;
+
             return (
               <section key={cat.id}>
                 <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{cat.name}</p>
@@ -59,13 +80,26 @@ const Customize = () => {
                     const s01 = styleScore(state.style, cat.id, opt);
                     const pct = Math.round(s01 * 100);
                     const label = styleMatchLabel(s01);
+                    const isBest = opt.id === bestId;
                     return (
                       <FlowCard
                         key={opt.id}
                         selected={currentId === opt.id}
                         onClick={() => setSelection(cat.id, opt.id)}
+                        className={cn(
+                          isBest && "border-foreground/40 bg-foreground/[0.02]",
+                        )}
                       >
-                        <p className="text-sm font-medium text-foreground">{opt.name}</p>
+                        {isBest && (
+                          <span
+                            className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-foreground/20 bg-background/80 px-2 py-0.5 text-[10px] font-medium text-foreground"
+                            title="Engine's top-ranked option for your style, tier, and budget"
+                          >
+                            <Star size={10} className="fill-foreground" strokeWidth={0} />
+                            Best match
+                          </span>
+                        )}
+                        <p className="text-sm font-medium text-foreground pr-16">{opt.name}</p>
                         <p className="mt-2 text-xs text-muted-foreground">{fmt(opt.estPrice)}</p>
                         {state.style && (
                           <p className="mt-2">
