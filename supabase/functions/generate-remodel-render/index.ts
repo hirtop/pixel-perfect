@@ -188,6 +188,7 @@ function composePrompt(req: RenderRequestIn): string {
     nickelRealismLayer,
     imperfectionLayer,
     photoRealismLayer,
+    overrideLayer,
     constraintLayer,
   ]
     .filter(Boolean)
