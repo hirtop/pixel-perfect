@@ -33,7 +33,7 @@ const Preview = () => {
   const { state } = useFlow();
   const plan = resolvePlan(state);
   const pkg = state.tier ? PACKAGES[state.tier] : undefined;
-
+  const ready = Boolean(state.tier && pkg);
   // Global style match (same logic as Customize page).
   const chosenScores = pkg
     ? CATEGORIES.map((cat) => {
