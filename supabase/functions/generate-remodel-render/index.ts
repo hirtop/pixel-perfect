@@ -163,6 +163,16 @@ function composePrompt(req: RenderRequestIn): string {
   const overrideLayer =
     "These material requirements are mandatory and must override any default stylistic interpretation.";
 
+  // Layer 3g — composition control: de-emphasize, fix artifacts, prevent unselected fixtures
+  const toiletDeemphasisLayer =
+    "Toilet may appear only partially at the edge of the frame and must never be a focal point.";
+  const mirrorBehaviorLayer =
+    "Mirror should reflect soft room light or a neutral wall, not contain strange panels, artifacts, or duplicated objects.";
+  const noUnselectedFixturesLayer =
+    "Do not add major fixtures that are not part of the selected product list, such as a bathtub, freestanding tub, or large shower area, unless selected.";
+  const primaryCompositionLayer =
+    "Primary composition should focus on the vanity, mirror, sconces, faucet, and wall tile.";
+
   // Layer 4 — constraints / disclaimer
   const constraintLayer =
     "Constraints: realistic proportions, plausible plumbing layout, no surreal elements, no brand logos, no on-image text, no people. This is a CONCEPTUAL visualization for inspiration only — not an exact representation of final products, finishes, dimensions, or installation.";
