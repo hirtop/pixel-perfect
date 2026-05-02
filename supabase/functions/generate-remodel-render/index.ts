@@ -166,6 +166,10 @@ function composePrompt(req: RenderRequestIn): string {
     materialLayer,
     uniquenessLayer,
     contrastLayer,
+    tileLayer,
+    fixtureFinishLayer,
+    deemphasisLayer,
+    focusLayer,
     constraintLayer,
   ]
     .filter(Boolean)
