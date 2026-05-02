@@ -44,6 +44,51 @@ const TIER_QUALITY: Record<string, string> = {
   premium: "premium materials, elevated craftsmanship, designer-level detailing",
 };
 
+// Build a rich, sentence-level description for a single product slot
+// covering material, placement, and visual style — instead of a flat
+// "Category: Option" line. Uses the option name as the anchor and
+// derives placement/style hints from the category.
+function describeSlot(category: string, option: string, optionDescription?: string): string {
+  const cat = category.toLowerCase();
+  const opt = option.trim();
+  const desc = optionDescription?.trim();
+
+  const placement = (() => {
+    if (cat.includes("vanity")) return "wall-mounted along the main wall, anchoring the room";
+    if (cat.includes("sink")) return "set into the vanity top, centered and proportionate";
+    if (cat.includes("faucet")) return "mounted above the sink, aligned with the basin";
+    if (cat.includes("mirror")) return "centered above the vanity at eye level";
+    if (cat.includes("shower wall tile")) return "covering the shower walls from floor to ceiling";
+    if (cat.includes("shower floor tile")) return "covering the shower pan with subtle slope to the drain";
+    if (cat.includes("main floor tile") || cat === "floor tile") return "covering the bathroom floor wall-to-wall";
+    if (cat.includes("accent tile")) return "as a focused accent feature within the shower or behind the vanity";
+    if (cat.includes("shower glass")) return "as a frameless or minimally framed glass enclosure for the shower";
+    if (cat.includes("shower valve") || cat.includes("shower trim")) return "mounted on the shower wall at standard height";
+    if (cat.includes("tub valve")) return "mounted at the tub deck or wall, aligned with the tub";
+    if (cat.includes("tub")) return "placed against the wall as the bathing focal point";
+    if (cat.includes("niche")) return "recessed into the shower wall at shoulder height";
+    if (cat.includes("light") || cat.includes("sconce")) return "wall-mounted on both sides of the mirror, casting warm even light";
+    if (cat.includes("toilet")) return "placed discreetly to the side, not as a focal point";
+    return "placed naturally in the scene, appropriate to its function";
+  })();
+
+  const style = (() => {
+    if (cat.includes("vanity")) return "with clean horizontal grain or refined cabinetry detailing";
+    if (cat.includes("faucet") || cat.includes("valve") || cat.includes("trim"))
+      return "with a minimalist silhouette and consistent metal finish";
+    if (cat.includes("tile")) return "with realistic grout lines and subtle surface texture";
+    if (cat.includes("mirror")) return "with a clean edge profile that complements the vanity";
+    if (cat.includes("glass")) return "with crisp, transparent glass and slim hardware";
+    if (cat.includes("tub")) return "with a balanced silhouette and smooth surface";
+    if (cat.includes("light") || cat.includes("sconce")) return "with a warm color temperature and refined fixture body";
+    return "with materials and finish that read clearly in the image";
+  })();
+
+  // Compose: "<Option> — <placement>, <style>." + optional description tail.
+  const tail = desc ? ` ${desc}` : "";
+  return `${opt} — ${placement}, ${style}.${tail}`;
+}
+
 function composePrompt(req: RenderRequestIn): string {
   // Layer 1 — base room
   const baseLayer =
