@@ -68,7 +68,7 @@ export const buildRenderRequest = ({
     mode,
     render_intent: "concept",
     variation_index: variationIndex,
-    selected_package_id: state.packageId,
+    selected_package_id: state.packageId ?? resolvedState?.packageId,
     selected_style: state.style,
     selected_tier: state.tier,
     resolved_state: resolvedState ? { slots: resolvedState.slots } : undefined,
