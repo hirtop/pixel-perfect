@@ -216,11 +216,19 @@ const Customize = () => {
               <span>· {plan.upgradeDelta > 0 ? "+" : ""}{fmt(plan.upgradeDelta)} adjustments</span>
             )}
           </p>
-          {state.style && globalPct < 70 && (
+          {state.style && globalPct < 70 ? (
             <p className="mt-3 text-xs text-destructive/90 animate-fade-in">
               This reduces design cohesion.
             </p>
-          )}
+          ) : state.style && styleChange.direction === "up" ? (
+            <p className="mt-3 text-[11px] text-muted-foreground">
+              Better alignment with your style.
+            </p>
+          ) : state.style && styleChange.direction === "down" ? (
+            <p className="mt-3 text-[11px] text-muted-foreground">
+              Slightly less cohesive.
+            </p>
+          ) : null}
           <div className="mt-4 space-y-2 border-t border-border/60 pt-4">
             {plan.items.map((it) => (
               <div key={it.categoryId} className="flex justify-between text-xs">
