@@ -66,6 +66,7 @@ const Preview = () => {
         <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
           Your Bathroom Design
         </h1>
+        <p className="mt-2 text-sm text-muted-foreground">Based on your selections</p>
       </div>
 
       {/* Hero image — minimal frame */}
