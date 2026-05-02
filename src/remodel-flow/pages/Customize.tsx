@@ -1,9 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES, TIER_BINS, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { cn } from "@/lib/utils";
-import { Star } from "lucide-react";
+import { ArrowDown, ArrowUp, Star } from "lucide-react";
 
 const fmt = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
@@ -15,10 +16,49 @@ const badgeClasses = (label: "Best match" | "Good match" | "Mismatch") =>
     label === "Mismatch" && "border-destructive/30 bg-destructive/5 text-destructive",
   );
 
+/**
+ * Tracks previous value and produces a direction signal that auto-clears.
+ * direction: "up" | "down" | null
+ */
+function useChangeDirection(value: number, ms = 1200) {
+  const prev = useRef(value);
+  const [direction, setDirection] = useState<"up" | "down" | null>(null);
+  const [pulseKey, setPulseKey] = useState(0);
+
+  useEffect(() => {
+    if (value === prev.current) return;
+    setDirection(value > prev.current ? "up" : "down");
+    setPulseKey((k) => k + 1);
+    prev.current = value;
+    const t = window.setTimeout(() => setDirection(null), ms);
+    return () => window.clearTimeout(t);
+  }, [value, ms]);
+
+  return { direction, pulseKey };
+}
+
 const Customize = () => {
   const { state, setSelection } = useFlow();
   const pkg = state.tier ? PACKAGES[state.tier] : undefined;
   const plan = resolvePlan(state);
+
+  // Global Style Match: average per-slot style fit of currently chosen options.
+  // Computed unconditionally so hooks below stay stable across renders.
+  const chosenScores = pkg
+    ? CATEGORIES.map((cat) => {
+        const id = state.selections[cat.id] ?? pkg.defaults[cat.id];
+        const opt = cat.options.find((o) => o.id === id) ?? cat.dynamic_pool?.find((o) => o.id === id);
+        return opt ? styleScore(state.style, cat.id, opt) : null;
+      }).filter((v): v is number => v !== null)
+    : [];
+  const globalScore01 =
+    chosenScores.length > 0 ? chosenScores.reduce((a, b) => a + b, 0) / chosenScores.length : 0;
+  const globalPct = Math.round(globalScore01 * 100);
+  const globalLabel = styleMatchLabel(globalScore01);
+
+  // Live feedback: track direction of change for total and style match.
+  const totalChange = useChangeDirection(plan.total);
+  const styleChange = useChangeDirection(globalPct);
 
   if (!pkg) {
     return (
@@ -28,17 +68,6 @@ const Customize = () => {
       </div>
     );
   }
-
-  // Global Style Match: average per-slot style fit of currently chosen options.
-  const chosenScores = CATEGORIES.map((cat) => {
-    const id = state.selections[cat.id] ?? pkg.defaults[cat.id];
-    const opt = cat.options.find((o) => o.id === id) ?? cat.dynamic_pool?.find((o) => o.id === id);
-    return opt ? styleScore(state.style, cat.id, opt) : null;
-  }).filter((v): v is number => v !== null);
-  const globalScore01 =
-    chosenScores.length > 0 ? chosenScores.reduce((a, b) => a + b, 0) / chosenScores.length : 0;
-  const globalPct = Math.round(globalScore01 * 100);
-  const globalLabel = styleMatchLabel(globalScore01);
 
   return (
     <div>
@@ -142,12 +171,42 @@ const Customize = () => {
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground">{plan.packageName} estimate</p>
-              <p className="mt-2 text-3xl font-semibold text-foreground">{fmt(plan.total)}</p>
+              <p className="mt-2 text-3xl font-semibold text-foreground flex items-baseline gap-1.5 tabular-nums">
+                <span key={`total-${totalChange.pulseKey}`} className="animate-fade-in">
+                  {fmt(plan.total)}
+                </span>
+                {totalChange.direction && (
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "inline-flex items-center text-xs font-medium animate-fade-in",
+                      totalChange.direction === "up" ? "text-destructive" : "text-emerald-600 dark:text-emerald-500",
+                    )}
+                  >
+                    {totalChange.direction === "up" ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
+                  </span>
+                )}
+              </p>
             </div>
             {state.style && (
               <div className="text-right">
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Style Match</p>
-                <p className="mt-1 text-lg font-semibold text-foreground leading-none">{globalPct}%</p>
+                <p className="mt-1 text-lg font-semibold text-foreground leading-none flex items-baseline justify-end gap-1 tabular-nums">
+                  <span key={`style-${styleChange.pulseKey}`} className="animate-fade-in">
+                    {globalPct}%
+                  </span>
+                  {styleChange.direction && (
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "inline-flex items-center text-[10px] font-medium animate-fade-in",
+                        styleChange.direction === "up" ? "text-emerald-600 dark:text-emerald-500" : "text-destructive",
+                      )}
+                    >
+                      {styleChange.direction === "up" ? <ArrowUp size={10} /> : <ArrowDown size={10} />}
+                    </span>
+                  )}
+                </p>
                 <span className={cn(badgeClasses(globalLabel), "mt-1")}>{globalLabel}</span>
               </div>
             )}
@@ -157,6 +216,11 @@ const Customize = () => {
               <span>· {plan.upgradeDelta > 0 ? "+" : ""}{fmt(plan.upgradeDelta)} adjustments</span>
             )}
           </p>
+          {state.style && globalPct < 70 && (
+            <p className="mt-3 text-xs text-destructive/90 animate-fade-in">
+              This reduces design cohesion.
+            </p>
+          )}
           <div className="mt-4 space-y-2 border-t border-border/60 pt-4">
             {plan.items.map((it) => (
               <div key={it.categoryId} className="flex justify-between text-xs">
