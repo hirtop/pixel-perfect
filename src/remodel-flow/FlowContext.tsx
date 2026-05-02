@@ -127,6 +127,7 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
 
   // --- Hydrate from URL ?design=... once identity is ready -------------
   const hydratedRef = useRef(false);
+  const [hydrationDone, setHydrationDone] = useState(false);
   useEffect(() => {
     if (hydratedRef.current) return;
     if (!identityReady) return;
@@ -139,6 +140,10 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
     }
     if (!designIdParam) {
       hydratedRef.current = true;
+      // Seed hash with current (localStorage) state so autosave doesn't
+      // immediately re-write unchanged data on first mount.
+      lastSavedHashRef.current = stableStringify(state);
+      setHydrationDone(true);
       return;
     }
 
@@ -171,19 +176,28 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
           }
         } else {
           console.warn("[FlowContext] design not found, falling back to local state:", designIdParam);
+          // Treat the URL designId as invalid: clear it from meta so we don't
+          // try to update a non-existent/forbidden row on next autosave.
+          setMeta((m) => (m.designId === designIdParam ? { ...m, designId: undefined } : m));
+          lastSavedHashRef.current = stableStringify(state);
         }
       } catch (err) {
         console.warn("[FlowContext] loadDesign threw, falling back to local state:", err);
+        lastSavedHashRef.current = stableStringify(state);
+      } finally {
+        if (!cancelled) setHydrationDone(true);
       }
     })();
     return () => {
       cancelled = true;
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [identityReady]);
   // ---------------------------------------------------------------------
 
   useEffect(() => {
     if (!identityReady || !userId) return;
+    if (!hydrationDone) return;
 
     const hash = stableStringify(state);
     if (hash === lastSavedHashRef.current) return;
@@ -217,7 +231,7 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
     }, AUTOSAVE_DEBOUNCE_MS);
 
     return () => window.clearTimeout(handle);
-  }, [state, identityReady, userId]);
+  }, [state, identityReady, userId, hydrationDone]);
   // ---------------------------------------------------------------------
 
   const setStyle = useCallback((style: StyleId) => setState((s) => ({ ...s, style })), []);
