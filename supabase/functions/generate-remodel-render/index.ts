@@ -129,6 +129,16 @@ function composePrompt(req: RenderRequestIn): string {
   const cameraLayer =
     "Eye-level camera angle, centered composition, professional interior photography.";
 
+  // Layer 3c — product identity reinforcement
+  const emphasisLayer =
+    "Each selected product must be clearly distinguishable and visually dominant in the scene.";
+  const materialLayer =
+    "For each item, emphasize its material, finish, and texture so it is clearly recognizable.";
+  const uniquenessLayer =
+    "Do not replace or generalize selected items — render them as distinct design elements.";
+  const contrastLayer =
+    "Ensure sufficient contrast between materials so different elements do not blend together.";
+
   // Layer 4 — constraints / disclaimer
   const constraintLayer =
     "Constraints: realistic proportions, plausible plumbing layout, no surreal elements, no brand logos, no on-image text, no people. This is a CONCEPTUAL visualization for inspiration only — not an exact representation of final products, finishes, dimensions, or installation.";
@@ -142,6 +152,10 @@ function composePrompt(req: RenderRequestIn): string {
     compositionLayer,
     realismLayer,
     cameraLayer,
+    emphasisLayer,
+    materialLayer,
+    uniquenessLayer,
+    contrastLayer,
     constraintLayer,
   ]
     .filter(Boolean)
