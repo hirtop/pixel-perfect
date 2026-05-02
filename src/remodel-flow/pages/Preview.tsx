@@ -9,6 +9,7 @@ import { resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import { buildRenderRequest } from "../render";
 import { saveDesign } from "../persistence/client";
 import { cn } from "@/lib/utils";
+import { supabase } from "@/integrations/supabase/client";
 import heroBathroom from "../assets/hero-bathroom.jpg";
 
 const fmt = (n: number) =>
