@@ -72,6 +72,9 @@ const Customize = () => {
             const bestVisible = ranked.find((r) => visibleIds.has(r.option.id));
             const bestId = bestVisible?.option.id;
 
+            // Price delta baseline: currently-selected option in this slot.
+            const currentPrice = getOption(cat.id, currentId)?.estPrice ?? 0;
+
             return (
               <section key={cat.id}>
                 <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{cat.name}</p>
@@ -81,6 +84,8 @@ const Customize = () => {
                     const pct = Math.round(s01 * 100);
                     const label = styleMatchLabel(s01);
                     const isBest = opt.id === bestId;
+                    const delta = opt.estPrice - currentPrice;
+                    const isCurrent = opt.id === currentId;
                     return (
                       <FlowCard
                         key={opt.id}
@@ -100,7 +105,23 @@ const Customize = () => {
                           </span>
                         )}
                         <p className="text-sm font-medium text-foreground pr-16">{opt.name}</p>
-                        <p className="mt-2 text-xs text-muted-foreground">{fmt(opt.estPrice)}</p>
+                        <p className="mt-2 text-xs text-muted-foreground">
+                          {fmt(opt.estPrice)}
+                          <span
+                            className={cn(
+                              "ml-2 text-[10px] font-medium tabular-nums",
+                              isCurrent || delta === 0
+                                ? "text-muted-foreground"
+                                : delta > 0
+                                  ? "text-destructive"
+                                  : "text-emerald-600 dark:text-emerald-500",
+                            )}
+                          >
+                            {isCurrent || delta === 0
+                              ? "Included"
+                              : `${delta > 0 ? "+" : "−"}${fmt(Math.abs(delta))}`}
+                          </span>
+                        </p>
                         {state.style && (
                           <p className="mt-2">
                             <span className={badgeClasses(label)} title={`${label} for ${state.style}`}>
