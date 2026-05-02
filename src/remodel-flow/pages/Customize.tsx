@@ -171,12 +171,42 @@ const Customize = () => {
           <div className="flex items-start justify-between gap-3">
             <div>
               <p className="text-xs uppercase tracking-widest text-muted-foreground">{plan.packageName} estimate</p>
-              <p className="mt-2 text-3xl font-semibold text-foreground">{fmt(plan.total)}</p>
+              <p className="mt-2 text-3xl font-semibold text-foreground flex items-baseline gap-1.5 tabular-nums">
+                <span key={`total-${totalChange.pulseKey}`} className="animate-fade-in">
+                  {fmt(plan.total)}
+                </span>
+                {totalChange.direction && (
+                  <span
+                    aria-hidden
+                    className={cn(
+                      "inline-flex items-center text-xs font-medium animate-fade-in",
+                      totalChange.direction === "up" ? "text-destructive" : "text-emerald-600 dark:text-emerald-500",
+                    )}
+                  >
+                    {totalChange.direction === "up" ? <ArrowUp size={12} /> : <ArrowDown size={12} />}
+                  </span>
+                )}
+              </p>
             </div>
             {state.style && (
               <div className="text-right">
                 <p className="text-[10px] uppercase tracking-widest text-muted-foreground">Style Match</p>
-                <p className="mt-1 text-lg font-semibold text-foreground leading-none">{globalPct}%</p>
+                <p className="mt-1 text-lg font-semibold text-foreground leading-none flex items-baseline justify-end gap-1 tabular-nums">
+                  <span key={`style-${styleChange.pulseKey}`} className="animate-fade-in">
+                    {globalPct}%
+                  </span>
+                  {styleChange.direction && (
+                    <span
+                      aria-hidden
+                      className={cn(
+                        "inline-flex items-center text-[10px] font-medium animate-fade-in",
+                        styleChange.direction === "up" ? "text-emerald-600 dark:text-emerald-500" : "text-destructive",
+                      )}
+                    >
+                      {styleChange.direction === "up" ? <ArrowUp size={10} /> : <ArrowDown size={10} />}
+                    </span>
+                  )}
+                </p>
                 <span className={cn(badgeClasses(globalLabel), "mt-1")}>{globalLabel}</span>
               </div>
             )}
@@ -186,6 +216,11 @@ const Customize = () => {
               <span>· {plan.upgradeDelta > 0 ? "+" : ""}{fmt(plan.upgradeDelta)} adjustments</span>
             )}
           </p>
+          {state.style && globalPct < 70 && (
+            <p className="mt-3 text-xs text-destructive/90 animate-fade-in">
+              This reduces design cohesion.
+            </p>
+          )}
           <div className="mt-4 space-y-2 border-t border-border/60 pt-4">
             {plan.items.map((it) => (
               <div key={it.categoryId} className="flex justify-between text-xs">
