@@ -1,7 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import type { RemodelFlowState, StyleId, TierId } from "./types";
 import { ensureIdentity } from "./persistence/identity";
-import { saveDesign } from "./persistence/client";
+import { saveDesign, loadDesign } from "./persistence/client";
 
 const STORAGE_KEY = "bobox_remodel_flow_v1";
 const META_STORAGE_KEY = "bobox_remodel_flow_meta_v1";
