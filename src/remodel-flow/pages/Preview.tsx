@@ -73,6 +73,27 @@ const Preview = () => {
     hideTimer.current = window.setTimeout(() => setSavedAt(0), 2000);
   };
 
+  if (!ready) {
+    return (
+      <div className="mx-auto max-w-xl text-center py-16">
+        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">Step 05</p>
+        <h1 className="text-3xl font-semibold tracking-tight text-foreground">
+          Your design isn’t ready yet
+        </h1>
+        <p className="mt-3 text-sm text-muted-foreground">
+          Pick a style and tier first to see your bathroom design.
+        </p>
+        <button
+          type="button"
+          onClick={() => navigate(state.style ? "/remodel-flow/tier" : "/remodel-flow/style")}
+          className="mt-8 inline-flex items-center justify-center rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors"
+        >
+          {state.style ? "Choose a tier" : "Pick a style"} →
+        </button>
+      </div>
+    );
+  }
+
   return (
     <div className="mx-auto max-w-3xl">
       {/* Header */}
