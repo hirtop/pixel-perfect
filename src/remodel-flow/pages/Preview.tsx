@@ -159,6 +159,17 @@ const Preview = () => {
           Continue editing
         </button>
       </div>
+      {/* Reserved confirmation row — fixed height prevents layout jump */}
+      <div className="mt-3 h-5 text-center" aria-live="polite">
+        <span
+          className={cn(
+            "text-xs text-muted-foreground transition-opacity duration-200",
+            savedAt ? "opacity-100" : "opacity-0",
+          )}
+        >
+          Design saved successfully
+        </span>
+      </div>
     </div>
   );
 };
