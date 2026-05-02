@@ -57,18 +57,18 @@ function composePrompt(req: RenderRequestIn): string {
   const tierKey = (req.selected_tier ?? "balanced").toLowerCase();
   const tierLayer = `Quality tier: ${TIER_QUALITY[tierKey] ?? TIER_QUALITY.balanced}.`;
 
-  // Layer 3 — selected product slots
+  // Layer 3 — selected product slots (richly described: material, placement, visual style)
   const slots = req.resolved_state?.slots ?? [];
   const slotLines = slots
     .map((s) => {
-      const cat = s.categoryName ?? s.categoryId ?? "item";
-      const opt = s.optionName ?? s.optionId ?? "selection";
-      return `- ${cat}: ${opt}`;
+      const cat = (s.categoryName ?? s.categoryId ?? "item").toString();
+      const opt = (s.optionName ?? s.optionId ?? "selection").toString();
+      return describeSlot(cat, opt, s.optionDescription);
     })
     .filter(Boolean);
   const slotLayer = slotLines.length
-    ? `Featured selections (must visually align with these choices):\n${slotLines.join("\n")}`
-    : "Featured selections: a coherent set of fixtures and finishes consistent with the chosen style.";
+    ? `Featured selections (each item must be clearly visible, with the described material, placement, and visual style):\n${slotLines.map((l) => `- ${l}`).join("\n")}`
+    : "Featured selections: a coherent set of fixtures and finishes consistent with the chosen style, each clearly visible in the scene.";
 
   // Optional descriptors from style_profile
   const descriptors = (req.style_profile?.descriptors ?? []).filter(Boolean);
@@ -76,11 +76,29 @@ function composePrompt(req: RenderRequestIn): string {
     ? `Material/finish keywords: ${descriptors.slice(0, 12).join(", ")}.`
     : "";
 
+  // Layer 3b — composition + realism + camera
+  const compositionLayer =
+    "All selected elements must be clearly visible and realistically placed in the scene.";
+  const realismLayer =
+    "Maintain accurate scale, spacing, and proportions. Do not exaggerate room size.";
+  const cameraLayer =
+    "Eye-level camera angle, centered composition, professional interior photography.";
+
   // Layer 4 — constraints / disclaimer
   const constraintLayer =
-    "Constraints: realistic proportions, plausible plumbing layout, no surreal elements, no brand logos, no on-image text. This is a CONCEPTUAL visualization for inspiration only — not an exact representation of final products, finishes, dimensions, or installation.";
+    "Constraints: realistic proportions, plausible plumbing layout, no surreal elements, no brand logos, no on-image text, no people. This is a CONCEPTUAL visualization for inspiration only — not an exact representation of final products, finishes, dimensions, or installation.";
 
-  return [baseLayer, styleLayer, tierLayer, slotLayer, descriptorLayer, constraintLayer]
+  return [
+    baseLayer,
+    styleLayer,
+    tierLayer,
+    slotLayer,
+    descriptorLayer,
+    compositionLayer,
+    realismLayer,
+    cameraLayer,
+    constraintLayer,
+  ]
     .filter(Boolean)
     .join("\n\n");
 }
