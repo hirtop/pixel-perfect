@@ -199,6 +199,10 @@ function composePrompt(req: RenderRequestIn): string {
     imperfectionLayer,
     photoRealismLayer,
     overrideLayer,
+    toiletDeemphasisLayer,
+    mirrorBehaviorLayer,
+    noUnselectedFixturesLayer,
+    primaryCompositionLayer,
     constraintLayer,
   ]
     .filter(Boolean)
