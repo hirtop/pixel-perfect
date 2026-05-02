@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { useFlow } from "../FlowContext";
@@ -54,8 +55,18 @@ const Preview = () => {
     .sort((a, b) => b.score - a.score)
     .slice(0, 5);
 
+  const [savedAt, setSavedAt] = useState(0);
+  const hideTimer = useRef<number | null>(null);
+
+  useEffect(() => () => {
+    if (hideTimer.current) window.clearTimeout(hideTimer.current);
+  }, []);
+
   const handleSave = () => {
     toast.success("Design saved", { description: "Your plan is stored on this device." });
+    setSavedAt(Date.now());
+    if (hideTimer.current) window.clearTimeout(hideTimer.current);
+    hideTimer.current = window.setTimeout(() => setSavedAt(0), 2000);
   };
 
   return (
@@ -147,6 +158,17 @@ const Preview = () => {
         >
           Continue editing
         </button>
+      </div>
+      {/* Reserved confirmation row — fixed height prevents layout jump */}
+      <div className="mt-3 h-5 text-center" aria-live="polite">
+        <span
+          className={cn(
+            "text-xs text-muted-foreground transition-opacity duration-200",
+            savedAt ? "opacity-100" : "opacity-0",
+          )}
+        >
+          Design saved successfully
+        </span>
       </div>
     </div>
   );
