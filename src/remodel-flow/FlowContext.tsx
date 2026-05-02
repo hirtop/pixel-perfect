@@ -203,6 +203,6 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
 
 export const useFlow = () => {
   const ctx = useContext(FlowContext);
-  if (!ctx) throw new Error("useFlow must be used inside <FlowProvider>");
+  if (!ctx) throw new Error("useFlow must be used inside FlowProvider");
   return ctx;
 };
