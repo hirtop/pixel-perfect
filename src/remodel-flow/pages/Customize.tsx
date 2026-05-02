@@ -1,9 +1,10 @@
+import { useEffect, useRef, useState } from "react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES, TIER_BINS, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { cn } from "@/lib/utils";
-import { Star } from "lucide-react";
+import { ArrowDown, ArrowUp, Star } from "lucide-react";
 
 const fmt = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
@@ -14,6 +15,27 @@ const badgeClasses = (label: "Best match" | "Good match" | "Mismatch") =>
     label === "Good match" && "border-border bg-muted/40 text-muted-foreground",
     label === "Mismatch" && "border-destructive/30 bg-destructive/5 text-destructive",
   );
+
+/**
+ * Tracks previous value and produces a direction signal that auto-clears.
+ * direction: "up" | "down" | null
+ */
+function useChangeDirection(value: number, ms = 1200) {
+  const prev = useRef(value);
+  const [direction, setDirection] = useState<"up" | "down" | null>(null);
+  const [pulseKey, setPulseKey] = useState(0);
+
+  useEffect(() => {
+    if (value === prev.current) return;
+    setDirection(value > prev.current ? "up" : "down");
+    setPulseKey((k) => k + 1);
+    prev.current = value;
+    const t = window.setTimeout(() => setDirection(null), ms);
+    return () => window.clearTimeout(t);
+  }, [value, ms]);
+
+  return { direction, pulseKey };
+}
 
 const Customize = () => {
   const { state, setSelection } = useFlow();
