@@ -68,6 +68,8 @@ export {
   validate_resolution,
   compute_pricing,
   runEngine,
+  styleScore,
+  styleMatchLabel,
 } from "./engine";
 export type {
   EngineResult,
