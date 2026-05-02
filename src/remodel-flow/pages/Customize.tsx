@@ -42,6 +42,24 @@ const Customize = () => {
   const pkg = state.tier ? PACKAGES[state.tier] : undefined;
   const plan = resolvePlan(state);
 
+  // Global Style Match: average per-slot style fit of currently chosen options.
+  // Computed unconditionally so hooks below stay stable across renders.
+  const chosenScores = pkg
+    ? CATEGORIES.map((cat) => {
+        const id = state.selections[cat.id] ?? pkg.defaults[cat.id];
+        const opt = cat.options.find((o) => o.id === id) ?? cat.dynamic_pool?.find((o) => o.id === id);
+        return opt ? styleScore(state.style, cat.id, opt) : null;
+      }).filter((v): v is number => v !== null)
+    : [];
+  const globalScore01 =
+    chosenScores.length > 0 ? chosenScores.reduce((a, b) => a + b, 0) / chosenScores.length : 0;
+  const globalPct = Math.round(globalScore01 * 100);
+  const globalLabel = styleMatchLabel(globalScore01);
+
+  // Live feedback: track direction of change for total and style match.
+  const totalChange = useChangeDirection(plan.total);
+  const styleChange = useChangeDirection(globalPct);
+
   if (!pkg) {
     return (
       <div>
@@ -50,17 +68,6 @@ const Customize = () => {
       </div>
     );
   }
-
-  // Global Style Match: average per-slot style fit of currently chosen options.
-  const chosenScores = CATEGORIES.map((cat) => {
-    const id = state.selections[cat.id] ?? pkg.defaults[cat.id];
-    const opt = cat.options.find((o) => o.id === id) ?? cat.dynamic_pool?.find((o) => o.id === id);
-    return opt ? styleScore(state.style, cat.id, opt) : null;
-  }).filter((v): v is number => v !== null);
-  const globalScore01 =
-    chosenScores.length > 0 ? chosenScores.reduce((a, b) => a + b, 0) / chosenScores.length : 0;
-  const globalPct = Math.round(globalScore01 * 100);
-  const globalLabel = styleMatchLabel(globalScore01);
 
   return (
     <div>
