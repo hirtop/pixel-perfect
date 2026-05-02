@@ -2,11 +2,12 @@ import { useEffect, useRef, useState } from "react";
 import type { RenderMode } from "../render";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ImagePlus } from "lucide-react";
+import { ImagePlus, Copy, Check } from "lucide-react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES } from "../catalog";
 import { resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import { buildRenderRequest } from "../render";
+import { saveDesign } from "../persistence/client";
 import { cn } from "@/lib/utils";
 import heroBathroom from "../assets/hero-bathroom.jpg";
 
