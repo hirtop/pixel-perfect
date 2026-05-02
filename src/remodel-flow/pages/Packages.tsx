@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { useFlow } from "../FlowContext";
 import { PACKAGES, CATEGORIES, getOption } from "../catalog";
 import { PrimaryNav, StepHeader } from "../ui";
@@ -5,8 +6,16 @@ import { PrimaryNav, StepHeader } from "../ui";
 const fmt = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
 const Packages = () => {
-  const { state } = useFlow();
+  const { state, setPackageId } = useFlow();
   const pkg = state.tier ? PACKAGES[state.tier] : undefined;
+
+  // Persist explicit package selection in flow state when this page is reached
+  // with a confirmed tier. Keeps state.packageId aligned with the resolver.
+  useEffect(() => {
+    if (pkg && state.packageId !== pkg.id) {
+      setPackageId(pkg.id);
+    }
+  }, [pkg, state.packageId, setPackageId]);
 
   if (!pkg) {
     return (

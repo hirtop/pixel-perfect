@@ -36,7 +36,11 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
   }, [state]);
 
   const setStyle = useCallback((style: StyleId) => setState((s) => ({ ...s, style })), []);
-  const setTier = useCallback((tier: TierId) => setState((s) => ({ ...s, tier })), []);
+  const setTier = useCallback(
+    (tier: TierId) =>
+      setState((s) => (s.tier === tier ? s : { ...s, tier, packageId: undefined })),
+    [],
+  );
   const setPackageId = useCallback((packageId: string) => setState((s) => ({ ...s, packageId })), []);
   const setSelection = useCallback(
     (categoryId: string, optionId: string) =>
