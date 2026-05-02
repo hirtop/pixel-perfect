@@ -154,6 +154,28 @@ function compatibilityScore(
   return sum / n;
 }
 
+/**
+ * Pure style-fit score for a single option (0..1).
+ * Blends style compatibility (0.65) + tag overlap (0.35).
+ * Does NOT include price/bin — this is "how well does this match the style?".
+ */
+export function styleScore(
+  style: StyleId | undefined,
+  categoryId: string,
+  option: CatalogOption,
+): number {
+  const c = compatibilityScore(style, categoryId, option);
+  const t = tagOverlapScore(style, categoryId, option);
+  return Math.max(0, Math.min(1, c * 0.65 + t * 0.35));
+}
+
+export function styleMatchLabel(score01: number): "Best match" | "Good match" | "Mismatch" {
+  const pct = score01 * 100;
+  if (pct >= 85) return "Best match";
+  if (pct >= 70) return "Good match";
+  return "Mismatch";
+}
+
 function priceProximityScore(option: CatalogOption, anchorPrice: number): number {
   if (anchorPrice <= 0) return 0.5;
   const diff = Math.abs(option.estPrice - anchorPrice);
