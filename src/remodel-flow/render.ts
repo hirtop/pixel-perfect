@@ -15,13 +15,18 @@ export interface StyleProfile {
   descriptors: string[];
 }
 
+export type RenderIntent = "concept";
+
 export interface RenderRequest {
   render_session_id: string;
   mode: RenderMode;
-  package_id?: string;
+  render_intent: RenderIntent;
+  variation_index: number;
+  selected_package_id?: string;
   selected_style?: StyleId;
   selected_tier?: TierId;
-  resolved_state?: ResolvedState;
+  /** Engine-resolved slot state (slots, not flattened product_bins). */
+  resolved_state?: { slots: ResolvedState["slots"] };
   style_profile: StyleProfile;
   bathroom_size_template: BathroomSizeTemplate;
 }
@@ -38,6 +43,7 @@ export interface BuildRenderRequestArgs {
   resolvedState?: ResolvedState;
   mode?: RenderMode;
   bathroomSizeTemplate?: BathroomSizeTemplate;
+  variationIndex?: number;
 }
 
 export const buildRenderRequest = ({
@@ -45,6 +51,7 @@ export const buildRenderRequest = ({
   resolvedState,
   mode = "template",
   bathroomSizeTemplate = "unknown",
+  variationIndex = 0,
 }: BuildRenderRequestArgs): RenderRequest => {
   const descriptors = resolvedState
     ? Array.from(
@@ -59,10 +66,12 @@ export const buildRenderRequest = ({
   return {
     render_session_id: newSessionId(),
     mode,
-    package_id: state.packageId,
+    render_intent: "concept",
+    variation_index: variationIndex,
+    selected_package_id: state.packageId,
     selected_style: state.style,
     selected_tier: state.tier,
-    resolved_state: resolvedState,
+    resolved_state: resolvedState ? { slots: resolvedState.slots } : undefined,
     style_profile: {
       style: state.style,
       descriptors,
