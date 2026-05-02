@@ -327,7 +327,7 @@ const Preview = () => {
                     { body: { render_request: req } },
                   );
                   if (error) throw error;
-                  const b64 = (data as any)?.b64_json;
+                  const b64 = (data as any)?.image?.b64_json;
                   if (!b64) throw new Error("No image returned");
                   setRenderedB64(b64);
                 } catch (e) {
