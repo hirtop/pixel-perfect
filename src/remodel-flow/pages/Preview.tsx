@@ -12,8 +12,8 @@ const fmt = (n: number) =>
 const styleHeadline = (
   pct: number,
 ): { line: string; tone: "good" | "balanced" | "mixed" } => {
-  if (pct >= 85) return { line: "Strong design match", tone: "good" };
-  if (pct >= 70) return { line: "Balanced design", tone: "balanced" };
+  if (pct >= 85) return { line: "Strong, cohesive design", tone: "good" };
+  if (pct >= 70) return { line: "Balanced, flexible design", tone: "balanced" };
   return { line: "Mixed design choices", tone: "mixed" };
 };
 
