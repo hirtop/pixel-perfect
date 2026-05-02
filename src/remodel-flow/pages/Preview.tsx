@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { RenderMode } from "../render";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ImagePlus } from "lucide-react";
