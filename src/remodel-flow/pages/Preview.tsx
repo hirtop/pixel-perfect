@@ -216,9 +216,10 @@ const Preview = () => {
         <button
           type="button"
           onClick={handleSave}
-          className="inline-flex items-center justify-center rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors min-w-[180px]"
+          disabled={saving}
+          className="inline-flex items-center justify-center rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors min-w-[180px] disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Save design
+          {saving ? "Saving…" : "Save design"}
         </button>
         <button
           type="button"
