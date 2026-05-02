@@ -226,7 +226,10 @@ export default function LandingPage() {
               project plan.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" asChild>
+                <Link to="/remodel-flow/start">Start Your Bathroom Design</Link>
+              </Button>
+              <Button size="lg" variant="outline" className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
                 {ctaText}
               </Button>
               {hasSavedProject ? (
