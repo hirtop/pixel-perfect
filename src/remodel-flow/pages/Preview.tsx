@@ -349,13 +349,18 @@ const Preview = () => {
           </p>
 
           {renderedB64 && (
-            <div className="mt-8 overflow-hidden rounded-3xl bg-muted/40">
-              <img
-                src={`data:image/png;base64,${renderedB64}`}
-                alt="AI-generated bathroom concept preview"
-                className="w-full h-auto block"
-              />
-            </div>
+            <>
+              <div className="mt-8 overflow-hidden rounded-3xl bg-muted/40">
+                <img
+                  src={`data:image/png;base64,${renderedB64}`}
+                  alt="AI-generated bathroom concept preview"
+                  className="w-full h-auto block"
+                />
+              </div>
+              <p className="mt-3 text-center text-xs text-muted-foreground">
+                AI concept preview. Final materials, dimensions, colors, and installation may vary.
+              </p>
+            </>
           )}
 
           {/* Render preview summary — what will be rendered */}
