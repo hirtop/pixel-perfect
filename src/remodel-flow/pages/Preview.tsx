@@ -82,9 +82,12 @@ const Preview = () => {
 
       {/* Summary block */}
       <div className="mt-10 text-center">
-        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Estimated total</p>
+        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Total</p>
         <p className="mt-2 text-5xl font-semibold tracking-tight text-foreground tabular-nums">
           {fmt(plan.total)}
+        </p>
+        <p className="mt-2 text-xs text-muted-foreground">
+          Estimated total based on your selections
         </p>
 
         {state.style && (
