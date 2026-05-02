@@ -241,6 +241,23 @@ const Preview = () => {
         </span>
       </div>
 
+      {/* Continuation link — subtle, only visible after a successful save */}
+      {continuationLink && (
+        <div className="mt-2 flex justify-center">
+          <button
+            type="button"
+            onClick={handleCopyLink}
+            className="group inline-flex items-center gap-2 max-w-full text-xs text-muted-foreground hover:text-foreground transition-colors"
+            title="Copy continuation link"
+          >
+            {copied ? <Check className="h-3 w-3" /> : <Copy className="h-3 w-3 opacity-70 group-hover:opacity-100" />}
+            <span className="truncate max-w-[320px] sm:max-w-[480px] underline-offset-2 group-hover:underline">
+              {continuationLink}
+            </span>
+          </button>
+        </div>
+      )}
+
       {/* AI render request foundation — UI scaffold only */}
       <section className="mt-20 border-t border-border/60 pt-14">
         <div className="mx-auto max-w-xl text-center">
