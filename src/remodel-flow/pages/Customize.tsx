@@ -84,6 +84,8 @@ const Customize = () => {
                     const pct = Math.round(s01 * 100);
                     const label = styleMatchLabel(s01);
                     const isBest = opt.id === bestId;
+                    const delta = opt.estPrice - currentPrice;
+                    const isCurrent = opt.id === currentId;
                     return (
                       <FlowCard
                         key={opt.id}
