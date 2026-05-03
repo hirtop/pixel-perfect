@@ -5,15 +5,17 @@ const Start = () => (
   <div>
     <StepHeader
       eyebrow="Next-gen flow · preview"
-      title="Design your bathroom in six clean steps."
+      title="Design your bathroom in five simple steps."
       description="A faster, resolver-driven planning experience. Pick a style, choose a tier, customize what matters, and preview a complete plan."
     />
 
     <div className="grid gap-4 md:grid-cols-3">
       {[
-        { n: "01", t: "Pick a style", d: "Modern, classic, spa, or minimal." },
-        { n: "02", t: "Choose a tier", d: "Essential, balanced, or premium." },
-        { n: "03", t: "Customize", d: "Swap any category. The plan recalculates instantly." },
+        { n: "1", t: "Pick a style", d: "Modern, spa, classic, or minimal." },
+        { n: "2", t: "Choose a tier", d: "Essential, balanced, or premium." },
+        { n: "3", t: "Select a package", d: "Choose a curated design that fits your style and budget." },
+        { n: "4", t: "Customize your plan", d: "Adjust finishes and fixtures to match your preferences." },
+        { n: "5", t: "Preview your bathroom design", d: "See a visual concept of your complete bathroom." },
       ].map((s) => (
         <div key={s.n} className="rounded-2xl border border-border bg-card p-5">
           <p className="text-xs text-muted-foreground tracking-widest">{s.n}</p>
