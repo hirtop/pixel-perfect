@@ -26,12 +26,19 @@ const Packages = () => {
     );
   }
 
+  const styleLabel = state.style ? state.style.charAt(0).toUpperCase() + state.style.slice(1) : "";
+
   return (
     <div>
+      {styleLabel && (
+        <p className="mb-3 text-xs uppercase tracking-widest text-muted-foreground">
+          You selected: <span className="text-foreground">{styleLabel}</span>
+        </p>
+      )}
       <StepHeader
         eyebrow="Step 03"
-        title={`${pkg.name} package`}
-        description={pkg.tagline}
+        title={styleLabel ? `${styleLabel} — ${pkg.name} Package` : `${pkg.name} Package`}
+        description={styleLabel ? `Designed in your selected ${styleLabel} style` : pkg.tagline}
       />
       <div className="rounded-2xl border border-border bg-card p-6">
         <div className="flex items-baseline justify-between">
