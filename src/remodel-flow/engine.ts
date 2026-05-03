@@ -344,7 +344,7 @@ export function resolve_slot(args: {
 
 export function resolve_package(state: RemodelFlowState): ResolvedState {
   const tier = state.tier;
-  const pkg = tier ? PACKAGES[tier] : undefined;
+  const pkg = tier ? getPackageFor(state.style, tier) : undefined;
 
   const slots = CATEGORIES.map((cat) =>
     pkg
