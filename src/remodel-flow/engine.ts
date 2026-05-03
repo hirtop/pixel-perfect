@@ -5,6 +5,7 @@ import {
   getAllCandidates,
   getCategory,
   getOption,
+  getPackageFor,
 } from "./catalog";
 import { STYLES } from "./styles";
 import type {
@@ -343,7 +344,7 @@ export function resolve_slot(args: {
 
 export function resolve_package(state: RemodelFlowState): ResolvedState {
   const tier = state.tier;
-  const pkg = tier ? PACKAGES[tier] : undefined;
+  const pkg = tier ? getPackageFor(state.style, tier) : undefined;
 
   const slots = CATEGORIES.map((cat) =>
     pkg
@@ -429,7 +430,7 @@ export function compute_pricing(
   state: RemodelFlowState,
   resolved: ResolvedState,
 ): PricingBreakdown {
-  const pkg = resolved.tier ? PACKAGES[resolved.tier] : undefined;
+  const pkg = resolved.tier ? getPackageFor(resolved.style, resolved.tier) : undefined;
   const basePrice = pkg?.basePrice ?? 0;
 
   const defaultsTotal = CATEGORIES.reduce((sum, cat) => {
