@@ -204,50 +204,74 @@ const buildSlots = (defaults: Record<string, string>, tier: TierId) => {
   return out;
 };
 
-const essentialDefaults = {
-  vanity: "vanity-std",
-  tile: "tile-subway",
-  fixtures: "fix-chrome",
-  lighting: "light-flush",
-};
-const balancedDefaults = {
-  vanity: "vanity-floating",
-  tile: "tile-zellige",
-  fixtures: "fix-brushed",
-  lighting: "light-sconces",
-};
-const premiumDefaults = {
-  vanity: "vanity-double",
-  tile: "tile-marble",
-  fixtures: "fix-matteblack",
-  lighting: "light-layered",
+// ---------------------------------------------------------------------
+// 12-package matrix: 4 styles × 3 tiers.
+// Defaults are tuned per style + tier so packages truly reflect both axes.
+// ---------------------------------------------------------------------
+
+import type { StyleId } from "./types";
+
+type SlotDefaults = Record<string, string>;
+
+const STYLE_DEFAULTS: Record<StyleId, Record<TierId, SlotDefaults>> = {
+  modern: {
+    essential: { vanity: "vanity-std",      tile: "tile-subway",  fixtures: "fix-matteblack",  lighting: "light-flush" },
+    balanced:  { vanity: "vanity-floating", tile: "tile-marble",  fixtures: "fix-matteblack",  lighting: "light-sconces" },
+    premium:   { vanity: "vanity-double",   tile: "tile-marble-polished", fixtures: "fix-matteblack", lighting: "light-layered" },
+  },
+  classic: {
+    essential: { vanity: "vanity-std",      tile: "tile-subway",  fixtures: "fix-chrome",      lighting: "light-flush" },
+    balanced:  { vanity: "vanity-floating", tile: "tile-subway",  fixtures: "fix-brushed",     lighting: "light-sconces" },
+    premium:   { vanity: "vanity-double",   tile: "tile-marble",  fixtures: "fix-brushed",     lighting: "light-layered" },
+  },
+  spa: {
+    essential: { vanity: "vanity-std",      tile: "tile-zellige", fixtures: "fix-brushed",     lighting: "light-flush" },
+    balanced:  { vanity: "vanity-floating", tile: "tile-zellige", fixtures: "fix-brass",       lighting: "light-sconces" },
+    premium:   { vanity: "vanity-floating-walnut", tile: "tile-marble", fixtures: "fix-brass", lighting: "light-layered" },
+  },
+  minimal: {
+    essential: { vanity: "vanity-std",      tile: "tile-subway",  fixtures: "fix-chrome",      lighting: "light-flush" },
+    balanced:  { vanity: "vanity-floating", tile: "tile-marble",  fixtures: "fix-matteblack",  lighting: "light-flush" },
+    premium:   { vanity: "vanity-floating", tile: "tile-marble",  fixtures: "fix-matteblack",  lighting: "light-sconces" },
+  },
 };
 
+const STYLE_LABEL: Record<StyleId, string> = {
+  modern: "Modern",
+  classic: "Classic",
+  spa: "Spa",
+  minimal: "Minimal",
+};
+
+const TIER_META: Record<TierId, { name: string; tagline: string; basePrice: number }> = {
+  essential: { name: "Essential", tagline: "Clean refresh with reliable finishes.",     basePrice: 8900 },
+  balanced:  { name: "Balanced",  tagline: "Designer materials, smart trade-offs.",     basePrice: 14500 },
+  premium:   { name: "Premium",   tagline: "High-end materials, layered design.",       basePrice: 22500 },
+};
+
+/** Style-aware package builder. Falls back to `balanced` defaults shape. */
+export function getPackageFor(style: StyleId | undefined, tier: TierId): CatalogPackage {
+  const tierMeta = TIER_META[tier];
+  const defaults = style
+    ? STYLE_DEFAULTS[style][tier]
+    : STYLE_DEFAULTS.modern[tier];
+  const id = style ? `${style}-${tier}` : tier;
+  const name = style ? `${STYLE_LABEL[style]} — ${tierMeta.name}` : tierMeta.name;
+  return {
+    id,
+    name,
+    tagline: tierMeta.tagline,
+    basePrice: tierMeta.basePrice,
+    defaults,
+    slots: buildSlots(defaults, tier),
+  };
+}
+
+// Backwards-compatible tier-only PACKAGES map (used by Tier.tsx for pricing).
 export const PACKAGES: Record<TierId, CatalogPackage> = {
-  essential: {
-    id: "essential",
-    name: "Essential",
-    tagline: "Clean refresh with reliable finishes.",
-    basePrice: 8900,
-    defaults: essentialDefaults,
-    slots: buildSlots(essentialDefaults, "essential"),
-  },
-  balanced: {
-    id: "balanced",
-    name: "Balanced",
-    tagline: "Designer materials, smart trade-offs.",
-    basePrice: 14500,
-    defaults: balancedDefaults,
-    slots: buildSlots(balancedDefaults, "balanced"),
-  },
-  premium: {
-    id: "premium",
-    name: "Premium",
-    tagline: "High-end materials, layered design.",
-    basePrice: 22500,
-    defaults: premiumDefaults,
-    slots: buildSlots(premiumDefaults, "premium"),
-  },
+  essential: getPackageFor(undefined, "essential"),
+  balanced:  getPackageFor(undefined, "balanced"),
+  premium:   getPackageFor(undefined, "premium"),
 };
 
 export const TIER_BINS = tierBins;
