@@ -430,7 +430,7 @@ export function compute_pricing(
   state: RemodelFlowState,
   resolved: ResolvedState,
 ): PricingBreakdown {
-  const pkg = resolved.tier ? PACKAGES[resolved.tier] : undefined;
+  const pkg = resolved.tier ? getPackageFor(resolved.style, resolved.tier) : undefined;
   const basePrice = pkg?.basePrice ?? 0;
 
   const defaultsTotal = CATEGORIES.reduce((sum, cat) => {
