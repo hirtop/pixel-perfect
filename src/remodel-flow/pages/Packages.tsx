@@ -1,13 +1,16 @@
 import { useEffect } from "react";
 import { useFlow } from "../FlowContext";
-import { PACKAGES, CATEGORIES, getOption } from "../catalog";
+import { CATEGORIES, getOption, getPackageFor, PACKAGES } from "../catalog";
 import { PrimaryNav, StepHeader } from "../ui";
 
 const fmt = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
+const TIER_LABEL = { essential: "Essential", balanced: "Balanced", premium: "Premium" } as const;
+const STYLE_LABEL = { modern: "Modern", classic: "Classic", spa: "Spa", minimal: "Minimal" } as const;
+
 const Packages = () => {
   const { state, setPackageId } = useFlow();
-  const pkg = state.tier ? PACKAGES[state.tier] : undefined;
+  const pkg = state.tier ? getPackageFor(state.style, state.tier) : undefined;
 
   // Persist explicit package selection in flow state when this page is reached
   // with a confirmed tier. Keeps state.packageId aligned with the resolver.
@@ -17,7 +20,7 @@ const Packages = () => {
     }
   }, [pkg, state.packageId, setPackageId]);
 
-  if (!pkg) {
+  if (!pkg || !state.tier) {
     return (
       <div>
         <StepHeader title="Pick a tier first" />
@@ -26,7 +29,12 @@ const Packages = () => {
     );
   }
 
-  const styleLabel = state.style ? state.style.charAt(0).toUpperCase() + state.style.slice(1) : "";
+  const styleLabel = state.style ? STYLE_LABEL[state.style] : "";
+  const tierLabel = TIER_LABEL[state.tier];
+  const title = styleLabel ? `${styleLabel} — ${tierLabel} Package` : `${tierLabel} Package`;
+  const description = styleLabel
+    ? `Designed in your selected ${styleLabel} style`
+    : PACKAGES[state.tier].tagline;
 
   return (
     <div>
@@ -35,11 +43,7 @@ const Packages = () => {
           You selected: <span className="text-foreground">{styleLabel}</span>
         </p>
       )}
-      <StepHeader
-        eyebrow="Step 03"
-        title={styleLabel ? `${styleLabel} — ${pkg.name} Package` : `${pkg.name} Package`}
-        description={styleLabel ? `Designed in your selected ${styleLabel} style` : pkg.tagline}
-      />
+      <StepHeader eyebrow="Step 03" title={title} description={description} />
       <div className="rounded-2xl border border-border bg-card p-6">
         <div className="flex items-baseline justify-between">
           <p className="text-sm text-muted-foreground">Starting at</p>
