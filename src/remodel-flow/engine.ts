@@ -5,6 +5,7 @@ import {
   getAllCandidates,
   getCategory,
   getOption,
+  getPackageFor,
 } from "./catalog";
 import { STYLES } from "./styles";
 import type {
