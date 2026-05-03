@@ -53,10 +53,20 @@ export default function Shop() {
   const navigate = useNavigate();
   const { project, updateProject, saveProject } = useProject();
 
+  // Hide products without a real image (placeholders/empty strings) from /shop.
+  // Data is preserved in the catalog — this is UI-only filtering so unusable
+  // SKUs don't appear in the shop or pre-selection.
+  const hasRealImage = (p: TieredProduct): boolean => {
+    const img = p.image?.trim();
+    if (!img) return false;
+    if (img.includes("placeholder")) return false;
+    return true;
+  };
+
   const grouped = useMemo(() => {
     const map: Record<string, TieredProduct[]> = {};
     for (const cat of CATEGORY_ORDER) {
-      const items = tieredCatalog.filter((p) => p.category === cat);
+      const items = tieredCatalog.filter((p) => p.category === cat && hasRealImage(p));
       if (items.length > 0) map[cat] = items;
     }
     return map;
