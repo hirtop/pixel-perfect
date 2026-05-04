@@ -19,7 +19,7 @@ Structured mirror: `src/remodel-flow/packages/modern-balanced.ts`.
 | Floor Tile | ✅ Ready |
 | Shower Floor Tile | ✅ Ready |
 | Shower Trim | ✅ Ready |
-| Shower Glass | 🟡 Placeholder |
+| Shower Glass | ✅ Ready |
 | Toilet | 🟡 Placeholder |
 | Accessories | 🟡 Placeholder |
 

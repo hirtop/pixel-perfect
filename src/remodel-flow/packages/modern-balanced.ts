@@ -392,34 +392,50 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     showerGlass: {
-      sourcing: "placeholder",
-      intent: "Frameless clear glass enclosure or fixed panel. Maximizes visual openness.",
+      sourcing: "ready",
+      intent:
+        "Frameless or semi-frameless clear-glass enclosure. Minimal hardware, maximum visual openness.",
       primary: {
-        name: 'Frameless Fixed Glass Panel, 3/8" clear, matte black hardware',
-        priceRange: [700, 1400],
+        name: 'DreamLine Lumen 40-41" W × 72" H Semi-Frameless Hinged Shower Door',
+        price: 700,
+        retailer: "Ferguson",
+        link: "https://www.fergusonhome.com/dreamline-shdr-5340720/s1693693",
+        image:
+          "https://res.cloudinary.com/american-bath-group/image/upload/v1714590388/abg-graphics/original-images/dreamline/shared/lumen/jpeg/lumen-shower-door-rs76-30d-b-01.jpg",
+        type: "hinged_door",
+        priceRange: [700, 700],
       },
       backups: [
         {
-          name: 'Frameless Hinged Glass Door, 3/8" clear, matte black hardware',
-          priceRange: [700, 1400],
+          name: 'DreamLine Linea 34" W × 72" H Frameless Open-Entry Shower Screen',
+          price: 650,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/dreamline-shdr-3234721/s1159178",
+          image:
+            "https://res.cloudinary.com/american-bath-group/image/upload/v1714590964/abg-graphics/original-images/dreamline/shower-screens/linea/jpeg/linea-shower-door-rs393-30d-01.jpg",
+          type: "fixed_panel",
+          priceRange: [650, 650],
         },
         {
-          name: 'Frameless Sliding Glass Door, 3/8" clear, matte black track',
-          priceRange: [700, 1400],
-        },
-        {
-          name: "Semi-Frameless Fixed Panel, matte black frame",
-          priceRange: [700, 1400],
-          note: "Budget fallback.",
+          name: 'DreamLine French Linea 34" W × 72" H Patterned-Glass Shower Screen',
+          price: 690,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/dreamline-shdr-3234721-89/s1319707",
+          image: "https://ferguson.dreamline.com/img/p/2/0/8/6/7/4/208674-large_default.jpg",
+          type: "privacy_panel",
+          priceRange: [690, 690],
+          note: "Patterned glass option — only when added privacy is desired.",
         },
       ],
       constraints: [
-        "Hardware finish must match shower trim (matte black).",
-        "Clear glass only — no frosted, no rain-pattern.",
-        "Layout (panel vs door) determined by contractor based on opening.",
+        "Clear glass default.",
+        "Minimal hardware — frameless or semi-frameless only.",
+        "Hardware finish must coordinate with faucet/shower trim family.",
+        "Final size must be contractor-verified to actual opening.",
       ],
-      priceRange: [700, 1400],
-      customerText: "A frameless clear-glass panel that keeps the shower visually open.",
+      priceRange: [650, 700],
+      customerText:
+        "A frameless clear-glass enclosure that keeps the shower visually open with minimal hardware.",
     } satisfies Bin,
 
     toilet: {
