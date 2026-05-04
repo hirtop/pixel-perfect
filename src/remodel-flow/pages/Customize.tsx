@@ -343,14 +343,15 @@ const Customize = () => {
           <div className="mt-4 space-y-2 border-t border-border/60 pt-4">
             {isCuratedModernBalanced
               ? MODERN_BALANCED_BINS.map((b) => {
-                  const bin = MODERN_BALANCED.bins[b.key] as Bin;
+                  const rawBin = MODERN_BALANCED.bins[b.key] as Bin;
+                  const bin = filterBinForModernBalanced(rawBin);
                   if (b.categoryId) {
                     const item = plan.items.find((it) => it.categoryId === b.categoryId);
                     return (
                       <div key={`sb-${b.key}`} className="flex justify-between text-xs">
                         <span className="text-muted-foreground">{b.label}</span>
                         <span className="text-foreground">
-                          {item?.optionName ?? bin.primary.name}
+                          {item?.optionName ?? bin?.primary.name ?? "Curated product needed"}
                         </span>
                       </div>
                     );
@@ -358,7 +359,9 @@ const Customize = () => {
                   return (
                     <div key={`sb-${b.key}`} className="flex justify-between text-xs">
                       <span className="text-muted-foreground">{b.label}</span>
-                      <span className="text-muted-foreground/70 italic">Sourcing</span>
+                      <span className="text-muted-foreground/70 italic">
+                        {bin ? "Sourcing" : "Curated product needed"}
+                      </span>
                     </div>
                   );
                 })
