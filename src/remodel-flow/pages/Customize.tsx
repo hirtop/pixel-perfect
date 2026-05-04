@@ -208,7 +208,22 @@ const Customize = () => {
 
   // Read-only curated bin section sourced from MODERN_BALANCED.
   // Used for bins that don't yet have catalog-backed products.
-  const renderCuratedBinSection = (label: string, bin: Bin) => {
+  // Filtered through filterBinForModernBalanced to block non-modern/minimal products.
+  const renderCuratedBinSection = (label: string, rawBin: Bin) => {
+    const bin = filterBinForModernBalanced(rawBin);
+    if (!bin) {
+      return (
+        <section key={`curated-${label}`}>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{label}</p>
+          <FlowCard className="border-dashed bg-muted/10">
+            <p className="text-sm font-medium text-foreground">Curated product needed</p>
+            <p className="mt-1 text-[11px] text-muted-foreground/80">
+              No modern/minimal product sourced for this bin yet.
+            </p>
+          </FlowCard>
+        </section>
+      );
+    }
     const fmtRange = (r: [number, number]) => `${fmt(r[0])} – ${fmt(r[1])}`;
     return (
       <section key={`curated-${label}`}>
