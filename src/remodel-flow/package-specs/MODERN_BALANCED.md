@@ -243,21 +243,31 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Shower Glass  *(Sourcing: 🟡 Placeholder)*
+## Bin: Shower Glass  *(Sourcing: ✅ Ready)*
 
-**Intent:** Frameless clear glass enclosure or fixed panel. Maximizes visual openness.
+**Intent:** Frameless or semi-frameless clear-glass enclosure. Minimal hardware, maximum visual openness.
 
-- **Primary:** Frameless Fixed Glass Panel, 3/8" clear, matte black hardware
-- **Backups (max 3):**
-  1. Frameless Hinged Glass Door, 3/8" clear, matte black hardware
-  2. Frameless Sliding Glass Door, 3/8" clear, matte black track
-  3. Semi-Frameless Fixed Panel, matte black frame (budget fallback)
+- **Primary:** DreamLine Lumen 40-41" W × 72" H Semi-Frameless Hinged Shower Door
+  - Price: $700
+  - Retailer: Ferguson
+  - Type: hinged_door
+  - Link: https://www.fergusonhome.com/dreamline-shdr-5340720/s1693693
+  - Image: https://res.cloudinary.com/american-bath-group/image/upload/v1714590388/abg-graphics/original-images/dreamline/shared/lumen/jpeg/lumen-shower-door-rs76-30d-b-01.jpg
+- **Backups:**
+  1. DreamLine Linea 34" W × 72" H Frameless Open-Entry Shower Screen — $650, Ferguson, fixed_panel
+     - Link: https://www.fergusonhome.com/dreamline-shdr-3234721/s1159178
+     - Image: https://res.cloudinary.com/american-bath-group/image/upload/v1714590964/abg-graphics/original-images/dreamline/shower-screens/linea/jpeg/linea-shower-door-rs393-30d-01.jpg
+  2. DreamLine French Linea 34" W × 72" H Patterned-Glass Shower Screen — $690, Ferguson, privacy_panel
+     - Link: https://www.fergusonhome.com/dreamline-shdr-3234721-89/s1319707
+     - Image: https://ferguson.dreamline.com/img/p/2/0/8/6/7/4/208674-large_default.jpg
+     - Note: Patterned glass option — only when added privacy is desired.
 - **Constraints:**
-  - Hardware finish must match shower trim (matte black).
-  - Clear glass only. No frosted, no rain-pattern.
-  - Layout (panel vs door) determined by contractor based on opening.
-- **Price range:** $700–$1,400
-- **Customer-facing text:** "A frameless clear-glass panel that keeps the shower visually open."
+  - Clear glass default.
+  - Minimal hardware — frameless or semi-frameless only.
+  - Hardware finish must coordinate with faucet/shower trim family.
+  - Final size must be contractor-verified to actual opening.
+- **Price range:** $650–$700
+- **Customer-facing text:** "A frameless clear-glass enclosure that keeps the shower visually open with minimal hardware."
 
 ---
 
