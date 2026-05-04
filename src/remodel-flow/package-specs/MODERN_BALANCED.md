@@ -21,7 +21,7 @@ Structured mirror: `src/remodel-flow/packages/modern-balanced.ts`.
 | Shower Trim | ✅ Ready |
 | Shower Glass | ✅ Ready |
 | Toilet | ✅ Ready |
-| Accessories | 🟡 Placeholder |
+| Accessories | ✅ Ready |
 
 ---
 
