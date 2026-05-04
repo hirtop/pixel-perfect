@@ -50,7 +50,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Vanity
+## Bin: Vanity  *(Sourcing: ✅ Ready)*
 
 **Intent:** Anchor the room with a wall-hung floating vanity in natural oak or matte white. Sets the warmth level for the whole space.
 
@@ -69,7 +69,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Faucet
+## Bin: Faucet  *(Sourcing: 🟡 Placeholder)*
 
 **Intent:** Single-hole, tall-spout, matte black. Reads as one continuous line with the vanity.
 
@@ -86,7 +86,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Mirror
+## Bin: Mirror  *(Sourcing: 🟡 Placeholder)*
 
 **Intent:** Frameless or thin-frame rectangular mirror, sized to the vanity. Acts as visual quiet space.
 
@@ -103,7 +103,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Lighting
+## Bin: Lighting  *(Sourcing: ✅ Ready)*
 
 **Intent:** Layered but restrained — overhead + flanking sconces in matte black with warm white bulbs.
 
@@ -121,7 +121,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Shower Wall Tile
+## Bin: Shower Wall Tile  *(Sourcing: ✅ Ready)*
 
 **Intent:** Large-format warm-grey or warm-white porcelain with a stone or honed marble look. Minimal grout lines.
 
@@ -139,7 +139,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Floor Tile
+## Bin: Floor Tile  *(Sourcing: 🟡 Placeholder)*
 
 **Intent:** Matte porcelain in the same warm-neutral family as the shower walls. Reads continuous when standing in the doorway.
 
@@ -156,7 +156,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Shower Floor Tile
+## Bin: Shower Floor Tile  *(Sourcing: 🟡 Placeholder)*
 
 **Intent:** Smaller-format mosaic in the same stone family as the walls — for drainage slope and grip, without breaking the palette.
 
@@ -174,7 +174,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Shower Trim
+## Bin: Shower Trim  *(Sourcing: 🟡 Placeholder)*
 
 **Intent:** Matte black trim kit — single-handle valve, fixed showerhead, optional handheld on slide bar. Contractor handles rough-in valve body separately.
 
@@ -192,7 +192,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Shower Glass
+## Bin: Shower Glass  *(Sourcing: 🟡 Placeholder)*
 
 **Intent:** Frameless clear glass enclosure or fixed panel. Maximizes visual openness.
 
@@ -210,7 +210,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Toilet
+## Bin: Toilet  *(Sourcing: 🟡 Placeholder)*
 
 **Intent:** One-piece elongated, skirted trapway, matte white. Reads as a single clean form.
 
@@ -228,7 +228,7 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Accessories
+## Bin: Accessories  *(Sourcing: 🟡 Placeholder)*
 
 **Intent:** Matte black hardware set — towel bar, hand towel ring, robe hook, toilet paper holder. Cohesive with faucet and trim.
 
