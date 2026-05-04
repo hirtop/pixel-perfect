@@ -60,6 +60,7 @@ export const MODERN_BALANCED = {
 
   bins: {
     vanity: {
+      sourcing: "ready",
       intent:
         "Anchor the room with a wall-hung floating vanity in natural oak or matte white.",
       primary: {
@@ -83,6 +84,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     faucet: {
+      sourcing: "placeholder",
       intent:
         "Single-hole, tall-spout, matte black. Reads as one continuous line with the vanity.",
       primary: {
@@ -112,6 +114,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     mirror: {
+      sourcing: "placeholder",
       intent:
         "Frameless or thin-frame rectangular mirror, sized to the vanity. Visual quiet space.",
       primary: { name: 'Frameless Rectangular Mirror, 30"×36"', priceRange: [180, 420] },
@@ -138,6 +141,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     lighting: {
+      sourcing: "ready",
       intent:
         "Layered but restrained — overhead + flanking sconces in matte black, warm white bulbs.",
       primary: {
@@ -164,6 +168,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     showerWallTile: {
+      sourcing: "ready",
       intent:
         "Large-format warm-grey or warm-white porcelain, stone or honed marble look. Minimal grout.",
       primary: {
@@ -190,6 +195,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     floorTile: {
+      sourcing: "placeholder",
       intent:
         "Matte porcelain in the same warm-neutral family as shower walls. Reads continuous.",
       primary: { name: '12"×24" Warm Grey Matte Porcelain', priceRange: [380, 780] },
@@ -211,6 +217,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     showerFloorTile: {
+      sourcing: "placeholder",
       intent:
         "Smaller-format mosaic in the same stone family as walls — drainage slope and grip.",
       primary: { name: '2"×2" Warm Grey Stone-Look Mosaic', priceRange: [140, 320] },
@@ -234,6 +241,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     showerTrim: {
+      sourcing: "placeholder",
       intent:
         "Matte black trim kit — single-handle valve, fixed showerhead, optional handheld on slide bar.",
       primary: {
@@ -266,6 +274,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     showerGlass: {
+      sourcing: "placeholder",
       intent: "Frameless clear glass enclosure or fixed panel. Maximizes visual openness.",
       primary: {
         name: 'Frameless Fixed Glass Panel, 3/8" clear, matte black hardware',
@@ -296,6 +305,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     toilet: {
+      sourcing: "placeholder",
       intent:
         "One-piece elongated, skirted trapway, matte white. Reads as a single clean form.",
       primary: {
@@ -328,6 +338,7 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     accessories: {
+      sourcing: "placeholder",
       intent:
         "Matte black hardware set — towel bar, hand towel ring, robe hook, TP holder. Cohesive with faucet/trim.",
       primary: {
