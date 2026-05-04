@@ -143,28 +143,49 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     mirror: {
-      sourcing: "placeholder",
+      sourcing: "ready",
       intent:
-        "Frameless or thin-frame rectangular mirror, sized to the vanity. Visual quiet space.",
-      primary: { name: 'Frameless Rectangular Mirror, 30"×36"', priceRange: [180, 420] },
+        "Thin-frame or frameless rectangular mirror, sized to the vanity. Visual quiet space.",
+      primary: {
+        name: 'Kohler Essential 36" Rectangular Metal Framed Mirror',
+        price: 339,
+        retailer: "Ferguson",
+        link: "https://www.fergusonhome.com/product/kohler-k-31364/1897338.html",
+        image:
+          "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-31364-bnl-8211481.jpg",
+        type: "thin_frame_rectangular",
+        priceRange: [339, 339],
+      },
       backups: [
-        { name: 'Thin Matte Black Frame Mirror, 30"×36"', priceRange: [180, 420] },
         {
-          name: 'Backlit LED Mirror, 30"×36"',
-          priceRange: [180, 420],
-          note: "Linked with lighting bin — drops sconces.",
+          name: "Kohler Castia Rectangular Mirror (Studio McGee)",
+          price: 320,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/product/kohler-k-34969/1950628.html",
+          image:
+            "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-34969-2mb-2351648.jpg",
+          type: "warm_frame_rectangular",
+          priceRange: [320, 320],
         },
         {
-          name: 'Round Frameless Mirror, 30"',
-          priceRange: [180, 420],
-          note: "Only if vanity primary < 32 inches wide.",
+          name: "Signature Hardware Curie LED Mirror",
+          price: 340,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/product/signature-hardware-946559-32/1652473.html",
+          image:
+            "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-442983-1508143.jpg",
+          type: "led_backlit",
+          priceRange: [340, 340],
+          note: "LED upgrade — not default. Linked with lighting bin (drop sconces).",
         },
       ],
       constraints: [
-        "Width must be ≤ vanity width.",
-        "If backlit LED mirror is selected, lighting bin must drop sconces.",
+        "Modern/minimal styling only.",
+        "Width must be 70–90% of vanity width.",
+        "Centered above the vanity.",
+        "LED mirror is an upgrade, not the default.",
       ],
-      priceRange: [180, 420],
+      priceRange: [320, 340],
       customerText:
         "A clean rectangular mirror that lets the vanity and tile do the talking.",
     } satisfies Bin,
