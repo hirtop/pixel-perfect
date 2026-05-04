@@ -2,7 +2,13 @@ import { useEffect, useRef, useState } from "react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES, TIER_BINS, getCategory, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
-import { MODERN_BALANCED, filterBinForModernBalanced, type Bin } from "../packages/modern-balanced";
+import {
+  MODERN_BALANCED,
+  filterBinForModernBalanced,
+  checkBinPriceBand,
+  type Bin,
+  type ModernBalancedBinKey,
+} from "../packages/modern-balanced";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, Check, Star } from "lucide-react";
