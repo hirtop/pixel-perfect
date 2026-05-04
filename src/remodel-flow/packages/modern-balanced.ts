@@ -13,6 +13,14 @@ export type BinProduct = {
   priceRange: [number, number];
   /** Optional notes/customer text or qualifier (e.g. "budget fallback"). */
   note?: string;
+  /** Optional real product details (present on "ready" bins). */
+  finish?: string;
+  price?: number;
+  retailer?: string;
+  link?: string;
+  image?: string;
+  /** Faucet/fixture deck type, e.g. "single_hole", "widespread", "centerset". */
+  type?: string;
 };
 
 /**
