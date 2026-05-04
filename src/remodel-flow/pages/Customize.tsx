@@ -220,7 +220,11 @@ const Customize = () => {
   // Read-only curated bin section sourced from MODERN_BALANCED.
   // Used for bins that don't yet have catalog-backed products.
   // Filtered through filterBinForModernBalanced to block non-modern/minimal products.
-  const renderCuratedBinSection = (label: string, rawBin: Bin) => {
+  const renderCuratedBinSection = (
+    label: string,
+    rawBin: Bin,
+    binKey: ModernBalancedBinKey,
+  ) => {
     const bin = filterBinForModernBalanced(rawBin);
     if (!bin) {
       return (
@@ -236,6 +240,25 @@ const Customize = () => {
       );
     }
     const fmtRange = (r: [number, number]) => `${fmt(r[0])} – ${fmt(r[1])}`;
+
+    /** Soft price-band warning chip — never blocks selection. */
+    const renderBandWarning = (product: typeof bin.primary) => {
+      const check = checkBinPriceBand(binKey, product);
+      if (!check || check.status === "ok") return null;
+      const [lo, hi] = check.band;
+      const directionLabel = check.status === "under" ? "Below" : "Above";
+      return (
+        <p className="mt-2">
+          <span
+            className="inline-flex items-center gap-1 rounded-full border border-amber-500/40 bg-amber-500/10 px-2 py-0.5 text-[10px] font-medium text-amber-700 dark:text-amber-400"
+            title={`Balanced tier band ${fmt(lo)}–${fmt(hi)} for ${label}`}
+          >
+            {directionLabel} Balanced range ({fmt(lo)}–{fmt(hi)})
+          </span>
+        </p>
+      );
+    };
+
     return (
       <section key={`curated-${label}`}>
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{label}</p>
@@ -262,6 +285,7 @@ const Customize = () => {
             <p className="mt-1 text-[10px] text-muted-foreground/80">
               Not included in price calculation
             </p>
+            {renderBandWarning(bin.primary)}
             <p className="mt-2 text-[11px] text-muted-foreground/80">{bin.customerText}</p>
           </FlowCard>
           {bin.backups.slice(0, 2).map((b, i) => {
@@ -280,6 +304,7 @@ const Customize = () => {
                     Backup · sourcing in progress
                   </span>
                 </p>
+                {renderBandWarning(b)}
                 {b.note && <p className="mt-2 text-[11px] text-muted-foreground/80">{b.note}</p>}
               </FlowCard>
             );
@@ -293,7 +318,7 @@ const Customize = () => {
     ? MODERN_BALANCED_BINS.map((b) => {
         const bin = MODERN_BALANCED.bins[b.key] as Bin;
         if (b.categoryId) return renderCategorySection(b.categoryId, b.label, b.key);
-        return renderCuratedBinSection(b.label, bin);
+        return renderCuratedBinSection(b.label, bin, b.key as ModernBalancedBinKey);
       })
     : CATEGORIES.map((cat) => renderCategorySection(cat.id));
 
