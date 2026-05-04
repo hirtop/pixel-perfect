@@ -21,13 +21,17 @@ describe("Modern Balanced QA", () => {
   it("faucet bin uses Trinsic / Doux / Trinsic Champagne — no legacy products", () => {
     const f = MODERN_BALANCED.bins.faucet;
     expect(f.primary.name).toMatch(/Trinsic/i);
-    const names = [f.primary.name, ...f.backups.map((b) => b.name)].join(" | ");
+    const all = [f.primary, ...f.backups];
+    const names = all.map((p) => p.name).join(" | ");
+    const finishes = all.map((p) => p.finish ?? "").join(" | ");
     expect(names).toMatch(/Trinsic/);
     expect(names).toMatch(/Doux/);
-    expect(names).toMatch(/Champagne/i);
-    // No legacy generic ids
+    // Champagne Bronze Trinsic exists as a backup (finish field)
+    expect(`${names} ${finishes}`).toMatch(/Champagne/i);
+    // No legacy generic catalog faucets
     expect(names).not.toMatch(/Chrome Essentials/i);
     expect(names).not.toMatch(/Brushed Nickel Suite/i);
+    expect(names).not.toMatch(/Matte Black Designer Suite/i);
   });
 
   it("each bin has exactly one primary === true", () => {
