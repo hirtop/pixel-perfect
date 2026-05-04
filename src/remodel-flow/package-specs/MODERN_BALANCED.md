@@ -271,21 +271,23 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Toilet  *(Sourcing: 🟡 Placeholder)*
+## Bin: Toilet  *(Sourcing: ✅ Ready)*
 
-**Intent:** One-piece elongated, skirted trapway, matte white. Reads as a single clean form.
+**Intent:** Clean modern white toilet — elongated, comfort height, visually quiet. Should not be a focal point.
 
-- **Primary:** One-Piece Elongated Skirted Toilet, matte white, soft-close seat
+- **Primary:** Kohler Santa Rosa Comfort Height One-Piece Elongated Toilet, white — $549 (Home Depot) — `one_piece_elongated`
 - **Backups (max 3):**
-  1. One-Piece Elongated Skirted Toilet, gloss white, soft-close seat
-  2. Two-Piece Elongated Skirted Toilet, matte white (budget fallback)
-  3. Wall-Hung Toilet, matte white (only if in-wall carrier already present)
+  1. American Standard Cadet 3 Comfort Height Two-Piece Elongated Toilet, white — $348 (Home Depot) — `two_piece_elongated` — budget backup
+  2. Swiss Madison St. Tropez One-Piece Elongated Skirted Toilet, white — $469 (Home Depot) — `skirted_one_piece` — modern backup
+  3. Bidet-Ready Modern One-Piece Elongated Toilet, white — ~$599 (Home Depot) — `bidet_ready` — upgrade backup
 - **Constraints:**
-  - Skirted trapway required (no exposed bolts/curves).
-  - Elongated bowl only.
-  - Wall-hung option requires existing carrier — not a default upgrade.
-- **Price range:** $480–$960
-- **Customer-facing text:** "A skirted one-piece toilet — easier to clean and visually quiet."
+  - White finish only.
+  - Elongated bowl preferred.
+  - Comfort/chair height preferred.
+  - Modern, clean profile — toilet should not be the focal point.
+  - Real, image-backed product required.
+- **Price range:** $300–$700
+- **Customer-facing text:** "A clean, comfort-height white toilet that quietly disappears next to the vanity and shower."
 
 ---
 
