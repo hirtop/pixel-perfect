@@ -219,8 +219,11 @@ const Customize = () => {
             <p className="mt-2 text-xs text-muted-foreground">
               {fmtRange(bin.primary.priceRange)}
               <span className="ml-2 text-[10px] font-medium text-muted-foreground">
-                Product sourcing needed
+                Product sourcing in progress
               </span>
+            </p>
+            <p className="mt-1 text-[10px] text-muted-foreground/80">
+              Not included in price calculation
             </p>
             <p className="mt-2 text-[11px] text-muted-foreground/80">{bin.customerText}</p>
           </FlowCard>
@@ -230,7 +233,7 @@ const Customize = () => {
               <p className="mt-2 text-xs text-muted-foreground">
                 {fmtRange(b.priceRange)}
                 <span className="ml-2 text-[10px] font-medium text-muted-foreground">
-                  Backup
+                  Backup · sourcing in progress
                 </span>
               </p>
               {b.note && <p className="mt-2 text-[11px] text-muted-foreground/80">{b.note}</p>}
