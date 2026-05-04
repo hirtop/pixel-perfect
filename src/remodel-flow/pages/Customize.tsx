@@ -229,8 +229,15 @@ const Customize = () => {
       <section key={`curated-${label}`}>
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{label}</p>
         <div className="grid gap-3 md:grid-cols-3">
-          <FlowCard className="border-dashed bg-muted/20">
-            <p className="text-sm font-medium text-foreground pr-16">{bin.primary.name}</p>
+          <FlowCard selected className="border-dashed bg-muted/20">
+            <span
+              className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-foreground/20 bg-background/80 px-2 py-0.5 text-[10px] font-medium text-foreground"
+              title="Curated pick for Modern Balanced"
+            >
+              <Star size={10} className="fill-foreground" strokeWidth={0} />
+              Recommended
+            </span>
+            <p className="text-sm font-medium text-foreground pr-24">{bin.primary.name}</p>
             <p className="mt-2 text-xs text-muted-foreground">
               {fmtRange(bin.primary.priceRange)}
               <span className="ml-2 text-[10px] font-medium text-muted-foreground">
