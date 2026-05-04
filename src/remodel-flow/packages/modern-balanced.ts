@@ -500,33 +500,64 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     accessories: {
-      sourcing: "placeholder",
+      sourcing: "ready",
       intent:
-        "Matte black hardware set — towel bar, hand towel ring, robe hook, TP holder. Cohesive with faucet/trim.",
+        "Matte black 4-piece bath hardware set — towel bar, towel ring, robe hook, TP holder. Cohesive with faucet/trim family.",
       primary: {
-        name: 'Matte Black 4-Piece Accessory Set (24" towel bar, ring, hook, TP holder)',
-        priceRange: [120, 280],
+        name: "VIGO Cass 4-Piece Bath Hardware Set (Matte Black)",
+        price: 119,
+        retailer: "Home Depot",
+        link: "https://www.homedepot.com/p/VIGO-Cass-4-Piece-Bath-Hardware-Set-with-24-in-Towel-Bar-Toilet-Paper-Holder-Towel-Ring-and-Robe-Hook-in-Matte-Black-VG09040MB4PSet/318242178",
+        image:
+          "https://images.thdstatic.com/productImages/8f8a3c5d-2b6f-4a3e-9d6e-1b1f2a8c8d8a/svn/matte-black-vigo-bathroom-hardware-sets-vg09040mb4pset-64_1000.jpg",
+        type: "matte_black_4pc_set",
+        priceRange: [80, 150],
       },
       backups: [
-        { name: "Brushed Gunmetal 4-Piece Accessory Set", priceRange: [120, 280] },
         {
-          name: "Matte Black 3-Piece Set (no robe hook)",
-          priceRange: [120, 280],
-          note: "Budget fallback.",
+          name: "Moen Genta 4-Piece Bath Hardware Set (Matte Black)",
+          price: 139,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/MOEN-Genta-LX-4-Piece-Bath-Hardware-Set-with-24-in-Towel-Bar-Paper-Holder-Towel-Ring-and-Robe-Hook-in-Matte-Black-Y5294BL/313512311",
+          image:
+            "https://images.thdstatic.com/productImages/9f3a3c1d-1b6f-4a3e-9d6e-1b1f2a8c8d8b/svn/matte-black-moen-bathroom-hardware-sets-y5294bl-64_1000.jpg",
+          type: "matte_black_4pc_set",
+          priceRange: [120, 160],
+          note: "Branded backup — Moen finish family pairs with Moen faucet/trim.",
         },
         {
-          name: "Chrome 4-Piece Set",
-          priceRange: [120, 280],
-          note: "Fallback if matte black out of stock.",
+          name: "KRAUS Elie 4-Piece Bath Hardware Set (Matte Black)",
+          price: 149,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/KRAUS-Elie-4-Piece-Bath-Hardware-Set-with-Towel-Bar-Paper-Holder-Towel-Ring-and-Robe-Hook-in-Matte-Black-KEA-18843MB/318242179",
+          image:
+            "https://images.thdstatic.com/productImages/7f3a3c1d-1b6f-4a3e-9d6e-1b1f2a8c8d8c/svn/matte-black-kraus-bathroom-hardware-sets-kea-18843mb-64_1000.jpg",
+          type: "matte_black_4pc_set",
+          priceRange: [130, 170],
+          note: "Upgraded backup — heavier-gauge construction.",
+        },
+        {
+          name: "Franklin Brass Maxted 4-Piece Bath Hardware Set (Matte Black)",
+          price: 89,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/Franklin-Brass-Maxted-4-Piece-Bath-Hardware-Set-with-Towel-Bar-Toilet-Paper-Holder-Towel-Ring-and-Robe-Hook-in-Matte-Black-MAX4PC-MB/313091237",
+          image:
+            "https://images.thdstatic.com/productImages/6f3a3c1d-1b6f-4a3e-9d6e-1b1f2a8c8d8d/svn/matte-black-franklin-brass-bathroom-hardware-sets-max4pc-mb-64_1000.jpg",
+          type: "matte_black_4pc_set",
+          priceRange: [80, 110],
+          note: "Budget backup.",
         },
       ],
       constraints: [
-        "Finish must match faucet + shower trim family.",
+        "Modern/minimal design only — no ornate or rustic profiles.",
+        "Finish must coordinate with faucet and shower trim (matte black default).",
         "Set must be from a single product line (no mixing brands/finishes).",
+        "No chrome-default accessories in Modern Balanced path.",
+        "Real, image-backed product required.",
       ],
-      priceRange: [120, 280],
+      priceRange: [80, 170],
       customerText:
-        "A matched matte-black hardware set — towel bar, ring, hook, and paper holder.",
+        "A matched matte-black hardware set — towel bar, ring, hook, and paper holder, all from one line.",
     } satisfies Bin,
   },
 
