@@ -9,7 +9,6 @@
 
 export type BinProduct = {
   name: string;
-  style: ["modern", "minimal"],
   /** Inclusive price range in USD for this specific product/option. */
   priceRange: [number, number];
   /** Optional notes/customer text or qualifier (e.g. "budget fallback"). */
