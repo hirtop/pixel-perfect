@@ -12,7 +12,7 @@ Structured mirror: `src/remodel-flow/packages/modern-balanced.ts`.
 | Bin | Status |
 |---|---|
 | Vanity | ✅ Ready |
-| Faucet | 🟡 Placeholder |
+| Faucet | ✅ Ready |
 | Mirror | 🟡 Placeholder |
 | Lighting | ✅ Ready |
 | Shower Wall Tile | ✅ Ready |
@@ -69,19 +69,31 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Faucet  *(Sourcing: 🟡 Placeholder)*
+## Bin: Faucet  *(Sourcing: ✅ Ready)*
 
 **Intent:** Single-hole, tall-spout, matte black. Reads as one continuous line with the vanity.
 
-- **Primary:** Matte Black Single-Hole Faucet, tall spout
-- **Backups (max 3):**
-  1. Brushed Gunmetal Single-Hole Faucet
-  2. Matte Black Widespread Faucet (only if vanity primary swapped to 3-hole deck)
-  3. Chrome Single-Hole Faucet (fallback if matte black out of stock)
+- **Primary:** Delta Trinsic Single Hole Single-Handle Bathroom Faucet
+  - Finish: Matte Black
+  - Price: $329
+  - Retailer: Home Depot
+  - Type: single_hole
+  - Link: https://www.homedepot.com/p/Delta-Trinsic-Single-Hole-Single-Handle-Bathroom-Faucet-in-Matte-Black-559LF-BLLPU/301646776
+  - Image: https://images.thdstatic.com/productImages/1ad3829c-9a9d-4ba8-84a2-b53ee9f259d9/svn/matte-black-delta-single-hole-bathroom-faucets-559lf-bllpu-64_1000.jpg
+- **Backups:**
+  1. Moen Doux Single Hole Single-Handle Bathroom Faucet — Matte Black, $318.99, Home Depot, single_hole
+     - Link: https://www.homedepot.com/p/MOEN-Doux-Single-Hole-Single-Handle-Bathroom-Faucet-in-Matte-Black-S6910BL/306756408
+     - Image: https://images.thdstatic.com/productImages/b20adebe-2e81-4992-8e64-0ae9b59f3b38/svn/matte-black-moen-single-hole-bathroom-faucets-s6910bl-64_1000.jpg
+  2. Delta Trinsic Single Hole Bathroom Faucet — Champagne Bronze, $379, Home Depot, single_hole
+     - Link: https://www.homedepot.com/p/Delta-Trinsic-Gold-Single-Hole-Single-Handle-Bathroom-Faucet-with-Metal-Drain-Assembly-in-Champagne-Bronze-559LF-CZMPU/203897768
+     - Image: https://images.thdstatic.com/productImages/c899073e-b62b-42d6-8e4f-cb3cb1d590b7/svn/champagne-bronze-delta-single-hole-bathroom-faucets-559lf-czmpu-64_1000.jpg
+     - Note: Alternate finish — only if lighting/trim/accessories swap to champagne bronze family.
 - **Constraints:**
-  - Must match vanity deck configuration (single-hole default).
-  - Finish must match shower trim and accessories (matte black family).
-- **Price range:** $220–$480
+  - Single-hole only.
+  - Modern/minimal styling only.
+  - Finish must coordinate with lighting, shower trim, and accessories.
+  - No centerset faucet in Modern Balanced default path.
+- **Price range:** $318.99–$379
 - **Customer-facing text:** "A tall matte-black faucet sized for everyday use without crowding the sink."
 
 ---

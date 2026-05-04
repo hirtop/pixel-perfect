@@ -13,6 +13,14 @@ export type BinProduct = {
   priceRange: [number, number];
   /** Optional notes/customer text or qualifier (e.g. "budget fallback"). */
   note?: string;
+  /** Optional real product details (present on "ready" bins). */
+  finish?: string;
+  price?: number;
+  retailer?: string;
+  link?: string;
+  image?: string;
+  /** Faucet/fixture deck type, e.g. "single_hole", "widespread", "centerset". */
+  type?: string;
 };
 
 /**
@@ -84,31 +92,52 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     faucet: {
-      sourcing: "placeholder",
+      sourcing: "ready",
       intent:
         "Single-hole, tall-spout, matte black. Reads as one continuous line with the vanity.",
       primary: {
-        name: "Matte Black Single-Hole Faucet, tall spout",
-        priceRange: [220, 480],
+        name: "Delta Trinsic Single Hole Single-Handle Bathroom Faucet",
+        finish: "Matte Black",
+        price: 329,
+        retailer: "Home Depot",
+        link: "https://www.homedepot.com/p/Delta-Trinsic-Single-Hole-Single-Handle-Bathroom-Faucet-in-Matte-Black-559LF-BLLPU/301646776",
+        image:
+          "https://images.thdstatic.com/productImages/1ad3829c-9a9d-4ba8-84a2-b53ee9f259d9/svn/matte-black-delta-single-hole-bathroom-faucets-559lf-bllpu-64_1000.jpg",
+        type: "single_hole",
+        priceRange: [329, 329],
       },
       backups: [
-        { name: "Brushed Gunmetal Single-Hole Faucet", priceRange: [220, 480] },
         {
-          name: "Matte Black Widespread Faucet",
-          priceRange: [220, 480],
-          note: "Only if vanity primary swapped to 3-hole deck.",
+          name: "Moen Doux Single Hole Single-Handle Bathroom Faucet",
+          finish: "Matte Black",
+          price: 318.99,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/MOEN-Doux-Single-Hole-Single-Handle-Bathroom-Faucet-in-Matte-Black-S6910BL/306756408",
+          image:
+            "https://images.thdstatic.com/productImages/b20adebe-2e81-4992-8e64-0ae9b59f3b38/svn/matte-black-moen-single-hole-bathroom-faucets-s6910bl-64_1000.jpg",
+          type: "single_hole",
+          priceRange: [318.99, 318.99],
         },
         {
-          name: "Chrome Single-Hole Faucet",
-          priceRange: [220, 480],
-          note: "Fallback if matte black out of stock.",
+          name: "Delta Trinsic Single Hole Bathroom Faucet",
+          finish: "Champagne Bronze",
+          price: 379,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/Delta-Trinsic-Gold-Single-Hole-Single-Handle-Bathroom-Faucet-with-Metal-Drain-Assembly-in-Champagne-Bronze-559LF-CZMPU/203897768",
+          image:
+            "https://images.thdstatic.com/productImages/c899073e-b62b-42d6-8e4f-cb3cb1d590b7/svn/champagne-bronze-delta-single-hole-bathroom-faucets-559lf-czmpu-64_1000.jpg",
+          type: "single_hole",
+          priceRange: [379, 379],
+          note: "Alternate finish — only if lighting/trim/accessories swap to champagne bronze family.",
         },
       ],
       constraints: [
-        "Must match vanity deck configuration (single-hole default).",
-        "Finish must match shower trim and accessories (matte black family).",
+        "Single-hole only.",
+        "Modern/minimal styling only.",
+        "Finish must coordinate with lighting, shower trim, and accessories.",
+        "No centerset faucet in Modern Balanced default path.",
       ],
-      priceRange: [220, 480],
+      priceRange: [318.99, 379],
       customerText:
         "A tall matte-black faucet sized for everyday use without crowding the sink.",
     } satisfies Bin,
