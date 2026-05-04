@@ -6,7 +6,7 @@ import {
   isAllowedInModernBalanced,
   type Bin,
 } from "../packages/modern-balanced";
-import { serializeFlowToRow, deserializeRowToFlow } from "../persistence/serializer";
+import { serializeForDb, deserializeFromDb } from "../persistence/serializer";
 
 describe("Modern Balanced QA", () => {
   it("packageId is 'modern-balanced'", () => {
