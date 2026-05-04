@@ -16,7 +16,7 @@ Structured mirror: `src/remodel-flow/packages/modern-balanced.ts`.
 | Mirror | ✅ Ready |
 | Lighting | ✅ Ready |
 | Shower Wall Tile | ✅ Ready |
-| Floor Tile | 🟡 Placeholder |
+| Floor Tile | ✅ Ready |
 | Shower Floor Tile | 🟡 Placeholder |
 | Shower Trim | 🟡 Placeholder |
 | Shower Glass | 🟡 Placeholder |
@@ -162,20 +162,28 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Floor Tile  *(Sourcing: 🟡 Placeholder)*
+## Bin: Floor Tile  *(Sourcing: ✅ Ready)*
 
-**Intent:** Matte porcelain in the same warm-neutral family as the shower walls. Reads continuous when standing in the doorway.
+**Intent:** Large-format matte porcelain in the same warm-neutral family as the shower walls. Reads continuous when standing in the doorway, never overpowers the wall tile.
 
-- **Primary:** 12"×24" Warm Grey Matte Porcelain
-- **Backups (max 3):**
-  1. 24"×24" Warm Grey Matte Porcelain
-  2. 12"×24" Warm White Stone-Look Porcelain
-  3. 6"×36" Natural Oak-Look Porcelain (only if vanity = matte white)
+- **Primary:** Daltile Dignitary 12"×24" Warm Gray Porcelain
+  - Price: $10.11 / SF
+  - Retailer: Ferguson
+  - Type: large_format_porcelain
+  - Link: https://www.fergusonhome.com/product/daltile-dr1224p/1319445.html
+- **Backups:**
+  1. Daltile Florentine 12"×24" Carrara Look Porcelain — Ferguson, marble_look
+     - Link: https://www.fergusonhome.com/product/daltile-fl1224fp/1318054.html
+  2. Daltile Slate 12"×12" Tile — $9.80, Ferguson, darker_stone
+     - Link: https://www.fergusonhome.com/product/daltile-s1212p1s/1318811.html
+     - Note: Darker stone option — only if shower wall tile leans warm grey/stone.
 - **Constraints:**
-  - Must share tonal family with shower wall tile.
-  - Matte/honed only. Slip-rated for wet areas.
-- **Price range:** $380–$780
-- **Customer-facing text:** "A warm-neutral floor tile that ties the whole room together."
+  - Large format preferred (12×24 or larger).
+  - Matte finish only. Slip-rated for wet areas.
+  - Must coordinate tonally with shower wall tile.
+  - Floor tile must not overpower wall tile.
+- **Price range:** $9.80–$10.11 / SF
+- **Customer-facing text:** "A large-format warm-neutral floor tile that ties the whole room together without stealing the show."
 
 ---
 

@@ -245,25 +245,51 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     floorTile: {
-      sourcing: "placeholder",
+      sourcing: "ready",
       intent:
-        "Matte porcelain in the same warm-neutral family as shower walls. Reads continuous.",
-      primary: { name: '12"×24" Warm Grey Matte Porcelain', priceRange: [380, 780] },
+        "Large-format matte porcelain in the same warm-neutral family as shower walls. Reads continuous, never overpowers.",
+      primary: {
+        name: 'Daltile Dignitary 12"×24" Warm Gray Porcelain',
+        price: 10.11,
+        retailer: "Ferguson",
+        link: "https://www.fergusonhome.com/product/daltile-dr1224p/1319445.html",
+        image:
+          "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-dr1224p-1319445.jpg",
+        type: "large_format_porcelain",
+        priceRange: [10.11, 10.11],
+        note: "Per SF.",
+      },
       backups: [
-        { name: '24"×24" Warm Grey Matte Porcelain', priceRange: [380, 780] },
-        { name: '12"×24" Warm White Stone-Look Porcelain', priceRange: [380, 780] },
         {
-          name: '6"×36" Natural Oak-Look Porcelain',
-          priceRange: [380, 780],
-          note: "Only if vanity = matte white.",
+          name: 'Daltile Florentine 12"×24" Carrara Look Porcelain',
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/product/daltile-fl1224fp/1318054.html",
+          image:
+            "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-fl1224fp-1318054.jpg",
+          type: "marble_look",
+          priceRange: [10, 10],
+        },
+        {
+          name: 'Daltile Slate 12"×12" Tile',
+          price: 9.8,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/product/daltile-s1212p1s/1318811.html",
+          image:
+            "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-s1212p1s-1318811.jpg",
+          type: "darker_stone",
+          priceRange: [9.8, 9.8],
+          note: "Darker stone option — only if shower wall tile leans warm grey/stone.",
         },
       ],
       constraints: [
-        "Must share tonal family with shower wall tile.",
-        "Matte/honed only. Slip-rated for wet areas.",
+        "Large format preferred (12×24 or larger).",
+        "Matte finish only. Slip-rated for wet areas.",
+        "Must coordinate tonally with shower wall tile.",
+        "Floor tile must not overpower wall tile.",
       ],
-      priceRange: [380, 780],
-      customerText: "A warm-neutral floor tile that ties the whole room together.",
+      priceRange: [9.8, 10.11],
+      customerText:
+        "A large-format warm-neutral floor tile that ties the whole room together without stealing the show.",
     } satisfies Bin,
 
     showerFloorTile: {
