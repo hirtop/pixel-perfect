@@ -21,7 +21,53 @@ export type BinProduct = {
   image?: string;
   /** Faucet/fixture deck type, e.g. "single_hole", "widespread", "centerset". */
   type?: string;
+  /**
+   * Style tags this product is compatible with.
+   * Used by curated package renderers to block wrong-style products
+   * (e.g. traditional/ornate/classic-only items in a Modern package).
+   */
+  style?: ProductStyle[];
 };
+
+/** Allowed style tags for curated product validation. */
+export type ProductStyle =
+  | "modern"
+  | "minimal"
+  | "spa"
+  | "classic"
+  | "traditional"
+  | "ornate"
+  | "industrial"
+  | "transitional";
+
+/** Styles allowed to render inside the Modern Balanced package. */
+export const MODERN_BALANCED_ALLOWED_STYLES: ProductStyle[] = ["modern", "minimal"];
+
+/**
+ * Returns true if a product is allowed to render in the Modern Balanced package.
+ * Blocks traditional / ornate / classic-only products.
+ * Untagged products are treated as not validated and excluded.
+ */
+export function isAllowedInModernBalanced(product: BinProduct): boolean {
+  const styles = product.style;
+  if (!styles || styles.length === 0) return false;
+  return styles.some((s) => MODERN_BALANCED_ALLOWED_STYLES.includes(s));
+}
+
+/**
+ * Filter a bin's primary + backups down to products allowed in Modern Balanced.
+ * Returns null if the primary is blocked AND no backup is allowed.
+ */
+export function filterBinForModernBalanced(bin: Bin): Bin | null {
+  const primaryOk = isAllowedInModernBalanced(bin.primary);
+  const allowedBackups = bin.backups.filter(isAllowedInModernBalanced);
+  if (!primaryOk && allowedBackups.length === 0) return null;
+  const nextPrimary = primaryOk ? bin.primary : allowedBackups[0];
+  const nextBackups = primaryOk
+    ? allowedBackups
+    : allowedBackups.slice(1);
+  return { ...bin, primary: nextPrimary, backups: nextBackups };
+}
 
 /**
  * Sourcing status for a bin:
