@@ -149,7 +149,10 @@ const Customize = () => {
               <FlowCard
                 key={opt.id}
                 selected={currentId === opt.id}
-                onClick={() => setSelection(cat.id, opt.id)}
+                onClick={() => {
+                  setSelection(cat.id, opt.id);
+                  if (binKey && binKey !== cat.id) setSelection(binKey, opt.id);
+                }}
                 className={cn(isBest && "border-foreground/40 bg-foreground/[0.02]")}
               >
                 {isBest && (
