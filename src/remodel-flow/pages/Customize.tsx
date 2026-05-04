@@ -1,10 +1,34 @@
 import { useEffect, useRef, useState } from "react";
 import { useFlow } from "../FlowContext";
-import { CATEGORIES, PACKAGES, TIER_BINS, getOption } from "../catalog";
+import { CATEGORIES, PACKAGES, TIER_BINS, getCategory, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
+import { MODERN_BALANCED, type Bin } from "../packages/modern-balanced";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, Check, Star } from "lucide-react";
+
+// Curated Modern Balanced bin order + mapping to existing catalog categories.
+// `categoryId` = real catalog category (drives interactive cards + pricing).
+// `categoryId: null` = placeholder bin (no real product yet, no pricing impact).
+type CuratedBin = {
+  key: keyof typeof MODERN_BALANCED.bins;
+  label: string;
+  categoryId: string | null;
+};
+const MODERN_BALANCED_BINS: CuratedBin[] = [
+  { key: "vanity",          label: "Vanity",            categoryId: "vanity" },
+  { key: "faucet",          label: "Faucet",            categoryId: null },
+  { key: "mirror",          label: "Mirror",            categoryId: null },
+  { key: "lighting",        label: "Lighting",          categoryId: "lighting" },
+  { key: "showerWallTile",  label: "Shower Wall Tile",  categoryId: "tile" },
+  { key: "floorTile",       label: "Floor Tile",        categoryId: null },
+  { key: "showerFloorTile", label: "Shower Floor Tile", categoryId: null },
+  { key: "showerTrim",      label: "Shower Trim",       categoryId: null },
+  { key: "showerGlass",     label: "Shower Glass",      categoryId: null },
+  { key: "toilet",          label: "Toilet",            categoryId: null },
+  { key: "accessories",     label: "Accessories",       categoryId: null },
+];
+
 
 const fmt = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
