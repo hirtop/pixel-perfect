@@ -93,14 +93,27 @@ const Customize = () => {
     );
   }
 
-  const isCuratedModernBalanced = state.style === "modern" && state.tier === "balanced";
+  // Curated mode is opt-in and wrapped in a try/catch boundary at render time
+  // so any failure transparently falls back to the generic CATEGORIES flow.
+  const curatedActive = state.style === "modern" && state.tier === "balanced";
+  let isCuratedModernBalanced = false;
+  try {
+    isCuratedModernBalanced = curatedActive && !!MODERN_BALANCED?.bins?.vanity;
+  } catch {
+    isCuratedModernBalanced = false;
+  }
 
   // Render the existing interactive category section (real catalog category).
-  const renderCategorySection = (catId: string, displayLabel?: string) => {
+  // `binKey` (when provided) mirrors the selection into the curated bin slot
+  // so state.selections[binKey] stays in sync with state.selections[catId].
+  const renderCategorySection = (catId: string, displayLabel?: string, binKey?: string) => {
     const cat = getCategory(catId);
     if (!cat) return null;
 
-    const currentId = state.selections[cat.id] ?? pkg.defaults[cat.id];
+    const currentId =
+      (binKey ? state.selections[binKey] : undefined) ??
+      state.selections[cat.id] ??
+      pkg.defaults[cat.id];
     const allowedBins =
       pkg.slots?.[cat.id]?.preferred_bins ??
       cat.swap_config?.allowed_bins ??
@@ -136,7 +149,10 @@ const Customize = () => {
               <FlowCard
                 key={opt.id}
                 selected={currentId === opt.id}
-                onClick={() => setSelection(cat.id, opt.id)}
+                onClick={() => {
+                  setSelection(cat.id, opt.id);
+                  if (binKey && binKey !== cat.id) setSelection(binKey, opt.id);
+                }}
                 className={cn(isBest && "border-foreground/40 bg-foreground/[0.02]")}
               >
                 {isBest && (
@@ -203,8 +219,11 @@ const Customize = () => {
             <p className="mt-2 text-xs text-muted-foreground">
               {fmtRange(bin.primary.priceRange)}
               <span className="ml-2 text-[10px] font-medium text-muted-foreground">
-                Product sourcing needed
+                Product sourcing in progress
               </span>
+            </p>
+            <p className="mt-1 text-[10px] text-muted-foreground/80">
+              Not included in price calculation
             </p>
             <p className="mt-2 text-[11px] text-muted-foreground/80">{bin.customerText}</p>
           </FlowCard>
@@ -214,7 +233,7 @@ const Customize = () => {
               <p className="mt-2 text-xs text-muted-foreground">
                 {fmtRange(b.priceRange)}
                 <span className="ml-2 text-[10px] font-medium text-muted-foreground">
-                  Backup
+                  Backup · sourcing in progress
                 </span>
               </p>
               {b.note && <p className="mt-2 text-[11px] text-muted-foreground/80">{b.note}</p>}
@@ -228,7 +247,7 @@ const Customize = () => {
   const sections = isCuratedModernBalanced
     ? MODERN_BALANCED_BINS.map((b) => {
         const bin = MODERN_BALANCED.bins[b.key] as Bin;
-        if (b.categoryId) return renderCategorySection(b.categoryId, b.label);
+        if (b.categoryId) return renderCategorySection(b.categoryId, b.label, b.key);
         return renderCuratedBinSection(b.label, bin);
       })
     : CATEGORIES.map((cat) => renderCategorySection(cat.id));
@@ -307,12 +326,33 @@ const Customize = () => {
             </p>
           ) : null}
           <div className="mt-4 space-y-2 border-t border-border/60 pt-4">
-            {plan.items.map((it) => (
-              <div key={it.categoryId} className="flex justify-between text-xs">
-                <span className="text-muted-foreground">{it.categoryName}</span>
-                <span className="text-foreground">{it.optionName}</span>
-              </div>
-            ))}
+            {isCuratedModernBalanced
+              ? MODERN_BALANCED_BINS.map((b) => {
+                  const bin = MODERN_BALANCED.bins[b.key] as Bin;
+                  if (b.categoryId) {
+                    const item = plan.items.find((it) => it.categoryId === b.categoryId);
+                    return (
+                      <div key={`sb-${b.key}`} className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">{b.label}</span>
+                        <span className="text-foreground">
+                          {item?.optionName ?? bin.primary.name}
+                        </span>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div key={`sb-${b.key}`} className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">{b.label}</span>
+                      <span className="text-muted-foreground/70 italic">Sourcing</span>
+                    </div>
+                  );
+                })
+              : plan.items.map((it) => (
+                  <div key={it.categoryId} className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">{it.categoryName}</span>
+                    <span className="text-foreground">{it.optionName}</span>
+                  </div>
+                ))}
           </div>
         </aside>
       </div>
