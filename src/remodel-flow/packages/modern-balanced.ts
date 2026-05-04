@@ -99,7 +99,6 @@ export const MODERN_BALANCED = {
   style: "modern",
   tier: "balanced",
   name: "Modern — Balanced Package",
-  style: ["modern", "minimal"],
 
   priceRange: {
     products: [3000, 6000] as [number, number],
