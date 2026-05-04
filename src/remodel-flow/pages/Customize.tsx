@@ -93,14 +93,27 @@ const Customize = () => {
     );
   }
 
-  const isCuratedModernBalanced = state.style === "modern" && state.tier === "balanced";
+  // Curated mode is opt-in and wrapped in a try/catch boundary at render time
+  // so any failure transparently falls back to the generic CATEGORIES flow.
+  const curatedActive = state.style === "modern" && state.tier === "balanced";
+  let isCuratedModernBalanced = false;
+  try {
+    isCuratedModernBalanced = curatedActive && !!MODERN_BALANCED?.bins?.vanity;
+  } catch {
+    isCuratedModernBalanced = false;
+  }
 
   // Render the existing interactive category section (real catalog category).
-  const renderCategorySection = (catId: string, displayLabel?: string) => {
+  // `binKey` (when provided) mirrors the selection into the curated bin slot
+  // so state.selections[binKey] stays in sync with state.selections[catId].
+  const renderCategorySection = (catId: string, displayLabel?: string, binKey?: string) => {
     const cat = getCategory(catId);
     if (!cat) return null;
 
-    const currentId = state.selections[cat.id] ?? pkg.defaults[cat.id];
+    const currentId =
+      (binKey ? state.selections[binKey] : undefined) ??
+      state.selections[cat.id] ??
+      pkg.defaults[cat.id];
     const allowedBins =
       pkg.slots?.[cat.id]?.preferred_bins ??
       cat.swap_config?.allowed_bins ??
