@@ -326,12 +326,33 @@ const Customize = () => {
             </p>
           ) : null}
           <div className="mt-4 space-y-2 border-t border-border/60 pt-4">
-            {plan.items.map((it) => (
-              <div key={it.categoryId} className="flex justify-between text-xs">
-                <span className="text-muted-foreground">{it.categoryName}</span>
-                <span className="text-foreground">{it.optionName}</span>
-              </div>
-            ))}
+            {isCuratedModernBalanced
+              ? MODERN_BALANCED_BINS.map((b) => {
+                  const bin = MODERN_BALANCED.bins[b.key] as Bin;
+                  if (b.categoryId) {
+                    const item = plan.items.find((it) => it.categoryId === b.categoryId);
+                    return (
+                      <div key={`sb-${b.key}`} className="flex justify-between text-xs">
+                        <span className="text-muted-foreground">{b.label}</span>
+                        <span className="text-foreground">
+                          {item?.optionName ?? bin.primary.name}
+                        </span>
+                      </div>
+                    );
+                  }
+                  return (
+                    <div key={`sb-${b.key}`} className="flex justify-between text-xs">
+                      <span className="text-muted-foreground">{b.label}</span>
+                      <span className="text-muted-foreground/70 italic">Sourcing</span>
+                    </div>
+                  );
+                })
+              : plan.items.map((it) => (
+                  <div key={it.categoryId} className="flex justify-between text-xs">
+                    <span className="text-muted-foreground">{it.categoryName}</span>
+                    <span className="text-foreground">{it.optionName}</span>
+                  </div>
+                ))}
           </div>
         </aside>
       </div>
