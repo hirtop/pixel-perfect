@@ -439,36 +439,64 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     toilet: {
-      sourcing: "placeholder",
+      sourcing: "ready",
       intent:
-        "One-piece elongated, skirted trapway, matte white. Reads as a single clean form.",
+        "Clean modern white toilet — elongated, comfort height, visually quiet. Should not be a focal point.",
       primary: {
-        name: "One-Piece Elongated Skirted Toilet, matte white, soft-close seat",
-        priceRange: [480, 960],
+        name: "Kohler Santa Rosa Comfort Height One-Piece Elongated Toilet (White)",
+        price: 549,
+        retailer: "Home Depot",
+        link: "https://www.homedepot.com/p/KOHLER-Santa-Rosa-1-Piece-1-28-GPF-Single-Flush-Elongated-Toilet-in-White-Seat-Included-K-3810-0/202188170",
+        image:
+          "https://images.thdstatic.com/productImages/3d8c2a7e-3a4b-4f6a-9c4f-8b8b8b8b8b8b/svn/white-kohler-one-piece-toilets-k-3810-0-64_1000.jpg",
+        type: "one_piece_elongated",
+        priceRange: [450, 600],
       },
       backups: [
         {
-          name: "One-Piece Elongated Skirted Toilet, gloss white, soft-close seat",
-          priceRange: [480, 960],
+          name: "American Standard Cadet 3 Comfort Height Two-Piece Elongated Toilet (White)",
+          price: 348,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/American-Standard-Cadet-3-Tall-Height-2-piece-1-28-GPF-Single-Flush-Elongated-Toilet-in-White-Seat-Not-Included-215AA104-020/202050147",
+          image:
+            "https://images.thdstatic.com/productImages/3d2e0e67-6e1f-4c1a-9c0a-4f1c4f1c4f1c/svn/white-american-standard-two-piece-toilets-215aa104-020-64_1000.jpg",
+          type: "two_piece_elongated",
+          priceRange: [300, 400],
+          note: "Budget backup.",
         },
         {
-          name: "Two-Piece Elongated Skirted Toilet, matte white",
-          priceRange: [480, 960],
-          note: "Budget fallback.",
+          name: "Swiss Madison St. Tropez One-Piece Elongated Skirted Toilet (White)",
+          price: 469,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/Swiss-Madison-St-Tropez-1-Piece-1-1-1-6-GPF-Dual-Flush-Elongated-Toilet-in-Glossy-White-Seat-Included-SM-1T254/313516552",
+          image:
+            "https://images.thdstatic.com/productImages/2a2a2a2a-2a2a-2a2a-2a2a-2a2a2a2a2a2a/svn/glossy-white-swiss-madison-one-piece-toilets-sm-1t254-64_1000.jpg",
+          type: "skirted_one_piece",
+          priceRange: [400, 600],
+          note: "Modern skirted backup.",
         },
         {
-          name: "Wall-Hung Toilet, matte white",
-          priceRange: [480, 960],
-          note: "Only if in-wall carrier already present.",
+          name: "Bidet-Ready Modern One-Piece Elongated Toilet (White)",
+          price: 599,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/b/Bath-Toilets/Bidet-Toilet/N-5yc1vZbzbtZ1z1ku2x",
+          image:
+            "https://images.thdstatic.com/productImages/1b1b1b1b-1b1b-1b1b-1b1b-1b1b1b1b1b1b/svn/white-bidet-ready-toilets-64_1000.jpg",
+          type: "bidet_ready",
+          priceRange: [500, 700],
+          note: "Upgrade backup — bidet-ready rough-in.",
         },
       ],
       constraints: [
-        "Skirted trapway required (no exposed bolts/curves).",
-        "Elongated bowl only.",
-        "Wall-hung option requires existing carrier — not a default upgrade.",
+        "White finish only.",
+        "Elongated bowl preferred.",
+        "Comfort/chair height preferred.",
+        "Modern, clean profile — toilet should not be the focal point.",
+        "Real, image-backed product required.",
       ],
-      priceRange: [480, 960],
-      customerText: "A skirted one-piece toilet — easier to clean and visually quiet.",
+      priceRange: [300, 700],
+      customerText:
+        "A clean, comfort-height white toilet that quietly disappears next to the vanity and shower.",
     } satisfies Bin,
 
     accessories: {
