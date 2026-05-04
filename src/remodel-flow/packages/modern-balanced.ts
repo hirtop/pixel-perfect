@@ -21,6 +21,8 @@ export type BinProduct = {
   image?: string;
   /** Faucet/fixture deck type, e.g. "single_hole", "widespread", "centerset". */
   type?: string;
+  /** Recommended/curated pick for this bin. True only on the bin's primary. */
+  primary?: boolean;
   /**
    * Style tags this product is compatible with.
    * Used by curated package renderers to block wrong-style products
