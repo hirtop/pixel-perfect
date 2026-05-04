@@ -293,25 +293,51 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     showerFloorTile: {
-      sourcing: "placeholder",
+      sourcing: "ready",
       intent:
-        "Smaller-format mosaic in the same stone family as walls — drainage slope and grip.",
-      primary: { name: '2"×2" Warm Grey Stone-Look Mosaic', priceRange: [140, 320] },
+        "Small-format mosaic in the same stone family as walls — drainage slope and grip.",
+      primary: {
+        name: 'Bedrosians 2" Round Matte Mosaic',
+        price: 47.35,
+        retailer: "Ferguson",
+        link: "https://www.fergusonhome.com/product/bedrosians-decmak2rmom/1903359.html",
+        image:
+          "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/bedrosians/bedrosians-decmak2rmom-1903359.jpg",
+        type: "round_mosaic",
+        priceRange: [47.35, 47.35],
+        note: "Project estimate: $568.",
+      },
       backups: [
-        { name: '2"×2" Warm White Marble-Look Mosaic', priceRange: [140, 320] },
-        { name: '1"×1" Penny Round, Matte Warm Grey', priceRange: [140, 320] },
         {
-          name: '2"×2" Pebble Mosaic, Warm Grey',
-          priceRange: [140, 320],
-          note: "Budget fallback.",
+          name: 'Daltile 2" Hex Warm Gray Mosaic',
+          price: 14.84,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/product/daltile-d2hexgmsp/1293678.html",
+          image:
+            "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-d2hexgmsp-1293678.jpg",
+          type: "hex_mosaic",
+          priceRange: [14.84, 14.84],
+          note: "Project estimate: $178.",
+        },
+        {
+          name: 'Merola Tile 2" Hex White Marble Look Mosaic',
+          price: 12.54,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/product/merola-tile-ftc2f/1976818.html",
+          image:
+            "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/merolatile/merolatile-ftc2f-1976818.jpg",
+          type: "marble_hex_mosaic",
+          priceRange: [12.54, 12.54],
+          note: "Project estimate: $150.",
         },
       ],
       constraints: [
-        "Must tonally match shower wall tile.",
-        "Mosaic format required for drainage slope.",
-        "No high-contrast or patterned mosaics.",
+        "Must be small format, ideally 2\" or less.",
+        "Matte or slip-appropriate finish only.",
+        "Must coordinate tonally with wall and floor tile.",
+        "No large-format tile allowed for shower floor.",
       ],
-      priceRange: [140, 320],
+      priceRange: [12.54, 47.35],
       customerText:
         "A small-format stone mosaic underfoot — same palette as the walls, with the grip you need.",
     } satisfies Bin,

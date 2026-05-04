@@ -17,7 +17,7 @@ Structured mirror: `src/remodel-flow/packages/modern-balanced.ts`.
 | Lighting | ✅ Ready |
 | Shower Wall Tile | ✅ Ready |
 | Floor Tile | ✅ Ready |
-| Shower Floor Tile | 🟡 Placeholder |
+| Shower Floor Tile | ✅ Ready |
 | Shower Trim | 🟡 Placeholder |
 | Shower Glass | 🟡 Placeholder |
 | Toilet | 🟡 Placeholder |
@@ -187,20 +187,29 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Shower Floor Tile  *(Sourcing: 🟡 Placeholder)*
+## Bin: Shower Floor Tile  *(Sourcing: ✅ Ready)*
 
-**Intent:** Smaller-format mosaic in the same stone family as the walls — for drainage slope and grip, without breaking the palette.
+**Intent:** Small-format mosaic in the same stone family as the walls — for drainage slope and grip, without breaking the palette.
 
-- **Primary:** 2"×2" Warm Grey Stone-Look Mosaic
-- **Backups (max 3):**
-  1. 2"×2" Warm White Marble-Look Mosaic
-  2. 1"×1" Penny Round, Matte Warm Grey
-  3. 2"×2" Pebble Mosaic, Warm Grey (budget fallback)
+- **Primary:** Bedrosians 2" Round Matte Mosaic
+  - Price: $47.35 (project estimate: $568)
+  - Retailer: Ferguson
+  - Type: round_mosaic
+  - Link: https://www.fergusonhome.com/product/bedrosians-decmak2rmom/1903359.html
+  - Image: https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/bedrosians/bedrosians-decmak2rmom-1903359.jpg
+- **Backups:**
+  1. Daltile 2" Hex Warm Gray Mosaic — $14.84 (project estimate: $178), Ferguson, hex_mosaic
+     - Link: https://www.fergusonhome.com/product/daltile-d2hexgmsp/1293678.html
+     - Image: https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-d2hexgmsp-1293678.jpg
+  2. Merola Tile 2" Hex White Marble Look Mosaic — $12.54 (project estimate: $150), Ferguson, marble_hex_mosaic
+     - Link: https://www.fergusonhome.com/product/merola-tile-ftc2f/1976818.html
+     - Image: https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/merolatile/merolatile-ftc2f-1976818.jpg
 - **Constraints:**
-  - Must tonally match shower wall tile.
-  - Mosaic format required for drainage slope.
-  - No high-contrast / no patterned mosaics.
-- **Price range:** $140–$320
+  - Must be small format, ideally 2" or less.
+  - Matte or slip-appropriate finish only.
+  - Must coordinate tonally with wall and floor tile.
+  - No large-format tile allowed for shower floor.
+- **Price range:** $12.54–$47.35
 - **Customer-facing text:** "A small-format stone mosaic underfoot — same palette as the walls, with the grip you need."
 
 ---
