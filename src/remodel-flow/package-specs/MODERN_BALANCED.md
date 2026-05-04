@@ -13,7 +13,7 @@ Structured mirror: `src/remodel-flow/packages/modern-balanced.ts`.
 |---|---|
 | Vanity | ✅ Ready |
 | Faucet | ✅ Ready |
-| Mirror | 🟡 Placeholder |
+| Mirror | ✅ Ready |
 | Lighting | ✅ Ready |
 | Shower Wall Tile | ✅ Ready |
 | Floor Tile | 🟡 Placeholder |
@@ -98,19 +98,30 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Mirror  *(Sourcing: 🟡 Placeholder)*
+## Bin: Mirror  *(Sourcing: ✅ Ready)*
 
-**Intent:** Frameless or thin-frame rectangular mirror, sized to the vanity. Acts as visual quiet space.
+**Intent:** Thin-frame or frameless rectangular mirror, sized to the vanity. Acts as visual quiet space.
 
-- **Primary:** Frameless Rectangular Mirror, 30"×36"
-- **Backups (max 3):**
-  1. Thin Matte Black Frame Mirror, 30"×36"
-  2. Backlit LED Mirror, 30"×36" (linked with lighting bin — see constraint)
-  3. Round Frameless Mirror, 30" (only if vanity primary < 32" wide)
+- **Primary:** Kohler Essential 36" Rectangular Metal Framed Mirror
+  - Price: $339
+  - Retailer: Ferguson
+  - Type: thin_frame_rectangular
+  - Link: https://www.fergusonhome.com/product/kohler-k-31364/1897338.html
+  - Image: https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-31364-bnl-8211481.jpg
+- **Backups:**
+  1. Kohler Castia Rectangular Mirror (Studio McGee) — $320, Ferguson, warm_frame_rectangular
+     - Link: https://www.fergusonhome.com/product/kohler-k-34969/1950628.html
+     - Image: https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-34969-2mb-2351648.jpg
+  2. Signature Hardware Curie LED Mirror — $340, Ferguson, led_backlit
+     - Link: https://www.fergusonhome.com/product/signature-hardware-946559-32/1652473.html
+     - Image: https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/signaturehardware/signature-hardware-442983-1508143.jpg
+     - Note: LED upgrade — not default. Linked with lighting bin (drop sconces).
 - **Constraints:**
-  - Width must be ≤ vanity width.
-  - If backlit LED mirror is selected, lighting bin must drop sconces to avoid double-lighting.
-- **Price range:** $180–$420
+  - Modern/minimal styling only.
+  - Width must be 70–90% of vanity width.
+  - Centered above the vanity.
+  - LED mirror is an upgrade, not the default.
+- **Price range:** $320–$340
 - **Customer-facing text:** "A clean rectangular mirror that lets the vanity and tile do the talking."
 
 ---
