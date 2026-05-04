@@ -96,6 +96,58 @@ export type Bin = {
   customerText: string;
 };
 
+/**
+ * Allowed unit-price bands per bin for the Modern Balanced tier.
+ * Used as a SOFT validation only — products outside this range are
+ * highlighted with a warning, never hidden or blocked.
+ *
+ * Tile bins are priced per square foot, not per unit.
+ */
+export const MODERN_BALANCED_PRICE_BANDS: Record<
+  keyof typeof MODERN_BALANCED.bins,
+  [number, number]
+> = {
+  vanity:          [1200, 2200],
+  faucet:          [250, 450],
+  mirror:          [200, 400],
+  lighting:        [150, 400],
+  showerWallTile:  [6, 14],   // per SF
+  floorTile:       [6, 14],   // per SF
+  showerFloorTile: [10, 50],  // per SF (mosaic sheet)
+  showerTrim:      [250, 600],
+  showerGlass:     [600, 1100],
+  toilet:          [300, 700],
+  accessories:     [80, 170],
+};
+
+export type ModernBalancedBinKey = keyof typeof MODERN_BALANCED_PRICE_BANDS;
+
+/**
+ * Returns a soft validation result for a product against its bin's band.
+ * - inside  → ok
+ * - below   → "under" (cheaper than expected for Balanced tier)
+ * - above   → "over"  (pricier than expected for Balanced tier)
+ * - unknown → null    (no unit price on product, e.g. range-only entries)
+ */
+export function checkBinPriceBand(
+  binKey: ModernBalancedBinKey,
+  product: BinProduct,
+): { status: "ok" | "under" | "over"; band: [number, number] } | null {
+  const band = MODERN_BALANCED_PRICE_BANDS[binKey];
+  if (!band) return null;
+  // Prefer explicit unit price; fall back to product's own priceRange midpoint.
+  const unit =
+    typeof product.price === "number"
+      ? product.price
+      : product.priceRange
+        ? (product.priceRange[0] + product.priceRange[1]) / 2
+        : null;
+  if (unit == null || Number.isNaN(unit)) return null;
+  if (unit < band[0]) return { status: "under", band };
+  if (unit > band[1]) return { status: "over", band };
+  return { status: "ok", band };
+}
+
 export const MODERN_BALANCED = {
   id: "modern-balanced",
   style: "modern",
