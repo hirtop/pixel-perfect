@@ -9,6 +9,7 @@
 
 export type BinProduct = {
   name: string;
+  style: ["modern", "minimal"],
   /** Inclusive price range in USD for this specific product/option. */
   priceRange: [number, number];
   /** Optional notes/customer text or qualifier (e.g. "budget fallback"). */
@@ -99,6 +100,7 @@ export const MODERN_BALANCED = {
   style: "modern",
   tier: "balanced",
   name: "Modern — Balanced Package",
+  style: ["modern", "minimal"],
 
   priceRange: {
     products: [3000, 6000] as [number, number],
@@ -119,6 +121,7 @@ export const MODERN_BALANCED = {
         "Anchor the room with a wall-hung floating vanity in natural oak or matte white.",
       primary: {
         name: 'Floating Oak Vanity, 36" single sink, integrated drawer, matte black pulls',
+        style: ["modern", "minimal"],
         priceRange: [1200, 2200],
       },
       backups: [
@@ -143,6 +146,7 @@ export const MODERN_BALANCED = {
         "Single-hole, tall-spout, matte black. Reads as one continuous line with the vanity.",
       primary: {
         name: "Delta Trinsic Single Hole Single-Handle Bathroom Faucet",
+        style: ["modern", "minimal"],
         finish: "Matte Black",
         price: 329,
         retailer: "Home Depot",
@@ -155,6 +159,7 @@ export const MODERN_BALANCED = {
       backups: [
         {
           name: "Moen Doux Single Hole Single-Handle Bathroom Faucet",
+          style: ["modern", "minimal"],
           finish: "Matte Black",
           price: 318.99,
           retailer: "Home Depot",
@@ -166,6 +171,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: "Delta Trinsic Single Hole Bathroom Faucet",
+          style: ["modern", "minimal"],
           finish: "Champagne Bronze",
           price: 379,
           retailer: "Home Depot",
@@ -194,6 +200,7 @@ export const MODERN_BALANCED = {
         "Thin-frame or frameless rectangular mirror, sized to the vanity. Visual quiet space.",
       primary: {
         name: 'Kohler Essential 36" Rectangular Metal Framed Mirror',
+        style: ["modern", "minimal"],
         price: 339,
         retailer: "Ferguson",
         link: "https://www.fergusonhome.com/product/kohler-k-31364/1897338.html",
@@ -205,6 +212,7 @@ export const MODERN_BALANCED = {
       backups: [
         {
           name: "Kohler Castia Rectangular Mirror (Studio McGee)",
+          style: ["modern", "minimal"],
           price: 320,
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/product/kohler-k-34969/1950628.html",
@@ -215,6 +223,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: "Signature Hardware Curie LED Mirror",
+          style: ["modern", "minimal"],
           price: 340,
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/product/signature-hardware-946559-32/1652473.html",
@@ -242,6 +251,7 @@ export const MODERN_BALANCED = {
         "Layered but restrained — overhead + flanking sconces in matte black, warm white bulbs.",
       primary: {
         name: "Sconce Pair (matte black, warm white) + Flush LED overhead",
+        style: ["modern", "minimal"],
         priceRange: [260, 520],
       },
       backups: [
@@ -249,6 +259,7 @@ export const MODERN_BALANCED = {
         { name: "Single Overhead Pendant (matte black) + Flush LED", priceRange: [260, 520] },
         {
           name: "Flush LED only",
+          style: ["modern", "minimal"],
           priceRange: [260, 520],
           note: "Paired with backlit LED mirror.",
         },
@@ -269,6 +280,7 @@ export const MODERN_BALANCED = {
         "Large-format warm-grey or warm-white porcelain, stone or honed marble look. Minimal grout.",
       primary: {
         name: '12"×24" Honed Marble-Look Porcelain, warm white',
+        style: ["modern", "minimal"],
         priceRange: [480, 960],
       },
       backups: [
@@ -276,6 +288,7 @@ export const MODERN_BALANCED = {
         { name: '24"×48" Slab-Look Porcelain, warm white', priceRange: [480, 960] },
         {
           name: 'Stacked 4"×12" Matte White Porcelain',
+          style: ["modern", "minimal"],
           priceRange: [480, 960],
           note: "Budget fallback.",
         },
@@ -296,6 +309,7 @@ export const MODERN_BALANCED = {
         "Large-format matte porcelain in the same warm-neutral family as shower walls. Reads continuous, never overpowers.",
       primary: {
         name: 'Daltile Dignitary 12"×24" Warm Gray Porcelain',
+        style: ["modern", "minimal"],
         price: 10.11,
         retailer: "Ferguson",
         link: "https://www.fergusonhome.com/product/daltile-dr1224p/1319445.html",
@@ -308,6 +322,7 @@ export const MODERN_BALANCED = {
       backups: [
         {
           name: 'Daltile Florentine 12"×24" Carrara Look Porcelain',
+          style: ["modern", "minimal"],
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/product/daltile-fl1224fp/1318054.html",
           image:
@@ -317,6 +332,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: 'Daltile Slate 12"×12" Tile',
+          style: ["modern", "minimal"],
           price: 9.8,
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/product/daltile-s1212p1s/1318811.html",
@@ -344,6 +360,7 @@ export const MODERN_BALANCED = {
         "Small-format mosaic in the same stone family as walls — drainage slope and grip.",
       primary: {
         name: 'Bedrosians 2" Round Matte Mosaic',
+        style: ["modern", "minimal"],
         price: 47.35,
         retailer: "Ferguson",
         link: "https://www.fergusonhome.com/product/bedrosians-decmak2rmom/1903359.html",
@@ -356,6 +373,7 @@ export const MODERN_BALANCED = {
       backups: [
         {
           name: 'Daltile 2" Hex Warm Gray Mosaic',
+          style: ["modern", "minimal"],
           price: 14.84,
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/product/daltile-d2hexgmsp/1293678.html",
@@ -367,6 +385,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: 'Merola Tile 2" Hex White Marble Look Mosaic',
+          style: ["modern", "minimal"],
           price: 12.54,
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/product/merola-tile-ftc2f/1976818.html",
@@ -394,6 +413,7 @@ export const MODERN_BALANCED = {
         "Single-handle shower trim in matte black/chrome family — clean, modern, no smart/digital controls.",
       primary: {
         name: "Delta Trinsic 17T Thermostatic Shower Trim",
+        style: ["modern", "minimal"],
         price: 559,
         retailer: "Ferguson",
         link: "https://www.fergusonhome.com/product/delta-t17t059/1128453.html",
@@ -405,6 +425,7 @@ export const MODERN_BALANCED = {
       backups: [
         {
           name: "Kohler Purist Diverter Valve Trim",
+          style: ["modern", "minimal"],
           price: 293,
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/product/kohler-k-t14491-4/566115.html",
@@ -415,6 +436,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: "Moen Engage Shower Head + Handheld Combo",
+          style: ["modern", "minimal"],
           price: 280,
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/product/summary/1439827",
@@ -443,6 +465,7 @@ export const MODERN_BALANCED = {
         "Frameless or semi-frameless clear-glass enclosure. Minimal hardware, maximum visual openness.",
       primary: {
         name: 'DreamLine Lumen 40-41" W × 72" H Semi-Frameless Hinged Shower Door',
+        style: ["modern", "minimal"],
         price: 700,
         retailer: "Ferguson",
         link: "https://www.fergusonhome.com/dreamline-shdr-5340720/s1693693",
@@ -454,6 +477,7 @@ export const MODERN_BALANCED = {
       backups: [
         {
           name: 'DreamLine Linea 34" W × 72" H Frameless Open-Entry Shower Screen',
+          style: ["modern", "minimal"],
           price: 650,
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/dreamline-shdr-3234721/s1159178",
@@ -464,6 +488,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: 'DreamLine French Linea 34" W × 72" H Patterned-Glass Shower Screen',
+          style: ["modern", "minimal"],
           price: 690,
           retailer: "Ferguson",
           link: "https://www.fergusonhome.com/dreamline-shdr-3234721-89/s1319707",
@@ -490,6 +515,7 @@ export const MODERN_BALANCED = {
         "Clean modern white toilet — elongated, comfort height, visually quiet. Should not be a focal point.",
       primary: {
         name: "Kohler Santa Rosa Comfort Height One-Piece Elongated Toilet (White)",
+        style: ["modern", "minimal"],
         price: 549,
         retailer: "Home Depot",
         link: "https://www.homedepot.com/p/KOHLER-Santa-Rosa-1-Piece-1-28-GPF-Single-Flush-Elongated-Toilet-in-White-Seat-Included-K-3810-0/202188170",
@@ -501,6 +527,7 @@ export const MODERN_BALANCED = {
       backups: [
         {
           name: "American Standard Cadet 3 Comfort Height Two-Piece Elongated Toilet (White)",
+          style: ["modern", "minimal"],
           price: 348,
           retailer: "Home Depot",
           link: "https://www.homedepot.com/p/American-Standard-Cadet-3-Tall-Height-2-piece-1-28-GPF-Single-Flush-Elongated-Toilet-in-White-Seat-Not-Included-215AA104-020/202050147",
@@ -512,6 +539,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: "Swiss Madison St. Tropez One-Piece Elongated Skirted Toilet (White)",
+          style: ["modern", "minimal"],
           price: 469,
           retailer: "Home Depot",
           link: "https://www.homedepot.com/p/Swiss-Madison-St-Tropez-1-Piece-1-1-1-6-GPF-Dual-Flush-Elongated-Toilet-in-Glossy-White-Seat-Included-SM-1T254/313516552",
@@ -523,6 +551,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: "Bidet-Ready Modern One-Piece Elongated Toilet (White)",
+          style: ["modern", "minimal"],
           price: 599,
           retailer: "Home Depot",
           link: "https://www.homedepot.com/b/Bath-Toilets/Bidet-Toilet/N-5yc1vZbzbtZ1z1ku2x",
@@ -551,6 +580,7 @@ export const MODERN_BALANCED = {
         "Matte black 4-piece bath hardware set — towel bar, towel ring, robe hook, TP holder. Cohesive with faucet/trim family.",
       primary: {
         name: "VIGO Cass 4-Piece Bath Hardware Set (Matte Black)",
+        style: ["modern", "minimal"],
         price: 119,
         retailer: "Home Depot",
         link: "https://www.homedepot.com/p/VIGO-Cass-4-Piece-Bath-Hardware-Set-with-24-in-Towel-Bar-Toilet-Paper-Holder-Towel-Ring-and-Robe-Hook-in-Matte-Black-VG09040MB4PSet/318242178",
@@ -562,6 +592,7 @@ export const MODERN_BALANCED = {
       backups: [
         {
           name: "Moen Genta 4-Piece Bath Hardware Set (Matte Black)",
+          style: ["modern", "minimal"],
           price: 139,
           retailer: "Home Depot",
           link: "https://www.homedepot.com/p/MOEN-Genta-LX-4-Piece-Bath-Hardware-Set-with-24-in-Towel-Bar-Paper-Holder-Towel-Ring-and-Robe-Hook-in-Matte-Black-Y5294BL/313512311",
@@ -573,6 +604,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: "KRAUS Elie 4-Piece Bath Hardware Set (Matte Black)",
+          style: ["modern", "minimal"],
           price: 149,
           retailer: "Home Depot",
           link: "https://www.homedepot.com/p/KRAUS-Elie-4-Piece-Bath-Hardware-Set-with-Towel-Bar-Paper-Holder-Towel-Ring-and-Robe-Hook-in-Matte-Black-KEA-18843MB/318242179",
@@ -584,6 +616,7 @@ export const MODERN_BALANCED = {
         },
         {
           name: "Franklin Brass Maxted 4-Piece Bath Hardware Set (Matte Black)",
+          style: ["modern", "minimal"],
           price: 89,
           retailer: "Home Depot",
           link: "https://www.homedepot.com/p/Franklin-Brass-Maxted-4-Piece-Bath-Hardware-Set-with-Towel-Bar-Toilet-Paper-Holder-Towel-Ring-and-Robe-Hook-in-Matte-Black-MAX4PC-MB/313091237",
