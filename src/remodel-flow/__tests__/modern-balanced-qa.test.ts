@@ -67,32 +67,21 @@ describe("Modern Balanced QA", () => {
   });
 
   it("save/load preserves Modern Balanced state including packageId", () => {
-    const row = serializeFlowToRow(
-      {
-        style: "modern",
-        tier: "balanced",
-        packageId: "modern-balanced",
-        selections: { vanity: "vanity-floating" },
-      },
-      "user-1",
-    );
+    const row = serializeForDb({
+      style: "modern",
+      tier: "balanced",
+      packageId: "modern-balanced",
+      selections: { vanity: "vanity-floating" },
+    });
     expect(row.selected_package_id).toBe("modern-balanced");
     expect(row.selected_style).toBe("modern");
     expect(row.selected_tier).toBe("balanced");
 
-    const back = deserializeRowToFlow({
-      ...row,
-      id: "row-1",
-      user_id: "user-1",
-      created_at: new Date().toISOString(),
-      updated_at: new Date().toISOString(),
-      last_active_at: new Date().toISOString(),
-      status: "draft",
-    } as any);
-    expect(back.packageId).toBe("modern-balanced");
-    expect(back.style).toBe("modern");
-    expect(back.tier).toBe("balanced");
-    expect(back.selections.vanity).toBe("vanity-floating");
+    const { state } = deserializeFromDb(row);
+    expect(state.packageId).toBe("modern-balanced");
+    expect(state.style).toBe("modern");
+    expect(state.tier).toBe("balanced");
+    expect(state.selections.vanity).toBe("vanity-floating");
   });
 
   it("other styles/tiers keep generic ids", () => {
