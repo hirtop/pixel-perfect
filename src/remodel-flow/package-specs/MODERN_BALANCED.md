@@ -12,7 +12,7 @@ Structured mirror: `src/remodel-flow/packages/modern-balanced.ts`.
 | Bin | Status |
 |---|---|
 | Vanity | ✅ Ready |
-| Faucet | 🟡 Placeholder |
+| Faucet | ✅ Ready |
 | Mirror | 🟡 Placeholder |
 | Lighting | ✅ Ready |
 | Shower Wall Tile | ✅ Ready |
