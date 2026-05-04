@@ -291,20 +291,24 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Accessories  *(Sourcing: 🟡 Placeholder)*
+## Bin: Accessories  *(Sourcing: ✅ Ready)*
 
-**Intent:** Matte black hardware set — towel bar, hand towel ring, robe hook, toilet paper holder. Cohesive with faucet and trim.
+**Intent:** Matte black 4-piece bath hardware set — towel bar, towel ring, robe hook, TP holder. Cohesive with faucet and shower trim family.
 
-- **Primary:** Matte Black 4-Piece Accessory Set (24" towel bar, ring, hook, TP holder)
+- **Primary:** VIGO Cass 4-Piece Bath Hardware Set, Matte Black — $119 (Home Depot) — `matte_black_4pc_set`
+  - Link: https://www.homedepot.com/p/VIGO-Cass-4-Piece-Bath-Hardware-Set-with-24-in-Towel-Bar-Toilet-Paper-Holder-Towel-Ring-and-Robe-Hook-in-Matte-Black-VG09040MB4PSet/318242178
 - **Backups (max 3):**
-  1. Brushed Gunmetal 4-Piece Accessory Set
-  2. Matte Black 3-Piece Set (no robe hook) — budget fallback
-  3. Chrome 4-Piece Set (fallback if matte black out of stock)
+  1. Moen Genta LX 4-Piece Bath Hardware Set, Matte Black — $139 (Home Depot) — branded backup
+  2. KRAUS Elie 4-Piece Bath Hardware Set, Matte Black — $149 (Home Depot) — upgraded backup
+  3. Franklin Brass Maxted 4-Piece Bath Hardware Set, Matte Black — $89 (Home Depot) — budget backup
 - **Constraints:**
-  - Finish must match faucet + shower trim family.
+  - Modern/minimal design only — no ornate or rustic profiles.
+  - Finish must coordinate with faucet and shower trim (matte black default).
   - Set must be from a single product line (no mixing brands/finishes).
-- **Price range:** $120–$280
-- **Customer-facing text:** "A matched matte-black hardware set — towel bar, ring, hook, and paper holder."
+  - No chrome-default accessories in Modern Balanced path.
+  - Real, image-backed product required.
+- **Price range:** $80–$170
+- **Customer-facing text:** "A matched matte-black hardware set — towel bar, ring, hook, and paper holder, all from one line."
 
 ---
 
