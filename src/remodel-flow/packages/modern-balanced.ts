@@ -21,6 +21,8 @@ export type BinProduct = {
   image?: string;
   /** Faucet/fixture deck type, e.g. "single_hole", "widespread", "centerset". */
   type?: string;
+  /** Recommended/curated pick for this bin. True only on the bin's primary. */
+  primary?: boolean;
   /**
    * Style tags this product is compatible with.
    * Used by curated package renderers to block wrong-style products
@@ -119,6 +121,7 @@ export const MODERN_BALANCED = {
         "Anchor the room with a wall-hung floating vanity in natural oak or matte white.",
       primary: {
         name: 'Floating Oak Vanity, 36" single sink, integrated drawer, matte black pulls',
+        primary: true,
         style: ["modern", "minimal"],
         priceRange: [1200, 2200],
       },
@@ -144,6 +147,7 @@ export const MODERN_BALANCED = {
         "Single-hole, tall-spout, matte black. Reads as one continuous line with the vanity.",
       primary: {
         name: "Delta Trinsic Single Hole Single-Handle Bathroom Faucet",
+        primary: true,
         style: ["modern", "minimal"],
         finish: "Matte Black",
         price: 329,
@@ -198,6 +202,7 @@ export const MODERN_BALANCED = {
         "Thin-frame or frameless rectangular mirror, sized to the vanity. Visual quiet space.",
       primary: {
         name: 'Kohler Essential 36" Rectangular Metal Framed Mirror',
+        primary: true,
         style: ["modern", "minimal"],
         price: 339,
         retailer: "Ferguson",
@@ -249,6 +254,7 @@ export const MODERN_BALANCED = {
         "Layered but restrained — overhead + flanking sconces in matte black, warm white bulbs.",
       primary: {
         name: "Sconce Pair (matte black, warm white) + Flush LED overhead",
+        primary: true,
         style: ["modern", "minimal"],
         priceRange: [260, 520],
       },
@@ -278,6 +284,7 @@ export const MODERN_BALANCED = {
         "Large-format warm-grey or warm-white porcelain, stone or honed marble look. Minimal grout.",
       primary: {
         name: '12"×24" Honed Marble-Look Porcelain, warm white',
+        primary: true,
         style: ["modern", "minimal"],
         priceRange: [480, 960],
       },
@@ -307,6 +314,7 @@ export const MODERN_BALANCED = {
         "Large-format matte porcelain in the same warm-neutral family as shower walls. Reads continuous, never overpowers.",
       primary: {
         name: 'Daltile Dignitary 12"×24" Warm Gray Porcelain',
+        primary: true,
         style: ["modern", "minimal"],
         price: 10.11,
         retailer: "Ferguson",
@@ -358,6 +366,7 @@ export const MODERN_BALANCED = {
         "Small-format mosaic in the same stone family as walls — drainage slope and grip.",
       primary: {
         name: 'Bedrosians 2" Round Matte Mosaic',
+        primary: true,
         style: ["modern", "minimal"],
         price: 47.35,
         retailer: "Ferguson",
@@ -411,6 +420,7 @@ export const MODERN_BALANCED = {
         "Single-handle shower trim in matte black/chrome family — clean, modern, no smart/digital controls.",
       primary: {
         name: "Delta Trinsic 17T Thermostatic Shower Trim",
+        primary: true,
         style: ["modern", "minimal"],
         price: 559,
         retailer: "Ferguson",
@@ -463,6 +473,7 @@ export const MODERN_BALANCED = {
         "Frameless or semi-frameless clear-glass enclosure. Minimal hardware, maximum visual openness.",
       primary: {
         name: 'DreamLine Lumen 40-41" W × 72" H Semi-Frameless Hinged Shower Door',
+        primary: true,
         style: ["modern", "minimal"],
         price: 700,
         retailer: "Ferguson",
@@ -513,6 +524,7 @@ export const MODERN_BALANCED = {
         "Clean modern white toilet — elongated, comfort height, visually quiet. Should not be a focal point.",
       primary: {
         name: "Kohler Santa Rosa Comfort Height One-Piece Elongated Toilet (White)",
+        primary: true,
         style: ["modern", "minimal"],
         price: 549,
         retailer: "Home Depot",
@@ -578,6 +590,7 @@ export const MODERN_BALANCED = {
         "Matte black 4-piece bath hardware set — towel bar, towel ring, robe hook, TP holder. Cohesive with faucet/trim family.",
       primary: {
         name: "VIGO Cass 4-Piece Bath Hardware Set (Matte Black)",
+        primary: true,
         style: ["modern", "minimal"],
         price: 119,
         retailer: "Home Depot",
