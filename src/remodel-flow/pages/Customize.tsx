@@ -234,7 +234,11 @@ const Customize = () => {
       <section key={`curated-${label}`}>
         <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{label}</p>
         <div className="grid gap-3 md:grid-cols-3">
-          <FlowCard selected className="border-dashed bg-muted/20">
+          <FlowCard
+            selected={pickFor(label) === 0}
+            onClick={() => setCuratedPicks((p) => ({ ...p, [label]: 0 }))}
+            className="border-dashed bg-muted/20"
+          >
             <span
               className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-foreground/20 bg-background/80 px-2 py-0.5 text-[10px] font-medium text-foreground"
               title="Curated pick for Modern Balanced"
@@ -254,18 +258,26 @@ const Customize = () => {
             </p>
             <p className="mt-2 text-[11px] text-muted-foreground/80">{bin.customerText}</p>
           </FlowCard>
-          {bin.backups.slice(0, 2).map((b, i) => (
-            <FlowCard key={`${label}-bk-${i}`} className="border-dashed bg-muted/10 opacity-80">
-              <p className="text-sm font-medium text-foreground pr-16">{b.name}</p>
-              <p className="mt-2 text-xs text-muted-foreground">
-                {fmtRange(b.priceRange)}
-                <span className="ml-2 text-[10px] font-medium text-muted-foreground">
-                  Backup · sourcing in progress
-                </span>
-              </p>
-              {b.note && <p className="mt-2 text-[11px] text-muted-foreground/80">{b.note}</p>}
-            </FlowCard>
-          ))}
+          {bin.backups.slice(0, 2).map((b, i) => {
+            const idx = i + 1;
+            return (
+              <FlowCard
+                key={`${label}-bk-${i}`}
+                selected={pickFor(label) === idx}
+                onClick={() => setCuratedPicks((p) => ({ ...p, [label]: idx }))}
+                className={cn("border-dashed bg-muted/10", pickFor(label) === idx ? "" : "opacity-80")}
+              >
+                <p className="text-sm font-medium text-foreground pr-16">{b.name}</p>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {fmtRange(b.priceRange)}
+                  <span className="ml-2 text-[10px] font-medium text-muted-foreground">
+                    Backup · sourcing in progress
+                  </span>
+                </p>
+                {b.note && <p className="mt-2 text-[11px] text-muted-foreground/80">{b.note}</p>}
+              </FlowCard>
+            );
+          })}
         </div>
       </section>
     );
