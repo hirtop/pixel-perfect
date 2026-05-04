@@ -66,6 +66,11 @@ const Customize = () => {
   const pkg = state.tier ? PACKAGES[state.tier] : undefined;
   const plan = resolvePlan(state);
 
+  // Local selection for read-only curated bins (no pricing impact).
+  // Defaults to "primary" for each bin; backups remain clickable.
+  const [curatedPicks, setCuratedPicks] = useState<Record<string, number>>({});
+  const pickFor = (label: string) => curatedPicks[label] ?? 0; // 0 = primary
+
   // Global Style Match: average per-slot style fit of currently chosen options.
   // Computed unconditionally so hooks below stay stable across renders.
   const chosenScores = pkg
