@@ -258,6 +258,29 @@ export function getPackageFor(style: StyleId | undefined, tier: TierId): Catalog
     : STYLE_DEFAULTS.modern[tier];
   const id = style ? `${style}-${tier}` : tier;
   const name = style ? `${STYLE_LABEL[style]} — ${tierMeta.name}` : tierMeta.name;
+
+  // Curated-spec overlay: only Modern + Balanced uses the real spec metadata.
+  // Defaults/slots remain driven by the existing catalog so the resolver and
+  // swap system continue to work unchanged. If anything throws, we fall back
+  // silently to the generic package.
+  if (style === "modern" && tier === "balanced") {
+    try {
+      const spec = MODERN_BALANCED;
+      const [lo, hi] = spec.priceRange.total;
+      const midBase = Math.round((lo + hi) / 2);
+      return {
+        id: spec.id,
+        name: spec.name,
+        tagline: spec.bins.vanity.customerText,
+        basePrice: midBase,
+        defaults,
+        slots: buildSlots(defaults, tier),
+      };
+    } catch {
+      // fall through to generic
+    }
+  }
+
   return {
     id,
     name,
