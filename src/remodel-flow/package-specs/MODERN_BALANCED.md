@@ -1,7 +1,27 @@
-# Modern — Balanced Package
+# Modern — Balanced Package  *(LOCKED v1)*
 
 Internal source-of-truth spec for the **Modern Balanced** curated package.
-Documentation only — not wired into UI or engine yet.
+Structured mirror: `src/remodel-flow/packages/modern-balanced.ts`.
+
+**Sourcing legend (per bin):**
+- ✅ **Ready** — real products mapped, image-ready, included in pricing.
+- 🟡 **Placeholder** — spec is locked but a real product / image is not yet sourced.
+  UI shows "Product sourcing in progress"; bin is excluded from pricing until ready.
+
+**Bin status (locked v1):**
+| Bin | Status |
+|---|---|
+| Vanity | ✅ Ready |
+| Faucet | 🟡 Placeholder |
+| Mirror | 🟡 Placeholder |
+| Lighting | ✅ Ready |
+| Shower Wall Tile | ✅ Ready |
+| Floor Tile | 🟡 Placeholder |
+| Shower Floor Tile | 🟡 Placeholder |
+| Shower Trim | 🟡 Placeholder |
+| Shower Glass | 🟡 Placeholder |
+| Toilet | 🟡 Placeholder |
+| Accessories | 🟡 Placeholder |
 
 ---
 
