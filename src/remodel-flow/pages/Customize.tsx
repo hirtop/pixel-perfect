@@ -247,7 +247,7 @@ const Customize = () => {
   const sections = isCuratedModernBalanced
     ? MODERN_BALANCED_BINS.map((b) => {
         const bin = MODERN_BALANCED.bins[b.key] as Bin;
-        if (b.categoryId) return renderCategorySection(b.categoryId, b.label);
+        if (b.categoryId) return renderCategorySection(b.categoryId, b.label, b.key);
         return renderCuratedBinSection(b.label, bin);
       })
     : CATEGORIES.map((cat) => renderCategorySection(cat.id));
