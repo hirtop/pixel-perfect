@@ -332,3 +332,18 @@ soft grey stone tones, natural oak warmth, matte black metal.
 | **Estimated remodel total** | **~$12,000** | **~$20,000** |
 
 > Note: bin price ranges intentionally extend slightly above the $6,000 product target so backups can flex up without breaking the package. Default selections (primaries) should land inside the $3,000–$6,000 band.
+
+---
+
+## Style validation
+
+Every curated product carries a `style: ProductStyle[]` tag. The Modern Balanced
+renderer only accepts products whose tags include **`modern`** or **`minimal`**.
+
+- ✅ Allowed: `modern`, `minimal`
+- 🚫 Blocked: `traditional`, `ornate`, `classic`-only products
+- Untagged products are excluded (must be validated explicitly)
+
+Helpers (in `src/remodel-flow/packages/modern-balanced.ts`):
+- `isAllowedInModernBalanced(product)`
+- `filterBinForModernBalanced(bin)` — drops blocked products and falls back to the next allowed backup if the primary is blocked
