@@ -93,6 +93,146 @@ const Customize = () => {
     );
   }
 
+  const isCuratedModernBalanced = state.style === "modern" && state.tier === "balanced";
+
+  // Render the existing interactive category section (real catalog category).
+  const renderCategorySection = (catId: string, displayLabel?: string) => {
+    const cat = getCategory(catId);
+    if (!cat) return null;
+
+    const currentId = state.selections[cat.id] ?? pkg.defaults[cat.id];
+    const allowedBins =
+      pkg.slots?.[cat.id]?.preferred_bins ??
+      cat.swap_config?.allowed_bins ??
+      (state.tier ? TIER_BINS[state.tier] : undefined);
+    const defaultId = pkg.defaults[cat.id];
+    const anchorPrice = defaultId ? getOption(cat.id, defaultId)?.estPrice ?? 0 : 0;
+    const ranked = rank_candidates({
+      categoryId: cat.id,
+      style: state.style,
+      allowedBins,
+      anchorPrice,
+      userOverrideId: state.selections[cat.id],
+    });
+    const visibleIds = new Set(cat.options.map((o) => o.id));
+    const bestVisible = ranked.find((r) => visibleIds.has(r.option.id));
+    const bestId = bestVisible?.option.id;
+    const currentPrice = getOption(cat.id, currentId)?.estPrice ?? 0;
+
+    return (
+      <section key={`cat-${cat.id}`}>
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">
+          {displayLabel ?? cat.name}
+        </p>
+        <div className="grid gap-3 md:grid-cols-3">
+          {cat.options.map((opt) => {
+            const s01 = styleScore(state.style, cat.id, opt);
+            const pct = Math.round(s01 * 100);
+            const label = styleMatchLabel(s01);
+            const isBest = opt.id === bestId;
+            const delta = opt.estPrice - currentPrice;
+            const isCurrent = opt.id === currentId;
+            return (
+              <FlowCard
+                key={opt.id}
+                selected={currentId === opt.id}
+                onClick={() => setSelection(cat.id, opt.id)}
+                className={cn(isBest && "border-foreground/40 bg-foreground/[0.02]")}
+              >
+                {isBest && (
+                  <span
+                    className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-foreground/20 bg-background/80 px-2 py-0.5 text-[10px] font-medium text-foreground"
+                    title="Engine's top-ranked option for your style, tier, and budget"
+                  >
+                    <Star size={10} className="fill-foreground" strokeWidth={0} />
+                    Best match
+                  </span>
+                )}
+                <p className="text-sm font-medium text-foreground pr-16">{opt.name}</p>
+                <p className="mt-2 text-xs text-muted-foreground">
+                  {fmt(opt.estPrice)}
+                  <span
+                    className={cn(
+                      "ml-2 text-[10px] font-medium tabular-nums",
+                      isCurrent || delta === 0
+                        ? "text-muted-foreground"
+                        : delta > 0
+                          ? "text-destructive"
+                          : "text-emerald-600 dark:text-emerald-500",
+                    )}
+                  >
+                    {isCurrent || delta === 0
+                      ? "Included"
+                      : `${delta > 0 ? "+" : "−"}${fmt(Math.abs(delta))}`}
+                  </span>
+                </p>
+                {state.style && (
+                  <p className="mt-2">
+                    <span className={badgeClasses(label)} title={`${label} for ${state.style}`}>
+                      {pct}% · {label}
+                    </span>
+                  </p>
+                )}
+                {isCurrent && (
+                  <span
+                    aria-label="Selected"
+                    className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-foreground text-background px-2 py-0.5 text-[10px] font-medium"
+                  >
+                    <Check size={10} strokeWidth={3} />
+                    Selected
+                  </span>
+                )}
+              </FlowCard>
+            );
+          })}
+        </div>
+      </section>
+    );
+  };
+
+  // Read-only curated bin section sourced from MODERN_BALANCED.
+  // Used for bins that don't yet have catalog-backed products.
+  const renderCuratedBinSection = (label: string, bin: Bin) => {
+    const fmtRange = (r: [number, number]) => `${fmt(r[0])} – ${fmt(r[1])}`;
+    return (
+      <section key={`curated-${label}`}>
+        <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{label}</p>
+        <div className="grid gap-3 md:grid-cols-3">
+          <FlowCard className="border-dashed bg-muted/20">
+            <p className="text-sm font-medium text-foreground pr-16">{bin.primary.name}</p>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {fmtRange(bin.primary.priceRange)}
+              <span className="ml-2 text-[10px] font-medium text-muted-foreground">
+                Product sourcing needed
+              </span>
+            </p>
+            <p className="mt-2 text-[11px] text-muted-foreground/80">{bin.customerText}</p>
+          </FlowCard>
+          {bin.backups.slice(0, 2).map((b, i) => (
+            <FlowCard key={`${label}-bk-${i}`} className="border-dashed bg-muted/10 opacity-80">
+              <p className="text-sm font-medium text-foreground pr-16">{b.name}</p>
+              <p className="mt-2 text-xs text-muted-foreground">
+                {fmtRange(b.priceRange)}
+                <span className="ml-2 text-[10px] font-medium text-muted-foreground">
+                  Backup
+                </span>
+              </p>
+              {b.note && <p className="mt-2 text-[11px] text-muted-foreground/80">{b.note}</p>}
+            </FlowCard>
+          ))}
+        </div>
+      </section>
+    );
+  };
+
+  const sections = isCuratedModernBalanced
+    ? MODERN_BALANCED_BINS.map((b) => {
+        const bin = MODERN_BALANCED.bins[b.key] as Bin;
+        if (b.categoryId) return renderCategorySection(b.categoryId, b.label);
+        return renderCuratedBinSection(b.label, bin);
+      })
+    : CATEGORIES.map((cat) => renderCategorySection(cat.id));
+
   return (
     <div>
       <StepHeader
@@ -102,103 +242,7 @@ const Customize = () => {
       />
 
       <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
-        <div className="space-y-8">
-          {CATEGORIES.map((cat) => {
-            const currentId = state.selections[cat.id] ?? pkg.defaults[cat.id];
-
-            // Engine-ranked best candidate among the visible options for this slot.
-            const allowedBins =
-              pkg.slots?.[cat.id]?.preferred_bins ??
-              cat.swap_config?.allowed_bins ??
-              (state.tier ? TIER_BINS[state.tier] : undefined);
-            const defaultId = pkg.defaults[cat.id];
-            const anchorPrice = defaultId ? getOption(cat.id, defaultId)?.estPrice ?? 0 : 0;
-            const ranked = rank_candidates({
-              categoryId: cat.id,
-              style: state.style,
-              allowedBins,
-              anchorPrice,
-              userOverrideId: state.selections[cat.id],
-            });
-            // Restrict "best" highlight to the visible option set (not dynamic pool).
-            const visibleIds = new Set(cat.options.map((o) => o.id));
-            const bestVisible = ranked.find((r) => visibleIds.has(r.option.id));
-            const bestId = bestVisible?.option.id;
-
-            // Price delta baseline: currently-selected option in this slot.
-            const currentPrice = getOption(cat.id, currentId)?.estPrice ?? 0;
-
-            return (
-              <section key={cat.id}>
-                <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{cat.name}</p>
-                <div className="grid gap-3 md:grid-cols-3">
-                  {cat.options.map((opt) => {
-                    const s01 = styleScore(state.style, cat.id, opt);
-                    const pct = Math.round(s01 * 100);
-                    const label = styleMatchLabel(s01);
-                    const isBest = opt.id === bestId;
-                    const delta = opt.estPrice - currentPrice;
-                    const isCurrent = opt.id === currentId;
-                    return (
-                      <FlowCard
-                        key={opt.id}
-                        selected={currentId === opt.id}
-                        onClick={() => setSelection(cat.id, opt.id)}
-                        className={cn(
-                          isBest && "border-foreground/40 bg-foreground/[0.02]",
-                        )}
-                      >
-                        {isBest && (
-                          <span
-                            className="absolute right-3 top-3 inline-flex items-center gap-1 rounded-full border border-foreground/20 bg-background/80 px-2 py-0.5 text-[10px] font-medium text-foreground"
-                            title="Engine's top-ranked option for your style, tier, and budget"
-                          >
-                            <Star size={10} className="fill-foreground" strokeWidth={0} />
-                            Best match
-                          </span>
-                        )}
-                        <p className="text-sm font-medium text-foreground pr-16">{opt.name}</p>
-                        <p className="mt-2 text-xs text-muted-foreground">
-                          {fmt(opt.estPrice)}
-                          <span
-                            className={cn(
-                              "ml-2 text-[10px] font-medium tabular-nums",
-                              isCurrent || delta === 0
-                                ? "text-muted-foreground"
-                                : delta > 0
-                                  ? "text-destructive"
-                                  : "text-emerald-600 dark:text-emerald-500",
-                            )}
-                          >
-                            {isCurrent || delta === 0
-                              ? "Included"
-                              : `${delta > 0 ? "+" : "−"}${fmt(Math.abs(delta))}`}
-                          </span>
-                        </p>
-                        {state.style && (
-                          <p className="mt-2">
-                            <span className={badgeClasses(label)} title={`${label} for ${state.style}`}>
-                              {pct}% · {label}
-                            </span>
-                          </p>
-                        )}
-                        {isCurrent && (
-                          <span
-                            aria-label="Selected"
-                            className="absolute bottom-3 right-3 inline-flex items-center gap-1 rounded-full bg-foreground text-background px-2 py-0.5 text-[10px] font-medium"
-                          >
-                            <Check size={10} strokeWidth={3} />
-                            Selected
-                          </span>
-                        )}
-                      </FlowCard>
-                    );
-                  })}
-                </div>
-              </section>
-            );
-          })}
-        </div>
+        <div className="space-y-8">{sections}</div>
 
         <aside className="lg:sticky lg:top-24 h-fit rounded-2xl border border-border bg-card p-5">
           <div className="flex items-start justify-between gap-3">
