@@ -18,7 +18,7 @@ Structured mirror: `src/remodel-flow/packages/modern-balanced.ts`.
 | Shower Wall Tile | ✅ Ready |
 | Floor Tile | ✅ Ready |
 | Shower Floor Tile | ✅ Ready |
-| Shower Trim | 🟡 Placeholder |
+| Shower Trim | ✅ Ready |
 | Shower Glass | 🟡 Placeholder |
 | Toilet | 🟡 Placeholder |
 | Accessories | 🟡 Placeholder |
@@ -214,21 +214,32 @@ soft grey stone tones, natural oak warmth, matte black metal.
 
 ---
 
-## Bin: Shower Trim  *(Sourcing: 🟡 Placeholder)*
+## Bin: Shower Trim  *(Sourcing: ✅ Ready)*
 
-**Intent:** Matte black trim kit — single-handle valve, fixed showerhead, optional handheld on slide bar. Contractor handles rough-in valve body separately.
+**Intent:** Single-handle shower trim in matte black/chrome family — clean, modern, no smart/digital controls. Contractor handles rough-in valve body separately.
 
-- **Primary:** Matte Black Trim Kit — single-handle, 8" rain head + handheld on slide bar
-- **Backups (max 3):**
-  1. Matte Black Trim Kit — single-handle, 8" rain head only
-  2. Brushed Gunmetal Trim Kit — single-handle, rain head + handheld
-  3. Chrome Trim Kit — single-handle (fallback if matte black out of stock)
+- **Primary:** Delta Trinsic 17T Thermostatic Shower Trim
+  - Price: $559
+  - Retailer: Ferguson
+  - Type: thermostatic_trim
+  - Link: https://www.fergusonhome.com/product/delta-t17t059/1128453.html
+  - Image: https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-t17t059-1128453.jpg
+- **Backups:**
+  1. Kohler Purist Diverter Valve Trim — $293, Ferguson, modern_trim
+     - Link: https://www.fergusonhome.com/product/kohler-k-t14491-4/566115.html
+     - Image: https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-t14491-4-566115.jpg
+  2. Moen Engage Shower Head + Handheld Combo — $280, Ferguson, combo_system
+     - Link: https://www.fergusonhome.com/product/summary/1439827
+     - Image: https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/moen/26009.jpg
 - **Constraints:**
-  - Trim only — rough-in valve body is contractor scope and not a product bin.
-  - Must match faucet finish family.
-  - Single-handle only (Modern intent).
-- **Price range:** $360–$720
-- **Customer-facing text:** "A matte-black shower trim with a rain head and handheld — clean lines, real function."
+  - Single-handle preferred.
+  - Modern/minimal styling only.
+  - Finish must match faucet family.
+  - No smart/digital shower systems.
+  - Trim only — rough-in valve body is contractor scope.
+  - Must have a valid product image.
+- **Price range:** $280–$559
+- **Customer-facing text:** "A clean modern shower trim with the controls and showerhead working as one set."
 
 ---
 

@@ -343,36 +343,52 @@ export const MODERN_BALANCED = {
     } satisfies Bin,
 
     showerTrim: {
-      sourcing: "placeholder",
+      sourcing: "ready",
       intent:
-        "Matte black trim kit — single-handle valve, fixed showerhead, optional handheld on slide bar.",
+        "Single-handle shower trim in matte black/chrome family — clean, modern, no smart/digital controls.",
       primary: {
-        name: 'Matte Black Trim Kit — single-handle, 8" rain head + handheld on slide bar',
-        priceRange: [360, 720],
+        name: "Delta Trinsic 17T Thermostatic Shower Trim",
+        price: 559,
+        retailer: "Ferguson",
+        link: "https://www.fergusonhome.com/product/delta-t17t059/1128453.html",
+        image:
+          "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/delta/delta-t17t059-1128453.jpg",
+        type: "thermostatic_trim",
+        priceRange: [559, 559],
       },
       backups: [
         {
-          name: 'Matte Black Trim Kit — single-handle, 8" rain head only',
-          priceRange: [360, 720],
+          name: "Kohler Purist Diverter Valve Trim",
+          price: 293,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/product/kohler-k-t14491-4/566115.html",
+          image:
+            "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-t14491-4-566115.jpg",
+          type: "modern_trim",
+          priceRange: [293, 293],
         },
         {
-          name: "Brushed Gunmetal Trim Kit — single-handle, rain head + handheld",
-          priceRange: [360, 720],
-        },
-        {
-          name: "Chrome Trim Kit — single-handle",
-          priceRange: [360, 720],
-          note: "Fallback if matte black out of stock.",
+          name: "Moen Engage Shower Head + Handheld Combo",
+          price: 280,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/product/summary/1439827",
+          image:
+            "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/moen/26009.jpg",
+          type: "combo_system",
+          priceRange: [280, 280],
         },
       ],
       constraints: [
+        "Single-handle preferred.",
+        "Modern/minimal styling only.",
+        "Finish must match faucet family.",
+        "No smart/digital shower systems.",
         "Trim only — rough-in valve body is contractor scope.",
-        "Must match faucet finish family.",
-        "Single-handle only (Modern intent).",
+        "Must have a valid product image.",
       ],
-      priceRange: [360, 720],
+      priceRange: [280, 559],
       customerText:
-        "A matte-black shower trim with a rain head and handheld — clean lines, real function.",
+        "A clean modern shower trim with the controls and showerhead working as one set.",
     } satisfies Bin,
 
     showerGlass: {
