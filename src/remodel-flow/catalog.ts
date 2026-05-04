@@ -250,26 +250,41 @@ const TIER_META: Record<TierId, { name: string; tagline: string; basePrice: numb
   premium:   { name: "Premium",   tagline: "High-end materials, layered design.",       basePrice: 22500 },
 };
 
+/**
+ * Canonical package id for a (style, tier) pair.
+ *
+ * Rules:
+ *  - style + tier  → "{style}-{tier}" (e.g. "modern-balanced", "minimal-premium")
+ *  - tier only     → "{tier}" (legacy fallback for Tier.tsx pricing only)
+ *
+ * Always prefer the style-qualified id when style is known, so packageId
+ * cannot collide with a tier name (e.g. "balanced") once we ship more
+ * style-specific packages.
+ */
+export function getPackageId(style: StyleId | undefined, tier: TierId): string {
+  return style ? `${style}-${tier}` : tier;
+}
+
 /** Style-aware package builder. Falls back to `balanced` defaults shape. */
 export function getPackageFor(style: StyleId | undefined, tier: TierId): CatalogPackage {
   const tierMeta = TIER_META[tier];
   const defaults = style
     ? STYLE_DEFAULTS[style][tier]
     : STYLE_DEFAULTS.modern[tier];
-  const id = style ? `${style}-${tier}` : tier;
+  const id = getPackageId(style, tier);
   const name = style ? `${STYLE_LABEL[style]} — ${tierMeta.name}` : tierMeta.name;
 
   // Curated-spec overlay: only Modern + Balanced uses the real spec metadata.
   // Defaults/slots remain driven by the existing catalog so the resolver and
-  // swap system continue to work unchanged. If anything throws, we fall back
-  // silently to the generic package.
+  // swap system continue to work unchanged. If the spec ever throws, we fall
+  // back to the generic package shape but keep the canonical id ("modern-balanced").
   if (style === "modern" && tier === "balanced") {
     try {
       const spec = MODERN_BALANCED;
       const [lo, hi] = spec.priceRange.total;
       const midBase = Math.round((lo + hi) / 2);
       return {
-        id: spec.id,
+        id, // always "modern-balanced", never just "balanced"
         name: spec.name,
         tagline: spec.bins.vanity.customerText,
         basePrice: midBase,
@@ -277,7 +292,7 @@ export function getPackageFor(style: StyleId | undefined, tier: TierId): Catalog
         slots: buildSlots(defaults, tier),
       };
     } catch {
-      // fall through to generic
+      // fall through to generic shape, keeping the qualified id above
     }
   }
 
