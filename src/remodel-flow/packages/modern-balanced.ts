@@ -15,9 +15,19 @@ export type BinProduct = {
   note?: string;
 };
 
+/**
+ * Sourcing status for a bin:
+ *  - "ready"       — real products mapped + image-ready, safe to show & price.
+ *  - "placeholder" — spec is locked but real product/imagery isn't sourced yet.
+ *                    UI shows "Product sourcing in progress"; excluded from pricing.
+ */
+export type BinSourcing = "ready" | "placeholder";
+
 export type Bin = {
   /** Short design intent for this bin. */
   intent: string;
+  /** Whether real, image-ready products back this bin yet. */
+  sourcing: BinSourcing;
   /** The default selection for the package. */
   primary: BinProduct;
   /** Up to 3 ranked fallbacks. */
