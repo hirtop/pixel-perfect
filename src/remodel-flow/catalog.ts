@@ -1,4 +1,5 @@
 import type { CatalogCategory, CatalogPackage, PriceBin, TierId } from "./types";
+import { MODERN_BALANCED } from "./packages/modern-balanced";
 
 // Self-contained catalog. Engine metadata (material_tags, finish_tags, bin,
 // swap_config, package slots, dynamic_pool) is consumed by the resolver engine.
