@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES, TIER_BINS, getCategory, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
-import { MODERN_BALANCED, type Bin } from "../packages/modern-balanced";
+import { MODERN_BALANCED, filterBinForModernBalanced, type Bin } from "../packages/modern-balanced";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, Check, Star } from "lucide-react";
@@ -208,7 +208,22 @@ const Customize = () => {
 
   // Read-only curated bin section sourced from MODERN_BALANCED.
   // Used for bins that don't yet have catalog-backed products.
-  const renderCuratedBinSection = (label: string, bin: Bin) => {
+  // Filtered through filterBinForModernBalanced to block non-modern/minimal products.
+  const renderCuratedBinSection = (label: string, rawBin: Bin) => {
+    const bin = filterBinForModernBalanced(rawBin);
+    if (!bin) {
+      return (
+        <section key={`curated-${label}`}>
+          <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{label}</p>
+          <FlowCard className="border-dashed bg-muted/10">
+            <p className="text-sm font-medium text-foreground">Curated product needed</p>
+            <p className="mt-1 text-[11px] text-muted-foreground/80">
+              No modern/minimal product sourced for this bin yet.
+            </p>
+          </FlowCard>
+        </section>
+      );
+    }
     const fmtRange = (r: [number, number]) => `${fmt(r[0])} – ${fmt(r[1])}`;
     return (
       <section key={`curated-${label}`}>
@@ -328,14 +343,15 @@ const Customize = () => {
           <div className="mt-4 space-y-2 border-t border-border/60 pt-4">
             {isCuratedModernBalanced
               ? MODERN_BALANCED_BINS.map((b) => {
-                  const bin = MODERN_BALANCED.bins[b.key] as Bin;
+                  const rawBin = MODERN_BALANCED.bins[b.key] as Bin;
+                  const bin = filterBinForModernBalanced(rawBin);
                   if (b.categoryId) {
                     const item = plan.items.find((it) => it.categoryId === b.categoryId);
                     return (
                       <div key={`sb-${b.key}`} className="flex justify-between text-xs">
                         <span className="text-muted-foreground">{b.label}</span>
                         <span className="text-foreground">
-                          {item?.optionName ?? bin.primary.name}
+                          {item?.optionName ?? bin?.primary.name ?? "Curated product needed"}
                         </span>
                       </div>
                     );
@@ -343,7 +359,9 @@ const Customize = () => {
                   return (
                     <div key={`sb-${b.key}`} className="flex justify-between text-xs">
                       <span className="text-muted-foreground">{b.label}</span>
-                      <span className="text-muted-foreground/70 italic">Sourcing</span>
+                      <span className="text-muted-foreground/70 italic">
+                        {bin ? "Sourcing" : "Curated product needed"}
+                      </span>
                     </div>
                   );
                 })
