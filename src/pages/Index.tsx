@@ -107,6 +107,18 @@ export default function LandingPage() {
   // the legacy `projects` table to surface saved projects in the picker for
   // backwards compatibility, but the homepage CTAs all route through
   // /remodel-flow/* using the FlowContext + resumeRoute resolver.
+  //
+  // TODO(storage-keys): Two localStorage keys are in play during the
+  // transition window:
+  //   - `bobox_remodel_flow_v1`  → primary FlowContext state (drives all
+  //     homepage CTA routing via resolveFlowResumeRoute).
+  //   - `bobox_project_draft`    → legacy ProjectContext draft, still
+  //     consumed by /start, /upload, /dimensions, /assessment,
+  //     /style-budget, /options, /package/:id, /customize/:id, /workflow,
+  //     /summary, /subcontractors, /agreement.
+  // When both exist, RemodelFlowState wins for homepage CTA routing.
+  // Future pass should retire or migrate `bobox_project_draft` once
+  // legacy /start.../agreement traffic is near zero.
   const projectCount = projects.length;
   const isProjectStateLoading = authLoading || (Boolean(user) && projectsLoading);
   const flowHasProgress = hasFlowProgress(flowState);

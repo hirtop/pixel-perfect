@@ -1,3 +1,16 @@
+/**
+ * Serializer for the unified remodel-flow → `remodel_designs` table.
+ *
+ * TODO(storage-keys): During the transition window two localStorage keys
+ * coexist:
+ *   - `bobox_remodel_flow_v1`  → primary FlowContext state (the one this
+ *     serializer mirrors into the DB).
+ *   - `bobox_project_draft`    → legacy ProjectContext draft used by the
+ *     legacy /start.../agreement pages. NOT mirrored here.
+ * When both exist, RemodelFlowState wins for homepage CTA routing.
+ * Future pass should retire or migrate `bobox_project_draft` once legacy
+ * route traffic is near zero.
+ */
 import type { RemodelFlowState } from "../types";
 import { splitPackageIdField } from "../package-engine/flowStateMigration";
 import { normalizeTier } from "../package-engine/normalize";
