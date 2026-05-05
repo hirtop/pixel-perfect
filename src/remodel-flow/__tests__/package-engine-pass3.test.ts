@@ -117,7 +117,8 @@ describe("package-engine: PackageId type acceptance (compile-time)", () => {
     const b: PackageId = "classic-balanced";
     const c: PackageId = "spa-premium";
     expect([a, b, c].every((s) => typeof s === "string")).toBe(true);
-    // @ts-expect-error - bare tier is not a PackageId
+    // @ts-expect-error — guards against widening PackageId to `string`,
+    // which would let bare tier aliases like "balanced" sneak in as a packageId.
     const bad: PackageId = "balanced";
     expect(bad).toBe("balanced");
   });
