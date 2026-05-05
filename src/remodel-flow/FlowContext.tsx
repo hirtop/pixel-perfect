@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import type { RemodelFlowState, StyleId, TierId } from "./types";
+import type { LegacyTierRoute, RemodelFlowState, StyleId, TierId } from "./types";
+import type { PackageId } from "./package-engine/types";
+import { splitPackageIdField } from "./package-engine/flowStateMigration";
 import { ensureIdentity } from "./persistence/identity";
 import { saveDesign, loadDesign } from "./persistence/client";
 
@@ -30,7 +32,8 @@ interface FlowContextValue {
   lastSyncedAt: string | null;
   setStyle: (style: StyleId) => void;
   setTier: (tier: TierId) => void;
-  setPackageId: (pkg: string) => void;
+  setPackageId: (pkg: PackageId | null) => void;
+  setLegacyTierRoute: (route: LegacyTierRoute | null) => void;
   setSelection: (categoryId: string, optionId: string) => void;
   reset: () => void;
 }
