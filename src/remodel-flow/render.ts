@@ -4,6 +4,8 @@
 
 import type { RemodelFlowState, StyleId, TierId } from "./types";
 import type { ResolvedState } from "./engine";
+import type { PackageId } from "./package-engine/types";
+import { splitPackageIdField } from "./package-engine/flowStateMigration";
 
 export type RenderMode = "template" | "photo" | "scan";
 
