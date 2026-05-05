@@ -19,6 +19,20 @@ export interface NormalizedProduct {
   priceRange?: [number, number];
   imageUrl?: string;
   affiliateUrl?: string;
+
+  /* ─── Promoted functional fields (Pass 4) ───────────────────────
+   * These were previously only available via .raw. Promoted because UI
+   * consumers will need them once they read NormalizedProduct directly.
+   * Still preserved on .raw verbatim.
+   */
+  finish: string | null;
+  faucet_holes: number | string | null;
+  mount_type: string | null;
+  width_inches: number | null;
+  isDefault: boolean;
+  laborDelta: number | null;
+  laborNote: string | null;
+
   /** The original raw object, untouched. */
   raw: unknown;
 }
@@ -60,6 +74,17 @@ export function normalizeProduct(raw: unknown): NormalizedProduct {
   const styles = asArray(r.styles ?? r.style);
   const tags = asArray(r.tags ?? r.tag);
 
+  // Promoted functional fields
+  const finish = pickString(r.finish) ?? null;
+  const fhRaw = r.faucet_holes;
+  const faucet_holes: number | string | null =
+    typeof fhRaw === "number" || typeof fhRaw === "string" ? fhRaw : null;
+  const mount_type = pickString(r.mount_type) ?? null;
+  const width_inches = pickNumber(r.width_inches) ?? null;
+  const isDefault = r.isDefault === true;
+  const laborDelta = pickNumber(r.laborDelta) ?? null;
+  const laborNote = pickString(r.laborNote) ?? null;
+
   return {
     id: pickString(r.id) ?? "",
     name: pickString(r.name) ?? "",
@@ -72,6 +97,13 @@ export function normalizeProduct(raw: unknown): NormalizedProduct {
     priceRange: pickPriceRange(r.priceRange),
     imageUrl: pickString(r.imageUrl, r.image),
     affiliateUrl: pickString(r.affiliateUrl, r.affiliate_url),
+    finish,
+    faucet_holes,
+    mount_type,
+    width_inches,
+    isDefault,
+    laborDelta,
+    laborNote,
     raw,
   };
 }
