@@ -1,5 +1,17 @@
 import type { RemodelFlowState } from "../types";
 import { splitPackageIdField } from "../package-engine/flowStateMigration";
+import { normalizeTier } from "../package-engine/normalize";
+
+/**
+ * Legacy production shape — pre-Pass 5 some rows / localStorage blobs
+ * stored a `selected_package` object like:
+ *   { name: "Balanced", tier: "balanced" }
+ * We accept it on read only as a fallback.
+ */
+export interface LegacySelectedPackageObject {
+  name?: string | null;
+  tier?: string | null;
+}
 
 export interface DesignRow {
   id?: string;
@@ -23,6 +35,8 @@ export interface DesignRow {
   last_active_at?: string | null;
   saved_at?: string | null;
   deleted_at?: string | null;
+  /** Legacy fallback — older rows may carry an object here. Read-only. */
+  selected_package?: LegacySelectedPackageObject | null;
 }
 
 export interface SerializeContext {
@@ -110,11 +124,25 @@ export function deserializeFromDb(row: DesignRow): {
   const explicitLegacy = row.selected_legacy_tier_route ?? null;
   const explicitLegacySplit = splitPackageIdField(explicitLegacy);
 
+  // Legacy fallback: older rows / localStorage stored an object like
+  // { name: "Balanced", tier: "balanced" }. Only used when neither
+  // selected_package_id nor selected_legacy_tier_route resolved.
+  const legacyObj = row.selected_package ?? null;
+  const legacyObjTier =
+    legacyObj && typeof legacyObj === "object"
+      ? normalizeTier(legacyObj.tier ?? null) ?? null
+      : null;
+
   const packageId = split.packageId ?? null;
-  // Prefer the explicit legacy column when present; else fall back to
-  // whatever the migration extracted from selected_package_id.
+  // Precedence:
+  //  1. explicit `selected_legacy_tier_route` column (always honored)
+  //  2. legacy alias extracted from `selected_package_id`
+  //  3. legacy object `selected_package.tier` (only when no real packageId)
   const legacyTierRoute =
-    explicitLegacySplit.legacyTierRoute ?? split.legacyTierRoute ?? null;
+    explicitLegacySplit.legacyTierRoute ??
+    split.legacyTierRoute ??
+    (packageId ? null : legacyObjTier) ??
+    null;
 
   const state: RemodelFlowState = {
     style: (row.selected_style ?? undefined) as RemodelFlowState["style"],

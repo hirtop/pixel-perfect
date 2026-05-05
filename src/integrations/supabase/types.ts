@@ -377,6 +377,7 @@ export type Database = {
           resolved_state: Json
           saved_at: string | null
           schema_version: number
+          selected_legacy_tier_route: string | null
           selected_package_id: string | null
           selected_style: string | null
           selected_tier: string | null
@@ -399,6 +400,7 @@ export type Database = {
           resolved_state?: Json
           saved_at?: string | null
           schema_version?: number
+          selected_legacy_tier_route?: string | null
           selected_package_id?: string | null
           selected_style?: string | null
           selected_tier?: string | null
@@ -421,6 +423,7 @@ export type Database = {
           resolved_state?: Json
           saved_at?: string | null
           schema_version?: number
+          selected_legacy_tier_route?: string | null
           selected_package_id?: string | null
           selected_style?: string | null
           selected_tier?: string | null
