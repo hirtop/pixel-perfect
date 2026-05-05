@@ -10,6 +10,7 @@ import {
   type ModernBalancedBinKey,
 } from "../packages/modern-balanced";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
+import { getPackage } from "../package-engine/registry";
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, Check, Star } from "lucide-react";
 
@@ -108,11 +109,10 @@ const Customize = () => {
   // (b) the corresponding PackageId is registered as `curated` in the
   // package-engine manifest. Placeholder packages (e.g. classic-balanced)
   // must NEVER render this UI — they fall back to the generic flow.
-  const { getPackage } = require("../package-engine/registry") as typeof import("../package-engine/registry");
   const curatedActive = state.style === "modern" && state.tier === "balanced";
   const curatedRegistered = state.packageId
     ? getPackage(state.packageId)?.status === "curated"
-    : curatedActive; // legacy path: still allow modern+balanced before packageId is written
+    : curatedActive; // legacy fallback: state.packageId not yet written
   let isCuratedModernBalanced = false;
   try {
     isCuratedModernBalanced =
