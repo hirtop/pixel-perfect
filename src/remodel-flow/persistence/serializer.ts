@@ -1,5 +1,17 @@
 import type { RemodelFlowState } from "../types";
 import { splitPackageIdField } from "../package-engine/flowStateMigration";
+import { normalizeTier } from "../package-engine/normalize";
+
+/**
+ * Legacy production shape — pre-Pass 5 some rows / localStorage blobs
+ * stored a `selected_package` object like:
+ *   { name: "Balanced", tier: "balanced" }
+ * We accept it on read only as a fallback.
+ */
+export interface LegacySelectedPackageObject {
+  name?: string | null;
+  tier?: string | null;
+}
 
 export interface DesignRow {
   id?: string;
