@@ -17,6 +17,64 @@ and LK()/compatibility scoring were not touched.
 - Registry public API: `getPackage(id)` and `listPackages({ status? })`
   added so UI/future code does not read `PACKAGE_MANIFEST` directly.
 
+## Pass 4 additions (pre-gating hardening)
+
+- **Promoted NormalizedProduct fields**: `finish`, `faucet_holes`,
+  `mount_type`, `width_inches`, `isDefault`, `laborDelta`, `laborNote`
+  are now first-class on `NormalizedProduct`. `description`, `spec`,
+  `vendor`, `disclaimer`, `estimatedProjectPrice` remain on `.raw` only.
+- **`emptyBins.ts`** — exports `EMPTY_BINS = ["toilet", "heatedFloor"]`
+  + `isEmptyBin()`. No package may declare a required slot for one of
+  these bins until products are sourced.
+- **`flowStateMigration.ts`** — pure helpers `splitPackageIdField()` /
+  `joinPackageIdField()` that classify a stored `packageId` into
+  `{ packageId: PackageId | null, legacyTierRoute: Tier | null }`.
+  **NOT yet wired into `FlowContext` / `serializer.ts`** — see below.
+- **Spa mismatch resolved (documented, not patched)**: the substring
+  `"spa"` appears in raw catalog exactly once, inside a marketing
+  `description` field ("spa-like experience from above"). It is NOT in
+  any `tag` / `style` field, so `spa: 0` in the per-style count is the
+  correct, expected outcome. Test `package-engine-pass4` asserts this.
+- **Invariant tests** — symmetric check that BinKeys with zero products
+  exactly equal `EMPTY_BINS`; binKey is always within canonical 16 or
+  null; promoted fields are present on every row.
+- **`@ts-expect-error` comment** — clarified to explain it guards
+  against widening `PackageId` to `string`.
+
+### Per-style hint counts (current)
+
+| Style    | Count |
+|----------|-------|
+| classic  | 3     |
+| modern   | 3     |
+| minimal  | 3     |
+| spa      | 0 (no product-level spa tags exist; substring is description-only) |
+
+### BinKey distribution (16 canonical bins)
+
+Counts derive from `getNormalizedCatalog()` over the live raw catalog.
+Bins listed in `EMPTY_BINS` are intentionally zero. The invariant test
+fails if any other bin drops to zero, or if a listed empty bin gains
+products without `EMPTY_BINS` being updated.
+
+### RemodelFlowState split — NOT applied in-place
+
+`RemodelFlowState.packageId` was **not** narrowed/split in
+`src/remodel-flow/types.ts` this pass. Reason: doing so requires
+coordinated edits to `FlowContext.tsx` (setPackageId), `Tier.tsx`
+(which currently writes legacy alias `"balanced"` etc.),
+`persistence/serializer.ts`, and `Packages.tsx`, and the user explicitly
+forbade route/UI changes in this pass.
+
+The migration is implemented as a pure helper
+(`splitPackageIdField`) that the next (route-gating) pass will call on
+read. Callers of `state.packageId` today (do not change yet):
+  - `FlowContext.tsx` (setPackageId, stableStringify, autosave)
+  - `render.ts` (sends `selected_package_id` to AI render)
+  - `persistence/serializer.ts` (`selected_package_id` column)
+  - `engine.ts` (resolver returns it)
+  - `Packages.tsx` (writes pkg.id)
+
 
 ## Status snapshot
 
