@@ -187,11 +187,9 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
         const result = await loadDesign(designIdParam!);
         if (cancelled) return;
         if (result.ok && result.state) {
-          const hydratedState: RemodelFlowState = {
-            ...defaultState,
-            ...result.state,
-            selections: result.state.selections ?? {},
-          };
+          const hydratedState: RemodelFlowState = migrateStoredState(
+            result.state as Partial<RemodelFlowState>,
+          );
           setState(hydratedState);
           setMeta((m) => ({
             ...m,
