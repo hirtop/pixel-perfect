@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/hooks/useAuth";
 import { ProjectProvider } from "@/contexts/ProjectContext";
+import { FlowProvider } from "@/remodel-flow/FlowContext";
 import Index from "./pages/Index.tsx";
 import StartProject from "./pages/StartProject.tsx";
 import UploadPhotos from "./pages/UploadPhotos.tsx";
@@ -54,6 +55,7 @@ const App = () => (
     <TooltipProvider>
       <AuthProvider>
         <ProjectProvider>
+          <FlowProvider>
           <Toaster />
           <Sonner />
           <BrowserRouter>
@@ -93,6 +95,7 @@ const App = () => (
               <Route path="*" element={<NotFound />} />
             </Routes>
           </BrowserRouter>
+          </FlowProvider>
         </ProjectProvider>
       </AuthProvider>
     </TooltipProvider>

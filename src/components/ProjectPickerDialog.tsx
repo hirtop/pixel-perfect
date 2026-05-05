@@ -21,7 +21,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 import type { SavedProject } from "@/hooks/useUserProjects";
-import { resolveResumeRoute } from "@/lib/resumeRoute";
+
 import { toast } from "sonner";
 
 const STEP_LABELS: Record<string, string> = {
@@ -62,12 +62,10 @@ export default function ProjectPickerDialog({ open, onOpenChange, projects, onDe
 
   const handleResume = async (project: SavedProject) => {
     onOpenChange(false);
-    const route = resolveResumeRoute({
-      step: project.workflow_progress?.current_step,
-      tier: project.selected_package?.tier,
-    });
+    // Unified entry: hydrate legacy ProjectContext for backward-compatible
+    // legacy pages, then send the user into the unified remodel-flow.
     await loadProject(project.id);
-    navigate(route);
+    navigate("/remodel-flow/start");
   };
 
   const handleDelete = async () => {
@@ -87,7 +85,7 @@ export default function ProjectPickerDialog({ open, onOpenChange, projects, onDe
   const handleStartNew = () => {
     onOpenChange(false);
     resetProject();
-    navigate("/start");
+    navigate("/remodel-flow/start");
   };
 
   return (
