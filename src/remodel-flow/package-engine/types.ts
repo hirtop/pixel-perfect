@@ -1,10 +1,7 @@
 /**
  * Canonical package-engine types.
  *
- * This module is additive. It does NOT replace the existing
- * `src/remodel-flow/types.ts` (which keeps the narrower `StyleId` used by
- * the current Balanced flow). New code should prefer these canonical
- * types when building real package-engine functionality.
+ * Additive — does NOT replace `src/remodel-flow/types.ts`.
  */
 
 /** Canonical tier slugs. Always lowercase. */
@@ -14,7 +11,6 @@ export const TIERS: readonly Tier[] = ["essential", "balanced", "premium"] as co
 
 /**
  * Canonical style ids. Superset of the legacy 4-style flow `StyleId`.
- * Always lowercase, kebab-case-free (single token).
  */
 export type CanonicalStyleId =
   | "classic"
@@ -43,59 +39,58 @@ export const CANONICAL_STYLES: readonly CanonicalStyleId[] = [
 export type PackageId = `${CanonicalStyleId}-${Tier}`;
 
 /**
- * Stable product-bin slugs. These are the canonical shopping bins a
- * package can fill. Names are camelCase to match existing
- * Modern/Classic Balanced data files.
+ * Stable product-bin slugs. Reconciled to the 16 real catalog categories
+ * (see `src/data/products.ts#PRODUCT_CATEGORIES`).
+ *
+ * Aliases like "showerWalls", "showerGlass", "showerTrim", "showerNiche",
+ * "accessories" are NOT canonical outputs. They may only appear as input
+ * aliases in `normalizeBinKey`.
  */
 export type BinKey =
   | "vanity"
   | "faucet"
+  | "sink"
   | "mirror"
   | "lighting"
   | "toilet"
+  | "bathtub"
+  | "tubValve"
+  | "showerValve"
+  | "showerSystem"
+  | "showerDoor"
   | "showerWallTile"
   | "showerFloorTile"
   | "mainFloorTile"
   | "accentTile"
-  | "showerDoor"
-  | "showerGlass"
-  | "showerValve"
-  | "showerTrim"
-  | "tub"
-  | "tubValve"
-  | "showerNiche"
-  | "accessories"
-  | "sink";
+  | "heatedFloor";
 
 export const BIN_KEYS: readonly BinKey[] = [
   "vanity",
   "faucet",
+  "sink",
   "mirror",
   "lighting",
   "toilet",
+  "bathtub",
+  "tubValve",
+  "showerValve",
+  "showerSystem",
+  "showerDoor",
   "showerWallTile",
   "showerFloorTile",
   "mainFloorTile",
   "accentTile",
-  "showerDoor",
-  "showerGlass",
-  "showerValve",
-  "showerTrim",
-  "tub",
-  "tubValve",
-  "showerNiche",
-  "accessories",
-  "sink",
+  "heatedFloor",
 ] as const;
 
 /**
  * Lifecycle status of a package in the registry.
  *
- *  - `curated`    — fully sourced, real SKUs, safe to expose in finished UI.
- *  - `partial`    — some bins curated, others placeholder. Internal only.
- *  - `placeholder`— spec exists but no real SKUs. Internal only.
- *  - `legacy`     — generic tier-only flow (e.g. plain "balanced"); kept for
- *                   backwards compatibility with /package/balanced and
- *                   /customize/balanced URLs.
+ *  - `curated`     — fully sourced, real SKUs, safe to expose in finished UI.
+ *  - `partial`     — some bins curated, others placeholder. Internal only.
+ *  - `placeholder` — spec exists but no real SKUs. Internal only.
+ *
+ * Note: legacy generic-tier ids (essential/balanced/premium) are NOT
+ * package statuses anymore — they live in `LEGACY_ROUTE_ALIASES`.
  */
-export type PackageStatus = "curated" | "partial" | "placeholder" | "legacy";
+export type PackageStatus = "curated" | "partial" | "placeholder";
