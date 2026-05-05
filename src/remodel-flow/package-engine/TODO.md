@@ -1,17 +1,32 @@
 # Package Engine — Outstanding Work
 
+## Pass 6 — Publish readiness (this pass)
+
+- DB migration added: `remodel_designs.selected_legacy_tier_route TEXT NULL`
+  (idempotent `ADD COLUMN IF NOT EXISTS`). Closes the PGRST204 risk for writes.
+- Serializer now reads legacy `selected_package: { name, tier }` object as
+  a fallback. Precedence: explicit legacy column > legacy alias in
+  `selected_package_id` > legacy object `.tier` (only when no real packageId).
+- Idempotency tests added for all migration fixtures.
+- Unknown packageId (e.g. `"ghost-package"`) → `packageId: null`,
+  preserves valid legacy alias if present, dev-only console.warn in
+  FlowContext.migrateStoredState.
+- engine.ts ResolvedState.packageId carries a TODO to narrow to
+  `PackageId | null` in a future pass.
+
+## Pass 5 baseline
+
 Pass 5 landed route + state gating. `RemodelFlowState` is split into
 `packageId: PackageId | null` + `legacyTierRoute: Tier | null`.
-Persistence migrates on read (legacy alias stored in `selected_package_id`
-moves to `legacyTierRoute`). Render payload is sanitized so legacy
+Persistence migrates on read. Render payload is sanitized so legacy
 aliases never reach the AI render. `resolveResumeRoute` gates curated
 routes by `getPackage(id).status === "curated"`. Customize.tsx requires
 `getPackage(state.packageId)?.status === "curated"` before showing the
 Modern Balanced curated layout. Placeholder packages (classic-balanced)
 fall through to /options. `LEGACY_ROUTE_ALIASES` is intentionally kept.
 
-Untouched: Supabase schema, auth, payments/checkout, LK()/compatibility
-scoring, raw catalog SKUs, splitPackageIdField/joinPackageIdField helpers.
+Untouched: auth, payments/checkout, LK()/compatibility scoring, raw
+catalog SKUs, routes, resumeRoute.ts, UI gating, curation.
 
 
 ## Pass 3 additions
