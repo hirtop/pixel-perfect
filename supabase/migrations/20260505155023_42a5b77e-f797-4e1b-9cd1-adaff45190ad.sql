@@ -1,0 +1,1 @@
+ALTER TABLE public.remodel_designs ADD COLUMN IF NOT EXISTS selected_legacy_tier_route TEXT NULL;
