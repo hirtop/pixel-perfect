@@ -84,8 +84,8 @@ function resolveIdentity(ctx: ResumeContext): ResolvedIdentity {
   // Prefer explicit packageId, run it through the migration helper to
   // catch the legacy-alias-stored-as-packageId case.
   const splitFromPkg = splitPackageIdField(ctx.packageId ?? null);
-  let packageId = splitFromPkg.packageId;
-  let legacyTier = splitFromPkg.legacyTierRoute;
+  let packageId: string | null = splitFromPkg.packageId;
+  let legacyTier: string | null = splitFromPkg.legacyTierRoute;
 
   // Explicit legacyTierRoute wins over implied legacy.
   if (!legacyTier && ctx.legacyTierRoute && isLegacyRouteAlias(ctx.legacyTierRoute)) {
@@ -98,7 +98,7 @@ function resolveIdentity(ctx: ResumeContext): ResolvedIdentity {
       const split = splitPackageIdField(ctx.tier);
       packageId = split.packageId;
     } else if (isLegacyRouteAlias(ctx.tier) || normaliseTier(ctx.tier)) {
-      legacyTier = (ctx.tier ?? "").toLowerCase();
+      legacyTier = ctx.tier.toLowerCase();
     }
   }
 
