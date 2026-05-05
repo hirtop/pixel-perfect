@@ -44,6 +44,9 @@ export interface ResolvedSlot {
 export interface ResolvedState {
   style?: StyleId;
   tier?: TierId;
+  // TODO(package-engine pass 7+): narrow `packageId` to
+  // `PackageId | null` from `./package-engine/types`. Kept as `string` for
+  // now to avoid touching all engine call sites in this pass.
   packageId?: string;
   packageName?: string;
   slots: ResolvedSlot[];
