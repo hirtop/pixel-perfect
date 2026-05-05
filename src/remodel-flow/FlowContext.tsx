@@ -82,6 +82,14 @@ const migrateStoredState = (raw: Partial<RemodelFlowState> & { packageId?: unkno
     const split = splitPackageIdField(explicitPackage);
     if (split.packageId) base.packageId = split.packageId;
     else if (!base.legacyTierRoute && split.legacyTierRoute) base.legacyTierRoute = split.legacyTierRoute;
+    else if (import.meta.env?.DEV) {
+      // Unknown packageId (e.g. "ghost-package") — fall through to null.
+      console.warn("[FlowContext] dropping unknown stored packageId:", explicitPackage);
+    }
+  }
+  return base;
+};
+    else if (!base.legacyTierRoute && split.legacyTierRoute) base.legacyTierRoute = split.legacyTierRoute;
   }
   return base;
 };
