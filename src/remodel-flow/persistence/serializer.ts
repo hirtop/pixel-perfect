@@ -124,11 +124,23 @@ export function deserializeFromDb(row: DesignRow): {
   const explicitLegacy = row.selected_legacy_tier_route ?? null;
   const explicitLegacySplit = splitPackageIdField(explicitLegacy);
 
+  // Legacy fallback: older rows / localStorage stored an object like
+  // { name: "Balanced", tier: "balanced" }. Only used when neither
+  // selected_package_id nor selected_legacy_tier_route resolved.
+  const legacyObj = row.selected_package ?? null;
+  const legacyObjTier =
+    legacyObj && typeof legacyObj === "object"
+      ? normalizeTier(legacyObj.tier ?? null) ?? null
+      : null;
+
   const packageId = split.packageId ?? null;
-  // Prefer the explicit legacy column when present; else fall back to
-  // whatever the migration extracted from selected_package_id.
+  // Precedence: real packageId from selected_package_id wins. Otherwise
+  // explicit legacy column → split-extracted legacy → legacy object tier.
   const legacyTierRoute =
-    explicitLegacySplit.legacyTierRoute ?? split.legacyTierRoute ?? null;
+    explicitLegacySplit.legacyTierRoute ??
+    split.legacyTierRoute ??
+    legacyObjTier ??
+    null;
 
   const state: RemodelFlowState = {
     style: (row.selected_style ?? undefined) as RemodelFlowState["style"],
