@@ -8,7 +8,8 @@ import { useAuth } from "@/hooks/useAuth";
 import { useProject } from "@/contexts/ProjectContext";
 import { useUserProjects } from "@/hooks/useUserProjects";
 import ProjectPickerDialog from "@/components/ProjectPickerDialog";
-import { resolveResumeRoute } from "@/lib/resumeRoute";
+import { useFlow } from "@/remodel-flow/FlowContext";
+import { resolveFlowResumeRoute, hasFlowProgress } from "@/remodel-flow/resumeRoute";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
@@ -98,55 +99,69 @@ export default function LandingPage() {
   const { user, loading: authLoading } = useAuth();
   const { resetProject, loadProject } = useProject();
   const { projects, loading: projectsLoading, deleteProject } = useUserProjects();
+  const { state: flowState, reset: resetFlow } = useFlow();
   const navigate = useNavigate();
   const [pickerOpen, setPickerOpen] = useState(false);
 
+  // Unified source of truth: the local remodel-flow state. We still consult
+  // the legacy `projects` table to surface saved projects in the picker for
+  // backwards compatibility, but the homepage CTAs all route through
+  // /remodel-flow/* using the FlowContext + resumeRoute resolver.
   const projectCount = projects.length;
   const isProjectStateLoading = authLoading || (Boolean(user) && projectsLoading);
-  const hasSavedProject = Boolean(user && !isProjectStateLoading && projectCount > 0);
+  const flowHasProgress = hasFlowProgress(flowState);
+  const hasSavedLegacyProject = Boolean(user && !isProjectStateLoading && projectCount > 0);
+  const canContinue = flowHasProgress || hasSavedLegacyProject;
   const hasMultiple = projectCount > 1;
 
-  const singleProject = projectCount === 1 ? projects[0] : null;
-  const singleRoute = singleProject
-    ? resolveResumeRoute({
-        step: singleProject.workflow_progress?.current_step,
-        tier: singleProject.selected_package?.tier,
-      })
-    : "/start";
+  const flowResumeRoute = resolveFlowResumeRoute(flowState);
+
+  const goStartFresh = () => {
+    // Wipe only the unified remodel-flow state. Saved legacy projects in
+    // Supabase are preserved.
+    resetFlow();
+    if (user) resetProject();
+    navigate("/remodel-flow/start");
+  };
 
   const handlePrimaryCta = async () => {
-    if (isProjectStateLoading) {
+    if (isProjectStateLoading) return;
+
+    // 1. In-memory flow progress wins — resume immediately.
+    if (flowHasProgress) {
+      navigate(flowResumeRoute);
       return;
     }
-
-    if (!hasSavedProject) {
-      if (user) {
-        resetProject();
+    // 2. Legacy saved projects: if exactly one, hydrate ProjectContext for
+    //    backwards-compatible legacy pages, then send the user into the
+    //    unified flow at its first step. If multiple, show the picker.
+    if (hasSavedLegacyProject) {
+      if (hasMultiple) {
+        setPickerOpen(true);
+        return;
       }
-      navigate("/start");
-    } else if (hasMultiple) {
-      setPickerOpen(true);
-    } else {
-      if (singleProject) {
-        await loadProject(singleProject.id);
-      }
-      navigate(singleRoute);
+      const single = projects[0];
+      if (single) await loadProject(single.id);
+      navigate("/remodel-flow/start");
+      return;
     }
+    // 3. Nothing to continue — start clean in the unified flow.
+    goStartFresh();
   };
 
   const ctaText = isProjectStateLoading
     ? "Loading Your Projects..."
-    : !hasSavedProject
+    : !canContinue
       ? "Start Your Bathroom Project"
-      : hasMultiple
+      : hasMultiple && !flowHasProgress
         ? "View Your Projects"
         : "Continue Your Project";
 
   const navCtaText = isProjectStateLoading
     ? "Loading..."
-    : !hasSavedProject
+    : !canContinue
       ? "Start Your Bathroom Project"
-      : hasMultiple
+      : hasMultiple && !flowHasProgress
         ? "Your Projects"
         : "Continue Your Project";
 
@@ -226,18 +241,20 @@ export default function LandingPage() {
               project plan.
             </motion.p>
             <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" asChild>
-                <Link to="/remodel-flow/start">Design Your Bathroom</Link>
+              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
+                Design Your Bathroom
               </Button>
-              <Button size="lg" variant="outline" className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
-                {ctaText}
-              </Button>
-              {hasSavedProject && (
+              {canContinue && (
+                <Button size="lg" variant="outline" className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
+                  {ctaText}
+                </Button>
+              )}
+              {canContinue && (
                 <Button
                   size="lg"
                   variant="outline"
                   className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8 gap-2"
-                  onClick={() => { resetProject(); navigate("/start"); }}
+                  onClick={goStartFresh}
                 >
                   <Plus className="h-4 w-4" /> Start a New Project
                 </Button>
