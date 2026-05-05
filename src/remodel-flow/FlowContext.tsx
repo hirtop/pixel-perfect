@@ -89,10 +89,6 @@ const migrateStoredState = (raw: Partial<RemodelFlowState> & { packageId?: unkno
   }
   return base;
 };
-    else if (!base.legacyTierRoute && split.legacyTierRoute) base.legacyTierRoute = split.legacyTierRoute;
-  }
-  return base;
-};
 
 export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<RemodelFlowState>(() => {
