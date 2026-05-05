@@ -1,5 +1,4 @@
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { FlowProvider } from "./FlowContext";
 
 const STEPS = [
   { path: "/remodel-flow/start", label: "Start" },
@@ -59,10 +58,6 @@ const FlowShell = () => {
   );
 };
 
-const FlowLayout = () => (
-  <FlowProvider>
-    <FlowShell />
-  </FlowProvider>
-);
+const FlowLayout = () => <FlowShell />;
 
 export default FlowLayout;
