@@ -240,10 +240,21 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const setStyle = useCallback((style: StyleId) => setState((s) => ({ ...s, style })), []);
   const setTier = useCallback(
     (tier: TierId) =>
-      setState((s) => (s.tier === tier ? s : { ...s, tier, packageId: undefined })),
+      setState((s) =>
+        s.tier === tier ? s : { ...s, tier, packageId: null, legacyTierRoute: null },
+      ),
     [],
   );
-  const setPackageId = useCallback((packageId: string) => setState((s) => ({ ...s, packageId })), []);
+  const setPackageId = useCallback(
+    (packageId: PackageId | null) =>
+      setState((s) => ({ ...s, packageId, legacyTierRoute: packageId ? null : s.legacyTierRoute ?? null })),
+    [],
+  );
+  const setLegacyTierRoute = useCallback(
+    (route: LegacyTierRoute | null) =>
+      setState((s) => ({ ...s, legacyTierRoute: route, packageId: route ? null : s.packageId ?? null })),
+    [],
+  );
   const setSelection = useCallback(
     (categoryId: string, optionId: string) =>
       setState((s) => ({ ...s, selections: { ...s.selections, [categoryId]: optionId } })),
@@ -266,10 +277,11 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
       setStyle,
       setTier,
       setPackageId,
+      setLegacyTierRoute,
       setSelection,
       reset,
     }),
-    [state, userId, identityReady, meta, setStyle, setTier, setPackageId, setSelection, reset],
+    [state, userId, identityReady, meta, setStyle, setTier, setPackageId, setLegacyTierRoute, setSelection, reset],
   );
 
   return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>;
