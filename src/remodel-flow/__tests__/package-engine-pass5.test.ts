@@ -209,11 +209,22 @@ describe("Pass 5 — curated-bin invariant", () => {
     expect(curatedPackages.find((p) => p.id === "modern-balanced")).toBeTruthy();
   });
 
-  it("modern-balanced bin keys never reference an EMPTY_BINS slot", () => {
-    const binKeys = Object.keys(MODERN_BALANCED.bins);
-    for (const k of binKeys) {
-      expect(EMPTY_BINS as readonly string[]).not.toContain(k);
+  it("modern-balanced has no PLACEHOLDER bin that lives in EMPTY_BINS", () => {
+    // EMPTY_BINS reflects raw-catalog gaps. A curated package may still
+    // declare a bin in that set IF it ships its own inline product data
+    // (sourcing: "ready"). The invariant only fails when a curated bin
+    // is BOTH in EMPTY_BINS AND has sourcing !== "ready" (i.e. it has
+    // nowhere to source products from).
+    const offenders: string[] = [];
+    for (const [key, bin] of Object.entries(MODERN_BALANCED.bins) as [
+      string,
+      { sourcing: string },
+    ][]) {
+      if ((EMPTY_BINS as readonly string[]).includes(key) && bin.sourcing !== "ready") {
+        offenders.push(`${key} (sourcing=${bin.sourcing})`);
+      }
     }
+    expect(offenders).toEqual([]);
   });
 
   it("classic-balanced is placeholder and is NOT exposed as curated", () => {
