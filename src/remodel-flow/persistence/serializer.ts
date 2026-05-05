@@ -35,6 +35,8 @@ export interface DesignRow {
   last_active_at?: string | null;
   saved_at?: string | null;
   deleted_at?: string | null;
+  /** Legacy fallback — older rows may carry an object here. Read-only. */
+  selected_package?: LegacySelectedPackageObject | null;
 }
 
 export interface SerializeContext {
