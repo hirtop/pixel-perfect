@@ -10,6 +10,7 @@ import {
   type ModernBalancedBinKey,
 } from "../packages/modern-balanced";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
+import { getPackage } from "../package-engine/registry";
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, Check, Star } from "lucide-react";
 
@@ -104,12 +105,18 @@ const Customize = () => {
     );
   }
 
-  // Curated mode is opt-in and wrapped in a try/catch boundary at render time
-  // so any failure transparently falls back to the generic CATEGORIES flow.
+  // Curated mode requires (a) the curated style/tier pair AND
+  // (b) the corresponding PackageId is registered as `curated` in the
+  // package-engine manifest. Placeholder packages (e.g. classic-balanced)
+  // must NEVER render this UI — they fall back to the generic flow.
   const curatedActive = state.style === "modern" && state.tier === "balanced";
+  const curatedRegistered = state.packageId
+    ? getPackage(state.packageId)?.status === "curated"
+    : curatedActive; // legacy fallback: state.packageId not yet written
   let isCuratedModernBalanced = false;
   try {
-    isCuratedModernBalanced = curatedActive && !!MODERN_BALANCED?.bins?.vanity;
+    isCuratedModernBalanced =
+      curatedActive && curatedRegistered && !!MODERN_BALANCED?.bins?.vanity;
   } catch {
     isCuratedModernBalanced = false;
   }

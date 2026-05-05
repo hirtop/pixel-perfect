@@ -1,6 +1,14 @@
+import type { PackageId, Tier as CanonicalTier } from "./package-engine/types";
+
 export type StyleId = "modern" | "classic" | "spa" | "minimal";
 export type TierId = "essential" | "balanced" | "premium";
 export type PriceBin = "budget" | "mid" | "high" | "luxury";
+
+/**
+ * Legacy tier-route alias kept for backwards-compatible /package/:id and
+ * /customize/:id URLs that still use a bare tier slug.
+ */
+export type LegacyTierRoute = CanonicalTier;
 
 export interface CategorySelection {
   categoryId: string;
@@ -10,7 +18,17 @@ export interface CategorySelection {
 export interface RemodelFlowState {
   style?: StyleId;
   tier?: TierId;
-  packageId?: string;
+  /**
+   * Real package identity, e.g. "modern-balanced". NEVER a bare tier
+   * alias like "balanced". Use `legacyTierRoute` for those.
+   */
+  packageId?: PackageId | null;
+  /**
+   * Legacy tier-only route ("essential" | "balanced" | "premium"). Used
+   * by the existing /package/:tier and /customize/:tier flows. Mutually
+   * exclusive with `packageId`.
+   */
+  legacyTierRoute?: LegacyTierRoute | null;
   selections: Record<string, string>; // categoryId -> optionId  (user overrides)
 }
 

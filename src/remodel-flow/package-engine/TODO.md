@@ -1,10 +1,18 @@
 # Package Engine — Outstanding Work
 
-Tracks what is intentionally NOT yet wired up. Pass 3 routed the live
-catalog through `normalizeProduct` via `getNormalizedCatalog()` and
-added safe `styles[]` hints for 6 visible Balanced rows. Raw catalog
-exports are unchanged. Routes, UI, Supabase, auth, payments, checkout,
-and LK()/compatibility scoring were not touched.
+Pass 5 landed route + state gating. `RemodelFlowState` is split into
+`packageId: PackageId | null` + `legacyTierRoute: Tier | null`.
+Persistence migrates on read (legacy alias stored in `selected_package_id`
+moves to `legacyTierRoute`). Render payload is sanitized so legacy
+aliases never reach the AI render. `resolveResumeRoute` gates curated
+routes by `getPackage(id).status === "curated"`. Customize.tsx requires
+`getPackage(state.packageId)?.status === "curated"` before showing the
+Modern Balanced curated layout. Placeholder packages (classic-balanced)
+fall through to /options. `LEGACY_ROUTE_ALIASES` is intentionally kept.
+
+Untouched: Supabase schema, auth, payments/checkout, LK()/compatibility
+scoring, raw catalog SKUs, splitPackageIdField/joinPackageIdField helpers.
+
 
 ## Pass 3 additions
 

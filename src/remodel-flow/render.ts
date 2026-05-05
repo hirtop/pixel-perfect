@@ -4,6 +4,8 @@
 
 import type { RemodelFlowState, StyleId, TierId } from "./types";
 import type { ResolvedState } from "./engine";
+import type { PackageId } from "./package-engine/types";
+import { splitPackageIdField } from "./package-engine/flowStateMigration";
 
 export type RenderMode = "template" | "photo" | "scan";
 
@@ -22,7 +24,12 @@ export interface RenderRequest {
   mode: RenderMode;
   render_intent: RenderIntent;
   variation_index: number;
-  selected_package_id?: string;
+  /**
+   * Real PackageId only (e.g. "modern-balanced") or null. Bare tier
+   * aliases like "balanced" / "essential" / "premium" must NEVER appear
+   * here — they flow through `selected_tier` instead.
+   */
+  selected_package_id: PackageId | null;
   selected_style?: StyleId;
   selected_tier?: TierId;
   /** Engine-resolved slot state (slots, not flattened product_bins). */
@@ -63,12 +70,16 @@ export const buildRenderRequest = ({
       )
     : [];
 
+  // Sanitize package id: only forward real PackageId values, never legacy aliases.
+  const candidate = state.packageId ?? resolvedState?.packageId ?? null;
+  const sanitized = splitPackageIdField(candidate ?? null).packageId;
+
   return {
     render_session_id: newSessionId(),
     mode,
     render_intent: "concept",
     variation_index: variationIndex,
-    selected_package_id: state.packageId ?? resolvedState?.packageId,
+    selected_package_id: sanitized,
     selected_style: state.style,
     selected_tier: state.tier,
     resolved_state: resolvedState ? { slots: resolvedState.slots } : undefined,

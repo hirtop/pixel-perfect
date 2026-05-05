@@ -1,5 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import type { RemodelFlowState, StyleId, TierId } from "./types";
+import type { LegacyTierRoute, RemodelFlowState, StyleId, TierId } from "./types";
+import type { PackageId } from "./package-engine/types";
+import { splitPackageIdField } from "./package-engine/flowStateMigration";
 import { ensureIdentity } from "./persistence/identity";
 import { saveDesign, loadDesign } from "./persistence/client";
 
@@ -30,7 +32,8 @@ interface FlowContextValue {
   lastSyncedAt: string | null;
   setStyle: (style: StyleId) => void;
   setTier: (tier: TierId) => void;
-  setPackageId: (pkg: string) => void;
+  setPackageId: (pkg: PackageId | null) => void;
+  setLegacyTierRoute: (route: LegacyTierRoute | null) => void;
   setSelection: (categoryId: string, optionId: string) => void;
   reset: () => void;
 }
@@ -49,15 +52,45 @@ const stableStringify = (s: RemodelFlowState) => {
     style: s.style ?? null,
     tier: s.tier ?? null,
     packageId: s.packageId ?? null,
+    legacyTierRoute: s.legacyTierRoute ?? null,
     selections: sortedSel,
   });
+};
+
+/**
+ * Migrate stored flow state into the new split shape:
+ *  - real PackageId stays in `packageId`
+ *  - legacy tier alias ("balanced"/"essential"/"premium") moves to `legacyTierRoute`
+ *  - junk/unknown clears both
+ */
+const migrateStoredState = (raw: Partial<RemodelFlowState> & { packageId?: unknown; legacyTierRoute?: unknown }): RemodelFlowState => {
+  const base: RemodelFlowState = {
+    ...defaultState,
+    ...raw,
+    selections: (raw.selections as Record<string, string>) ?? {},
+    packageId: null,
+    legacyTierRoute: null,
+  };
+  // Prefer pre-split fields if both provided.
+  const explicitPackage = typeof raw.packageId === "string" ? raw.packageId : null;
+  const explicitLegacy = typeof raw.legacyTierRoute === "string" ? raw.legacyTierRoute : null;
+  if (explicitLegacy) {
+    const split = splitPackageIdField(explicitLegacy);
+    base.legacyTierRoute = split.legacyTierRoute;
+  }
+  if (explicitPackage) {
+    const split = splitPackageIdField(explicitPackage);
+    if (split.packageId) base.packageId = split.packageId;
+    else if (!base.legacyTierRoute && split.legacyTierRoute) base.legacyTierRoute = split.legacyTierRoute;
+  }
+  return base;
 };
 
 export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<RemodelFlowState>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) return { ...defaultState, ...JSON.parse(raw) };
+      if (raw) return migrateStoredState(JSON.parse(raw));
     } catch {
       /* ignore */
     }
@@ -154,11 +187,9 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
         const result = await loadDesign(designIdParam!);
         if (cancelled) return;
         if (result.ok && result.state) {
-          const hydratedState: RemodelFlowState = {
-            ...defaultState,
-            ...result.state,
-            selections: result.state.selections ?? {},
-          };
+          const hydratedState: RemodelFlowState = migrateStoredState(
+            result.state as Partial<RemodelFlowState>,
+          );
           setState(hydratedState);
           setMeta((m) => ({
             ...m,
@@ -237,10 +268,21 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const setStyle = useCallback((style: StyleId) => setState((s) => ({ ...s, style })), []);
   const setTier = useCallback(
     (tier: TierId) =>
-      setState((s) => (s.tier === tier ? s : { ...s, tier, packageId: undefined })),
+      setState((s) =>
+        s.tier === tier ? s : { ...s, tier, packageId: null, legacyTierRoute: null },
+      ),
     [],
   );
-  const setPackageId = useCallback((packageId: string) => setState((s) => ({ ...s, packageId })), []);
+  const setPackageId = useCallback(
+    (packageId: PackageId | null) =>
+      setState((s) => ({ ...s, packageId, legacyTierRoute: packageId ? null : s.legacyTierRoute ?? null })),
+    [],
+  );
+  const setLegacyTierRoute = useCallback(
+    (route: LegacyTierRoute | null) =>
+      setState((s) => ({ ...s, legacyTierRoute: route, packageId: route ? null : s.packageId ?? null })),
+    [],
+  );
   const setSelection = useCallback(
     (categoryId: string, optionId: string) =>
       setState((s) => ({ ...s, selections: { ...s.selections, [categoryId]: optionId } })),
@@ -263,10 +305,11 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
       setStyle,
       setTier,
       setPackageId,
+      setLegacyTierRoute,
       setSelection,
       reset,
     }),
-    [state, userId, identityReady, meta, setStyle, setTier, setPackageId, setSelection, reset],
+    [state, userId, identityReady, meta, setStyle, setTier, setPackageId, setLegacyTierRoute, setSelection, reset],
   );
 
   return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>;

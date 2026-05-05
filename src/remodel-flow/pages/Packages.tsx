@@ -2,6 +2,9 @@ import { useEffect } from "react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, getOption, getPackageFor, PACKAGES } from "../catalog";
 import { PrimaryNav, StepHeader } from "../ui";
+import { getPackage, isLegacyRouteAlias } from "../package-engine/registry";
+import { parsePackageId } from "../package-engine/normalize";
+import type { PackageId, Tier as CanonicalTier } from "../package-engine/types";
 
 const fmt = (n: number) => n.toLocaleString("en-US", { style: "currency", currency: "USD", maximumFractionDigits: 0 });
 
@@ -9,16 +12,25 @@ const TIER_LABEL = { essential: "Essential", balanced: "Balanced", premium: "Pre
 const STYLE_LABEL = { modern: "Modern", classic: "Classic", spa: "Spa", minimal: "Minimal" } as const;
 
 const Packages = () => {
-  const { state, setPackageId } = useFlow();
+  const { state, setPackageId, setLegacyTierRoute } = useFlow();
   const pkg = state.tier ? getPackageFor(state.style, state.tier) : undefined;
 
-  // Persist explicit package selection in flow state when this page is reached
-  // with a confirmed tier. Keeps state.packageId aligned with the resolver.
+  // Persist explicit package selection. Only write packageId when pkg.id is
+  // a real PackageId registered in the manifest (curated or placeholder).
+  // Bare tier aliases ("balanced", "essential", "premium") flow through the
+  // legacyTierRoute field instead and never land in `state.packageId`.
   useEffect(() => {
-    if (pkg && state.packageId !== pkg.id) {
-      setPackageId(pkg.id);
+    if (!pkg) return;
+    const parsed = parsePackageId(pkg.id);
+    const registered = getPackage(pkg.id);
+    if (parsed && registered) {
+      const real = pkg.id as PackageId;
+      if (state.packageId !== real) setPackageId(real);
+    } else if (isLegacyRouteAlias(pkg.id)) {
+      const legacy = pkg.id as CanonicalTier;
+      if (state.legacyTierRoute !== legacy) setLegacyTierRoute(legacy);
     }
-  }, [pkg, state.packageId, setPackageId]);
+  }, [pkg, state.packageId, state.legacyTierRoute, setPackageId, setLegacyTierRoute]);
 
   if (!pkg || !state.tier) {
     return (
