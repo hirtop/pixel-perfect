@@ -70,7 +70,9 @@ data was NOT mutated in this pass. Remaining cleanup:
 2. **Resume-route helper** — `src/lib/resumeRoute.ts` only knows about
    tier slugs.
 3. **Persistence** — `RemodelFlowState.packageId` is still a free-form
-   string. Tighten to `PackageId` once UI writes canonical ids.
+   `string`. Cannot be narrowed to `PackageId` yet because legacy aliases
+   (`"balanced"`, `"essential"`, `"premium"`) are still written into the
+   field by the Tier flow. Narrow only after route gating lands.
 4. **Curated renderer gating** — UI must check `isCurated(packageId)`
    before showing curated layout for non-Modern packages.
 5. **Catalog unification** — `catalog.ts` still drives defaults via
