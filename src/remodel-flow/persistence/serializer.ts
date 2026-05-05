@@ -134,13 +134,15 @@ export function deserializeFromDb(row: DesignRow): {
       : null;
 
   const packageId = split.packageId ?? null;
-  // Precedence: real packageId from selected_package_id wins. Otherwise
-  // explicit legacy column → split-extracted legacy → legacy object tier.
-  const legacyTierRoute =
-    explicitLegacySplit.legacyTierRoute ??
-    split.legacyTierRoute ??
-    legacyObjTier ??
-    null;
+  // Precedence: real packageId from selected_package_id wins (clears any
+  // legacy fallback). Otherwise explicit legacy column → split-extracted
+  // legacy → legacy object tier.
+  const legacyTierRoute = packageId
+    ? null
+    : explicitLegacySplit.legacyTierRoute ??
+      split.legacyTierRoute ??
+      legacyObjTier ??
+      null;
 
   const state: RemodelFlowState = {
     style: (row.selected_style ?? undefined) as RemodelFlowState["style"],
