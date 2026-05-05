@@ -56,6 +56,16 @@ export function listPackagesByStatus(status: PackageStatus): PackageManifestEntr
   return PACKAGE_MANIFEST.filter((e) => e.status === status);
 }
 
+/** Public registry API — prefer over reading PACKAGE_MANIFEST directly. */
+export function getPackage(id: string): PackageManifestEntry | undefined {
+  return getPackageManifest(id);
+}
+
+export function listPackages(opts: { status?: PackageStatus } = {}): PackageManifestEntry[] {
+  if (opts.status) return listPackagesByStatus(opts.status);
+  return [...PACKAGE_MANIFEST];
+}
+
 /* ─── Legacy route aliases ──────────────────────────────────────────
  * These are tier-only ids that the existing /package/:id and
  * /customize/:id routes accept. They are NOT packages — they fall back

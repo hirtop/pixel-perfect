@@ -1,8 +1,22 @@
 # Package Engine — Outstanding Work
 
-Tracks what is intentionally NOT yet wired up. Pass 2 normalized the
-product/catalog foundation without touching routes, UI, Supabase, auth,
-payments, checkout, or LK()/compatibility scoring.
+Tracks what is intentionally NOT yet wired up. Pass 3 routed the live
+catalog through `normalizeProduct` via `getNormalizedCatalog()` and
+added safe `styles[]` hints for 6 visible Balanced rows. Raw catalog
+exports are unchanged. Routes, UI, Supabase, auth, payments, checkout,
+and LK()/compatibility scoring were not touched.
+
+## Pass 3 additions
+
+- `package-engine/catalogLoader.ts` — `getNormalizedCatalog()`,
+  `getNormalizedByBinKey()`, `getNormalizedById()`. Raw `tieredCatalog`
+  export is untouched.
+- `PRODUCT_STYLE_HINTS` (loader-local) tags only `bal-vanity-01..03`
+  and `bal-sink-01..03` with subsets of `classic | modern | spa | minimal`.
+  No new style tags were invented and no other styles were used.
+- Registry public API: `getPackage(id)` and `listPackages({ status? })`
+  added so UI/future code does not read `PACKAGE_MANIFEST` directly.
+
 
 ## Status snapshot
 
@@ -70,7 +84,9 @@ data was NOT mutated in this pass. Remaining cleanup:
 2. **Resume-route helper** — `src/lib/resumeRoute.ts` only knows about
    tier slugs.
 3. **Persistence** — `RemodelFlowState.packageId` is still a free-form
-   string. Tighten to `PackageId` once UI writes canonical ids.
+   `string`. Cannot be narrowed to `PackageId` yet because legacy aliases
+   (`"balanced"`, `"essential"`, `"premium"`) are still written into the
+   field by the Tier flow. Narrow only after route gating lands.
 4. **Curated renderer gating** — UI must check `isCurated(packageId)`
    before showing curated layout for non-Modern packages.
 5. **Catalog unification** — `catalog.ts` still drives defaults via
