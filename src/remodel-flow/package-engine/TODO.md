@@ -1,8 +1,22 @@
 # Package Engine — Outstanding Work
 
-Tracks what is intentionally NOT yet wired up. Pass 2 normalized the
-product/catalog foundation without touching routes, UI, Supabase, auth,
-payments, checkout, or LK()/compatibility scoring.
+Tracks what is intentionally NOT yet wired up. Pass 3 routed the live
+catalog through `normalizeProduct` via `getNormalizedCatalog()` and
+added safe `styles[]` hints for 6 visible Balanced rows. Raw catalog
+exports are unchanged. Routes, UI, Supabase, auth, payments, checkout,
+and LK()/compatibility scoring were not touched.
+
+## Pass 3 additions
+
+- `package-engine/catalogLoader.ts` — `getNormalizedCatalog()`,
+  `getNormalizedByBinKey()`, `getNormalizedById()`. Raw `tieredCatalog`
+  export is untouched.
+- `PRODUCT_STYLE_HINTS` (loader-local) tags only `bal-vanity-01..03`
+  and `bal-sink-01..03` with subsets of `classic | modern | spa | minimal`.
+  No new style tags were invented and no other styles were used.
+- Registry public API: `getPackage(id)` and `listPackages({ status? })`
+  added so UI/future code does not read `PACKAGE_MANIFEST` directly.
+
 
 ## Status snapshot
 
