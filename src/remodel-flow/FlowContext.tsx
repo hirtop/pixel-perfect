@@ -52,6 +52,7 @@ const stableStringify = (s: RemodelFlowState) => {
     style: s.style ?? null,
     tier: s.tier ?? null,
     packageId: s.packageId ?? null,
+    legacyTierRoute: s.legacyTierRoute ?? null,
     selections: sortedSel,
   });
 };
