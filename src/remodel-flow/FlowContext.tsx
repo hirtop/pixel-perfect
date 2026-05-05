@@ -56,11 +56,40 @@ const stableStringify = (s: RemodelFlowState) => {
   });
 };
 
+/**
+ * Migrate stored flow state into the new split shape:
+ *  - real PackageId stays in `packageId`
+ *  - legacy tier alias ("balanced"/"essential"/"premium") moves to `legacyTierRoute`
+ *  - junk/unknown clears both
+ */
+const migrateStoredState = (raw: Partial<RemodelFlowState> & { packageId?: unknown; legacyTierRoute?: unknown }): RemodelFlowState => {
+  const base: RemodelFlowState = {
+    ...defaultState,
+    ...raw,
+    selections: (raw.selections as Record<string, string>) ?? {},
+    packageId: null,
+    legacyTierRoute: null,
+  };
+  // Prefer pre-split fields if both provided.
+  const explicitPackage = typeof raw.packageId === "string" ? raw.packageId : null;
+  const explicitLegacy = typeof raw.legacyTierRoute === "string" ? raw.legacyTierRoute : null;
+  if (explicitLegacy) {
+    const split = splitPackageIdField(explicitLegacy);
+    base.legacyTierRoute = split.legacyTierRoute;
+  }
+  if (explicitPackage) {
+    const split = splitPackageIdField(explicitPackage);
+    if (split.packageId) base.packageId = split.packageId;
+    else if (!base.legacyTierRoute && split.legacyTierRoute) base.legacyTierRoute = split.legacyTierRoute;
+  }
+  return base;
+};
+
 export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const [state, setState] = useState<RemodelFlowState>(() => {
     try {
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) return { ...defaultState, ...JSON.parse(raw) };
+      if (raw) return migrateStoredState(JSON.parse(raw));
     } catch {
       /* ignore */
     }
