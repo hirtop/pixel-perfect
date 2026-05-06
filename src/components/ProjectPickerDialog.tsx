@@ -77,7 +77,15 @@ export default function ProjectPickerDialog({ open, onOpenChange, projects, onDe
       source: "project-picker",
       route: "/",
     });
-    if (id.style) setStyle(id.style);
+    // Only StyleId-narrow values are supported by FlowContext.setStyle.
+    const FLOW_STYLES = ["modern", "classic", "spa", "minimal"] as const;
+    type FlowStyle = (typeof FLOW_STYLES)[number];
+    const styleForFlow: FlowStyle | null =
+      id.style && (FLOW_STYLES as readonly string[]).includes(id.style)
+        ? (id.style as FlowStyle)
+        : null;
+
+    if (styleForFlow) setStyle(styleForFlow);
     if (id.tier) setTier(id.tier);
     if (id.packageId) {
       setPackageId(id.packageId);
@@ -89,7 +97,7 @@ export default function ProjectPickerDialog({ open, onOpenChange, projects, onDe
     // rather than the stale flowState read above.
     const nextState = {
       ...flowState,
-      style: id.style ?? flowState.style,
+      style: styleForFlow ?? flowState.style,
       tier: id.tier ?? flowState.tier,
       packageId: id.packageId ?? flowState.packageId ?? null,
       legacyTierRoute: id.packageId
