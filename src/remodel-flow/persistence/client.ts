@@ -89,7 +89,7 @@ export async function loadDesign(designId: string): Promise<LoadResult> {
   try {
     const { data, error } = await (supabase as any)
       .from("remodel_designs")
-      .select("*")
+      .select("*, legacy_project_id, legacy_extras")
       .eq("id", designId)
       .is("deleted_at", null)
       .maybeSingle();
