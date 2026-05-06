@@ -14,6 +14,7 @@
 import type { RemodelFlowState } from "../types";
 import { splitPackageIdField } from "../package-engine/flowStateMigration";
 import { normalizeTier } from "../package-engine/normalize";
+import { reportUnknownPackageId } from "../package-engine/telemetry";
 
 /**
  * Legacy production shape — pre-Pass 5 some rows / localStorage blobs
@@ -136,6 +137,18 @@ export function deserializeFromDb(row: DesignRow): {
   const split = splitPackageIdField(row.selected_package_id ?? null);
   const explicitLegacy = row.selected_legacy_tier_route ?? null;
   const explicitLegacySplit = splitPackageIdField(explicitLegacy);
+
+  // Telemetry: stored selected_package_id was non-empty but unparseable.
+  if (
+    row.selected_package_id &&
+    !split.packageId &&
+    !split.legacyTierRoute
+  ) {
+    reportUnknownPackageId({
+      value: row.selected_package_id,
+      source: "db-row",
+    });
+  }
 
   // Legacy fallback: older rows / localStorage stored an object like
   // { name: "Balanced", tier: "balanced" }. Only used when neither
