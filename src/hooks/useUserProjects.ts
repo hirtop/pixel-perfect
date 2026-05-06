@@ -131,7 +131,7 @@ export function useUserProjects() {
         (supabase as any)
           .from("remodel_designs")
           .select(
-            "id, name, status, selected_style, selected_tier, selected_package_id, selected_legacy_tier_route, current_step, completed_steps, updated_at, last_active_at",
+            "id, name, status, selected_style, selected_tier, selected_package_id, selected_legacy_tier_route, current_step, completed_steps, updated_at, last_active_at, legacy_project_id",
           )
           .eq("user_id", user.id)
           .is("deleted_at", null)
