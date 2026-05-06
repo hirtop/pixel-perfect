@@ -190,6 +190,12 @@ export function useUserProjects() {
           .eq("id", id);
         if (error) throw error;
       } else {
+        // @deprecated-legacy-write — Pass 14 — public.projects write path; migrate after legacy_extras/cross-table key plan is approved.
+        reportLegacyWrite({
+          source: "useUserProjects.deleteProject",
+          code: "delete",
+          route: typeof window !== "undefined" ? window.location?.pathname : undefined,
+        });
         const { error } = await supabase.from("projects").delete().eq("id", id);
         if (error) throw error;
       }
