@@ -80,6 +80,7 @@ describe("Pass 11 — useUserProjects compatibility union", () => {
       ...designRow,
       selected_package_id: null,
       selected_legacy_tier_route: "balanced",
+      style_preferences: null,
     };
     const id = normalizeSavedProjectIdentity(row);
     expect(id.packageId).toBeNull();
