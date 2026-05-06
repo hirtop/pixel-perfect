@@ -280,23 +280,15 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
         // UPDATE (designIdRef already set) and on fresh flows (no pending).
         const isFirstInsert = !designIdRef.current;
         const pendingOrigin = pendingLegacyOriginRef.current;
-        const legacyStamp =
-          isFirstInsert && pendingOrigin
-            ? {
-                legacyProjectId: pendingOrigin.legacyProjectId,
-                legacyExtras: pendingOrigin.legacyExtras as
-                  | Parameters<typeof saveDesign>[1] extends infer O
-                    ? O extends { legacyExtras?: infer L }
-                      ? L
-                      : never
-                    : never,
-              }
-            : {};
-
-        const result = await saveDesign(state, {
+        const saveOpts: Parameters<typeof saveDesign>[1] = {
           designId: designIdRef.current,
-          ...legacyStamp,
-        } as Parameters<typeof saveDesign>[1]);
+        };
+        if (isFirstInsert && pendingOrigin) {
+          saveOpts.legacyProjectId = pendingOrigin.legacyProjectId;
+          saveOpts.legacyExtras = (pendingOrigin.legacyExtras ?? null) as Parameters<typeof saveDesign>[1]["legacyExtras"];
+        }
+
+        const result = await saveDesign(state, saveOpts);
         if (result.ok) {
           // Clear pending stamp once it's been written to a real row.
           if (isFirstInsert && pendingOrigin && result.designId) {
