@@ -55,11 +55,31 @@ function writeSessionSet(set: Set<string>): void {
   }
 }
 
+/**
+ * Pass 8B — Observability plug-point.
+ *
+ * No observability vendor (Sentry / PostHog / Datadog / Amplitude / Mixpanel)
+ * is currently installed in this project — verified by package.json and
+ * source scan. Until one is added we stay on console.warn.
+ *
+ * To wire a vendor later, do it INSIDE this function only. Keep:
+ *   - the console.warn fallback
+ *   - the (source, value) sessionStorage dedupe in reportUnknownPackageId
+ *   - the safe-property allowlist below (no PII)
+ *
+ * Allowed properties: event, value, source, route, appVersion.
+ * Forbidden: user email, name, project text, uploaded images, full localStorage.
+ *
+ * Example future wiring:
+ *   if (window.Sentry) window.Sentry.captureMessage(payload.event, { extra: payload });
+ *   if (window.posthog) window.posthog.capture(payload.event, payload);
+ */
 function emit(payload: {
   event: string;
   value: string;
   source: UnknownPackageIdSource;
   route?: string;
+  appVersion?: string;
 }): void {
   try {
     // eslint-disable-next-line no-console
