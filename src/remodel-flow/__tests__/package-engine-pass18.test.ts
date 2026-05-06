@@ -90,16 +90,12 @@ describe("buildLegacyExtrasSnapshot — exclusions", () => {
 
   it("ignores fields covered elsewhere (selected_package, style_preferences, customizations, workflow_progress)", () => {
     const snap = buildLegacyExtrasSnapshot({
-      // @ts-expect-error — intentionally passing legacy junk
       selected_package: { tier: "balanced" },
-      // @ts-expect-error — intentionally passing legacy junk
       style_preferences: { style: "modern" },
-      // @ts-expect-error — intentionally passing legacy junk
       customizations: { categories: [] },
-      // @ts-expect-error — intentionally passing legacy junk
       workflow_progress: { current_step: "x" },
       bathroom_type: "full",
-    });
+    } as never);
     expect(snap).toEqual({ bathroom_type: "full" });
   });
 
