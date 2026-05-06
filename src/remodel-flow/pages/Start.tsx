@@ -1,40 +1,38 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { StepHeader } from "../ui";
-import { useFlow } from "../FlowContext";
-import { hasFlowProgress } from "../resumeRoute";
-
-const LEGACY_DRAFT_KEY = "bobox_project_draft";
-const BANNER_DISMISSED_KEY = "bobox_legacy_upgrade_banner_dismissed_v1";
+import {
+  shouldShowLegacyDraftBanner,
+  LEGACY_DRAFT_KEY,
+  BANNER_DISMISSED_KEY,
+} from "../legacyDraftBanner";
 
 /**
- * Show a one-time, non-blocking info banner when a signed-in (or anon) user
- * lands on /remodel-flow/start and:
- *   - they have non-empty legacy `bobox_project_draft` data, AND
- *   - their FlowContext state is empty/new (no progress yet)
+ * Show a one-time, non-blocking info banner on /remodel-flow/start when
+ * meaningful legacy `bobox_project_draft` data exists and no meaningful
+ * active remodel-flow progress has been made.
  *
- * Saved Supabase rows are not touched. The banner is dismissible and
- * remembered via localStorage so it does not nag.
+ * Reads localStorage DIRECTLY rather than going through FlowContext so a
+ * fresh-default FlowContext mount cannot defeat the predicate.
  */
 function useLegacyDraftBanner(): { show: boolean; dismiss: () => void } {
-  const { state } = useFlow();
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    try {
-      if (localStorage.getItem(BANNER_DISMISSED_KEY) === "1") return;
-      const raw = localStorage.getItem(LEGACY_DRAFT_KEY);
-      if (!raw) return;
-      const parsed = JSON.parse(raw);
-      const hasMeaningfulLegacy =
-        parsed && typeof parsed === "object" && Object.keys(parsed).length > 0;
-      if (hasMeaningfulLegacy && !hasFlowProgress(state)) {
-        setShow(true);
+    setShow(shouldShowLegacyDraftBanner());
+    // Re-evaluate if storage changes in another tab.
+    const onStorage = (e: StorageEvent) => {
+      if (
+        e.key === LEGACY_DRAFT_KEY ||
+        e.key === BANNER_DISMISSED_KEY ||
+        e.key === "bobox_remodel_flow_v1"
+      ) {
+        setShow(shouldShowLegacyDraftBanner());
       }
-    } catch {
-      /* ignore */
-    }
-  }, [state]);
+    };
+    window.addEventListener("storage", onStorage);
+    return () => window.removeEventListener("storage", onStorage);
+  }, []);
 
   return {
     show,
@@ -57,6 +55,7 @@ const Start = () => {
       {banner.show && (
         <div
           role="status"
+          data-testid="legacy-upgrade-banner"
           className="mb-6 flex items-start gap-4 rounded-xl border border-border bg-muted/40 p-4 text-sm text-foreground"
         >
           <p className="flex-1 leading-relaxed">
