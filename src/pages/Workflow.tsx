@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
+import { normalizeProjectContextIdentity } from "@/remodel-flow/package-engine/projectContextIdentity";
 
 const steps = [
   { title: "Planning and measurements", desc: "Confirm layout, finalize selections, and verify all dimensions before work begins.", product: null },
@@ -21,7 +22,8 @@ const steps = [
 
 const Workflow = () => {
   const { project, markStepComplete } = useProject();
-  const tier = project?.selected_package?.tier || "balanced";
+  const identity = normalizeProjectContextIdentity(project, { source: "saved-project", route: "/workflow" });
+  const tier = identity.savedTierLower || identity.tier || "balanced";
   const navigate = useNavigate();
 
   const handleContinue = () => {

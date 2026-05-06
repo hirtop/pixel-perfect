@@ -15,6 +15,9 @@ const NEEDLE = /selected_package\s*[?.]?\.\s*tier/;
 const ALLOW = new Set<string>([
   // Centralized normalizer — the only nextgen module allowed to read it.
   "remodel-flow/package-engine/projectIdentity.ts",
+  // Pass 9: centralized helper for legacy ProjectContext shape. Only
+  // mentions selected_package.tier in its doc comment; no direct read.
+  "remodel-flow/package-engine/projectContextIdentity.ts",
   // Persistence layer migrating legacy DesignRow shapes.
   "remodel-flow/persistence/serializer.ts",
   // Test fixtures + tests intentionally exercise the legacy shape.

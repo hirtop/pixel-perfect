@@ -8,6 +8,7 @@ import balancedImg from "@/assets/package-balanced.jpg";
 import budgetImg from "@/assets/package-budget.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
 import { useProject } from "@/contexts/ProjectContext";
+import { normalizeProjectContextIdentity } from "@/remodel-flow/package-engine/projectContextIdentity";
 import { useAuth } from "@/hooks/useAuth";
 import ReferencePhotos from "@/components/ReferencePhotos";
 import BathroomRiskScan from "@/components/BathroomRiskScan";
@@ -44,9 +45,13 @@ const ProjectSummary = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
 
-  const tierKey = project.selected_package.tier
-    ? (project.selected_package.tier.charAt(0).toUpperCase() + 
-       project.selected_package.tier.slice(1)) as keyof typeof TIER_BASE_LABOR
+  const identity = normalizeProjectContextIdentity(project, { source: "saved-project", route: "/summary" });
+  const savedTierLower = identity.savedTierLower;
+  const savedPackageName = identity.savedPackageName;
+
+  const tierKey = savedTierLower
+    ? (savedTierLower.charAt(0).toUpperCase() +
+       savedTierLower.slice(1)) as keyof typeof TIER_BASE_LABOR
     : "Balanced";
   const baseLaborRate = TIER_BASE_LABOR[tierKey] ?? 5800;
   const baseShipping = SHIPPING_ESTIMATE;
@@ -56,9 +61,7 @@ const ProjectSummary = () => {
     balanced: balancedImg,
     premium: premiumImg,
   };
-  const summaryHeroImg = tierImageMap[
-    project.selected_package.tier?.toLowerCase() || "balanced"
-  ] || balancedImg;
+  const summaryHeroImg = tierImageMap[savedTierLower || "balanced"] || balancedImg;
 
   const targetBudgetRaw = project.style_preferences.budget;
   const targetBudgetNum = Number(targetBudgetRaw);
@@ -69,18 +72,17 @@ const ProjectSummary = () => {
     Number.isFinite(targetBudgetNum) &&
     targetBudgetNum > 0;
 
-  const rawPkgName = project.selected_package.name;
+  const rawPkgName = savedPackageName;
   const displayPkgName = rawPkgName && rawPkgName.toLowerCase() === "budget"
     ? "Essential"
     : (rawPkgName || "Not yet selected");
 
   // Resolve customize route, mapping internal "budget" → public "essential".
-  const tierLower = project.selected_package.tier?.toLowerCase();
   const customizeTierSlug =
-    tierLower === "budget"
+    savedTierLower === "budget"
       ? "essential"
-      : tierLower === "balanced" || tierLower === "premium"
-        ? tierLower
+      : savedTierLower === "balanced" || savedTierLower === "premium"
+        ? savedTierLower
         : "balanced";
   const editSelectionsHref = `/customize/${customizeTierSlug}`;
 
