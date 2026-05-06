@@ -66,6 +66,12 @@ export interface HydrateResult {
   route: string;
   /** Order setters were invoked, for tests. */
   appliedOrder: Array<"style" | "tier" | "packageId" | "legacyTierRoute">;
+  /**
+   * Pass 18 — non-null only when the saved-project row originated from
+   * `public.projects` (source === "projects") and carries an `id`.
+   * Consumers (FlowContext) stamp these on the next first-INSERT autosave.
+   */
+  legacyOrigin: LegacyOriginStamp | null;
 }
 
 export interface HydrateOptions {
@@ -81,7 +87,7 @@ export interface HydrateOptions {
  * route is derived from `nextState` rather than the stale flowState.
  */
 export function hydrateFlowFromSavedProject(
-  row: LegacySavedProjectLike | null | undefined,
+  row: SavedProjectRowLike | null | undefined,
   flowState: RemodelFlowState,
   setters: FlowSetters,
   opts: HydrateOptions = {},
@@ -124,6 +130,17 @@ export function hydrateFlowFromSavedProject(
       : identity.legacyTierRoute ?? flowState.legacyTierRoute ?? null,
   };
 
+  // Pass 18 — only legacy public.projects rows produce an origin stamp.
+  // Never stamp a remodel_designs id as legacy_project_id.
+  let legacyOrigin: LegacyOriginStamp | null = null;
+  if (row && row.source === "projects" && typeof row.id === "string" && row.id) {
+    legacyOrigin = {
+      legacyProjectId: row.id,
+      legacyExtras: buildLegacyExtrasSnapshot(row, { route: opts.route }),
+    };
+  }
+
   const route = resolveFlowResumeRoute(nextState);
-  return { identity, nextState, route, appliedOrder };
+  return { identity, nextState, route, appliedOrder, legacyOrigin };
 }
+
