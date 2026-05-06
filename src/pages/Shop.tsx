@@ -129,7 +129,7 @@ export default function Shop() {
 
   // ─── Back-to-Customize destination ────────────────────────────────
   // Prefer the saved tier; map internal "budget" → public "essential".
-  const savedTierLower = project.selected_package?.tier?.toLowerCase();
+  const savedTierLower = normalizeProjectContextIdentity(project, { source: "saved-project", route: "/shop" }).savedTierLower;
   const customizeBackTier =
     savedTierLower === "budget"
       ? "essential"
