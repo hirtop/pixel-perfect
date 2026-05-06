@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { reportRemodelDesignsReadFailed } from "@/remodel-flow/package-engine/telemetry";
+import {
+  reportRemodelDesignsReadFailed,
+  reportLegacyWrite,
+} from "@/remodel-flow/package-engine/telemetry";
 
 export interface SavedProject {
   id: string;
