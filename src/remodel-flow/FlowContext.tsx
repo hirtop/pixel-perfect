@@ -36,6 +36,11 @@ interface FlowContextValue {
   setPackageId: (pkg: PackageId | null) => void;
   setLegacyTierRoute: (route: LegacyTierRoute | null) => void;
   setSelection: (categoryId: string, optionId: string) => void;
+  /**
+   * Pass 18 — register a legacy origin stamp to apply on the next
+   * first-INSERT autosave for this flow. Cleared after stamp.
+   */
+  setPendingLegacyOrigin: (origin: { legacyProjectId: string; legacyExtras: unknown | null } | null) => void;
   reset: () => void;
 }
 
@@ -169,6 +174,24 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const designIdRef = useRef<string | undefined>(meta.designId);
   designIdRef.current = meta.designId;
 
+  /**
+   * Pass 18 — pending legacy origin stamp set by hydrate-from-saved-project
+   * call sites. Applied ONCE on the next first-INSERT autosave (when there
+   * is no designId yet) and then cleared. Subsequent UPDATEs never resend
+   * legacy_project_id / legacy_extras.
+   */
+  const pendingLegacyOriginRef = useRef<{
+    legacyProjectId: string;
+    legacyExtras: unknown | null;
+  } | null>(null);
+
+  const setPendingLegacyOrigin = useCallback(
+    (origin: { legacyProjectId: string; legacyExtras: unknown | null } | null) => {
+      pendingLegacyOriginRef.current = origin;
+    },
+    [],
+  );
+
   // --- Hydrate from URL ?design=... once identity is ready -------------
   const hydratedRef = useRef(false);
   const [hydrationDone, setHydrationDone] = useState(false);
@@ -252,8 +275,25 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
 
       inFlightRef.current = true;
       try {
-        const result = await saveDesign(state, { designId: designIdRef.current });
+        // Pass 18 — first INSERT only: stamp legacy_project_id / legacy_extras
+        // when a hydrated legacy origin is pending. Skipped entirely on
+        // UPDATE (designIdRef already set) and on fresh flows (no pending).
+        const isFirstInsert = !designIdRef.current;
+        const pendingOrigin = pendingLegacyOriginRef.current;
+        const saveOpts: Parameters<typeof saveDesign>[1] = {
+          designId: designIdRef.current,
+        };
+        if (isFirstInsert && pendingOrigin) {
+          saveOpts.legacyProjectId = pendingOrigin.legacyProjectId;
+          saveOpts.legacyExtras = (pendingOrigin.legacyExtras ?? null) as Parameters<typeof saveDesign>[1]["legacyExtras"];
+        }
+
+        const result = await saveDesign(state, saveOpts);
         if (result.ok) {
+          // Clear pending stamp once it's been written to a real row.
+          if (isFirstInsert && pendingOrigin && result.designId) {
+            pendingLegacyOriginRef.current = null;
+          }
           lastSavedHashRef.current = fireHash;
           setMeta((m) => ({
             designId: result.designId ?? m.designId,
@@ -303,6 +343,7 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
     setState(defaultState);
     setMeta(defaultMeta);
     lastSavedHashRef.current = null;
+    pendingLegacyOriginRef.current = null;
   }, []);
 
   const value = useMemo(
@@ -318,9 +359,10 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
       setPackageId,
       setLegacyTierRoute,
       setSelection,
+      setPendingLegacyOrigin,
       reset,
     }),
-    [state, userId, identityReady, meta, setStyle, setTier, setPackageId, setLegacyTierRoute, setSelection, reset],
+    [state, userId, identityReady, meta, setStyle, setTier, setPackageId, setLegacyTierRoute, setSelection, setPendingLegacyOrigin, reset],
   );
 
   return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>;
