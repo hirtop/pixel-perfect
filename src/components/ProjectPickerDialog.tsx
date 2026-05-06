@@ -74,12 +74,15 @@ export default function ProjectPickerDialog({ open, onOpenChange, projects, onDe
     // write a tier alias ("balanced") into packageId, and that we route
     // through the unified resumeRoute resolver computed from the *next*
     // state (not the stale flowState).
-    const { route } = hydrateFlowFromSavedProject(
+    const { route, legacyOrigin } = hydrateFlowFromSavedProject(
       project,
       flowState,
       { setStyle, setTier, setPackageId, setLegacyTierRoute },
       { source: "project-picker", route: "/" },
     );
+    // Pass 18 — only stamps the next first INSERT when the row came from
+    // public.projects; otherwise legacyOrigin is null and nothing is set.
+    setPendingLegacyOrigin(legacyOrigin);
     navigate(route);
   };
 
