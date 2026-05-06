@@ -215,6 +215,8 @@ export function deserializeFromDb(row: DesignRow): {
       lastActiveAt: row.last_active_at ?? null,
       savedAt: row.saved_at ?? null,
       deletedAt: row.deleted_at ?? null,
+      legacyProjectId: row.legacy_project_id ?? null,
+      legacyExtras: row.legacy_extras ?? null,
     },
   };
 }
