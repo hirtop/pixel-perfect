@@ -183,7 +183,7 @@ export function useUserProjects() {
       }
       setProjects((prev) => prev.filter((p) => p.id !== id));
     },
-    [],
+    [projects],
   );
 
   const isHydratingCurrentUser = Boolean(user) && loadedUserId !== user.id;
