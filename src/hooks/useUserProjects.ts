@@ -165,7 +165,12 @@ export function useUserProjects() {
   }, [authLoading, fetchProjects]);
 
   const deleteProject = useCallback(
-    async (id: string, source?: SavedProject["source"]) => {
+    async (id: string, sourceArg?: SavedProject["source"]) => {
+      // Resolve source from current list when caller does not pass it,
+      // so existing call sites (Index/ProjectPickerDialog) keep working
+      // without signature changes.
+      const source =
+        sourceArg ?? projects.find((p) => p.id === id)?.source ?? "projects";
       if (source === "remodel_designs") {
         const { error } = await (supabase as any)
           .from("remodel_designs")
