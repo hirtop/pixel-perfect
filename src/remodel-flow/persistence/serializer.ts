@@ -52,6 +52,10 @@ export interface DesignRow {
   deleted_at?: string | null;
   /** Legacy fallback — older rows may carry an object here. Read-only. */
   selected_package?: LegacySelectedPackageObject | null;
+  /** Pass 16 — soft cross-table link to public.projects.id. Nullable. */
+  legacy_project_id?: string | null;
+  /** Pass 16 — opaque container for legacy-only fields. Nullable. */
+  legacy_extras?: Json | null;
 }
 
 export interface SerializeContext {
@@ -63,7 +67,17 @@ export interface SerializeContext {
   completedSteps?: string[];
   name?: string;
   status?: string;
+  /**
+   * Pass 17 — optional legacy fields. Tri-state semantics:
+   *   - omitted (undefined) → key NOT included in payload
+   *   - null                → key included with null
+   *   - value               → key included with value
+   * No runtime call site currently passes non-null values.
+   */
+  legacyProjectId?: string | null;
+  legacyExtras?: Json | null;
 }
+
 
 export const SCHEMA_VERSION = 2;
 
