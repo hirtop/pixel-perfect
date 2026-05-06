@@ -294,6 +294,12 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (!persistedId) {
+        // @deprecated-legacy-write — Pass 14 — public.projects write path; migrate after legacy_extras/cross-table key plan is approved.
+        reportLegacyWrite({
+          source: "ProjectContext.saveProjectInternal",
+          code: "insert",
+          route: typeof window !== "undefined" ? window.location?.pathname : undefined,
+        });
         const { data, error } = await supabase
           .from("projects")
           .insert(payload)
