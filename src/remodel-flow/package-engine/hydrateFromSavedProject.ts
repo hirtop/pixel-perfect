@@ -20,6 +20,34 @@ import {
   type NormalizedProjectIdentity,
 } from "@/remodel-flow/package-engine/projectIdentity";
 import type { UnknownPackageIdSource } from "@/remodel-flow/package-engine/telemetry";
+import {
+  buildLegacyExtrasSnapshot,
+  type LegacyExtras,
+  type LegacyProjectRowForSnapshot,
+} from "@/remodel-flow/package-engine/legacyExtrasSnapshot";
+
+/**
+ * Pass 18 — A saved-project row carries a `source` discriminator
+ * (added in Pass 11) telling us whether it came from public.projects
+ * or remodel_designs. Only "projects" rows produce a legacy origin
+ * stamp.
+ */
+export interface SavedProjectRowLike
+  extends LegacySavedProjectLike,
+    LegacyProjectRowForSnapshot {
+  id?: string;
+  source?: "projects" | "remodel_designs" | string;
+}
+
+/**
+ * Pass 18 — when present, the next first-INSERT autosave on this flow
+ * should stamp `legacy_project_id` + `legacy_extras` and then clear
+ * itself. Subsequent updates must NOT resend these fields.
+ */
+export interface LegacyOriginStamp {
+  legacyProjectId: string;
+  legacyExtras: LegacyExtras | null;
+}
 
 /** Styles supported by FlowContext.setStyle. */
 export const FLOW_STYLES = ["modern", "classic", "spa", "minimal"] as const;
