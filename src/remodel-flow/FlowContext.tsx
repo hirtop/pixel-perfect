@@ -275,8 +275,33 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
 
       inFlightRef.current = true;
       try {
-        const result = await saveDesign(state, { designId: designIdRef.current });
+        // Pass 18 — first INSERT only: stamp legacy_project_id / legacy_extras
+        // when a hydrated legacy origin is pending. Skipped entirely on
+        // UPDATE (designIdRef already set) and on fresh flows (no pending).
+        const isFirstInsert = !designIdRef.current;
+        const pendingOrigin = pendingLegacyOriginRef.current;
+        const legacyStamp =
+          isFirstInsert && pendingOrigin
+            ? {
+                legacyProjectId: pendingOrigin.legacyProjectId,
+                legacyExtras: pendingOrigin.legacyExtras as
+                  | Parameters<typeof saveDesign>[1] extends infer O
+                    ? O extends { legacyExtras?: infer L }
+                      ? L
+                      : never
+                    : never,
+              }
+            : {};
+
+        const result = await saveDesign(state, {
+          designId: designIdRef.current,
+          ...legacyStamp,
+        } as Parameters<typeof saveDesign>[1]);
         if (result.ok) {
+          // Clear pending stamp once it's been written to a real row.
+          if (isFirstInsert && pendingOrigin && result.designId) {
+            pendingLegacyOriginRef.current = null;
+          }
           lastSavedHashRef.current = fireHash;
           setMeta((m) => ({
             designId: result.designId ?? m.designId,
