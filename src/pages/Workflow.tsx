@@ -22,7 +22,8 @@ const steps = [
 
 const Workflow = () => {
   const { project, markStepComplete } = useProject();
-  const tier = project?.selected_package?.tier || "balanced";
+  const identity = normalizeProjectContextIdentity(project, { source: "saved-project", route: "/workflow" });
+  const tier = identity.savedTierLower || identity.tier || "balanced";
   const navigate = useNavigate();
 
   const handleContinue = () => {
