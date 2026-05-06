@@ -8,6 +8,7 @@ import balancedImg from "@/assets/package-balanced.jpg";
 import budgetImg from "@/assets/package-budget.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
 import { useProject } from "@/contexts/ProjectContext";
+import { normalizeProjectContextIdentity } from "@/remodel-flow/package-engine/projectContextIdentity";
 import { useAuth } from "@/hooks/useAuth";
 import ReferencePhotos from "@/components/ReferencePhotos";
 import BathroomRiskScan from "@/components/BathroomRiskScan";
