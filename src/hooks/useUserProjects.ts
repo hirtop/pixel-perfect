@@ -37,6 +37,14 @@ export interface SavedProject {
    * heuristics.
    */
   source?: "projects" | "remodel_designs";
+  /**
+   * Pass 17 — soft cross-table link, populated only on remodel_designs rows
+   * where the row was created from a legacy projects row. NOT used yet
+   * for picker dedupe — round-trip support only.
+   * NOTE: legacy_extras is intentionally NOT surfaced here (picker SELECT
+   * excludes it because it may be large; load full design via loadDesign).
+   */
+  legacy_project_id?: string | null;
 }
 
 interface RemodelDesignRow {
@@ -51,6 +59,7 @@ interface RemodelDesignRow {
   completed_steps: string[] | null;
   updated_at: string | null;
   last_active_at: string | null;
+  legacy_project_id: string | null;
 }
 
 function mapDesignRowToSavedProject(d: RemodelDesignRow): SavedProject {
@@ -73,6 +82,7 @@ function mapDesignRowToSavedProject(d: RemodelDesignRow): SavedProject {
     selected_package_id: d.selected_package_id ?? null,
     selected_legacy_tier_route: d.selected_legacy_tier_route ?? null,
     source: "remodel_designs",
+    legacy_project_id: d.legacy_project_id ?? null,
   };
 }
 
@@ -121,7 +131,7 @@ export function useUserProjects() {
         (supabase as any)
           .from("remodel_designs")
           .select(
-            "id, name, status, selected_style, selected_tier, selected_package_id, selected_legacy_tier_route, current_step, completed_steps, updated_at, last_active_at",
+            "id, name, status, selected_style, selected_tier, selected_package_id, selected_legacy_tier_route, current_step, completed_steps, updated_at, last_active_at, legacy_project_id",
           )
           .eq("user_id", user.id)
           .is("deleted_at", null)
