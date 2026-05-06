@@ -36,6 +36,11 @@ interface FlowContextValue {
   setPackageId: (pkg: PackageId | null) => void;
   setLegacyTierRoute: (route: LegacyTierRoute | null) => void;
   setSelection: (categoryId: string, optionId: string) => void;
+  /**
+   * Pass 18 — register a legacy origin stamp to apply on the next
+   * first-INSERT autosave for this flow. Cleared after stamp.
+   */
+  setPendingLegacyOrigin: (origin: { legacyProjectId: string; legacyExtras: unknown | null } | null) => void;
   reset: () => void;
 }
 
