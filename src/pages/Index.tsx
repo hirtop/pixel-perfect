@@ -130,10 +130,13 @@ export default function LandingPage() {
   const flowResumeRoute = resolveFlowResumeRoute(flowState);
 
   const goStartFresh = () => {
-    // Wipe only the unified remodel-flow state. Saved legacy projects in
-    // Supabase are preserved.
+    // Pass 8A: wipe BOTH the unified remodel-flow state AND the legacy
+    // ProjectContext draft (bobox_project_draft) so no stale
+    // selected_package.tier / style / tier survives a "Start New Project"
+    // click. Saved Supabase rows are preserved (resetProject only touches
+    // local in-memory state + localStorage).
     resetFlow();
-    if (user) resetProject();
+    resetProject();
     navigate("/remodel-flow/start");
   };
 
