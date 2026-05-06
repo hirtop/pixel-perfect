@@ -70,41 +70,17 @@ export default function ProjectPickerDialog({ open, onOpenChange, projects, onDe
     await loadProject(project.id);
 
     // Pass 7: hydrate the unified FlowContext from the saved project's
-    // legacy shape using the normalized identity helper. This guarantees
-    // we never write a tier alias ("balanced") into packageId, and that
-    // we route through the unified resumeRoute resolver.
-    const id = normalizeSavedProjectIdentity(project, {
-      source: "project-picker",
-      route: "/",
-    });
-    // Only StyleId-narrow values are supported by FlowContext.setStyle.
-    const FLOW_STYLES = ["modern", "classic", "spa", "minimal"] as const;
-    type FlowStyle = (typeof FLOW_STYLES)[number];
-    const styleForFlow: FlowStyle | null =
-      id.style && (FLOW_STYLES as readonly string[]).includes(id.style)
-        ? (id.style as FlowStyle)
-        : null;
-
-    if (styleForFlow) setStyle(styleForFlow);
-    if (id.tier) setTier(id.tier);
-    if (id.packageId) {
-      setPackageId(id.packageId);
-    } else if (id.legacyTierRoute) {
-      setLegacyTierRoute(id.legacyTierRoute);
-    }
-
-    // Compute the resume route from the *next* state we just synthesized
-    // rather than the stale flowState read above.
-    const nextState = {
-      ...flowState,
-      style: styleForFlow ?? flowState.style,
-      tier: id.tier ?? flowState.tier,
-      packageId: id.packageId ?? flowState.packageId ?? null,
-      legacyTierRoute: id.packageId
-        ? null
-        : id.legacyTierRoute ?? flowState.legacyTierRoute ?? null,
-    };
-    navigate(resolveFlowResumeRoute(nextState));
+    // legacy shape using the shared hydrator. This guarantees we never
+    // write a tier alias ("balanced") into packageId, and that we route
+    // through the unified resumeRoute resolver computed from the *next*
+    // state (not the stale flowState).
+    const { route } = hydrateFlowFromSavedProject(
+      project,
+      flowState,
+      { setStyle, setTier, setPackageId, setLegacyTierRoute },
+      { source: "project-picker", route: "/" },
+    );
+    navigate(route);
   };
 
   const handleDelete = async () => {
