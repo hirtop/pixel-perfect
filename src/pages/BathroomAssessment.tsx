@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer, Wrench, Info
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 import { supabase } from "@/integrations/supabase/client";
+import { reportLegacyWrite } from "@/remodel-flow/package-engine/telemetry";
 
 type YesNoUnknown = "yes" | "no" | "unknown";
 type WaterproofingScope = "None" | "Tub surround" | "Shower walls" | "Full shower system";
