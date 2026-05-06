@@ -82,6 +82,7 @@ function mapDesignRowToSavedProject(d: RemodelDesignRow): SavedProject {
     selected_package_id: d.selected_package_id ?? null,
     selected_legacy_tier_route: d.selected_legacy_tier_route ?? null,
     source: "remodel_designs",
+    legacy_project_id: d.legacy_project_id ?? null,
   };
 }
 
