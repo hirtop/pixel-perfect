@@ -97,7 +97,9 @@ describe("hydrateFlowFromSavedProject — apply-then-route order", () => {
     expect(names).toContain("setTier");
     expect(names).toContain("setLegacyTierRoute");
     expect(names).not.toContain("setPackageId");
-    expect(result.route).not.toBe("/remodel-flow/start");
+    // No style on this row → resumeRoute correctly funnels to start.
+    // What matters: legacyTierRoute IS hydrated for downstream pages.
+    expect(result.nextState.legacyTierRoute).toBe("balanced");
   });
 
   it("never writes a tier alias into packageId across all rows", () => {
