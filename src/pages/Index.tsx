@@ -10,7 +10,7 @@ import { useUserProjects } from "@/hooks/useUserProjects";
 import ProjectPickerDialog from "@/components/ProjectPickerDialog";
 import { useFlow } from "@/remodel-flow/FlowContext";
 import { resolveFlowResumeRoute, hasFlowProgress } from "@/remodel-flow/resumeRoute";
-import { normalizeSavedProjectIdentity } from "@/remodel-flow/package-engine/projectIdentity";
+import { hydrateFlowFromSavedProject } from "@/remodel-flow/package-engine/hydrateFromSavedProject";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
@@ -160,33 +160,17 @@ export default function LandingPage() {
       }
       await loadProject(single.id);
       // Pass 7: hydrate FlowContext from the saved project's normalized
-      // identity so we never write a tier alias into packageId, and so
-      // the unified resumeRoute resolver picks the correct destination.
-      const id = normalizeSavedProjectIdentity(single, {
-        source: "project-picker",
-        route: "/",
-      });
-      const FLOW_STYLES = ["modern", "classic", "spa", "minimal"] as const;
-      type FlowStyle = (typeof FLOW_STYLES)[number];
-      const styleForFlow: FlowStyle | null =
-        id.style && (FLOW_STYLES as readonly string[]).includes(id.style)
-          ? (id.style as FlowStyle)
-          : null;
-      if (styleForFlow) setStyle(styleForFlow);
-      if (id.tier) setTier(id.tier);
-      if (id.packageId) setPackageId(id.packageId);
-      else if (id.legacyTierRoute) setLegacyTierRoute(id.legacyTierRoute);
-
-      const nextState = {
-        ...flowState,
-        style: styleForFlow ?? flowState.style,
-        tier: id.tier ?? flowState.tier,
-        packageId: id.packageId ?? flowState.packageId ?? null,
-        legacyTierRoute: id.packageId
-          ? null
-          : id.legacyTierRoute ?? flowState.legacyTierRoute ?? null,
-      };
-      navigate(resolveFlowResumeRoute(nextState));
+      // identity via the shared hydrator so the picker and single-project
+      // paths use identical apply-then-route logic. Setters fire BEFORE
+      // the route is computed, and the route is derived from the *next*
+      // synthesized state — never the stale flowState.
+      const { route } = hydrateFlowFromSavedProject(
+        single,
+        flowState,
+        { setStyle, setTier, setPackageId, setLegacyTierRoute },
+        { source: "project-picker", route: "/" },
+      );
+      navigate(route);
       return;
     }
     // 3. Nothing to continue — start clean in the unified flow.
