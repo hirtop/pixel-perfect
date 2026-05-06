@@ -37,6 +37,14 @@ export interface SavedProject {
    * heuristics.
    */
   source?: "projects" | "remodel_designs";
+  /**
+   * Pass 17 — soft cross-table link, populated only on remodel_designs rows
+   * where the row was created from a legacy projects row. NOT used yet
+   * for picker dedupe — round-trip support only.
+   * NOTE: legacy_extras is intentionally NOT surfaced here (picker SELECT
+   * excludes it because it may be large; load full design via loadDesign).
+   */
+  legacy_project_id?: string | null;
 }
 
 interface RemodelDesignRow {
@@ -51,6 +59,7 @@ interface RemodelDesignRow {
   completed_steps: string[] | null;
   updated_at: string | null;
   last_active_at: string | null;
+  legacy_project_id: string | null;
 }
 
 function mapDesignRowToSavedProject(d: RemodelDesignRow): SavedProject {
