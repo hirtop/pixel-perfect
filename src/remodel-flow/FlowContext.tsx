@@ -343,6 +343,7 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
     setState(defaultState);
     setMeta(defaultMeta);
     lastSavedHashRef.current = null;
+    pendingLegacyOriginRef.current = null;
   }, []);
 
   const value = useMemo(
