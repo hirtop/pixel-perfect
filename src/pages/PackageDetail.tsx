@@ -107,7 +107,7 @@ const PackageDetail = () => {
   // URL is the source of truth for which tier to render. Fall back to saved
   // package only when the URL is missing/invalid (defensive — should not happen
   // because the route requires :id).
-  const savedTier = project.selected_package.tier?.toLowerCase();
+  const savedTier = normalizeProjectContextIdentity(project, { source: "saved-project", route: "/package" }).savedTierLower;
   const pkgTier = urlTierIsValid ? urlTier : (savedTier || "balanced");
   const tier: ProductTier = tierNameMap[pkgTier] || "Balanced";
   const pkgName = tier; // capitalized name matches tier (catalog key)
