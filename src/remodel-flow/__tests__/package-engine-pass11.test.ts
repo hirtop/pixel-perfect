@@ -111,12 +111,6 @@ describe("Pass 11 — useUserProjects compatibility union", () => {
       });
       expect(a.packageId).toBeNull();
       const b = normalizeSavedProjectIdentity({
-        id: "x",
-        name: "x",
-        status: "x",
-        bathroom_type: null,
-        updated_at: "",
-        workflow_progress: null,
         style_preferences: null,
         selected_package: { tier: alias },
       });
