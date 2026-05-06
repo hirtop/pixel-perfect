@@ -200,7 +200,7 @@ const CustomizeOption = () => {
   const insights = getBathroomInsights(project);
 
   const budgetLevel = project.style_preferences?.budget_level || "Balanced";
-  const savedTier = project.selected_package.tier?.toLowerCase();
+  const savedTier = normalizeProjectContextIdentity(project, { source: "saved-project", route: "/customize" }).savedTierLower;
   // URL is the source of truth for which tier we are customizing.
   const pkgTier = urlTierIsValid ? urlTier : (savedTier || "balanced");
   const tier: ProductTier = tierNameMap[pkgTier] || "Balanced";
