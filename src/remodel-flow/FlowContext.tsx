@@ -174,6 +174,24 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const designIdRef = useRef<string | undefined>(meta.designId);
   designIdRef.current = meta.designId;
 
+  /**
+   * Pass 18 — pending legacy origin stamp set by hydrate-from-saved-project
+   * call sites. Applied ONCE on the next first-INSERT autosave (when there
+   * is no designId yet) and then cleared. Subsequent UPDATEs never resend
+   * legacy_project_id / legacy_extras.
+   */
+  const pendingLegacyOriginRef = useRef<{
+    legacyProjectId: string;
+    legacyExtras: unknown | null;
+  } | null>(null);
+
+  const setPendingLegacyOrigin = useCallback(
+    (origin: { legacyProjectId: string; legacyExtras: unknown | null } | null) => {
+      pendingLegacyOriginRef.current = origin;
+    },
+    [],
+  );
+
   // --- Hydrate from URL ?design=... once identity is ready -------------
   const hydratedRef = useRef(false);
   const [hydrationDone, setHydrationDone] = useState(false);
