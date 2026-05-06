@@ -127,11 +127,19 @@ export function useUserProjects() {
 
       if (legacyRes.error) throw legacyRes.error;
       // remodel_designs read failures should NOT erase legacy rows.
+      // Pass 12 — route degradation through centralized telemetry so a future
+      // Sentry/PostHog hookup in telemetry.ts picks this up automatically.
+      // We intentionally pass only a short error CODE (no raw Supabase message
+      // — those can leak row data / PII).
+      // TODO(observability): wire vendor inside telemetry.ts `emit()`.
       if (designsRes.error) {
-        console.warn(
-          "[useUserProjects] remodel_designs read failed; falling back to legacy only:",
-          designsRes.error,
-        );
+        const code =
+          (designsRes.error as { code?: string }).code ?? "unknown";
+        reportRemodelDesignsReadFailed({
+          code,
+          route:
+            typeof window !== "undefined" ? window.location?.pathname : undefined,
+        });
       }
 
       const legacy: SavedProject[] = (legacyRes.data ?? []).map((d) => ({
