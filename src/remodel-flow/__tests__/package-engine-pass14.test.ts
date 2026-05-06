@@ -85,9 +85,14 @@ describe("Pass 14 — @deprecated-legacy-write marker guardrail", () => {
       const content = readFileSync(join(root, rel), "utf8");
       const lines = content.split("\n");
       const writeRegex = /\.from\(["']projects["']\)/;
+      const writeOpRegex = /\.(update|insert|delete|upsert)\s*\(/;
       for (let i = 0; i < lines.length; i++) {
         if (!writeRegex.test(lines[i])) continue;
-        // Look for the marker within the previous 10 lines.
+        // Only enforce on WRITE call sites (not SELECT). Look ahead 5 lines
+        // for an update/insert/delete/upsert operator.
+        const ahead = lines.slice(i, Math.min(lines.length, i + 6)).join("\n");
+        if (!writeOpRegex.test(ahead)) continue;
+        // Marker must appear within the previous 10 lines.
         const window = lines.slice(Math.max(0, i - 10), i).join("\n");
         expect(window).toContain("@deprecated-legacy-write — Pass 14");
       }
