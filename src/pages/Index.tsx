@@ -100,7 +100,7 @@ export default function LandingPage() {
   const { user, loading: authLoading } = useAuth();
   const { resetProject, loadProject } = useProject();
   const { projects, loading: projectsLoading, deleteProject } = useUserProjects();
-  const { state: flowState, reset: resetFlow, setStyle, setTier, setPackageId, setLegacyTierRoute } = useFlow();
+  const { state: flowState, reset: resetFlow, setStyle, setTier, setPackageId, setLegacyTierRoute, setPendingLegacyOrigin } = useFlow();
   const navigate = useNavigate();
   const [pickerOpen, setPickerOpen] = useState(false);
 
