@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { ArrowLeft, Home } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
+import { normalizeProjectContextIdentity } from "@/remodel-flow/package-engine/projectContextIdentity";
 
 const steps = [
   { title: "Planning and measurements", desc: "Confirm layout, finalize selections, and verify all dimensions before work begins.", product: null },
