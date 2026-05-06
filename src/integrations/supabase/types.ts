@@ -371,6 +371,8 @@ export type Database = {
           deleted_at: string | null
           id: string
           last_active_at: string
+          legacy_extras: Json | null
+          legacy_project_id: string | null
           name: string
           package_version: number | null
           pricing: Json
@@ -394,6 +396,8 @@ export type Database = {
           deleted_at?: string | null
           id?: string
           last_active_at?: string
+          legacy_extras?: Json | null
+          legacy_project_id?: string | null
           name?: string
           package_version?: number | null
           pricing?: Json
@@ -417,6 +421,8 @@ export type Database = {
           deleted_at?: string | null
           id?: string
           last_active_at?: string
+          legacy_extras?: Json | null
+          legacy_project_id?: string | null
           name?: string
           package_version?: number | null
           pricing?: Json
