@@ -10,7 +10,7 @@ import { useUserProjects } from "@/hooks/useUserProjects";
 import ProjectPickerDialog from "@/components/ProjectPickerDialog";
 import { useFlow } from "@/remodel-flow/FlowContext";
 import { resolveFlowResumeRoute, hasFlowProgress } from "@/remodel-flow/resumeRoute";
-import { normalizeSavedProjectIdentity } from "@/remodel-flow/package-engine/projectIdentity";
+import { hydrateFlowFromSavedProject } from "@/remodel-flow/package-engine/hydrateFromSavedProject";
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
