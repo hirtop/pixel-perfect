@@ -358,9 +358,10 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
       setPackageId,
       setLegacyTierRoute,
       setSelection,
+      setPendingLegacyOrigin,
       reset,
     }),
-    [state, userId, identityReady, meta, setStyle, setTier, setPackageId, setLegacyTierRoute, setSelection, reset],
+    [state, userId, identityReady, meta, setStyle, setTier, setPackageId, setLegacyTierRoute, setSelection, setPendingLegacyOrigin, reset],
   );
 
   return <FlowContext.Provider value={value}>{children}</FlowContext.Provider>;
