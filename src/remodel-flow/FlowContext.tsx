@@ -2,6 +2,7 @@ import { createContext, useCallback, useContext, useEffect, useMemo, useRef, use
 import type { LegacyTierRoute, RemodelFlowState, StyleId, TierId } from "./types";
 import type { PackageId } from "./package-engine/types";
 import { splitPackageIdField } from "./package-engine/flowStateMigration";
+import { reportUnknownPackageId } from "./package-engine/telemetry";
 import { ensureIdentity } from "./persistence/identity";
 import { saveDesign, loadDesign } from "./persistence/client";
 
@@ -82,9 +83,15 @@ const migrateStoredState = (raw: Partial<RemodelFlowState> & { packageId?: unkno
     const split = splitPackageIdField(explicitPackage);
     if (split.packageId) base.packageId = split.packageId;
     else if (!base.legacyTierRoute && split.legacyTierRoute) base.legacyTierRoute = split.legacyTierRoute;
-    else if (import.meta.env?.DEV) {
+    else {
       // Unknown packageId (e.g. "ghost-package") — fall through to null.
-      console.warn("[FlowContext] dropping unknown stored packageId:", explicitPackage);
+      reportUnknownPackageId({
+        value: explicitPackage,
+        source: "localStorage",
+      });
+      if (import.meta.env?.DEV) {
+        console.warn("[FlowContext] dropping unknown stored packageId:", explicitPackage);
+      }
     }
   }
   return base;
