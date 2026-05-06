@@ -12,7 +12,7 @@
  * Pure-ish: only React-state setters are side-effects. No navigation here
  * — callers decide whether/when to call navigate(route).
  */
-import type { RemodelFlowState } from "@/remodel-flow/FlowContext";
+import type { RemodelFlowState } from "@/remodel-flow/types";
 import { resolveFlowResumeRoute } from "@/remodel-flow/resumeRoute";
 import {
   normalizeSavedProjectIdentity,
