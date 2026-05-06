@@ -167,12 +167,13 @@ export default function LandingPage() {
       // paths use identical apply-then-route logic. Setters fire BEFORE
       // the route is computed, and the route is derived from the *next*
       // synthesized state — never the stale flowState.
-      const { route } = hydrateFlowFromSavedProject(
+      const { route, legacyOrigin } = hydrateFlowFromSavedProject(
         single,
         flowState,
         { setStyle, setTier, setPackageId, setLegacyTierRoute },
         { source: "project-picker", route: "/" },
       );
+      setPendingLegacyOrigin(legacyOrigin);
       navigate(route);
       return;
     }
