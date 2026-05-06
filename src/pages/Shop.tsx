@@ -4,6 +4,7 @@ import { ArrowLeft, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import { useProject } from "@/contexts/ProjectContext";
+import { normalizeProjectContextIdentity } from "@/remodel-flow/package-engine/projectContextIdentity";
 import { tieredCatalog, getProductTotalPrice, type TieredProduct, type ProductTier } from "@/data/tiered-catalog";
 import { formatPrice } from "@/data/products";
 import { cn } from "@/lib/utils";
