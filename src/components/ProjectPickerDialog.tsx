@@ -60,7 +60,7 @@ interface Props {
 export default function ProjectPickerDialog({ open, onOpenChange, projects, onDelete }: Props) {
   const navigate = useNavigate();
   const { resetProject, loadProject } = useProject();
-  const { state: flowState, setStyle, setTier, setPackageId, setLegacyTierRoute } = useFlow();
+  const { state: flowState, setStyle, setTier, setPackageId, setLegacyTierRoute, setPendingLegacyOrigin } = useFlow();
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
   const [deleting, setDeleting] = useState(false);
 
