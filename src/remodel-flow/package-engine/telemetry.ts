@@ -187,3 +187,62 @@ export function reportRemodelDesignsReadFailed(
 export function __resetRemodelDesignsReadFailedTelemetryForTests(): void {
   designsFailSeenMemory.clear();
 }
+
+// ---------------------------------------------------------------------------
+// Pass 14 — Legacy public.projects write-path telemetry.
+//
+// Opus verdict (Pass 13): keep union read, do NOT freeze legacy writes yet.
+// This helper just makes legacy writes VISIBLE through the same console.warn
+// fallback as the rest of telemetry.ts so a future Sentry/PostHog wiring in
+// `emit()` above starts reporting them automatically.
+//
+// PII safety: NEVER pass user_id, email, name, project text, photo names/URLs,
+// raw row payload, or raw Supabase error.message. Only event + source + short
+// op code + optional route are emitted.
+//
+// Dedupe: per (source, code) per runtime — consistent with
+// reportRemodelDesignsReadFailed style.
+// ---------------------------------------------------------------------------
+
+export const LEGACY_WRITE_EVENT = "package_engine.legacy_write";
+
+export type LegacyWriteSource =
+  | "ProjectContext.saveProjectInternal"
+  | "useUserProjects.deleteProject"
+  | "BathroomAssessment"
+  | "resume-time-auto-create";
+
+export type LegacyWriteCode = "insert" | "update" | "delete" | "upsert";
+
+export interface LegacyWriteEvent {
+  source: LegacyWriteSource;
+  code: LegacyWriteCode;
+  route?: string;
+}
+
+const legacyWriteSeenMemory: Set<string> = new Set();
+
+export function reportLegacyWrite(evt: LegacyWriteEvent): void {
+  const source = String(evt.source);
+  const code = String(evt.code);
+  const key = `${source}::${code}`;
+  if (legacyWriteSeenMemory.has(key)) return;
+  legacyWriteSeenMemory.add(key);
+
+  try {
+    // eslint-disable-next-line no-console
+    console.warn(LEGACY_WRITE_EVENT, {
+      event: LEGACY_WRITE_EVENT,
+      source,
+      code,
+      route: evt.route,
+    });
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Test-only. */
+export function __resetLegacyWriteTelemetryForTests(): void {
+  legacyWriteSeenMemory.clear();
+}

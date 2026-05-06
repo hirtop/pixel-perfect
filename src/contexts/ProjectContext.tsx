@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { reportLegacyWrite } from "@/remodel-flow/package-engine/telemetry";
 
 export interface PhotoMeta {
   id?: string;
@@ -264,6 +265,12 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
       };
 
       const updateProjectRow = async (targetId: string) => {
+        // @deprecated-legacy-write — Pass 14 — public.projects write path; migrate after legacy_extras/cross-table key plan is approved.
+        reportLegacyWrite({
+          source: "ProjectContext.saveProjectInternal",
+          code: "update",
+          route: typeof window !== "undefined" ? window.location?.pathname : undefined,
+        });
         const { data, error } = await supabase
           .from("projects")
           .update(payload)
@@ -287,6 +294,12 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
       }
 
       if (!persistedId) {
+        // @deprecated-legacy-write — Pass 14 — public.projects write path; migrate after legacy_extras/cross-table key plan is approved.
+        reportLegacyWrite({
+          source: "ProjectContext.saveProjectInternal",
+          code: "insert",
+          route: typeof window !== "undefined" ? window.location?.pathname : undefined,
+        });
         const { data, error } = await supabase
           .from("projects")
           .insert(payload)

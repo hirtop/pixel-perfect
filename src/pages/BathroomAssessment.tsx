@@ -5,6 +5,7 @@ import { ArrowLeft, ArrowRight, Home, AlertTriangle, Check, Hammer, Wrench, Info
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 import { supabase } from "@/integrations/supabase/client";
+import { reportLegacyWrite } from "@/remodel-flow/package-engine/telemetry";
 
 type YesNoUnknown = "yes" | "no" | "unknown";
 type WaterproofingScope = "None" | "Tub surround" | "Shower walls" | "Full shower system";
@@ -683,6 +684,12 @@ const BathroomAssessment = () => {
         try {
           // Optional column — skip silently if it doesn't exist.
           const payload = { assessment_data: assessmentData } as unknown as Record<string, unknown>;
+          // @deprecated-legacy-write — Pass 14 — public.projects write path; migrate after legacy_extras/cross-table key plan is approved.
+          reportLegacyWrite({
+            source: "BathroomAssessment",
+            code: "update",
+            route: typeof window !== "undefined" ? window.location?.pathname : undefined,
+          });
           await (supabase.from("projects") as unknown as {
             update: (v: Record<string, unknown>) => { eq: (c: string, v: string) => Promise<unknown> };
           })

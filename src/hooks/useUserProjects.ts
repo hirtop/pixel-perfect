@@ -1,7 +1,10 @@
 import { useState, useEffect, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/hooks/useAuth";
-import { reportRemodelDesignsReadFailed } from "@/remodel-flow/package-engine/telemetry";
+import {
+  reportRemodelDesignsReadFailed,
+  reportLegacyWrite,
+} from "@/remodel-flow/package-engine/telemetry";
 
 export interface SavedProject {
   id: string;
@@ -187,6 +190,12 @@ export function useUserProjects() {
           .eq("id", id);
         if (error) throw error;
       } else {
+        // @deprecated-legacy-write — Pass 14 — public.projects write path; migrate after legacy_extras/cross-table key plan is approved.
+        reportLegacyWrite({
+          source: "useUserProjects.deleteProject",
+          code: "delete",
+          route: typeof window !== "undefined" ? window.location?.pathname : undefined,
+        });
         const { error } = await supabase.from("projects").delete().eq("id", id);
         if (error) throw error;
       }
