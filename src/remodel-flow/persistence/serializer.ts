@@ -117,6 +117,8 @@ export function serializeForDb(
     current_step: ctx.currentStep ?? null,
     completed_steps: ctx.completedSteps ?? [],
     schema_version: SCHEMA_VERSION,
+    ...("legacyProjectId" in ctx ? { legacy_project_id: ctx.legacyProjectId ?? null } : {}),
+    ...("legacyExtras" in ctx ? { legacy_extras: ctx.legacyExtras ?? null } : {}),
   };
 }
 
