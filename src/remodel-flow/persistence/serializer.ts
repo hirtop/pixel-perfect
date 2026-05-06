@@ -12,6 +12,7 @@
  * route traffic is near zero.
  */
 import type { RemodelFlowState } from "../types";
+import type { Json } from "@/integrations/supabase/types";
 import { splitPackageIdField } from "../package-engine/flowStateMigration";
 import { normalizeTier } from "../package-engine/normalize";
 import { reportUnknownPackageId } from "../package-engine/telemetry";
