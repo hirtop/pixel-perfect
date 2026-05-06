@@ -148,6 +148,8 @@ export function deserializeFromDb(row: DesignRow): {
     lastActiveAt: string | null;
     savedAt: string | null;
     deletedAt: string | null;
+    legacyProjectId: string | null;
+    legacyExtras: Json | null;
   };
 } {
   // Migration: classify whatever was stored.
