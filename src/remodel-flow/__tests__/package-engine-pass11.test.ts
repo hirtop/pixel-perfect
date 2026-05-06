@@ -86,10 +86,19 @@ describe("Pass 11 — useUserProjects compatibility union", () => {
     expect(id.legacyTierRoute).toBe("balanced");
   });
 
-  it("legacy row with selected_package.tier still resolves via fallback", () => {
-    const id = normalizeSavedProjectIdentity(legacyRow);
+  it("legacy row with selected_package.tier still resolves (fallback or synth)", () => {
+    // Bare legacy row without a style hint — falls back to legacyTierRoute.
+    const bare: SavedProject = { ...legacyRow, style_preferences: null };
+    const id = normalizeSavedProjectIdentity(bare);
     expect(id.packageId).toBeNull();
     expect(id.legacyTierRoute).toBe("balanced");
+  });
+
+  it("legacy row with style + tier may synthesize curated packageId", () => {
+    // style=modern + tier=balanced → modern-balanced (registered curated).
+    const id = normalizeSavedProjectIdentity(legacyRow);
+    expect(id.packageId).toBe("modern-balanced");
+    expect(id.legacyTierRoute).toBeNull();
   });
 
   it("no tier alias lands in packageId from any union row", () => {
@@ -98,10 +107,17 @@ describe("Pass 11 — useUserProjects compatibility union", () => {
         ...designRow,
         selected_package_id: alias,
         selected_legacy_tier_route: null,
+        style_preferences: null,
       });
       expect(a.packageId).toBeNull();
       const b = normalizeSavedProjectIdentity({
-        ...legacyRow,
+        id: "x",
+        name: "x",
+        status: "x",
+        bathroom_type: null,
+        updated_at: "",
+        workflow_progress: null,
+        style_preferences: null,
         selected_package: { tier: alias },
       });
       expect(b.packageId).toBeNull();
