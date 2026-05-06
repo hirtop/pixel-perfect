@@ -1,6 +1,7 @@
 import { createContext, useContext, useState, useCallback, useEffect, useRef, ReactNode } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { reportLegacyWrite } from "@/remodel-flow/package-engine/telemetry";
 
 export interface PhotoMeta {
   id?: string;
