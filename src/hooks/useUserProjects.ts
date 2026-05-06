@@ -19,6 +19,18 @@ export interface SavedProject {
   style_preferences: {
     style?: string | null;
   } | null;
+  /**
+   * Pass 10 — Optional explicit identity fields. The legacy `projects`
+   * table does NOT carry these columns, so they will be `undefined` for
+   * rows fetched here. They are part of the saved-project shape so that
+   * downstream consumers (ProjectPickerDialog / Index / hydration) can
+   * read them through `normalizeSavedProjectIdentity` once a future
+   * read path begins surfacing `remodel_designs` rows alongside
+   * legacy `projects` rows. Adding them here is a no-op for current
+   * queries and avoids a type-vs-shape drift.
+   */
+  selected_package_id?: string | null;
+  selected_legacy_tier_route?: string | null;
 }
 
 export function useUserProjects() {
