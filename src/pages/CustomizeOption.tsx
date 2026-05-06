@@ -6,6 +6,7 @@ import { ArrowLeft, Check, ChevronUp, AlertTriangle, Home, ExternalLink } from "
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
+import { normalizeProjectContextIdentity } from "@/remodel-flow/package-engine/projectContextIdentity";
 import BathroomInsights from "@/components/BathroomInsights";
 import {
   formatPrice,
