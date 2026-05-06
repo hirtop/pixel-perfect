@@ -134,3 +134,56 @@ export function __resetUnknownPackageIdTelemetryForTests(): void {
 export function __simulateReloadForTests(): void {
   seenMemory.clear();
 }
+
+// ---------------------------------------------------------------------------
+// Pass 12 — useUserProjects union-read degradation telemetry.
+//
+// Centralized so future Sentry/PostHog wiring lives in ONE place (`emit`
+// above). No vendor is installed today; we keep console.warn.
+//
+// PII safety: only event name + a short non-PII source/code/route string is
+// emitted. NEVER pass error.message verbatim from Supabase (may contain row
+// data) — the caller must extract a short stable code string instead.
+// Forbidden: user email, name, project text, full row dumps, uploaded images,
+// full localStorage.
+//
+// TODO(observability): when Sentry/PostHog is added, wire it in `emit()`
+// above — this helper will start reporting automatically.
+// ---------------------------------------------------------------------------
+
+export const REMODEL_DESIGNS_READ_FAILED_EVENT =
+  "package_engine.remodel_designs_read_failed";
+
+const designsFailSeenMemory: Set<string> = new Set();
+
+export interface RemodelDesignsReadFailedEvent {
+  /** Stable short code, e.g. supabase error code or "unknown". No raw message. */
+  code?: string | null;
+  route?: string;
+}
+
+export function reportRemodelDesignsReadFailed(
+  evt: RemodelDesignsReadFailedEvent = {},
+): void {
+  const code = (evt.code ?? "unknown").toString().slice(0, 64);
+  const key = `useUserProjects::${code}`;
+  if (designsFailSeenMemory.has(key)) return;
+  designsFailSeenMemory.add(key);
+
+  try {
+    // eslint-disable-next-line no-console
+    console.warn(REMODEL_DESIGNS_READ_FAILED_EVENT, {
+      event: REMODEL_DESIGNS_READ_FAILED_EVENT,
+      source: "useUserProjects",
+      code,
+      route: evt.route,
+    });
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Test-only. */
+export function __resetRemodelDesignsReadFailedTelemetryForTests(): void {
+  designsFailSeenMemory.clear();
+}
