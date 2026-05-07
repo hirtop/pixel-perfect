@@ -187,11 +187,25 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const pendingLegacyOriginRef = useRef<{
     legacyProjectId: string;
     legacyExtras: unknown | null;
+    legacyName: string | null;
   } | null>(null);
 
   const setPendingLegacyOrigin = useCallback(
-    (origin: { legacyProjectId: string; legacyExtras: unknown | null } | null) => {
-      pendingLegacyOriginRef.current = origin;
+    (
+      origin:
+        | { legacyProjectId: string; legacyExtras: unknown | null; legacyName?: string | null }
+        | null,
+    ) => {
+      pendingLegacyOriginRef.current = origin
+        ? {
+            legacyProjectId: origin.legacyProjectId,
+            legacyExtras: origin.legacyExtras ?? null,
+            legacyName:
+              typeof origin.legacyName === "string" && origin.legacyName.trim().length > 0
+                ? origin.legacyName.trim()
+                : null,
+          }
+        : null;
     },
     [],
   );
