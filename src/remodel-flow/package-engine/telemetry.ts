@@ -246,3 +246,48 @@ export function reportLegacyWrite(evt: LegacyWriteEvent): void {
 export function __resetLegacyWriteTelemetryForTests(): void {
   legacyWriteSeenMemory.clear();
 }
+
+// ---------------------------------------------------------------------------
+// Pass 19 — Picker dedupe telemetry.
+//
+// Emitted when the saved-project picker hides one or more legacy public.projects
+// rows because a remodel_designs row is stamped with a matching legacy_project_id.
+//
+// PII safety: NO user_id, NO project names, NO row payloads, NO ids. Only a
+// stable event name + source + code + numeric count.
+// ---------------------------------------------------------------------------
+
+export const PICKER_DEDUPE_APPLIED_EVENT =
+  "package_engine.picker_dedupe_applied";
+
+export interface PickerDedupeAppliedEvent {
+  source: "useUserProjects";
+  code: "legacy_project_id";
+  count: number;
+}
+
+const pickerDedupeSeenMemory: Set<string> = new Set();
+
+export function reportPickerDedupeApplied(evt: PickerDedupeAppliedEvent): void {
+  if (!evt.count || evt.count <= 0) return;
+  const key = `${evt.source}::${evt.code}::${evt.count}`;
+  if (pickerDedupeSeenMemory.has(key)) return;
+  pickerDedupeSeenMemory.add(key);
+
+  try {
+    // eslint-disable-next-line no-console
+    console.info(PICKER_DEDUPE_APPLIED_EVENT, {
+      event: PICKER_DEDUPE_APPLIED_EVENT,
+      source: evt.source,
+      code: evt.code,
+      count: evt.count,
+    });
+  } catch {
+    /* ignore */
+  }
+}
+
+/** Test-only. */
+export function __resetPickerDedupeTelemetryForTests(): void {
+  pickerDedupeSeenMemory.clear();
+}
