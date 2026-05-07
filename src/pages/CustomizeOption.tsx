@@ -246,7 +246,18 @@ const swapImpactCopy = (priceDiff: number): string | null => {
 
 
 const CustomizeOption = () => {
-  const { project, updateProject, markStepComplete, isLoaded } = useProject();
+  const { project, updateProject, saveProject, markStepComplete, isLoaded } = useProject();
+
+  const handleRenamePlan = async (next: string): Promise<boolean> => {
+    const prev = project.name;
+    updateProject({ name: next });
+    const ok = await saveProject({ silent: true, projectOverride: { ...project, name: next } });
+    if (!ok) {
+      updateProject({ name: prev });
+      toast.error("Couldn't rename project");
+    }
+    return ok;
+  };
   const navigate = useNavigate();
   const { id: urlTierRaw } = useParams<{ id: string }>();
   const rawLower = (urlTierRaw || "").toLowerCase();
