@@ -12,6 +12,8 @@ function isDefaultLikeName(name: string): boolean {
   if (n === "") return true;
   if (n === "untitled project") return true;
   if (n === "untitled design") return true;
+  if (n === "null") return true;
+  if (n === "undefined") return true;
   return false;
 }
 
