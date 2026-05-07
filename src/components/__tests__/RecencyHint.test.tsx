@@ -1,21 +1,20 @@
-import { describe, it, expect, vi, beforeAll, afterAll } from "vitest";
-import { formatRecency } from "../RecencyHint";
+import { describe, it, expect, vi, afterEach } from "vitest";
+import { formatRecency, willRecencyRender } from "../RecencyHint";
+
+const NOW = "2026-05-07T12:00:00.000Z";
+const nowMs = Date.parse(NOW);
+const iso = (offsetMs: number) => new Date(nowMs - offsetMs).toISOString();
+
+const useNow = () => {
+  vi.useFakeTimers();
+  vi.setSystemTime(new Date(NOW));
+};
+
+afterEach(() => {
+  vi.useRealTimers();
+});
 
 describe("formatRecency", () => {
-  let now: Date;
-  const mockDate = (iso: string) => {
-    vi.useFakeTimers();
-    vi.setSystemTime(new Date(iso));
-  };
-
-  beforeAll(() => {
-    now = new Date("2026-05-07T12:00:00.000Z");
-  });
-
-  afterAll(() => {
-    vi.useRealTimers();
-  });
-
   it("returns null for missing/invalid date", () => {
     expect(formatRecency(null)).toBeNull();
     expect(formatRecency(undefined)).toBeNull();
@@ -23,39 +22,86 @@ describe("formatRecency", () => {
     expect(formatRecency("not-a-date")).toBeNull();
   });
 
-  it('returns "just now" for under 1 hour', () => {
-    mockDate("2026-05-07T12:00:00.000Z");
-    expect(formatRecency("2026-05-07T11:30:00.000Z")).toBe("Last edited just now.");
-    expect(formatRecency("2026-05-07T11:05:00.000Z")).toBe("Last edited just now.");
-    vi.useRealTimers();
+  describe("boundaries", () => {
+    it("0 minutes -> just now", () => {
+      useNow();
+      expect(formatRecency(iso(0))).toBe("Last edited just now.");
+    });
+    it("59 minutes -> just now", () => {
+      useNow();
+      expect(formatRecency(iso(59 * 60 * 1000))).toBe("Last edited just now.");
+    });
+    it("60 minutes -> 1 hour ago", () => {
+      useNow();
+      expect(formatRecency(iso(60 * 60 * 1000))).toBe("Last edited 1 hour ago.");
+    });
+    it("23 hours -> 23 hours ago", () => {
+      useNow();
+      expect(formatRecency(iso(23 * 60 * 60 * 1000))).toBe("Last edited 23 hours ago.");
+    });
+    it("24 hours -> 1 day ago", () => {
+      useNow();
+      expect(formatRecency(iso(24 * 60 * 60 * 1000))).toBe("Last edited 1 day ago.");
+    });
+    it("6 days 23 hours -> 6 days ago", () => {
+      useNow();
+      expect(formatRecency(iso((6 * 24 + 23) * 60 * 60 * 1000))).toBe("Last edited 6 days ago.");
+    });
+    it("7 days -> null", () => {
+      useNow();
+      expect(formatRecency(iso(7 * 24 * 60 * 60 * 1000))).toBeNull();
+    });
   });
 
-  it('returns "X hours ago" for 1–23 hours', () => {
-    mockDate("2026-05-07T12:00:00.000Z");
-    expect(formatRecency("2026-05-07T10:00:00.000Z")).toBe("Last edited 2 hours ago.");
-    expect(formatRecency("2026-05-06T13:00:00.000Z")).toBe("Last edited 23 hours ago.");
-    expect(formatRecency("2026-05-07T11:00:00.000Z")).toBe("Last edited 1 hour ago.");
-    vi.useRealTimers();
+  describe("plurals", () => {
+    it("1 hour (singular)", () => {
+      useNow();
+      expect(formatRecency(iso(60 * 60 * 1000))).toBe("Last edited 1 hour ago.");
+    });
+    it("2 hours (plural)", () => {
+      useNow();
+      expect(formatRecency(iso(2 * 60 * 60 * 1000))).toBe("Last edited 2 hours ago.");
+    });
+    it("1 day (singular)", () => {
+      useNow();
+      expect(formatRecency(iso(24 * 60 * 60 * 1000))).toBe("Last edited 1 day ago.");
+    });
+    it("6 days (plural)", () => {
+      useNow();
+      expect(formatRecency(iso(6 * 24 * 60 * 60 * 1000))).toBe("Last edited 6 days ago.");
+    });
+    it("never renders awkward 1 hours / 1 days / hour(s) / day(s)", () => {
+      useNow();
+      const samples = [
+        formatRecency(iso(60 * 60 * 1000)),
+        formatRecency(iso(2 * 60 * 60 * 1000)),
+        formatRecency(iso(24 * 60 * 60 * 1000)),
+        formatRecency(iso(3 * 24 * 60 * 60 * 1000)),
+      ].join(" | ");
+      expect(samples).not.toMatch(/1 hours/);
+      expect(samples).not.toMatch(/1 days/);
+      expect(samples).not.toMatch(/hour\(s\)/);
+      expect(samples).not.toMatch(/day\(s\)/);
+    });
   });
 
-  it('returns "X days ago" for 1–6 days', () => {
-    mockDate("2026-05-07T12:00:00.000Z");
-    expect(formatRecency("2026-05-06T12:00:00.000Z")).toBe("Last edited 1 day ago.");
-    expect(formatRecency("2026-05-01T12:00:00.000Z")).toBe("Last edited 6 days ago.");
-    expect(formatRecency("2026-05-05T12:00:00.000Z")).toBe("Last edited 2 days ago.");
-    vi.useRealTimers();
+  describe("future tolerance", () => {
+    it("0–60s in the future renders just now", () => {
+      useNow();
+      expect(formatRecency(iso(-1_000))).toBe("Last edited just now.");
+      expect(formatRecency(iso(-60_000))).toBe("Last edited just now.");
+    });
+    it(">60s in the future renders null", () => {
+      useNow();
+      expect(formatRecency(iso(-61_000))).toBeNull();
+      expect(formatRecency(iso(-5 * 60_000))).toBeNull();
+    });
   });
 
-  it("returns null for 7+ days", () => {
-    mockDate("2026-05-07T12:00:00.000Z");
-    expect(formatRecency("2026-04-30T12:00:00.000Z")).toBeNull(); // 7 days
-    expect(formatRecency("2026-04-01T12:00:00.000Z")).toBeNull(); // 36 days
-    vi.useRealTimers();
-  });
-
-  it("returns null for future dates", () => {
-    mockDate("2026-05-07T12:00:00.000Z");
-    expect(formatRecency("2026-05-08T12:00:00.000Z")).toBeNull();
-    vi.useRealTimers();
+  it("willRecencyRender mirrors formatRecency", () => {
+    useNow();
+    expect(willRecencyRender(iso(0))).toBe(true);
+    expect(willRecencyRender(iso(7 * 24 * 60 * 60 * 1000))).toBe(false);
+    expect(willRecencyRender(null)).toBe(false);
   });
 });
