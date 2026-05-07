@@ -67,4 +67,22 @@ describe("PlanIdentityBadge", () => {
     const copy = buildBadgeCopy({ ...baseProject, name: "undefined" });
     expect(copy).toBe("Project: Your project");
   });
+
+  it("hides Updated date when hideUpdatedDate=true", () => {
+    const copy = buildBadgeCopy(
+      { ...baseProject, name: "Summary", updated_at: "2026-05-07T12:00:00Z" },
+      true,
+    );
+    expect(copy).toBe("Project: Summary");
+    expect(copy).not.toContain("Updated");
+  });
+
+  it("includes Updated date by default (hideUpdatedDate=false)", () => {
+    const copy = buildBadgeCopy({
+      ...baseProject,
+      name: "Summary",
+      updated_at: "2026-05-07T12:00:00Z",
+    });
+    expect(copy).toContain("Updated");
+  });
 });
