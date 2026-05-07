@@ -221,7 +221,7 @@ const PackageDetail = () => {
               <div className="rounded-xl border border-border bg-secondary/30 p-6 space-y-3 text-sm">
                 <div className="flex justify-between">
                   <span className="text-muted-foreground">
-                    Materials ({customizableProducts.length} items)
+                    Materials ({customizableProducts.length + staticItems.length} items)
                   </span>
                   <span className="font-medium text-foreground">{pricing.materialRange}</span>
                 </div>
@@ -242,16 +242,26 @@ const PackageDetail = () => {
                 )}
               </div>
 
+              <div className="rounded-xl border border-border bg-card p-5 space-y-2">
+                <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">What drives the price</p>
+                <ul className="text-sm text-foreground space-y-1.5">
+                  <li className="flex gap-2"><span className="text-primary">•</span> Vanity, countertop, and tile choices</li>
+                  <li className="flex gap-2"><span className="text-primary">•</span> Shower glass, valves, and trim</li>
+                  <li className="flex gap-2"><span className="text-primary">•</span> Labor complexity (tile size, layout changes)</li>
+                </ul>
+                <p className="text-[11px] text-muted-foreground pt-1">You can swap individual products on the next step — your estimate updates instantly.</p>
+              </div>
+
               <p className="text-xs text-muted-foreground leading-relaxed">
-                Ranges based on national averages. Actual costs depend on your contractor, region, and site conditions.
+                Prices are estimates and final pricing depends on your contractor, region, and site conditions.
               </p>
 
               <div className="flex flex-col sm:flex-row gap-3 pt-2">
                 <Button size="lg" className="h-12 px-8 text-base font-semibold rounded-lg" asChild>
-                  <Link to={`/customize/${rawLower === "essential" ? "essential" : pkgTier}`}>Customize This Option</Link>
+                  <Link to={`/customize/${rawLower === "essential" ? "essential" : pkgTier}`}>Customize This Package</Link>
                 </Button>
                 <Button size="lg" variant="secondary" className="h-12 px-8 text-base rounded-lg" asChild>
-                  <Link to="/options">Compare Other Options</Link>
+                  <Link to="/options">Compare Other Packages</Link>
                 </Button>
               </div>
             </div>
@@ -260,8 +270,9 @@ const PackageDetail = () => {
           {/* Customizable categories */}
           <section className="mb-12">
             <div className="mb-6">
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">Customizable</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">Curated to stay within your target budget</p>
               <h2 className="font-heading text-2xl text-foreground">Products you can swap</h2>
+              <p className="text-sm text-muted-foreground mt-1">Pre-selected to match the {displayName} package style and price band. Swap any item on the next step without breaking the design.</p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
               {customizableProducts.map((item) => (

@@ -19,6 +19,7 @@ const packages = [
     name: "Budget",
     displayName: "Essential",
     image: budgetImg,
+    bestFor: "Best for cost-conscious refreshes",
     summary: "Replace the vanity, re-tile, and update fixtures — all on existing plumbing in about a week.",
     highlights: [
       "New vanity & sink — no plumbing changes",
@@ -33,6 +34,7 @@ const packages = [
     name: "Balanced",
     displayName: "Balanced",
     image: balancedImg,
+    bestFor: "Best mix of quality, cost, and style",
     summary: "Step up to quartz, porcelain, and coordinated hardware for a room that looks and feels meaningfully different.",
     highlights: [
       "Floating vanity with quartz countertop",
@@ -48,6 +50,7 @@ const packages = [
     name: "Premium",
     displayName: "Premium",
     image: premiumImg,
+    bestFor: "Best for designer finishes & layout changes",
     summary: "Natural stone, designer hardware, and the flexibility to rethink the layout — not just the finishes.",
     highlights: [
       "Custom vanity with natural stone top",
@@ -115,8 +118,8 @@ const RemodelOptions = () => {
         >
           <div className="text-center mb-8">
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Your Remodel Options</h1>
-            <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-              Three directions based on your space and budget.
+            <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto leading-relaxed">
+              Three curated directions for your space and budget. Every package is designed to work as a whole — swap individual products without breaking the look.
             </p>
           </div>
 
@@ -183,7 +186,11 @@ const RemodelOptions = () => {
 
                   <div className="p-6 space-y-4">
                     <div>
-                      <h2 className="font-heading text-xl text-foreground mb-1">{pkg.displayName}</h2>
+                      <div className="flex items-center justify-between gap-2 mb-1">
+                        <h2 className="font-heading text-xl text-foreground">{pkg.displayName}</h2>
+                        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{pkg.name === "Budget" ? "Tier 1" : pkg.name === "Balanced" ? "Tier 2" : "Tier 3"}</span>
+                      </div>
+                      <p className="text-[11px] font-medium text-primary mb-2">{pkg.bestFor}</p>
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
                     </div>
 
@@ -217,16 +224,17 @@ const RemodelOptions = () => {
                       variant={pkg.featured || isSelected ? "default" : "secondary"}
                       onClick={() => selectPackage(pkg.name)}
                     >
-                      {isSelected ? "View Selected Option" : "View Option"}
+                      {isSelected ? "View Selected Package" : "View Package"}
                     </Button>
+                    <p className="text-[10px] text-muted-foreground text-center">Customize products on the next step</p>
                   </div>
                 </motion.div>
               );
             })}
           </div>
 
-          <p className="text-center text-xs text-muted-foreground mt-8 max-w-md mx-auto">
-            All ranges are estimates based on national averages. Actual costs depend on your contractor, region, and site conditions.
+          <p className="text-center text-xs text-muted-foreground mt-8 max-w-lg mx-auto leading-relaxed">
+            Prices are estimates based on national averages. Final pricing depends on your contractor, region, and site conditions. You can swap individual products on the next step.
           </p>
         </motion.div>
       </main>
