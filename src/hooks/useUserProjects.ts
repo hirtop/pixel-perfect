@@ -87,13 +87,48 @@ function mapDesignRowToSavedProject(d: RemodelDesignRow): SavedProject {
   };
 }
 
+/**
+ * Pass 19 — Pure helper. Hides legacy public.projects rows that have been
+ * superseded by a remodel_designs row stamped with a matching
+ * `legacy_project_id`. One-way: remodel_designs always wins; legacy rows
+ * only lose when matched by a non-null legacy_project_id.
+ *
+ * Returns the filtered legacy list plus the count of hidden rows so callers
+ * can emit telemetry without re-computing.
+ */
+export function dedupeSavedProjectsByLegacyProjectId(
+  legacy: SavedProject[],
+  designs: SavedProject[],
+): { legacy: SavedProject[]; hiddenCount: number } {
+  const stampedIds = new Set<string>();
+  for (const d of designs) {
+    const lpid = d.legacy_project_id;
+    if (typeof lpid === "string" && lpid.length > 0) stampedIds.add(lpid);
+  }
+  if (stampedIds.size === 0) return { legacy, hiddenCount: 0 };
+
+  const kept: SavedProject[] = [];
+  let hidden = 0;
+  for (const p of legacy) {
+    if (stampedIds.has(p.id)) {
+      hidden += 1;
+    } else {
+      kept.push(p);
+    }
+  }
+  return { legacy: kept, hiddenCount: hidden };
+}
+
 export function mergeSavedProjects(
   legacy: SavedProject[],
   designs: SavedProject[],
 ): SavedProject[] {
-  // No reliable cross-table mapping key — keep both, sort desc by updated_at.
-  // Do NOT dedupe by id (uuids do not collide across tables).
-  const all = [...legacy, ...designs];
+  // Pass 19 — dedupe legacy rows superseded by stamped remodel_designs rows.
+  const { legacy: legacyKept } = dedupeSavedProjectsByLegacyProjectId(
+    legacy,
+    designs,
+  );
+  const all = [...legacyKept, ...designs];
   return all.sort((a, b) => {
     const ta = Date.parse(a.updated_at) || 0;
     const tb = Date.parse(b.updated_at) || 0;
