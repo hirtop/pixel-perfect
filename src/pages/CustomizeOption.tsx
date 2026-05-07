@@ -489,6 +489,11 @@ const CustomizeOption = () => {
                             </span>
                           )}
                         </div>
+                        {isSwapped && swapImpactCopy(priceDiff) && (
+                          <p className="text-[11px] text-muted-foreground mt-1.5">
+                            {swapImpactCopy(priceDiff)}
+                          </p>
+                        )}
                         <div className="flex flex-col gap-0.5 mt-2">
                           {cat.vendor && cat.vendor !== "—" && (
                             <span className="text-xs text-muted-foreground">{cat.vendor}</span>
