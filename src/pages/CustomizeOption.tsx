@@ -540,7 +540,14 @@ const CustomizeOption = () => {
                       {isExpanded && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
                           <div className="border-t border-border px-5 pb-5 pt-4 space-y-4">
-                            <p className="text-sm font-medium text-foreground">Compare {cat.name} Options</p>
+                            <div>
+                              <p className="text-sm font-medium text-foreground">Compare {cat.name} Options</p>
+                              {DECISION_TIP[cat.name] && (
+                                <p className="text-[11px] text-muted-foreground mt-1">
+                                  Tip: {DECISION_TIP[cat.name]}
+                                </p>
+                              )}
+                            </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               {cat.alternatives.map((alt) => {
                                 const materialDiff = alt.price - cat.basePrice;
