@@ -9,7 +9,7 @@ import { useProject } from "@/contexts/ProjectContext";
 import { normalizeProjectContextIdentity } from "@/remodel-flow/package-engine/projectContextIdentity";
 import BathroomInsights from "@/components/BathroomInsights";
 import PlanIdentityBadge from "@/components/PlanIdentityBadge";
-import RecencyHint from "@/components/RecencyHint";
+import RecencyHint, { willRecencyRender } from "@/components/RecencyHint";
 import {
   formatPrice,
   getBathroomInsights,
