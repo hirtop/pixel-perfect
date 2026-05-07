@@ -57,4 +57,14 @@ describe("PlanIdentityBadge", () => {
     const copy = buildBadgeCopy({ ...baseProject, name: "   " });
     expect(copy).toBe("Project: Your project");
   });
+
+  it("treats literal 'null' string as default-like", () => {
+    const copy = buildBadgeCopy({ ...baseProject, name: "null" });
+    expect(copy).toBe("Project: Your project");
+  });
+
+  it("treats literal 'undefined' string as default-like", () => {
+    const copy = buildBadgeCopy({ ...baseProject, name: "undefined" });
+    expect(copy).toBe("Project: Your project");
+  });
 });
