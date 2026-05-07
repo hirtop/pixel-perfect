@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button";
 import { useProject } from "@/contexts/ProjectContext";
 import { normalizeProjectContextIdentity } from "@/remodel-flow/package-engine/projectContextIdentity";
 import BathroomInsights from "@/components/BathroomInsights";
+import PlanIdentityBadge from "@/components/PlanIdentityBadge";
 import {
   formatPrice,
   getBathroomInsights,
@@ -421,7 +422,8 @@ const CustomizeOption = () => {
           <div className="mb-8">
             <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{tierDisplayNameMap[tier] || tier} Package</p>
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">Customize Your Selections</h1>
-            <p className="text-muted-foreground text-base max-w-xl leading-relaxed">
+            <PlanIdentityBadge project={project} />
+            <p className="text-muted-foreground text-base max-w-xl leading-relaxed mt-3">
               Each product is pre-selected to match your package's style and budget. Swap any item below — your estimate updates instantly, the design stays coordinated, and nothing is ordered until you choose to continue.
             </p>
           </div>

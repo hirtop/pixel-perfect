@@ -105,6 +105,7 @@ export interface ProjectData {
   };
   subcontractor_interactions: SubcontractorInteraction[];
   agreement_data: Record<string, unknown>;
+  updated_at?: string;
 }
 
 const defaultProject: ProjectData = {
@@ -210,6 +211,7 @@ export const ProjectProvider = ({ children }: { children: ReactNode }) => {
         (data.workflow_progress as ProjectData["workflow_progress"]) || { current_step: "start", completed_steps: [] },
       subcontractor_interactions: subInteractionsFromBlob || [],
       agreement_data: cleanAgreement,
+      updated_at: data.updated_at,
     };
   }, []);
 
