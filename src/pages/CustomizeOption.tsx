@@ -29,6 +29,7 @@ import {
   ALLOWANCE_LINK_NOTE,
   ESTIMATED_PRICE_DISCLAIMER,
 } from "@/lib/verifiedLink";
+import { getTradeoffCopy } from "@/lib/swapTradeoff";
 
 // ─── Local types for component state ────────────────────────────────
 
@@ -581,6 +582,20 @@ const CustomizeOption = () => {
                                       {alt.spec && (
                                         <p className="text-[11px] text-muted-foreground">{alt.spec}</p>
                                       )}
+                                      {(() => {
+                                        const tradeoff = getTradeoffCopy(cat.name, alt.tag);
+                                        if (!tradeoff) return null;
+                                        return (
+                                          <div className="mt-2 space-y-0.5">
+                                            <p className="text-[11px] text-muted-foreground">
+                                              <span className="font-medium">You gain:</span> {tradeoff.gain}
+                                            </p>
+                                            <p className="text-[11px] text-muted-foreground">
+                                              <span className="font-medium">{tradeoff.costLabel === "give-up" ? "You give up" : "Adds to"}:</span> {tradeoff.cost}
+                                            </p>
+                                          </div>
+                                        );
+                                      })()}
                                       {isVerifiedProductLink(alt.affiliateUrl) ? (
                                         <a
                                           href={alt.affiliateUrl}
