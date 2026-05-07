@@ -43,4 +43,18 @@ describe("ResumePlanBanner", () => {
     };
     expect(buildMetadataLine(empty)).toBeNull();
   });
+
+  it("builds metadata line with tier only and skips missing style", () => {
+    const partial: SavedProject = {
+      ...baseProject,
+      selected_package: { tier: "balanced" },
+      style_preferences: null,
+      updated_at: "2026-05-07T12:00:00Z",
+    };
+    const line = buildMetadataLine(partial);
+    expect(line).toContain("Balanced");
+    expect(line).toMatch(/Updated /);
+    expect(line).not.toMatch(/ ·  · /);
+    expect(line).not.toContain("Modern");
+  });
 });
