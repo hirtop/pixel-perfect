@@ -40,7 +40,11 @@ interface FlowContextValue {
    * Pass 18 — register a legacy origin stamp to apply on the next
    * first-INSERT autosave for this flow. Cleared after stamp.
    */
-  setPendingLegacyOrigin: (origin: { legacyProjectId: string; legacyExtras: unknown | null } | null) => void;
+  setPendingLegacyOrigin: (
+    origin:
+      | { legacyProjectId: string; legacyExtras: unknown | null; legacyName?: string | null }
+      | null,
+  ) => void;
   reset: () => void;
 }
 
@@ -183,11 +187,25 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
   const pendingLegacyOriginRef = useRef<{
     legacyProjectId: string;
     legacyExtras: unknown | null;
+    legacyName: string | null;
   } | null>(null);
 
   const setPendingLegacyOrigin = useCallback(
-    (origin: { legacyProjectId: string; legacyExtras: unknown | null } | null) => {
-      pendingLegacyOriginRef.current = origin;
+    (
+      origin:
+        | { legacyProjectId: string; legacyExtras: unknown | null; legacyName?: string | null }
+        | null,
+    ) => {
+      pendingLegacyOriginRef.current = origin
+        ? {
+            legacyProjectId: origin.legacyProjectId,
+            legacyExtras: origin.legacyExtras ?? null,
+            legacyName:
+              typeof origin.legacyName === "string" && origin.legacyName.trim().length > 0
+                ? origin.legacyName.trim()
+                : null,
+          }
+        : null;
     },
     [],
   );
@@ -286,6 +304,13 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
         if (isFirstInsert && pendingOrigin) {
           saveOpts.legacyProjectId = pendingOrigin.legacyProjectId;
           saveOpts.legacyExtras = (pendingOrigin.legacyExtras ?? null) as Parameters<typeof saveDesign>[1]["legacyExtras"];
+          // Pass 20 — carry legacy project name on first INSERT only,
+          // and only when non-empty. Serializer's default ("Untitled
+          // Design") otherwise applies. Subsequent UPDATEs never pass
+          // ctx.name from here, so user-edited names are preserved.
+          if (pendingOrigin.legacyName) {
+            saveOpts.name = pendingOrigin.legacyName;
+          }
         }
 
         const result = await saveDesign(state, saveOpts);

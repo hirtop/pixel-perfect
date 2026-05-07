@@ -37,6 +37,8 @@ export interface SavedProjectRowLike
     LegacyProjectRowForSnapshot {
   id?: string;
   source?: "projects" | "remodel_designs" | string;
+  /** Pass 20 — legacy public.projects.name, used for first-INSERT name carry. */
+  name?: string | null;
 }
 
 /**
@@ -47,6 +49,14 @@ export interface SavedProjectRowLike
 export interface LegacyOriginStamp {
   legacyProjectId: string;
   legacyExtras: LegacyExtras | null;
+  /**
+   * Pass 20 — legacy public.projects.name carried through to the first
+   * INSERT into remodel_designs so the stamped row inherits the legacy
+   * project name instead of defaulting to "Untitled Design".
+   * Only populated when source === "projects" and name is non-empty
+   * after trim. Never set for remodel_designs / fresh / unknown sources.
+   */
+  legacyName: string | null;
 }
 
 /** Styles supported by FlowContext.setStyle. */
@@ -134,9 +144,11 @@ export function hydrateFlowFromSavedProject(
   // Never stamp a remodel_designs id as legacy_project_id.
   let legacyOrigin: LegacyOriginStamp | null = null;
   if (row && row.source === "projects" && typeof row.id === "string" && row.id) {
+    const rawName = typeof row.name === "string" ? row.name.trim() : "";
     legacyOrigin = {
       legacyProjectId: row.id,
       legacyExtras: buildLegacyExtrasSnapshot(row, { route: opts.route }),
+      legacyName: rawName.length > 0 ? rawName : null,
     };
   }
 
