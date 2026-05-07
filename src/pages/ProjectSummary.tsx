@@ -14,6 +14,8 @@ import ReferencePhotos from "@/components/ReferencePhotos";
 import BathroomRiskScan from "@/components/BathroomRiskScan";
 import { TIER_BASE_LABOR, SHIPPING_ESTIMATE } from "@/data/products";
 import { PlanConfidenceFooter } from "@/components/PlanConfidenceFooter";
+import PlanNameEditor from "@/components/PlanNameEditor";
+import { toast } from "sonner";
 
 
 const defaultPackageItems = [
