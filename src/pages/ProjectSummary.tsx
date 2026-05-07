@@ -44,7 +44,18 @@ const workflowPoints = [
 ];
 
 const ProjectSummary = () => {
-  const { project, saveProject, markStepComplete, isSaving } = useProject();
+  const { project, updateProject, saveProject, markStepComplete, isSaving } = useProject();
+
+  const handleRenamePlan = async (next: string): Promise<boolean> => {
+    const prev = project.name;
+    updateProject({ name: next });
+    const ok = await saveProject({ silent: true, projectOverride: { ...project, name: next } });
+    if (!ok) {
+      updateProject({ name: prev });
+      toast.error("Couldn't rename project");
+    }
+    return ok;
+  };
   const { user } = useAuth();
   const navigate = useNavigate();
 
