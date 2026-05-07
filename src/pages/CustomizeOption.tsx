@@ -188,6 +188,23 @@ const budgetCeilings: Record<string, number> = { Budget: 12000, Balanced: 19000,
 
 const VALID_TIERS = new Set(["budget", "balanced", "premium"]);
 
+const BIN_RATIONALE: Record<string, string> = {
+  "Vanities": "Picked to balance storage, style, and the package's price range.",
+  "Sinks": "Sized to drop into standard vanity cutouts without extra fab work.",
+  "Faucets": "Selected to coordinate with the package's fixture finish.",
+  "Mirrors": "Chosen to match the vanity width and keep the wall clean.",
+  "Shower Wall Tile": "Large-format tile keeps the look clean and helps control labor complexity.",
+  "Shower Floor Tile": "Smaller tile improves grip and conforms to shower slope.",
+  "Main Floor Tile": "Durable, neutral, and easy to coordinate with the rest of the package.",
+  "Accent Tile": "Adds visual interest without dominating the design.",
+  "Shower Doors": "Keeps the room open while staying inside the package range.",
+  "Shower Valve": "Reliable pressure-balance pick that fits standard rough-in.",
+  "Shower Systems": "Pairs with the valve and finish to keep the shower coordinated.",
+  "Bathtubs": "Sized for typical alcove footprints to avoid plumbing relocation.",
+  "Tub Valve": "Coordinated finish; fits standard tub rough-in.",
+};
+
+
 const CustomizeOption = () => {
   const { project, updateProject, markStepComplete, isLoaded } = useProject();
   const navigate = useNavigate();
@@ -447,6 +464,11 @@ const CustomizeOption = () => {
                               Optional — click Change to explore accent tile options.
                             </p>
                           )}
+                          {BIN_RATIONALE[cat.name] && (
+                            <p className="text-[11px] text-muted-foreground mt-1.5 italic">
+                              Why we picked this: {BIN_RATIONALE[cat.name]}
+                            </p>
+                          )}
                         </div>
                         {isVerifiedProductLink(cat.affiliateUrl) && cat.vendor !== "—" ? (
                           <a
@@ -622,6 +644,19 @@ const CustomizeOption = () => {
 
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
                     Prices are estimates. Final pricing depends on your contractor, region, and site conditions. Lighting and toilet are included at default pricing.
+                  </p>
+                </div>
+
+                <div className="rounded-xl border border-border bg-card p-5 space-y-3">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-primary">What happens next</p>
+                  <ol className="text-xs text-foreground space-y-1.5 list-decimal list-inside">
+                    <li>We save your selected package and product swaps.</li>
+                    <li>You can review your design summary and estimated budget.</li>
+                    <li>You can share the plan with a contractor for a real quote.</li>
+                    <li>You can come back and revise before anything is ordered.</li>
+                  </ol>
+                  <p className="text-[11px] text-muted-foreground leading-relaxed">
+                    This is not checkout. No payment is taken. Nothing is ordered yet.
                   </p>
                 </div>
 

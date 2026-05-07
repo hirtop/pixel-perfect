@@ -242,6 +242,27 @@ const PackageDetail = () => {
                 )}
               </div>
 
+              <div className="rounded-xl border border-border bg-card p-5 grid grid-cols-1 sm:grid-cols-2 gap-5">
+                <div className="space-y-1.5">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-primary">Included in this planning estimate</p>
+                  <ul className="text-xs text-foreground space-y-1">
+                    <li>• Curated fixture and finish selections</li>
+                    <li>• Typical material allowances</li>
+                    <li>• Estimated labor range for a standard remodel</li>
+                    <li>• Basic shipping and product planning assumptions</li>
+                  </ul>
+                </div>
+                <div className="space-y-1.5">
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Not included yet</p>
+                  <ul className="text-xs text-muted-foreground space-y-1">
+                    <li>• Final contractor quote</li>
+                    <li>• Permits, inspections, or local code requirements</li>
+                    <li>• Hidden damage, structural repairs, or unexpected demo</li>
+                    <li>• Sales tax, delivery changes, or vendor availability changes</li>
+                  </ul>
+                </div>
+              </div>
+
               <div className="rounded-xl border border-border bg-card p-5 space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">What drives the price</p>
                 <ul className="text-sm text-foreground space-y-1.5">
