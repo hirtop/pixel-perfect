@@ -12,6 +12,7 @@ import { normalizeProjectContextIdentity } from "@/remodel-flow/package-engine/p
 import { useAuth } from "@/hooks/useAuth";
 import ReferencePhotos from "@/components/ReferencePhotos";
 import BathroomRiskScan from "@/components/BathroomRiskScan";
+import PlanIdentityBadge from "@/components/PlanIdentityBadge";
 import { TIER_BASE_LABOR, SHIPPING_ESTIMATE } from "@/data/products";
 import { PlanConfidenceFooter } from "@/components/PlanConfidenceFooter";
 
