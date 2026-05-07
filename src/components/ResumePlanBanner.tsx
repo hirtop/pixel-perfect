@@ -42,7 +42,7 @@ export default function ResumePlanBanner({ project, onResume, loading }: ResumeP
             Welcome back. Your plan is saved.
           </h2>
           <p className="text-sm text-muted-foreground mt-1">
-            Continue where you left off, or review your package before sharing it with a contractor.
+            Pick up exactly where you left off — your latest package, selections, and notes are ready.
           </p>
           {meta && (
             <p className="text-xs text-muted-foreground mt-2 truncate">{meta}</p>
