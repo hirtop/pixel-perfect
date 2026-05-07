@@ -163,7 +163,10 @@ const ProjectSummary = () => {
           <div className="text-center mb-10">
             <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">Your Project</p>
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Project Summary</h1>
-            <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
+            <div className="flex justify-center">
+              <PlanIdentityBadge project={project} />
+            </div>
+            <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed mt-3">
               Here's your selected remodel direction, budget snapshot, and project overview so far.
             </p>
           </div>
