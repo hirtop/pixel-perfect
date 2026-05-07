@@ -30,7 +30,7 @@ import {
   ESTIMATED_PRICE_DISCLAIMER,
 } from "@/lib/verifiedLink";
 import { getTradeoffCopy } from "@/lib/swapTradeoff";
-
+import { PlanConfidenceFooter } from "@/components/PlanConfidenceFooter";
 // ─── Local types for component state ────────────────────────────────
 
 interface Alternative {
@@ -729,6 +729,8 @@ const CustomizeOption = () => {
                     This is not checkout — no payment is taken and nothing is ordered.
                   </p>
                 </div>
+
+                <PlanConfidenceFooter context="customize" className="pt-1" />
 
                 <Button size="lg" className="w-full h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
                   Continue with These Selections
