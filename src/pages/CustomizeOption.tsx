@@ -366,7 +366,7 @@ const CustomizeOption = () => {
             <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{tierDisplayNameMap[tier] || tier} Package</p>
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">Customize Your Selections</h1>
             <p className="text-muted-foreground text-base max-w-xl leading-relaxed">
-              Each product is pre-selected to match your package's style and budget. Swap any item below — your estimate updates instantly and the rest of the design stays coordinated.
+              Each product is pre-selected to match your package's style and budget. Swap any item below — your estimate updates instantly, the design stays coordinated, and nothing is ordered until you choose to continue.
             </p>
           </div>
 

@@ -19,7 +19,7 @@ const packages = [
     name: "Budget",
     displayName: "Essential",
     image: budgetImg,
-    bestFor: "Best for cost-conscious refreshes",
+    bestFor: "Best for fast refreshes on existing plumbing.",
     summary: "Replace the vanity, re-tile, and update fixtures — all on existing plumbing in about a week.",
     highlights: [
       "New vanity & sink — no plumbing changes",
@@ -34,7 +34,7 @@ const packages = [
     name: "Balanced",
     displayName: "Balanced",
     image: balancedImg,
-    bestFor: "Best mix of quality, cost, and style",
+    bestFor: "Best for upgrading materials on existing plumbing.",
     summary: "Step up to quartz, porcelain, and coordinated hardware for a room that looks and feels meaningfully different.",
     highlights: [
       "Floating vanity with quartz countertop",
@@ -50,7 +50,7 @@ const packages = [
     name: "Premium",
     displayName: "Premium",
     image: premiumImg,
-    bestFor: "Best for designer finishes & layout changes",
+    bestFor: "Best for designer finishes and layout flexibility.",
     summary: "Natural stone, designer hardware, and the flexibility to rethink the layout — not just the finishes.",
     highlights: [
       "Custom vanity with natural stone top",
@@ -188,7 +188,6 @@ const RemodelOptions = () => {
                     <div>
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <h2 className="font-heading text-xl text-foreground">{pkg.displayName}</h2>
-                        <span className="text-[10px] font-semibold uppercase tracking-wider text-muted-foreground">{pkg.name === "Budget" ? "Tier 1" : pkg.name === "Balanced" ? "Tier 2" : "Tier 3"}</span>
                       </div>
                       <p className="text-[11px] font-medium text-primary mb-2">{pkg.bestFor}</p>
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
