@@ -236,7 +236,7 @@ const tagComparisonCue = (tag?: string): string | null => {
 const swapImpactCopy = (priceDiff: number): string | null => {
   if (priceDiff === 0) return "This stays inside your current package range.";
   if (priceDiff > 0) {
-    if (priceDiff >= 1000) return `Adds about ${formatPrice(priceDiff)} to your material estimate — may push closer to Premium.`;
+    if (priceDiff >= 1000) return `Adds about ${formatPrice(priceDiff)} to your material estimate — this approaches Premium-tier pricing.`;
     return `Adds about ${formatPrice(priceDiff)} to your material estimate.`;
   }
   return `Saves about ${formatPrice(Math.abs(priceDiff))} on your material estimate.`;
