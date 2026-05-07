@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { buildBadgeCopy } from "./PlanIdentityBadge";
+import { buildBadgeCopy } from "../PlanIdentityBadge";
 import type { ProjectData } from "@/contexts/ProjectContext";
 
 describe("PlanIdentityBadge", () => {
