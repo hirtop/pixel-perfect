@@ -30,7 +30,7 @@ import {
   ESTIMATED_PRICE_DISCLAIMER,
 } from "@/lib/verifiedLink";
 import { getTradeoffCopy } from "@/lib/swapTradeoff";
-
+import { PlanConfidenceFooter } from "@/components/PlanConfidenceFooter";
 // ─── Local types for component state ────────────────────────────────
 
 interface Alternative {
