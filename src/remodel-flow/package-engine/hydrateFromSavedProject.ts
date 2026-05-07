@@ -144,9 +144,11 @@ export function hydrateFlowFromSavedProject(
   // Never stamp a remodel_designs id as legacy_project_id.
   let legacyOrigin: LegacyOriginStamp | null = null;
   if (row && row.source === "projects" && typeof row.id === "string" && row.id) {
+    const rawName = typeof row.name === "string" ? row.name.trim() : "";
     legacyOrigin = {
       legacyProjectId: row.id,
       legacyExtras: buildLegacyExtrasSnapshot(row, { route: opts.route }),
+      legacyName: rawName.length > 0 ? rawName : null,
     };
   }
 
