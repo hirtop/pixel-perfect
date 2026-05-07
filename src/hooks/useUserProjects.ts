@@ -205,6 +205,14 @@ export function useUserProjects() {
         (designsRes.data as RemodelDesignRow[] | null) ?? []
       ).map(mapDesignRowToSavedProject);
 
+      const { hiddenCount } = dedupeSavedProjectsByLegacyProjectId(legacy, designs);
+      if (hiddenCount > 0) {
+        reportPickerDedupeApplied({
+          source: "useUserProjects",
+          code: "legacy_project_id",
+          count: hiddenCount,
+        });
+      }
       setProjects(mergeSavedProjects(legacy, designs));
       setLoadedUserId(user.id);
     } catch (err) {
