@@ -565,7 +565,12 @@ const CustomizeOption = () => {
                                     )}
                                     <div className="flex-1">
                                       {alt.tag && (
-                                        <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5 inline-block mb-1">{alt.tag}</span>
+                                        <div className="mb-1 flex items-center gap-1.5 flex-wrap">
+                                          <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5 inline-block">{alt.tag}</span>
+                                          {tagComparisonCue(alt.tag) && (
+                                            <span className="text-[10px] text-muted-foreground">· {tagComparisonCue(alt.tag)}</span>
+                                          )}
+                                        </div>
                                       )}
                                       <p className="text-sm font-medium text-foreground leading-snug">{alt.name}</p>
                                       <p className="text-xs text-muted-foreground mt-0.5">{alt.vendor}</p>
