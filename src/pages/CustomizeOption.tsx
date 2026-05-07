@@ -208,18 +208,18 @@ const BIN_RATIONALE: Record<string, string> = {
 // Helps customers compare options without overwhelming the card.
 const DECISION_TIP: Record<string, string> = {
   "Vanities": "Wider vanities add storage; compact vanities preserve floor space.",
-  "Sinks": "Keep sink size aligned with the vanity so countertop fabrication stays simple.",
-  "Faucets": "All options coordinate with the package finish; upgrades usually add profile or features.",
+  "Sinks": "Keep sink size aligned with the vanity so the countertop cutout stays simple.",
+  "Faucets": "Package faucets are curated to coordinate; upgrades usually add profile or features.",
   "Mirrors": "Match mirror scale to the vanity and leave room for lighting.",
   "Shower Wall Tile": "Large-format tile gives a cleaner look; smaller formats can add more texture.",
   "Shower Floor Tile": "Prioritize grip and slope compatibility over visual drama.",
   "Main Floor Tile": "Larger neutral tiles keep the room calm and easier to coordinate.",
   "Accent Tile": "Use accent tile for a focal point; skip it for a cleaner budget.",
   "Shower Doors": "Clear glass opens the room visually; framed options can reduce cost.",
-  "Shower Valve": "Stay compatible with standard rough-in unless your contractor recommends otherwise.",
+  "Shower Valve": "Valve choice affects rough-in; confirm compatibility with your contractor before swapping.",
   "Shower Systems": "Upgrade for more spray features; stay simple for easier maintenance.",
   "Bathtubs": "Confirm alcove size before upgrading tub depth or shape.",
-  "Tub Valve": "Coordinate finish with the shower and faucet hardware.",
+  "Tub Valve": "Coordinate finish with the shower and faucet hardware so the room reads as one set.",
 };
 
 // Map free-text catalog tags to a short comparison cue.
@@ -236,7 +236,7 @@ const tagComparisonCue = (tag?: string): string | null => {
 const swapImpactCopy = (priceDiff: number): string | null => {
   if (priceDiff === 0) return "This stays inside your current package range.";
   if (priceDiff > 0) {
-    if (priceDiff >= 1000) return `Adds about ${formatPrice(priceDiff)} to your material estimate — may push closer to Premium.`;
+    if (priceDiff >= 1000) return `Adds about ${formatPrice(priceDiff)} to your material estimate — this approaches Premium-tier pricing.`;
     return `Adds about ${formatPrice(priceDiff)} to your material estimate.`;
   }
   return `Saves about ${formatPrice(Math.abs(priceDiff))} on your material estimate.`;
