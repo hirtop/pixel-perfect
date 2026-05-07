@@ -37,6 +37,8 @@ export interface SavedProjectRowLike
     LegacyProjectRowForSnapshot {
   id?: string;
   source?: "projects" | "remodel_designs" | string;
+  /** Pass 20 — legacy public.projects.name, used for first-INSERT name carry. */
+  name?: string | null;
 }
 
 /**
