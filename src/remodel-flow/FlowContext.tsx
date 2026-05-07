@@ -304,6 +304,13 @@ export const FlowProvider = ({ children }: { children: ReactNode }) => {
         if (isFirstInsert && pendingOrigin) {
           saveOpts.legacyProjectId = pendingOrigin.legacyProjectId;
           saveOpts.legacyExtras = (pendingOrigin.legacyExtras ?? null) as Parameters<typeof saveDesign>[1]["legacyExtras"];
+          // Pass 20 — carry legacy project name on first INSERT only,
+          // and only when non-empty. Serializer's default ("Untitled
+          // Design") otherwise applies. Subsequent UPDATEs never pass
+          // ctx.name from here, so user-edited names are preserved.
+          if (pendingOrigin.legacyName) {
+            saveOpts.name = pendingOrigin.legacyName;
+          }
         }
 
         const result = await saveDesign(state, saveOpts);
