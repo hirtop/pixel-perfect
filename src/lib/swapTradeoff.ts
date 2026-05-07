@@ -19,33 +19,34 @@ export interface TradeoffCopy {
 export const tagDirection = (tag?: string): TradeoffDirection => {
   if (!tag) return null;
   const t = tag.toLowerCase();
+  if (t.includes("recommended") || t.includes("best")) return null;
   if (t.includes("value") || t.includes("budget") || t.includes("essential")) return "value";
-  if (t.includes("upgrade") || t.includes("premium") || t.includes("best")) return "upgrade";
+  if (t.includes("upgrade") || t.includes("premium")) return "upgrade";
   return null;
 };
 
 const CATEGORY_COPY: Record<string, { value?: Omit<TradeoffCopy, "costLabel">; upgrade?: Omit<TradeoffCopy, "costLabel"> }> = {
   Vanities: {
     value: { gain: "lower material cost", cost: "storage or finish detail" },
-    upgrade: { gain: "more storage or stronger finish presence", cost: "material estimate" },
+    upgrade: { gain: "more storage or stronger finish presence", cost: "your material estimate." },
   },
   Faucets: {
     value: { gain: "lower fixture cost", cost: "premium profile or features" },
-    upgrade: { gain: "stronger profile or extra features", cost: "material estimate" },
+    upgrade: { gain: "stronger profile or extra features", cost: "your material estimate." },
   },
   "Shower Wall Tile": {
     value: { gain: "simpler material cost", cost: "larger-format look or texture" },
-    upgrade: { gain: "stronger visual impact", cost: "material estimate" },
+    upgrade: { gain: "stronger visual impact", cost: "your material estimate." },
   },
   "Shower Doors": {
     value: { gain: "lower glass/door cost", cost: "frameless or premium profile" },
-    upgrade: { gain: "cleaner, more open look", cost: "material estimate" },
+    upgrade: { gain: "cleaner, more open look", cost: "your material estimate." },
   },
 };
 
 const FALLBACK = {
   value: { gain: "lower material cost", cost: "some finish detail" },
-  upgrade: { gain: "higher finish or feature level", cost: "material estimate" },
+  upgrade: { gain: "higher finish or feature level", cost: "your material estimate." },
 };
 
 export const getTradeoffCopy = (category: string, tag?: string): TradeoffCopy | null => {

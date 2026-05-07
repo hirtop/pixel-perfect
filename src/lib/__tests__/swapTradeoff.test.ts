@@ -12,7 +12,16 @@ describe("swapTradeoff", () => {
   it("returns gain/adds-to for upgrade tags", () => {
     const copy = getTradeoffCopy("Faucets", "Upgrade");
     expect(copy?.costLabel).toBe("adds-to");
-    expect(copy?.cost).toMatch(/material estimate/i);
+    expect(copy?.cost).toMatch(/your material estimate\./i);
+  });
+
+  it("returns null for Best tag (curation, not upgrade)", () => {
+    expect(getTradeoffCopy("Vanities", "Best")).toBeNull();
+    expect(getTradeoffCopy("Faucets", "Best Fit")).toBeNull();
+  });
+
+  it("returns null for Recommended tag", () => {
+    expect(getTradeoffCopy("Vanities", "Recommended")).toBeNull();
   });
 
   it("falls back when no category-specific copy exists", () => {
@@ -28,8 +37,12 @@ describe("swapTradeoff", () => {
 
   it("tagDirection maps tags correctly", () => {
     expect(tagDirection("Value Pick")).toBe("value");
+    expect(tagDirection("Budget")).toBe("value");
+    expect(tagDirection("Essential")).toBe("value");
+    expect(tagDirection("Upgrade")).toBe("upgrade");
     expect(tagDirection("Premium")).toBe("upgrade");
-    expect(tagDirection("Best Fit")).toBe("upgrade");
+    expect(tagDirection("Best")).toBeNull();
+    expect(tagDirection("Best Fit")).toBeNull();
     expect(tagDirection("Recommended")).toBeNull();
   });
 });
