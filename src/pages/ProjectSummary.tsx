@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import ShoppingAssistantFab from "@/components/shopping-assistant/ShoppingAssistantFab";
 import { Link, useNavigate } from "react-router-dom";
-import { Check, ArrowLeft, Home } from "lucide-react";
+import { Check, ArrowLeft, Home, Printer } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
 import balancedImg from "@/assets/package-balanced.jpg";
@@ -324,6 +324,90 @@ const ProjectSummary = () => {
                 </li>
               ))}
             </ul>
+          </section>
+
+          <section className="mb-12">
+            <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 space-y-5">
+              <div className="flex items-start justify-between gap-4 flex-wrap">
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">For your contractor</p>
+                  <h2 className="font-heading text-xl text-foreground">Contractor-ready remodel summary</h2>
+                </div>
+                <Button variant="outline" size="sm" className="h-9 rounded-lg" onClick={() => window.print()}>
+                  <Printer className="h-3.5 w-3.5 mr-1.5" /> Print or share
+                </Button>
+              </div>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Use this summary to start a contractor conversation. It gives them your preferred package, product direction, and planning budget so they can prepare a site-specific quote.
+              </p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="rounded-xl border border-border bg-card p-4 space-y-2">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Plan snapshot</p>
+                  <ul className="text-sm text-foreground space-y-1.5">
+                    <li><span className="text-muted-foreground">Package:</span> <span className="font-medium">{displayPkgName}</span></li>
+                    <li><span className="text-muted-foreground">Style:</span> <span className="font-medium">{project.style_preferences.style || "—"}</span></li>
+                    <li><span className="text-muted-foreground">Finish:</span> <span className="font-medium">{project.style_preferences.finish || "—"}</span></li>
+                    <li><span className="text-muted-foreground">Planning total:</span> <span className="font-semibold">${estimatedTotal.toLocaleString()}</span></li>
+                    <li className="text-xs text-muted-foreground">Materials ${materialsTotal.toLocaleString()} · Labor ${baseLaborRate.toLocaleString()} · Shipping ${baseShipping.toLocaleString()}</li>
+                  </ul>
+                </div>
+                <div className="rounded-xl border border-border bg-card p-4 grid grid-cols-1 gap-3">
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-primary">Included in this estimate</p>
+                    <ul className="text-xs text-foreground space-y-1 mt-1">
+                      <li>• Package fixtures and finishes</li>
+                      <li>• Typical material allowances</li>
+                      <li>• Estimated labor for a standard remodel</li>
+                    </ul>
+                  </div>
+                  <div>
+                    <p className="text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">Not included in this estimate</p>
+                    <ul className="text-xs text-muted-foreground space-y-1 mt-1">
+                      <li>• Permits, inspections, or local code requirements</li>
+                      <li>• Hidden conditions or structural repairs</li>
+                      <li>• Sales tax, delivery surcharges, vendor availability</li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <p className="text-xs text-muted-foreground italic">
+                This is a planning package, not a final contractor quote. Print or share this page with your contractor.
+              </p>
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <div className="rounded-xl border border-border bg-card p-6 space-y-4">
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">Make the most of your first meeting</p>
+                <h2 className="font-heading text-lg text-foreground">Questions to ask your contractor</h2>
+              </div>
+              <ul className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-2.5 text-sm text-foreground">
+                {[
+                  "Can you keep the existing plumbing locations?",
+                  "Are permits or inspections required for this scope?",
+                  "Will tile layout, demo, or hidden conditions change the labor price?",
+                  "Can you source these products or close equivalents?",
+                  "What lead times should we expect?",
+                  "What items are excluded from your quote?",
+                  "When could the project realistically start?",
+                ].map((q) => (
+                  <li key={q} className="flex items-start gap-2">
+                    <Check className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
+                    <span className="leading-snug">{q}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </section>
+
+          <section className="mb-12">
+            <div className="rounded-xl border border-border bg-secondary/30 p-5">
+              <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground mb-2">How BOBOX estimates compare to contractor quotes</p>
+              <p className="text-sm text-foreground leading-relaxed">
+                BOBOX gives you a planning range based on your package, selected products, and typical remodel labor. A contractor's quote will reflect your exact site, local labor rates, permits, and product availability.
+              </p>
+            </div>
           </section>
 
           <div className="rounded-xl border border-border bg-card/50 p-5 text-center mb-6">
