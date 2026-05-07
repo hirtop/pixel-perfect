@@ -255,8 +255,11 @@ const CustomizeOption = () => {
     if (!ok) {
       updateProject({ name: prev });
       toast.error("Couldn't rename project");
+      return false;
     }
-    return ok;
+    // Reflect a fresh updated_at locally so PlanIdentityBadge updates immediately.
+    updateProject({ updated_at: new Date().toISOString() });
+    return true;
   };
   const navigate = useNavigate();
   const { id: urlTierRaw } = useParams<{ id: string }>();
