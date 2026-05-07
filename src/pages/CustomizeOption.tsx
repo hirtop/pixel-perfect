@@ -204,6 +204,44 @@ const BIN_RATIONALE: Record<string, string> = {
   "Tub Valve": "Coordinated finish; fits standard tub rough-in.",
 };
 
+// Short, neutral guidance shown when a category is expanded for swapping.
+// Helps customers compare options without overwhelming the card.
+const DECISION_TIP: Record<string, string> = {
+  "Vanities": "Wider vanities add storage; compact vanities preserve floor space.",
+  "Sinks": "Keep sink size aligned with the vanity so countertop fabrication stays simple.",
+  "Faucets": "All options coordinate with the package finish; upgrades usually add profile or features.",
+  "Mirrors": "Match mirror scale to the vanity and leave room for lighting.",
+  "Shower Wall Tile": "Large-format tile gives a cleaner look; smaller formats can add more texture.",
+  "Shower Floor Tile": "Prioritize grip and slope compatibility over visual drama.",
+  "Main Floor Tile": "Larger neutral tiles keep the room calm and easier to coordinate.",
+  "Accent Tile": "Use accent tile for a focal point; skip it for a cleaner budget.",
+  "Shower Doors": "Clear glass opens the room visually; framed options can reduce cost.",
+  "Shower Valve": "Stay compatible with standard rough-in unless your contractor recommends otherwise.",
+  "Shower Systems": "Upgrade for more spray features; stay simple for easier maintenance.",
+  "Bathtubs": "Confirm alcove size before upgrading tub depth or shape.",
+  "Tub Valve": "Coordinate finish with the shower and faucet hardware.",
+};
+
+// Map free-text catalog tags to a short comparison cue.
+const tagComparisonCue = (tag?: string): string | null => {
+  if (!tag) return null;
+  const t = tag.toLowerCase();
+  if (t.includes("value")) return "Lower cost";
+  if (t.includes("recommend") || t.includes("best")) return "Best fit";
+  if (t.includes("upgrade") || t.includes("premium")) return "Higher finish / feature";
+  return null;
+};
+
+// Short microcopy describing what a swap means for the estimate.
+const swapImpactCopy = (priceDiff: number): string | null => {
+  if (priceDiff === 0) return "This stays inside your current package range.";
+  if (priceDiff > 0) {
+    if (priceDiff >= 1000) return `Adds about ${formatPrice(priceDiff)} to your material estimate — may push closer to Premium.`;
+    return `Adds about ${formatPrice(priceDiff)} to your material estimate.`;
+  }
+  return `Saves about ${formatPrice(Math.abs(priceDiff))} on your material estimate.`;
+};
+
 
 const CustomizeOption = () => {
   const { project, updateProject, markStepComplete, isLoaded } = useProject();
@@ -451,6 +489,11 @@ const CustomizeOption = () => {
                             </span>
                           )}
                         </div>
+                        {isSwapped && swapImpactCopy(priceDiff) && (
+                          <p className="text-[11px] text-muted-foreground mt-1.5">
+                            {swapImpactCopy(priceDiff)}
+                          </p>
+                        )}
                         <div className="flex flex-col gap-0.5 mt-2">
                           {cat.vendor && cat.vendor !== "—" && (
                             <span className="text-xs text-muted-foreground">{cat.vendor}</span>
@@ -497,7 +540,14 @@ const CustomizeOption = () => {
                       {isExpanded && (
                         <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25 }} className="overflow-hidden">
                           <div className="border-t border-border px-5 pb-5 pt-4 space-y-4">
-                            <p className="text-sm font-medium text-foreground">Compare {cat.name} Options</p>
+                            <div>
+                              <p className="text-sm font-medium text-foreground">Compare {cat.name} Options</p>
+                              {DECISION_TIP[cat.name] && (
+                                <p className="text-[11px] text-muted-foreground mt-1">
+                                  Tip: {DECISION_TIP[cat.name]}
+                                </p>
+                              )}
+                            </div>
                             <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                               {cat.alternatives.map((alt) => {
                                 const materialDiff = alt.price - cat.basePrice;
@@ -515,7 +565,12 @@ const CustomizeOption = () => {
                                     )}
                                     <div className="flex-1">
                                       {alt.tag && (
-                                        <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5 inline-block mb-1">{alt.tag}</span>
+                                        <div className="mb-1 flex items-center gap-1.5 flex-wrap">
+                                          <span className="text-[10px] font-medium bg-primary/10 text-primary rounded-full px-2 py-0.5 inline-block">{alt.tag}</span>
+                                          {tagComparisonCue(alt.tag) && (
+                                            <span className="text-[10px] text-muted-foreground">· {tagComparisonCue(alt.tag)}</span>
+                                          )}
+                                        </div>
                                       )}
                                       <p className="text-sm font-medium text-foreground leading-snug">{alt.name}</p>
                                       <p className="text-xs text-muted-foreground mt-0.5">{alt.vendor}</p>
