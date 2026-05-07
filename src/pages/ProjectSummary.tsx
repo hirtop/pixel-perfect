@@ -14,6 +14,8 @@ import ReferencePhotos from "@/components/ReferencePhotos";
 import BathroomRiskScan from "@/components/BathroomRiskScan";
 import { TIER_BASE_LABOR, SHIPPING_ESTIMATE } from "@/data/products";
 import { PlanConfidenceFooter } from "@/components/PlanConfidenceFooter";
+import PlanNameEditor from "@/components/PlanNameEditor";
+import { toast } from "sonner";
 
 
 const defaultPackageItems = [
@@ -42,7 +44,18 @@ const workflowPoints = [
 ];
 
 const ProjectSummary = () => {
-  const { project, saveProject, markStepComplete, isSaving } = useProject();
+  const { project, updateProject, saveProject, markStepComplete, isSaving } = useProject();
+
+  const handleRenamePlan = async (next: string): Promise<boolean> => {
+    const prev = project.name;
+    updateProject({ name: next });
+    const ok = await saveProject({ silent: true, projectOverride: { ...project, name: next } });
+    if (!ok) {
+      updateProject({ name: prev });
+      toast.error("Couldn't rename project");
+    }
+    return ok;
+  };
   const { user } = useAuth();
   const navigate = useNavigate();
 
@@ -175,9 +188,19 @@ const ProjectSummary = () => {
             <div className="rounded-xl border border-border bg-card p-6 space-y-3">
               <h2 className="font-heading text-lg text-foreground mb-1">Project Details</h2>
               {summaryFields.map((f) => (
-                <div key={f.label} className="flex justify-between text-sm">
-                  <span className="text-muted-foreground">{f.label}</span>
-                  <span className={`font-medium ${f.value.startsWith("Not yet") ? "text-muted-foreground italic" : "text-foreground"}`}>{f.value}</span>
+                <div key={f.label} className="flex justify-between text-sm gap-3">
+                  <span className="text-muted-foreground shrink-0">{f.label}</span>
+                  {f.label === "Project Name" ? (
+                    <span className="font-medium text-foreground text-right max-w-[60%] truncate">
+                      <PlanNameEditor
+                        name={project.name || ""}
+                        fallbackLabel="Your project"
+                        onSave={handleRenamePlan}
+                      />
+                    </span>
+                  ) : (
+                    <span className={`font-medium text-right ${f.value.startsWith("Not yet") ? "text-muted-foreground italic" : "text-foreground"}`}>{f.value}</span>
+                  )}
                 </div>
               ))}
             </div>

@@ -246,7 +246,18 @@ const swapImpactCopy = (priceDiff: number): string | null => {
 
 
 const CustomizeOption = () => {
-  const { project, updateProject, markStepComplete, isLoaded } = useProject();
+  const { project, updateProject, saveProject, markStepComplete, isLoaded } = useProject();
+
+  const handleRenamePlan = async (next: string): Promise<boolean> => {
+    const prev = project.name;
+    updateProject({ name: next });
+    const ok = await saveProject({ silent: true, projectOverride: { ...project, name: next } });
+    if (!ok) {
+      updateProject({ name: prev });
+      toast.error("Couldn't rename project");
+    }
+    return ok;
+  };
   const navigate = useNavigate();
   const { id: urlTierRaw } = useParams<{ id: string }>();
   const rawLower = (urlTierRaw || "").toLowerCase();
@@ -422,7 +433,7 @@ const CustomizeOption = () => {
           <div className="mb-8">
             <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">{tierDisplayNameMap[tier] || tier} Package</p>
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-3">Customize Your Selections</h1>
-            <PlanIdentityBadge project={project} />
+            <PlanIdentityBadge project={project} editable onRename={handleRenamePlan} />
             <p className="text-muted-foreground text-base max-w-xl leading-relaxed mt-3">
               Each product is pre-selected to match your package's style and budget. Swap any item below — your estimate updates instantly, the design stays coordinated, and nothing is ordered until you choose to continue.
             </p>
