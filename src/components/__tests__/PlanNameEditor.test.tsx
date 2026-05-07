@@ -183,12 +183,12 @@ describe("PlanNameEditor UI", () => {
     expect(screen.getByRole("textbox", { name: /edit project name/i })).toBeInTheDocument();
   });
 
-  it("H. embedded newline is normalized before save", async () => {
+  it("H. zero-width chars in input are normalized before save", async () => {
     const onSave = vi.fn().mockResolvedValue(true);
     setup({ name: "Master Bath", onSave });
     const input = enterEdit();
-    fireEvent.change(input, { target: { value: "Master\nBath 2" } });
+    fireEvent.change(input, { target: { value: "Master\u200BBath 2" } });
     fireEvent.keyDown(input, { key: "Enter" });
-    await waitFor(() => expect(onSave).toHaveBeenCalledWith("Master Bath 2"));
+    await waitFor(() => expect(onSave).toHaveBeenCalledWith("MasterBath 2"));
   });
 });
