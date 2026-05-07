@@ -15,6 +15,7 @@ import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
 import ShopProducts from "@/components/ShopProducts";
+import ResumePlanBanner from "@/components/ResumePlanBanner";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
