@@ -4,6 +4,7 @@ import { useAuth } from "@/hooks/useAuth";
 import {
   reportRemodelDesignsReadFailed,
   reportLegacyWrite,
+  reportPickerDedupeApplied,
 } from "@/remodel-flow/package-engine/telemetry";
 
 export interface SavedProject {
