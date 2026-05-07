@@ -190,14 +190,14 @@ const VALID_TIERS = new Set(["budget", "balanced", "premium"]);
 
 const BIN_RATIONALE: Record<string, string> = {
   "Vanities": "Picked to balance storage, style, and the package's price range.",
-  "Sinks": "Sized to drop into standard vanity cutouts without extra fab work.",
+  "Sinks": "Sized to fit common vanity cutouts in this package.",
   "Faucets": "Selected to coordinate with the package's fixture finish.",
-  "Mirrors": "Chosen to match the vanity width and keep the wall clean.",
-  "Shower Wall Tile": "Large-format tile keeps the look clean and helps control labor complexity.",
+  "Mirrors": "Sized to suit the vanity width and keep the wall uncluttered.",
+  "Shower Wall Tile": "Large-format tile means fewer grout lines and a faster install.",
   "Shower Floor Tile": "Smaller tile improves grip and conforms to shower slope.",
   "Main Floor Tile": "Durable, neutral, and easy to coordinate with the rest of the package.",
   "Accent Tile": "Adds visual interest without dominating the design.",
-  "Shower Doors": "Keeps the room open while staying inside the package range.",
+  "Shower Doors": "Keeps the room feeling open with a clean, modern profile.",
   "Shower Valve": "Reliable pressure-balance pick that fits standard rough-in.",
   "Shower Systems": "Pairs with the valve and finish to keep the shower coordinated.",
   "Bathtubs": "Sized for typical alcove footprints to avoid plumbing relocation.",
