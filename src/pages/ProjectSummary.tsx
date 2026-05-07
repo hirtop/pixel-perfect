@@ -53,8 +53,10 @@ const ProjectSummary = () => {
     if (!ok) {
       updateProject({ name: prev });
       toast.error("Couldn't rename project");
+      return false;
     }
-    return ok;
+    updateProject({ updated_at: new Date().toISOString() });
+    return true;
   };
   const { user } = useAuth();
   const navigate = useNavigate();
