@@ -730,6 +730,8 @@ const CustomizeOption = () => {
                   </p>
                 </div>
 
+                <PlanConfidenceFooter context="customize" className="pt-1" />
+
                 <Button size="lg" className="w-full h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
                   Continue with These Selections
                 </Button>
