@@ -297,6 +297,15 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Returning customer resume banner */}
+      {hasSavedLegacyProject && projects[0] && (
+        <ResumePlanBanner
+          project={projects[0]}
+          onResume={handlePrimaryCta}
+          loading={isProjectStateLoading}
+        />
+      )}
+
       {/* How It Works */}
       <section id="how" className="py-24 bg-background">
         <div className="container mx-auto px-6">
