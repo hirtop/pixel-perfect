@@ -245,9 +245,9 @@ const PackageDetail = () => {
               <div className="rounded-xl border border-border bg-card p-5 space-y-2">
                 <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">What drives the price</p>
                 <ul className="text-sm text-foreground space-y-1.5">
-                  <li className="flex gap-2"><span className="text-primary">•</span> Vanity, countertop, and tile choices</li>
-                  <li className="flex gap-2"><span className="text-primary">•</span> Shower glass, valves, and trim</li>
-                  <li className="flex gap-2"><span className="text-primary">•</span> Labor complexity (tile size, layout changes)</li>
+                  <li className="flex gap-2"><span className="text-primary">•</span> Larger vanities, stone countertops, and more tile coverage raise the material range.</li>
+                  <li className="flex gap-2"><span className="text-primary">•</span> Shower glass, valves, trim, and specialty fixtures can move the package up or down.</li>
+                  <li className="flex gap-2"><span className="text-primary">•</span> Labor varies with tile layout, demo complexity, plumbing changes, and regional rates.</li>
                 </ul>
                 <p className="text-[11px] text-muted-foreground pt-1">You can swap individual products on the next step — your estimate updates instantly.</p>
               </div>
@@ -270,7 +270,7 @@ const PackageDetail = () => {
           {/* Customizable categories */}
           <section className="mb-12">
             <div className="mb-6">
-              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">Curated to stay within your target budget</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-1">Why these products fit this package</p>
               <h2 className="font-heading text-2xl text-foreground">Products you can swap</h2>
               <p className="text-sm text-muted-foreground mt-1">Pre-selected to match the {displayName} package style and price band. Swap any item on the next step without breaking the design.</p>
             </div>
