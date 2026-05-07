@@ -11,12 +11,14 @@ function isDefaultLikeName(name: string): boolean {
   return isDefaultLikePlanName(name);
 }
 
-function buildBadgeCopy(project: ProjectData): string | null {
+function buildBadgeCopy(project: ProjectData, hideUpdatedDate = false): string | null {
   const parts: string[] = [];
   const name = isDefaultLikeName(project.name) ? "Your project" : project.name.trim();
   parts.push(`Project: ${name}`);
-  const date = project.updated_at ? formatDate(project.updated_at) : null;
-  if (date) parts.push(`Updated ${date}`);
+  if (!hideUpdatedDate) {
+    const date = project.updated_at ? formatDate(project.updated_at) : null;
+    if (date) parts.push(`Updated ${date}`);
+  }
   return parts.join(" · ");
 }
 
@@ -24,10 +26,11 @@ interface PlanIdentityBadgeProps {
   project: ProjectData;
   editable?: boolean;
   onRename?: (next: string) => Promise<boolean> | boolean;
+  hideUpdatedDate?: boolean;
 }
 
-export default function PlanIdentityBadge({ project, editable, onRename }: PlanIdentityBadgeProps) {
-  const date = project.updated_at ? formatDate(project.updated_at) : null;
+export default function PlanIdentityBadge({ project, editable, onRename, hideUpdatedDate }: PlanIdentityBadgeProps) {
+  const date = !hideUpdatedDate && project.updated_at ? formatDate(project.updated_at) : null;
 
   if (editable && onRename) {
     return (
@@ -44,7 +47,7 @@ export default function PlanIdentityBadge({ project, editable, onRename }: PlanI
     );
   }
 
-  const copy = buildBadgeCopy(project);
+  const copy = buildBadgeCopy(project, hideUpdatedDate);
   if (!copy) return null;
   return (
     <p
