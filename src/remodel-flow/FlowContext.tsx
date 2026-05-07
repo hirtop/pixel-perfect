@@ -40,7 +40,11 @@ interface FlowContextValue {
    * Pass 18 — register a legacy origin stamp to apply on the next
    * first-INSERT autosave for this flow. Cleared after stamp.
    */
-  setPendingLegacyOrigin: (origin: { legacyProjectId: string; legacyExtras: unknown | null } | null) => void;
+  setPendingLegacyOrigin: (
+    origin:
+      | { legacyProjectId: string; legacyExtras: unknown | null; legacyName?: string | null }
+      | null,
+  ) => void;
   reset: () => void;
 }
 
