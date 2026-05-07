@@ -1,4 +1,5 @@
 import type { ProjectData } from "@/contexts/ProjectContext";
+import PlanNameEditor, { isDefaultLikePlanName } from "@/components/PlanNameEditor";
 
 function formatDate(iso: string): string | null {
   const t = Date.parse(iso);
@@ -7,14 +8,7 @@ function formatDate(iso: string): string | null {
 }
 
 function isDefaultLikeName(name: string): boolean {
-  if (!name) return true;
-  const n = name.trim().toLowerCase();
-  if (n === "") return true;
-  if (n === "untitled project") return true;
-  if (n === "untitled design") return true;
-  if (n === "null") return true;
-  if (n === "undefined") return true;
-  return false;
+  return isDefaultLikePlanName(name);
 }
 
 function buildBadgeCopy(project: ProjectData): string | null {
@@ -28,9 +22,28 @@ function buildBadgeCopy(project: ProjectData): string | null {
 
 interface PlanIdentityBadgeProps {
   project: ProjectData;
+  editable?: boolean;
+  onRename?: (next: string) => Promise<boolean> | boolean;
 }
 
-export default function PlanIdentityBadge({ project }: PlanIdentityBadgeProps) {
+export default function PlanIdentityBadge({ project, editable, onRename }: PlanIdentityBadgeProps) {
+  const date = project.updated_at ? formatDate(project.updated_at) : null;
+
+  if (editable && onRename) {
+    return (
+      <p aria-label="Plan identity" className="text-[11px] text-muted-foreground flex items-center gap-1 max-w-full">
+        <span className="shrink-0">Project:</span>
+        <PlanNameEditor
+          name={project.name || ""}
+          fallbackLabel="Your project"
+          onSave={onRename}
+          className="max-w-[14rem] truncate text-[11px] text-muted-foreground"
+        />
+        {date && <span className="shrink-0">· Updated {date}</span>}
+      </p>
+    );
+  }
+
   const copy = buildBadgeCopy(project);
   if (!copy) return null;
   return (
