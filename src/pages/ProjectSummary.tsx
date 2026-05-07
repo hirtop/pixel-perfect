@@ -206,6 +206,7 @@ const ProjectSummary = () => {
                   )}
                 </div>
               ))}
+              <RecencyHint updatedAt={project.updated_at} className="pt-0.5" />
             </div>
 
             <div className="rounded-xl border border-border bg-card p-6 space-y-3">
