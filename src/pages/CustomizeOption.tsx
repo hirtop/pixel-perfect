@@ -464,6 +464,11 @@ const CustomizeOption = () => {
                               Optional — click Change to explore accent tile options.
                             </p>
                           )}
+                          {BIN_RATIONALE[cat.name] && (
+                            <p className="text-[11px] text-muted-foreground mt-1.5 italic">
+                              Why we picked this: {BIN_RATIONALE[cat.name]}
+                            </p>
+                          )}
                         </div>
                         {isVerifiedProductLink(cat.affiliateUrl) && cat.vendor !== "—" ? (
                           <a
