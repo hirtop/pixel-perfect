@@ -15,6 +15,7 @@ import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
 import ShopProducts from "@/components/ShopProducts";
+import ResumePlanBanner from "@/components/ResumePlanBanner";
 
 const fadeUp: Variants = {
   hidden: { opacity: 0, y: 30 },
@@ -295,6 +296,15 @@ export default function LandingPage() {
           </motion.div>
         </div>
       </section>
+
+      {/* Returning customer resume banner */}
+      {hasSavedLegacyProject && projects[0] && (
+        <ResumePlanBanner
+          project={projects[0]}
+          onResume={handlePrimaryCta}
+          loading={isProjectStateLoading}
+        />
+      )}
 
       {/* How It Works */}
       <section id="how" className="py-24 bg-background">
