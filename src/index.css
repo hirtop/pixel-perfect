@@ -86,3 +86,14 @@
     font-family: var(--font-heading);
   }
 }
+
+@media print {
+  header, nav, footer, [data-feedback-prompt], .print-hide {
+    display: none !important;
+  }
+  .contractor-card, .contractor-section {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+  body { background: white !important; }
+}
