@@ -19,7 +19,12 @@ export function formatRecency(iso: string | undefined | null): string | null {
 
   const now = Date.now();
   const diffMs = now - then;
-  if (diffMs < 0) return null; // future date
+
+  // Future-date tolerance: small clock skew (≤60s) still renders "just now".
+  if (diffMs < 0) {
+    if (-diffMs <= 60_000) return "Last edited just now.";
+    return null;
+  }
 
   const diffMins = diffMs / (1000 * 60);
   const diffHrs = diffMins / 60;
@@ -40,6 +45,11 @@ export function formatRecency(iso: string | undefined | null): string | null {
   }
 
   return null;
+}
+
+/** Exposed for callers that need to know whether RecencyHint will render. */
+export function willRecencyRender(iso: string | undefined | null): boolean {
+  return formatRecency(iso) !== null;
 }
 
 interface RecencyHintProps {
