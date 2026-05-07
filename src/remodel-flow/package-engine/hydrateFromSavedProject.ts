@@ -47,6 +47,14 @@ export interface SavedProjectRowLike
 export interface LegacyOriginStamp {
   legacyProjectId: string;
   legacyExtras: LegacyExtras | null;
+  /**
+   * Pass 20 — legacy public.projects.name carried through to the first
+   * INSERT into remodel_designs so the stamped row inherits the legacy
+   * project name instead of defaulting to "Untitled Design".
+   * Only populated when source === "projects" and name is non-empty
+   * after trim. Never set for remodel_designs / fresh / unknown sources.
+   */
+  legacyName: string | null;
 }
 
 /** Styles supported by FlowContext.setStyle. */
