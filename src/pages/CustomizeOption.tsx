@@ -722,7 +722,7 @@ const CustomizeOption = () => {
                   <ol className="text-xs text-foreground space-y-1.5 list-decimal list-inside">
                     <li>We save your selected package and product swaps to your draft.</li>
                     <li>You can review your design summary and estimated budget.</li>
-                    <li>You can share with a contractor for a firm quote.</li>
+                    <li>You can share with a contractor for a site-specific quote.</li>
                     <li>You can come back and revise before anything is ordered.</li>
                   </ol>
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
