@@ -190,14 +190,14 @@ const VALID_TIERS = new Set(["budget", "balanced", "premium"]);
 
 const BIN_RATIONALE: Record<string, string> = {
   "Vanities": "Picked to balance storage, style, and the package's price range.",
-  "Sinks": "Sized to drop into standard vanity cutouts without extra fab work.",
+  "Sinks": "Sized to fit common vanity cutouts in this package.",
   "Faucets": "Selected to coordinate with the package's fixture finish.",
-  "Mirrors": "Chosen to match the vanity width and keep the wall clean.",
-  "Shower Wall Tile": "Large-format tile keeps the look clean and helps control labor complexity.",
+  "Mirrors": "Sized to suit the vanity width and keep the wall uncluttered.",
+  "Shower Wall Tile": "Large-format tile means fewer grout lines and a faster install.",
   "Shower Floor Tile": "Smaller tile improves grip and conforms to shower slope.",
   "Main Floor Tile": "Durable, neutral, and easy to coordinate with the rest of the package.",
   "Accent Tile": "Adds visual interest without dominating the design.",
-  "Shower Doors": "Keeps the room open while staying inside the package range.",
+  "Shower Doors": "Keeps the room feeling open with a clean, modern profile.",
   "Shower Valve": "Reliable pressure-balance pick that fits standard rough-in.",
   "Shower Systems": "Pairs with the valve and finish to keep the shower coordinated.",
   "Bathtubs": "Sized for typical alcove footprints to avoid plumbing relocation.",
@@ -650,13 +650,13 @@ const CustomizeOption = () => {
                 <div className="rounded-xl border border-border bg-card p-5 space-y-3">
                   <p className="text-xs font-semibold uppercase tracking-widest text-primary">What happens next</p>
                   <ol className="text-xs text-foreground space-y-1.5 list-decimal list-inside">
-                    <li>We save your selected package and product swaps.</li>
+                    <li>We save your selected package and product swaps to your draft.</li>
                     <li>You can review your design summary and estimated budget.</li>
-                    <li>You can share the plan with a contractor for a real quote.</li>
+                    <li>You can share with a contractor for a firm quote.</li>
                     <li>You can come back and revise before anything is ordered.</li>
                   </ol>
                   <p className="text-[11px] text-muted-foreground leading-relaxed">
-                    This is not checkout. No payment is taken. Nothing is ordered yet.
+                    This is not checkout — no payment is taken and nothing is ordered.
                   </p>
                 </div>
 

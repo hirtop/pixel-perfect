@@ -253,12 +253,12 @@ const PackageDetail = () => {
                   </ul>
                 </div>
                 <div className="space-y-1.5">
-                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Not included yet</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">Not included in this estimate</p>
                   <ul className="text-xs text-muted-foreground space-y-1">
                     <li>• Final contractor quote</li>
                     <li>• Permits, inspections, or local code requirements</li>
-                    <li>• Hidden damage, structural repairs, or unexpected demo</li>
-                    <li>• Sales tax, delivery changes, or vendor availability changes</li>
+                    <li>• Hidden conditions, structural repairs, or extra demo discovered on site</li>
+                    <li>• Sales tax, delivery surcharges, or vendor availability</li>
                   </ul>
                 </div>
               </div>
