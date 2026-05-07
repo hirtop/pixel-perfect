@@ -17,11 +17,32 @@ export interface ValidationResult {
   reason?: "empty" | "too_long";
 }
 
+/**
+ * Strip zero-width chars, normalize tabs/newlines/CRs/NBSPs to spaces,
+ * collapse runs of whitespace, and trim. Used before validation so saved
+ * names never contain invisible/control characters.
+ */
+export function normalizePlanName(raw: string | undefined | null): string {
+  if (!raw) return "";
+  return raw
+    // Strip zero-width chars + BOM
+    .replace(/[\u200B\u200C\u200D\uFEFF]/g, "")
+    // Normalize NBSP and other unicode spaces to regular space
+    .replace(/[\u00A0\u2000-\u200A\u202F\u205F\u3000]/g, " ")
+    // Tabs / newlines / carriage returns -> space
+    .replace(/[\t\n\r]+/g, " ")
+    // Strip remaining control chars (C0 + DEL)
+    .replace(/[\u0000-\u001F\u007F]/g, "")
+    // Collapse whitespace runs
+    .replace(/\s{2,}/g, " ")
+    .trim();
+}
+
 export function validatePlanName(raw: string): ValidationResult {
-  const trimmed = (raw ?? "").trim();
-  if (trimmed.length === 0) return { ok: false, reason: "empty" };
-  if (trimmed.length > PLAN_NAME_MAX_LENGTH) return { ok: false, reason: "too_long" };
-  return { ok: true, value: trimmed };
+  const cleaned = normalizePlanName(raw);
+  if (cleaned.length === 0) return { ok: false, reason: "empty" };
+  if (cleaned.length > PLAN_NAME_MAX_LENGTH) return { ok: false, reason: "too_long" };
+  return { ok: true, value: cleaned };
 }
 
 interface PlanNameEditorProps {
