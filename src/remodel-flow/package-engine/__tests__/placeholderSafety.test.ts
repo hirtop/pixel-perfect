@@ -54,7 +54,6 @@ describe("Package Engine — placeholder safety", () => {
     const fakePartial = { status: "partial" as const };
     expect(isCustomerReadyPackage(fakePartial)).toBe(false);
     expect(() =>
-      // @ts-expect-error — exercising the runtime guard for non-curated status
       assertCustomerReadyPackage({ id: "modern-balanced", status: "partial", label: "x" }),
     ).toThrow();
   });
