@@ -769,6 +769,10 @@ export const MODERN_BALANCED = {
           "https://images.thdstatic.com/productImages/8f8a3c5d-2b6f-4a3e-9d6e-1b1f2a8c8d8a/svn/matte-black-vigo-bathroom-hardware-sets-vg09040mb4pset-64_1000.jpg",
         type: "matte_black_4pc_set",
         priceRange: [80, 150],
+        vendor: "VIGO",
+        unitPrice: 119,
+        canonicalKey: "vigo-cass-vg09040mb4pset",
+        isCuratedOnly: true,
       },
       backups: [
         {
@@ -782,6 +786,10 @@ export const MODERN_BALANCED = {
           type: "matte_black_4pc_set",
           priceRange: [120, 160],
           note: "Branded backup — Moen finish family pairs with Moen faucet/trim.",
+          vendor: "Moen",
+          unitPrice: 139,
+          canonicalKey: "moen-genta-y5294bl",
+          isCuratedOnly: true,
         },
         {
           name: "KRAUS Elie 4-Piece Bath Hardware Set (Matte Black)",
