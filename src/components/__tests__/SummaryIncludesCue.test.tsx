@@ -23,9 +23,45 @@ describe("SummaryIncludesCue", () => {
   it("renders the review note", () => {
     render(<SummaryIncludesCue />);
     expect(
-      screen.getByText(/review everything before sharing or making decisions\./i),
+      screen.getByText(/review everything before sharing this summary\./i),
     ).toBeInTheDocument();
   });
+
+  it("does not render any restricted or overly-broad copy", () => {
+    const { container } = render(<SummaryIncludesCue />);
+    const text = (container.textContent || "").toLowerCase();
+    const forbidden = [
+      "contractor-ready",
+      "ready for contractor",
+      "ready for",
+      "approved",
+      "certified",
+      "guaranteed",
+      "binding",
+      "firm quote",
+      "firm bid",
+      "firm price",
+      "permit",
+      "licensed",
+      "legal",
+      "insurance",
+      "financing",
+      "ready to share",
+      "quote-ready",
+      "bid-ready",
+      "final price",
+      "construction-ready",
+      "make decisions",
+      "making decisions",
+      "everything you need",
+      "complete summary",
+      "bobox recommends",
+    ];
+    for (const term of forbidden) {
+      expect(text).not.toContain(term);
+    }
+  });
+});
 
   it("does not render any restricted copy", () => {
     const { container } = render(<SummaryIncludesCue />);
