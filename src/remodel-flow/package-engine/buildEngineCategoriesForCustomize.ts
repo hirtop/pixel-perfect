@@ -254,18 +254,15 @@ export function buildEngineCategoriesForCustomize(
 
 /**
  * Documented parity gap — categories the legacy customize drawer shows
- * but `MODERN_BALANCED` does not yet have a bin for.
+ * but `MODERN_BALANCED` does not yet have a curated bin for.
  *
- * Phase 2.5 intentionally does NOT inject discontinued/unresolved
- * placeholders into `MODERN_BALANCED` because the spec file is treated
- * as authored content, not engine state. Phase 2.1's flip plan must
- * either (a) add curated bins for these categories or (b) keep them
- * served by the legacy path until they are sourced.
+ * Phase 2.8 opened: Sinks, Shower Systems, Accent Tile.
+ * Phase 2.8 deferred: Bathtubs, Tub Valve — bathtub pricing/freight/
+ * install scope is unstable and tub valve is coupled to bathtub
+ * rough-in/spout/diverter decisions. Both remain served by the legacy
+ * fallback path until a credible primary with confirmed pricing exists.
  */
 export const MODERN_BALANCED_MISSING_LEGACY_CATEGORIES: readonly string[] = [
-  "Sinks",
   "Bathtubs",
   "Tub Valve",
-  "Shower Systems",
-  "Accent Tile",
 ] as const;
