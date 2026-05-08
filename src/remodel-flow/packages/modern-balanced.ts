@@ -240,6 +240,11 @@ export const MODERN_BALANCED = {
           "https://images.thdstatic.com/productImages/1ad3829c-9a9d-4ba8-84a2-b53ee9f259d9/svn/matte-black-delta-single-hole-bathroom-faucets-559lf-bllpu-64_1000.jpg",
         type: "single_hole",
         priceRange: [329, 329],
+        vendor: "Delta",
+        unitPrice: 329,
+        faucetHoles: 1,
+        canonicalKey: "delta-trinsic-559lf-bllpu",
+        isCuratedOnly: true,
       },
       backups: [
         {
@@ -253,6 +258,11 @@ export const MODERN_BALANCED = {
             "https://images.thdstatic.com/productImages/b20adebe-2e81-4992-8e64-0ae9b59f3b38/svn/matte-black-moen-single-hole-bathroom-faucets-s6910bl-64_1000.jpg",
           type: "single_hole",
           priceRange: [318.99, 318.99],
+          vendor: "Moen",
+          unitPrice: 318.99,
+          faucetHoles: 1,
+          canonicalKey: "moen-doux-s6910bl",
+          isCuratedOnly: true,
         },
         {
           name: "Delta Trinsic Single Hole Bathroom Faucet",
