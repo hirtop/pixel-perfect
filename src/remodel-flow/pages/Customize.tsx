@@ -381,6 +381,9 @@ const Customize = () => {
               <LazyEngineDiffConsole
                 urlId="balanced"
                 style={state.style}
+                engineCategories={shadow.engineCategories}
+                shadowDiffReport={shadow.diffReport}
+                shadowActive={shadow.isActive}
               />
             </Suspense>
           )}
