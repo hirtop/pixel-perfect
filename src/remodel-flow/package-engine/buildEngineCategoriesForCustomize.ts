@@ -87,6 +87,29 @@ const BIN_TO_LEGACY_CATEGORY: Partial<Record<BinKey, string>> = {
   // and intentionally omitted from the customize drawer.
 };
 
+/**
+ * MODERN_BALANCED was authored before the canonical BinKey vocabulary
+ * existed and uses some non-canonical bin names (`floorTile`,
+ * `showerGlass`, plus internal-only `showerTrim`/`accessories`). Map
+ * them to canonical BinKeys so the drawer surfaces the right rows.
+ *
+ * Internal-only bins (showerTrim, accessories) intentionally map to
+ * `null` — they are not customer-facing customize categories today.
+ */
+const MODERN_BALANCED_BIN_ALIAS: Record<string, BinKey | null> = {
+  vanity: "vanity",
+  faucet: "faucet",
+  mirror: "mirror",
+  lighting: "lighting",
+  showerWallTile: "showerWallTile",
+  floorTile: "mainFloorTile",      // canonical legacy "Main Floor Tile"
+  showerFloorTile: "showerFloorTile",
+  showerTrim: "showerValve",        // closest customize-drawer fit
+  showerGlass: "showerDoor",        // canonical legacy "Shower Doors"
+  toilet: "toilet",
+  accessories: null,                 // not in customize drawer
+};
+
 const LEGACY_TIER_FROM_URL: Record<string, ProductTier> = {
   essential: "Budget",
   budget: "Budget",
