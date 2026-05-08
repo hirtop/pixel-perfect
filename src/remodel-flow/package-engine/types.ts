@@ -129,7 +129,12 @@ export interface Product {
   categoryId: BinKey;
   name: string;
   brand?: string;
-  /** Unit price in USD when known. */
+  /**
+   * Legacy unit price field. Kept for backward compatibility with code that
+   * read `product.price` before Phase 2.5. New code should use `unitPrice`
+   * (vendor unit price) and `estimatedProjectPrice` (project allowance for
+   * SF-priced materials), then call `getEngineProductTotalPrice()`.
+   */
   price?: number;
   finish?: string;
   /** Free-form style tags. Compatible with `ProductStyle` from packages. */
@@ -147,6 +152,38 @@ export interface Product {
   lastVerifiedAt?: string;
   /** Optional customer-facing one-liner inherited from the source bin. */
   customerText?: string;
+
+  /* ─── Phase 2.5 intrinsic fields ─────────────────────────────────
+   * Promoted out of the legacy `tieredCatalog` join so the engine owns
+   * its own intrinsic product properties. Joined enrichment (vendor
+   * marketing copy, tags, disclaimers) still happens via productAdapter.
+   */
+  /** Vendor / brand label, e.g. "Delta", "Kohler". */
+  vendor?: string;
+  /** Vanity width in inches when applicable. */
+  widthInches?: number;
+  /** Mounting style. Affects faucet/vanity compatibility gating. */
+  mountType?: "wall" | "floor" | "undermount" | "drop-in";
+  /** Faucet deck-hole count: 0 (wall-mount), 1 (single hole), or 3 (widespread). */
+  faucetHoles?: 0 | 1 | 3;
+  /** Vendor unit price in USD. */
+  unitPrice?: number;
+  /** Estimated project allowance — only set for SF-priced materials. */
+  estimatedProjectPrice?: number;
+  /**
+   * Stable, deterministic join key. Derivation precedence:
+   *   1. tail of productUrl path (SKU-like)
+   *   2. retailer + URL slug
+   *   3. normalized name slug
+   * Never derived from numeric array index.
+   */
+  canonicalKey: string;
+  /**
+   * True when this product intentionally has no `tieredCatalog`
+   * correspondent. Parity tests must NOT treat missing enrichment for
+   * curated-only products as a failure.
+   */
+  isCuratedOnly?: boolean;
 }
 
 /** A single category slot inside a Package (e.g. "vanity"). */
