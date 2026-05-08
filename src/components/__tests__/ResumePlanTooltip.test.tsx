@@ -59,6 +59,41 @@ describe("ResumePlanTooltip / buildTooltipContent", () => {
     expect(c.metadataLine).not.toMatch(/Updated/);
   });
 
+  it("includes a fourth status line when derivePlanStatus returns non-null", () => {
+    const recent: SavedProject = {
+      ...base,
+      updated_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      workflow_progress: { completed_steps: ["a", "b", "c", "d"] },
+      selected_package: { tier: "balanced" },
+    };
+    const c = buildTooltipContent(recent);
+    expect(c.statusLine).toBe("Status: Shaping.");
+  });
+
+  it("suppresses the status line when status is null (stale plan)", () => {
+    const stale: SavedProject = {
+      ...base,
+      updated_at: new Date(Date.now() - 90 * 24 * 60 * 60 * 1000).toISOString(),
+    };
+    const c = buildTooltipContent(stale);
+    expect(c.statusLine).toBeNull();
+  });
+
+  it("renders the status line in the popover when present", async () => {
+    const recent: SavedProject = {
+      ...base,
+      updated_at: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      workflow_progress: { completed_steps: ["a", "b", "c", "d"] },
+      selected_package: { tier: "balanced" },
+    };
+    render(<ResumePlanTooltip project={recent} />);
+    const trigger = screen.getByRole("button", { name: /About this plan/i });
+    fireEvent.click(trigger);
+    await waitFor(() =>
+      expect(screen.getByText("Status: Shaping.")).toBeInTheDocument(),
+    );
+  });
+
   it("trigger has accessible label", () => {
     render(<ResumePlanTooltip project={base} />);
     expect(screen.getByRole("button", { name: /About this plan/i })).toBeInTheDocument();
