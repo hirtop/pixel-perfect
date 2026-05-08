@@ -29,7 +29,14 @@ export interface ResumePlanTooltipContent {
   nameTruncated: boolean;
   recencyLine: string | null;
   metadataLine: string | null;
+  statusLine: string | null;
 }
+
+const STATUS_LABEL: Record<PlanStatus, string> = {
+  exploring: "Exploring",
+  shaping: "Shaping",
+  "ready-to-share": "Ready to share",
+};
 
 export function buildTooltipContent(project: SavedProject): ResumePlanTooltipContent {
   const rawName = project.name || "";
@@ -48,7 +55,17 @@ export function buildTooltipContent(project: SavedProject): ResumePlanTooltipCon
   const metaParts = meta ? meta.split(" · ").filter((p) => !p.startsWith("Updated ")) : [];
   const metadataLine = metaParts.length > 0 ? metaParts.join(" · ") : null;
 
-  return { nameDisplay: display, nameFull: full, nameTruncated: truncated, recencyLine, metadataLine };
+  const status = derivePlanStatus(project);
+  const statusLine = status ? `Status: ${STATUS_LABEL[status]}.` : null;
+
+  return {
+    nameDisplay: display,
+    nameFull: full,
+    nameTruncated: truncated,
+    recencyLine,
+    metadataLine,
+    statusLine,
+  };
 }
 
 interface ResumePlanTooltipProps {
@@ -89,7 +106,11 @@ export default function ResumePlanTooltip({ project }: ResumePlanTooltipProps) {
         {content.metadataLine && (
           <p className="mt-1 text-muted-foreground">{content.metadataLine}</p>
         )}
+        {content.statusLine && (
+          <p className="mt-1 text-muted-foreground">{content.statusLine}</p>
+        )}
       </PopoverContent>
     </Popover>
   );
 }
+
