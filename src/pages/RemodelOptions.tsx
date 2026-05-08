@@ -10,6 +10,7 @@ import { summarizePhotoSignals } from "@/lib/photoSignalSummary";
 import { useBathroomPhotoScans } from "@/hooks/useBathroomPhotoScans";
 import BathroomInsights from "@/components/BathroomInsights";
 import ProjectSnapshot from "@/components/ProjectSnapshot";
+import PackageRationaleCue from "@/components/PackageRationaleCue";
 import budgetImg from "@/assets/package-budget.jpg";
 import balancedImg from "@/assets/package-balanced.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
