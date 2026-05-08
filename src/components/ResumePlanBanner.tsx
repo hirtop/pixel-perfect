@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import type { SavedProject } from "@/hooks/useUserProjects";
+import ResumePlanTooltip from "@/components/ResumePlanTooltip";
 
 interface ResumePlanBannerProps {
   project: SavedProject;
