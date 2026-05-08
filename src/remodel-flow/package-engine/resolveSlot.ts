@@ -258,6 +258,11 @@ export function adaptBinProduct(
       ? bp.isCuratedOnly
       : packageId === "modern-balanced";
 
+  // Phase 2.7 — pricingSource passthrough
+  const pricingSource = bp.pricingSource;
+  const pricingNote = bp.pricingNote;
+  sources.pricingSource = pricingSource ? "explicit" : "missing";
+
   return {
     id: synthesizeId(packageId, categoryId, canonicalKey),
     categoryId,
@@ -278,6 +283,8 @@ export function adaptBinProduct(
     estimatedProjectPrice,
     canonicalKey,
     isCuratedOnly,
+    pricingSource,
+    pricingNote,
     _engineFieldSources: sources,
   };
 }
