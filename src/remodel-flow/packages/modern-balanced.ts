@@ -634,6 +634,11 @@ export const MODERN_BALANCED = {
           "https://res.cloudinary.com/american-bath-group/image/upload/v1714590388/abg-graphics/original-images/dreamline/shared/lumen/jpeg/lumen-shower-door-rs76-30d-b-01.jpg",
         type: "hinged_door",
         priceRange: [700, 700],
+        vendor: "DreamLine",
+        unitPrice: 700,
+        widthInches: 40,
+        canonicalKey: "dreamline-lumen-shdr-5340720",
+        isCuratedOnly: true,
       },
       backups: [
         {
@@ -646,6 +651,11 @@ export const MODERN_BALANCED = {
             "https://res.cloudinary.com/american-bath-group/image/upload/v1714590964/abg-graphics/original-images/dreamline/shower-screens/linea/jpeg/linea-shower-door-rs393-30d-01.jpg",
           type: "fixed_panel",
           priceRange: [650, 650],
+          vendor: "DreamLine",
+          unitPrice: 650,
+          widthInches: 34,
+          canonicalKey: "dreamline-linea-shdr-3234721",
+          isCuratedOnly: true,
         },
         {
           name: 'DreamLine French Linea 34" W × 72" H Patterned-Glass Shower Screen',
