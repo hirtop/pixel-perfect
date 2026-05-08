@@ -354,6 +354,7 @@ export const MODERN_BALANCED = {
         unitPrice: 339,
         canonicalKey: "kohler-essential-k-31364",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -370,6 +371,7 @@ export const MODERN_BALANCED = {
           unitPrice: 320,
           canonicalKey: "kohler-castia-k-34969",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Signature Hardware Curie LED Mirror",
@@ -382,6 +384,11 @@ export const MODERN_BALANCED = {
           type: "led_backlit",
           priceRange: [340, 340],
           note: "LED upgrade — not default. Linked with lighting bin (drop sconces).",
+          vendor: "Signature Hardware",
+          unitPrice: 340,
+          canonicalKey: "signature-hardware-curie-946559-32",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
