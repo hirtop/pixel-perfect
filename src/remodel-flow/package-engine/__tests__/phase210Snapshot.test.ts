@@ -84,6 +84,8 @@ describe("Phase 2.10 closing — MODERN_BALANCED diff snapshot", () => {
         unexplained.push({
           bin: eng._engine.binKey,
           category: eng.name,
+          enrichedFromLegacyId: eng._engine.enrichedFromLegacyId,
+          productIsCuratedOnly: product?.isCuratedOnly,
           engine: { name: eng.selected, vendor: eng.vendor, price: eng.price, pricingSource: product?.pricingSource },
           legacy,
         });
