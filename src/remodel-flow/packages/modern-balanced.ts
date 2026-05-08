@@ -911,6 +911,7 @@ export const MODERN_BALANCED = {
         unitPrice: 119,
         canonicalKey: "vigo-cass-vg09040mb4pset",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -928,6 +929,7 @@ export const MODERN_BALANCED = {
           unitPrice: 139,
           canonicalKey: "moen-genta-y5294bl",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "KRAUS Elie 4-Piece Bath Hardware Set (Matte Black)",
@@ -940,6 +942,11 @@ export const MODERN_BALANCED = {
           type: "matte_black_4pc_set",
           priceRange: [130, 170],
           note: "Upgraded backup — heavier-gauge construction.",
+          vendor: "KRAUS",
+          unitPrice: 149,
+          canonicalKey: "kraus-elie-kea-18843mb",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Franklin Brass Maxted 4-Piece Bath Hardware Set (Matte Black)",
@@ -952,6 +959,11 @@ export const MODERN_BALANCED = {
           type: "matte_black_4pc_set",
           priceRange: [80, 110],
           note: "Budget backup.",
+          vendor: "Franklin Brass",
+          unitPrice: 89,
+          canonicalKey: "franklin-brass-maxted-max4pc-mb",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
