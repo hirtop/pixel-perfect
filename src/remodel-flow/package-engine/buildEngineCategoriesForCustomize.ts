@@ -99,15 +99,18 @@ const BIN_TO_LEGACY_CATEGORY: Partial<Record<BinKey, string>> = {
 const MODERN_BALANCED_BIN_ALIAS: Record<string, BinKey | null> = {
   vanity: "vanity",
   faucet: "faucet",
+  sink: "sink",                      // Phase 2.8 — opened
   mirror: "mirror",
   lighting: "lighting",
   showerWallTile: "showerWallTile",
-  floorTile: "mainFloorTile",      // canonical legacy "Main Floor Tile"
+  floorTile: "mainFloorTile",        // canonical legacy "Main Floor Tile"
   showerFloorTile: "showerFloorTile",
-  showerTrim: "showerValve",        // closest customize-drawer fit
-  showerGlass: "showerDoor",        // canonical legacy "Shower Doors"
+  showerTrim: "showerValve",         // closest customize-drawer fit
+  showerSystem: "showerSystem",      // Phase 2.8 — opened
+  showerGlass: "showerDoor",         // canonical legacy "Shower Doors"
   toilet: "toilet",
-  accessories: null,                 // not in customize drawer
+  accentTile: "accentTile",          // Phase 2.8 — opened
+  accessories: null,                  // not in customize drawer
 };
 
 const LEGACY_TIER_FROM_URL: Record<string, ProductTier> = {
