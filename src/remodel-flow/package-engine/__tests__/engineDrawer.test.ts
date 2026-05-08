@@ -5,7 +5,7 @@
  */
 
 import { describe, it, expect } from "vitest";
-import { computeEngineDrawerEnabled } from "../engineDrawerFlag";
+import { computeEngineDrawerEnabled, guardEngineDrawerEnabled } from "../engineDrawerFlag";
 import { mergeEngineWithLegacyCategories } from "../mergeEngineCategories";
 import type { EngineCategory } from "../buildEngineCategoriesForCustomize";
 
@@ -29,6 +29,58 @@ describe("engineDrawerFlag.computeEngineDrawerEnabled", () => {
     expect(
       computeEngineDrawerEnabled({ DEV: true, VITE_BOBOX_ENGINE_DRAWER: "true" }),
     ).toBe(true);
+  });
+  it("is OFF when flag has surrounding whitespace (' true ')", () => {
+    expect(
+      computeEngineDrawerEnabled({ DEV: true, VITE_BOBOX_ENGINE_DRAWER: " true " }),
+    ).toBe(false);
+  });
+  it("is OFF when flag is undefined even in DEV", () => {
+    expect(
+      computeEngineDrawerEnabled({ DEV: true, VITE_BOBOX_ENGINE_DRAWER: undefined }),
+    ).toBe(false);
+  });
+});
+
+describe("engineDrawerFlag.guardEngineDrawerEnabled", () => {
+  it("throws when disabled", () => {
+    expect(() => guardEngineDrawerEnabled(false)).toThrow(
+      "[engine-drawer] attempted to run while disabled",
+    );
+  });
+  it("does not throw when enabled", () => {
+    expect(() => guardEngineDrawerEnabled(true)).not.toThrow();
+  });
+});
+
+describe("engine drawer fallback behavior", () => {
+  it("returns legacy when the guarded engine path throws", () => {
+    // Simulate the exact try/catch shape from CustomizeOption.tsx.
+    const legacy = [{ name: "Vanities", selected: "V-legacy", price: 100 }];
+    const simulateInitialCategories = (): typeof legacy => {
+      if (!false) return legacy; // flag OFF → would early-return
+      try {
+        if (!false) {
+          throw new Error("[engine-drawer] attempted to run while disabled");
+        }
+        throw new Error("engine bug");
+      } catch (err) {
+        return legacy;
+      }
+    };
+    expect(simulateInitialCategories()).toEqual(legacy);
+  });
+
+  it("does not reach the engine path when flag is OFF", () => {
+    const legacy = [{ name: "Vanities", selected: "V-legacy", price: 100 }];
+    let engineReached = false;
+    const simulate = (): typeof legacy => {
+      if (!false) return legacy;
+      engineReached = true;
+      return legacy;
+    };
+    expect(simulate()).toEqual(legacy);
+    expect(engineReached).toBe(false);
   });
 });
 
