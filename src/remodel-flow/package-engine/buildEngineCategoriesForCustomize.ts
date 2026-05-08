@@ -263,7 +263,6 @@ export const MODERN_BALANCED_MISSING_LEGACY_CATEGORIES: readonly string[] = [
   "Sinks",
   "Bathtubs",
   "Tub Valve",
-  "Shower Valve",   // partially covered by `showerTrim` alias today
   "Shower Systems",
   "Accent Tile",
 ] as const;
