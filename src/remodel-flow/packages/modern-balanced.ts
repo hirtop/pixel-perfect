@@ -399,9 +399,22 @@ export const MODERN_BALANCED = {
         primary: true,
         style: ["modern", "minimal"],
         priceRange: [480, 960],
+        vendor: "BOBOX Curated",
+        unitPrice: 10,
+        estimatedProjectPrice: 720,
+        canonicalKey: "modern-balanced-shower-wall-marble-look-12x24",
+        isCuratedOnly: true,
       },
       backups: [
-        { name: '12"×24" Warm Grey Stone-Look Porcelain', priceRange: [480, 960] },
+        {
+          name: '12"×24" Warm Grey Stone-Look Porcelain',
+          priceRange: [480, 960],
+          vendor: "BOBOX Curated",
+          unitPrice: 10,
+          estimatedProjectPrice: 720,
+          canonicalKey: "modern-balanced-shower-wall-warm-grey-12x24",
+          isCuratedOnly: true,
+        },
         { name: '24"×48" Slab-Look Porcelain, warm white', priceRange: [480, 960] },
         {
           name: 'Stacked 4"×12" Matte White Porcelain',
