@@ -21,6 +21,7 @@ export interface PackageManifestEntry {
 }
 
 export const PACKAGE_MANIFEST: readonly PackageManifestEntry[] = [
+  // ── Real, sourced specs ──────────────────────────────────────────
   {
     id: "modern-balanced",
     status: "curated",
@@ -34,6 +35,18 @@ export const PACKAGE_MANIFEST: readonly PackageManifestEntry[] = [
     source: "src/remodel-flow/packages/classic-balanced.ts",
     notes: "Spec defined; all 11 bins are placeholder. Do not expose as finished.",
   },
+
+  // ── Phase 1: 9-package matrix scaffolding ────────────────────────
+  // These entries make the 3 tiers × 3 styles matrix visible to the
+  // engine and registry consumers. They have NO product data yet —
+  // status:"placeholder" means UI must not render them as finished.
+  { id: "modern-essential",  status: "placeholder", label: "Modern — Essential",  notes: "Phase 1 placeholder. No data." },
+  { id: "modern-premium",    status: "placeholder", label: "Modern — Premium",    notes: "Phase 1 placeholder. No data." },
+  { id: "classic-essential", status: "placeholder", label: "Classic — Essential", notes: "Phase 1 placeholder. No data." },
+  { id: "classic-premium",   status: "placeholder", label: "Classic — Premium",   notes: "Phase 1 placeholder. No data." },
+  { id: "spa-essential",     status: "placeholder", label: "Spa — Essential",     notes: "Phase 1 placeholder. No data." },
+  { id: "spa-balanced",      status: "placeholder", label: "Spa — Balanced",      notes: "Phase 1 placeholder. No data." },
+  { id: "spa-premium",       status: "placeholder", label: "Spa — Premium",       notes: "Phase 1 placeholder. No data." },
 ] as const;
 
 const MANIFEST_INDEX: ReadonlyMap<string, PackageManifestEntry> = new Map(
