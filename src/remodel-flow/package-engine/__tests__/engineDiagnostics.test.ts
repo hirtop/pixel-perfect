@@ -118,8 +118,9 @@ describe("Phase 2.6 — MODERN_BALANCED primary coverage", () => {
   });
 
   it.each(primaries)("primary in bin %s has explicit unitPrice or estimatedProjectPrice", (_k, p) => {
+    const bp = p as { unitPrice?: number; estimatedProjectPrice?: number };
     expect(
-      typeof p.unitPrice === "number" || typeof p.estimatedProjectPrice === "number",
+      typeof bp.unitPrice === "number" || typeof bp.estimatedProjectPrice === "number",
     ).toBe(true);
   });
 
