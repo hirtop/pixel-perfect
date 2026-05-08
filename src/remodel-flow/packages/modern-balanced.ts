@@ -29,6 +29,19 @@ export type BinProduct = {
    * (e.g. traditional/ornate/classic-only items in a Modern package).
    */
   style?: ProductStyle[];
+
+  /* ─── Phase 2.6: explicit intrinsic fields (preferred over regex) ─
+   * These take priority over name/url derivation in adaptBinProduct.
+   * Keep additive — leave undefined to fall back to regex derivation.
+   */
+  vendor?: string;
+  widthInches?: number;
+  mountType?: "wall" | "floor" | "undermount" | "drop-in";
+  faucetHoles?: 0 | 1 | 3;
+  unitPrice?: number;
+  estimatedProjectPrice?: number;
+  canonicalKey?: string;
+  isCuratedOnly?: boolean;
 };
 
 /** Allowed style tags for curated product validation. */
