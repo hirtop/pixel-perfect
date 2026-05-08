@@ -17,6 +17,7 @@ import { PlanConfidenceFooter } from "@/components/PlanConfidenceFooter";
 import PlanNameEditor from "@/components/PlanNameEditor";
 import RecencyHint from "@/components/RecencyHint";
 import PlanStatusBadge from "@/components/PlanStatusBadge";
+import SummaryIncludesCue from "@/components/SummaryIncludesCue";
 import { toast } from "sonner";
 
 
