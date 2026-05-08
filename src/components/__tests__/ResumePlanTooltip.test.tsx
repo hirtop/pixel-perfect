@@ -61,6 +61,39 @@ describe("ResumePlanTooltip / buildTooltipContent", () => {
 
   it("trigger has accessible label", () => {
     render(<ResumePlanTooltip project={base} />);
-    expect(screen.getByRole("button", { name: /View saved plan details/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /About this plan/i })).toBeInTheDocument();
+  });
+
+  it("trigger opens popover on Enter key", async () => {
+    render(<ResumePlanTooltip project={base} />);
+    const trigger = screen.getByRole("button", { name: /About this plan/i });
+    fireEvent.keyDown(trigger, { key: "Enter", code: "Enter" });
+    fireEvent.click(trigger);
+    await waitFor(() =>
+      expect(screen.getByRole("dialog", { name: /Saved plan details/i })).toBeInTheDocument(),
+    );
+  });
+
+  it("trigger opens popover on Space key", async () => {
+    render(<ResumePlanTooltip project={base} />);
+    const trigger = screen.getByRole("button", { name: /About this plan/i });
+    fireEvent.keyDown(trigger, { key: " ", code: "Space" });
+    fireEvent.click(trigger);
+    await waitFor(() =>
+      expect(screen.getByRole("dialog", { name: /Saved plan details/i })).toBeInTheDocument(),
+    );
+  });
+
+  it("Escape closes the popover", async () => {
+    render(<ResumePlanTooltip project={base} />);
+    const trigger = screen.getByRole("button", { name: /About this plan/i });
+    fireEvent.click(trigger);
+    await waitFor(() =>
+      expect(screen.getByRole("dialog", { name: /Saved plan details/i })).toBeInTheDocument(),
+    );
+    fireEvent.keyDown(document.body, { key: "Escape", code: "Escape" });
+    await waitFor(() =>
+      expect(screen.queryByRole("dialog", { name: /Saved plan details/i })).not.toBeInTheDocument(),
+    );
   });
 });
