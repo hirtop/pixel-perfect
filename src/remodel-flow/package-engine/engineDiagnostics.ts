@@ -85,6 +85,99 @@ export function warnOnDerivedIntrinsicFields(
   return report;
 }
 
+/* ─── Phase 2.7: pricing uncertainty diagnostics ─────────────────── */
+
+export interface PricingDiagnosticReport {
+  productId: string;
+  pricingSource: Product["pricingSource"];
+  isPending: boolean;
+  isEstimated: boolean;
+  isConfirmed: boolean;
+  pricingNote?: string;
+}
+
+/** Pure — classify a product's pricing source for diagnostics. */
+export function getPricingDiagnostic(product: Product): PricingDiagnosticReport {
+  const src = product.pricingSource;
+  return {
+    productId: product.id,
+    pricingSource: src,
+    isPending: src === "pending",
+    isEstimated: src === "estimated",
+    isConfirmed: src === "retailer" || src === "project-allowance",
+    pricingNote: product.pricingNote,
+  };
+}
+
+/**
+ * DEV-only: warn when a product's pricing is "pending" or "estimated".
+ * No-op when ENGINE_DIFF flag is off. Returns the report regardless.
+ */
+export function warnOnPricingUncertainty(product: Product): PricingDiagnosticReport {
+  const r = getPricingDiagnostic(product);
+  if (!ENGINE_DIFF_ENABLED) return r;
+  if (r.isPending || r.isEstimated) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      "[engine-diagnostics] product has uncertain pricing",
+      r,
+    );
+  }
+  return r;
+}
+
+/* ─── Phase 2.7: completeness helper ─────────────────────────────── */
+
+export interface EngineDataCompleteness {
+  total: number;
+  explicitVendor: number;
+  explicitCanonicalKey: number;
+  explicitPrice: number;          // unitPrice or estimatedProjectPrice explicit
+  pricingSourceSet: number;
+  regexDerivedFieldCount: number; // tracked field instances marked regex/derived
+  pendingPricingCount: number;
+  estimatedPricingCount: number;
+  confirmedPricingCount: number;
+}
+
+export function getEngineDataCompleteness(
+  products: Product[],
+): EngineDataCompleteness {
+  const out: EngineDataCompleteness = {
+    total: products.length,
+    explicitVendor: 0,
+    explicitCanonicalKey: 0,
+    explicitPrice: 0,
+    pricingSourceSet: 0,
+    regexDerivedFieldCount: 0,
+    pendingPricingCount: 0,
+    estimatedPricingCount: 0,
+    confirmedPricingCount: 0,
+  };
+  for (const p of products) {
+    const s = p._engineFieldSources ?? {};
+    if (s.vendor === "explicit") out.explicitVendor++;
+    if (s.canonicalKey === "explicit") out.explicitCanonicalKey++;
+    if (s.unitPrice === "explicit" || s.estimatedProjectPrice === "explicit") {
+      out.explicitPrice++;
+    }
+    if (p.pricingSource) out.pricingSourceSet++;
+    for (const f of FIELDS_TO_CHECK) {
+      const v = s[f];
+      if (v === "regex" || v === "derived") out.regexDerivedFieldCount++;
+    }
+    if (p.pricingSource === "pending") out.pendingPricingCount++;
+    else if (p.pricingSource === "estimated") out.estimatedPricingCount++;
+    else if (
+      p.pricingSource === "retailer" ||
+      p.pricingSource === "project-allowance"
+    ) {
+      out.confirmedPricingCount++;
+    }
+  }
+  return out;
+}
+
 /* ─── Field-level engine vs legacy diff ──────────────────────────── */
 
 export type DiffStatus = "same" | "different" | "engine-only" | "legacy-only" | "missing";

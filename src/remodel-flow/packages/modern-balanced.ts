@@ -42,6 +42,16 @@ export type BinProduct = {
   estimatedProjectPrice?: number;
   canonicalKey?: string;
   isCuratedOnly?: boolean;
+
+  /* ─── Phase 2.7: pricing source-of-truth ───────────────────────
+   * Tracks origin/confidence of unitPrice / estimatedProjectPrice.
+   *  - "retailer"          confirmed retailer/affiliate unit price
+   *  - "project-allowance" confirmed material allowance (SF-priced)
+   *  - "estimated"         best current estimate; refresh later
+   *  - "pending"           TODO — needs confirmation, do NOT show to customers
+   */
+  pricingSource?: "retailer" | "project-allowance" | "estimated" | "pending";
+  pricingNote?: string;
 };
 
 /** Allowed style tags for curated product validation. */
@@ -197,6 +207,8 @@ export const MODERN_BALANCED = {
         faucetHoles: 1,
         canonicalKey: "modern-balanced-vanity-floating-oak-36",
         isCuratedOnly: true,
+        pricingSource: "estimated",
+        pricingNote: "Curated BOBOX estimate; refresh when SKU is finalized.",
       },
       backups: [
         {
@@ -209,9 +221,35 @@ export const MODERN_BALANCED = {
           faucetHoles: 1,
           canonicalKey: "modern-balanced-vanity-floating-walnut-36",
           isCuratedOnly: true,
+          pricingSource: "estimated",
+          pricingNote: "Curated BOBOX estimate; refresh when SKU is finalized.",
         },
-        { name: 'Floating Matte White Vanity, 36" single sink', priceRange: [1200, 2200] },
-        { name: 'Wall-hung Concrete-Top Vanity, 36"', priceRange: [1200, 2200] },
+        {
+          name: 'Floating Matte White Vanity, 36" single sink',
+          priceRange: [1200, 2200],
+          vendor: "BOBOX Curated",
+          unitPrice: 1700,
+          widthInches: 36,
+          mountType: "wall",
+          faucetHoles: 1,
+          canonicalKey: "modern-balanced-vanity-floating-matte-white-36",
+          isCuratedOnly: true,
+          pricingSource: "estimated",
+          pricingNote: "Curated BOBOX estimate; refresh when SKU is finalized.",
+        },
+        {
+          name: 'Wall-hung Concrete-Top Vanity, 36"',
+          priceRange: [1200, 2200],
+          vendor: "BOBOX Curated",
+          unitPrice: 1800,
+          widthInches: 36,
+          mountType: "wall",
+          faucetHoles: 1,
+          canonicalKey: "modern-balanced-vanity-concrete-top-36",
+          isCuratedOnly: true,
+          pricingSource: "estimated",
+          pricingNote: "Curated BOBOX estimate; refresh when SKU is finalized.",
+        },
       ],
       constraints: [
         "Must be wall-hung (floating). No freestanding legs.",
@@ -245,6 +283,7 @@ export const MODERN_BALANCED = {
         faucetHoles: 1,
         canonicalKey: "delta-trinsic-559lf-bllpu",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -263,6 +302,7 @@ export const MODERN_BALANCED = {
           faucetHoles: 1,
           canonicalKey: "moen-doux-s6910bl",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Delta Trinsic Single Hole Bathroom Faucet",
@@ -276,6 +316,12 @@ export const MODERN_BALANCED = {
           type: "single_hole",
           priceRange: [379, 379],
           note: "Alternate finish — only if lighting/trim/accessories swap to champagne bronze family.",
+          vendor: "Delta",
+          unitPrice: 379,
+          faucetHoles: 1,
+          canonicalKey: "delta-trinsic-559lf-czmpu",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
@@ -308,6 +354,7 @@ export const MODERN_BALANCED = {
         unitPrice: 339,
         canonicalKey: "kohler-essential-k-31364",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -324,6 +371,7 @@ export const MODERN_BALANCED = {
           unitPrice: 320,
           canonicalKey: "kohler-castia-k-34969",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Signature Hardware Curie LED Mirror",
@@ -336,6 +384,11 @@ export const MODERN_BALANCED = {
           type: "led_backlit",
           priceRange: [340, 340],
           note: "LED upgrade — not default. Linked with lighting bin (drop sconces).",
+          vendor: "Signature Hardware",
+          unitPrice: 340,
+          canonicalKey: "signature-hardware-curie-946559-32",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
@@ -362,6 +415,8 @@ export const MODERN_BALANCED = {
         unitPrice: 390,
         canonicalKey: "modern-balanced-lighting-sconce-pair-flush",
         isCuratedOnly: true,
+        pricingSource: "estimated",
+        pricingNote: "Curated BOBOX estimate; refresh when SKUs are finalized.",
       },
       backups: [
         {
@@ -371,13 +426,30 @@ export const MODERN_BALANCED = {
           unitPrice: 390,
           canonicalKey: "modern-balanced-lighting-linear-bar-flush",
           isCuratedOnly: true,
+          pricingSource: "estimated",
+          pricingNote: "Curated BOBOX estimate; refresh when SKUs are finalized.",
         },
-        { name: "Single Overhead Pendant (matte black) + Flush LED", priceRange: [260, 520] },
+        {
+          name: "Single Overhead Pendant (matte black) + Flush LED",
+          priceRange: [260, 520],
+          vendor: "BOBOX Curated",
+          unitPrice: 390,
+          canonicalKey: "modern-balanced-lighting-single-pendant-flush",
+          isCuratedOnly: true,
+          pricingSource: "pending",
+          pricingNote: "TODO: confirm retailer price / project allowance.",
+        },
         {
           name: "Flush LED only",
           style: ["modern", "minimal"],
           priceRange: [260, 520],
           note: "Paired with backlit LED mirror.",
+          vendor: "BOBOX Curated",
+          unitPrice: 280,
+          canonicalKey: "modern-balanced-lighting-flush-led-only",
+          isCuratedOnly: true,
+          pricingSource: "estimated",
+          pricingNote: "Curated BOBOX estimate; refresh when SKUs are finalized.",
         },
       ],
       constraints: [
@@ -404,6 +476,7 @@ export const MODERN_BALANCED = {
         estimatedProjectPrice: 720,
         canonicalKey: "modern-balanced-shower-wall-marble-look-12x24",
         isCuratedOnly: true,
+        pricingSource: "project-allowance",
       },
       backups: [
         {
@@ -414,13 +487,31 @@ export const MODERN_BALANCED = {
           estimatedProjectPrice: 720,
           canonicalKey: "modern-balanced-shower-wall-warm-grey-12x24",
           isCuratedOnly: true,
+          pricingSource: "project-allowance",
         },
-        { name: '24"×48" Slab-Look Porcelain, warm white', priceRange: [480, 960] },
+        {
+          name: '24"×48" Slab-Look Porcelain, warm white',
+          priceRange: [480, 960],
+          vendor: "BOBOX Curated",
+          unitPrice: 12,
+          estimatedProjectPrice: 860,
+          canonicalKey: "modern-balanced-shower-wall-slab-24x48",
+          isCuratedOnly: true,
+          pricingSource: "estimated",
+          pricingNote: "Curated BOBOX estimate; refresh when SKU is finalized.",
+        },
         {
           name: 'Stacked 4"×12" Matte White Porcelain',
           style: ["modern", "minimal"],
           priceRange: [480, 960],
           note: "Budget fallback.",
+          vendor: "BOBOX Curated",
+          unitPrice: 7,
+          estimatedProjectPrice: 520,
+          canonicalKey: "modern-balanced-shower-wall-stacked-4x12",
+          isCuratedOnly: true,
+          pricingSource: "estimated",
+          pricingNote: "Curated BOBOX estimate; refresh when SKU is finalized.",
         },
       ],
       constraints: [
@@ -454,6 +545,7 @@ export const MODERN_BALANCED = {
         estimatedProjectPrice: 720,
         canonicalKey: "daltile-dignitary-dr1224p",
         isCuratedOnly: true,
+        pricingSource: "project-allowance",
       },
       backups: [
         {
@@ -467,8 +559,10 @@ export const MODERN_BALANCED = {
           priceRange: [10, 10],
           vendor: "Daltile",
           unitPrice: 10,
+          estimatedProjectPrice: 720,
           canonicalKey: "daltile-florentine-fl1224fp",
           isCuratedOnly: true,
+          pricingSource: "project-allowance",
         },
         {
           name: 'Daltile Slate 12"×12" Tile',
@@ -481,6 +575,12 @@ export const MODERN_BALANCED = {
           type: "darker_stone",
           priceRange: [9.8, 9.8],
           note: "Darker stone option — only if shower wall tile leans warm grey/stone.",
+          vendor: "Daltile",
+          unitPrice: 9.8,
+          estimatedProjectPrice: 700,
+          canonicalKey: "daltile-slate-s1212p1s",
+          isCuratedOnly: true,
+          pricingSource: "project-allowance",
         },
       ],
       constraints: [
@@ -515,6 +615,7 @@ export const MODERN_BALANCED = {
         estimatedProjectPrice: 568,
         canonicalKey: "bedrosians-round-mosaic-decmak2rmom",
         isCuratedOnly: true,
+        pricingSource: "project-allowance",
       },
       backups: [
         {
@@ -533,6 +634,7 @@ export const MODERN_BALANCED = {
           estimatedProjectPrice: 178,
           canonicalKey: "daltile-hex-mosaic-d2hexgmsp",
           isCuratedOnly: true,
+          pricingSource: "project-allowance",
         },
         {
           name: 'Merola Tile 2" Hex White Marble Look Mosaic',
@@ -545,6 +647,12 @@ export const MODERN_BALANCED = {
           type: "marble_hex_mosaic",
           priceRange: [12.54, 12.54],
           note: "Project estimate: $150.",
+          vendor: "Merola Tile",
+          unitPrice: 12.54,
+          estimatedProjectPrice: 150,
+          canonicalKey: "merola-tile-ftc2f",
+          isCuratedOnly: true,
+          pricingSource: "project-allowance",
         },
       ],
       constraints: [
@@ -577,6 +685,7 @@ export const MODERN_BALANCED = {
         unitPrice: 559,
         canonicalKey: "delta-trinsic-17t-t17t059",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -593,6 +702,7 @@ export const MODERN_BALANCED = {
           unitPrice: 293,
           canonicalKey: "kohler-purist-k-t14491-4",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Moen Engage Shower Head + Handheld Combo",
@@ -604,6 +714,11 @@ export const MODERN_BALANCED = {
             "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/moen/26009.jpg",
           type: "combo_system",
           priceRange: [280, 280],
+          vendor: "Moen",
+          unitPrice: 280,
+          canonicalKey: "moen-engage-1439827",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
@@ -639,6 +754,7 @@ export const MODERN_BALANCED = {
         widthInches: 40,
         canonicalKey: "dreamline-lumen-shdr-5340720",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -656,6 +772,7 @@ export const MODERN_BALANCED = {
           widthInches: 34,
           canonicalKey: "dreamline-linea-shdr-3234721",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: 'DreamLine French Linea 34" W × 72" H Patterned-Glass Shower Screen',
@@ -667,6 +784,12 @@ export const MODERN_BALANCED = {
           type: "privacy_panel",
           priceRange: [690, 690],
           note: "Patterned glass option — only when added privacy is desired.",
+          vendor: "DreamLine",
+          unitPrice: 690,
+          widthInches: 34,
+          canonicalKey: "dreamline-french-linea-shdr-3234721-89",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
@@ -699,6 +822,7 @@ export const MODERN_BALANCED = {
         unitPrice: 549,
         canonicalKey: "kohler-santa-rosa-k-3810-0",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -716,6 +840,7 @@ export const MODERN_BALANCED = {
           unitPrice: 348,
           canonicalKey: "american-standard-cadet-3-215aa104-020",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Swiss Madison St. Tropez One-Piece Elongated Skirted Toilet (White)",
@@ -728,8 +853,15 @@ export const MODERN_BALANCED = {
           type: "skirted_one_piece",
           priceRange: [400, 600],
           note: "Modern skirted backup.",
+          vendor: "Swiss Madison",
+          unitPrice: 469,
+          canonicalKey: "swiss-madison-st-tropez-sm-1t254",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
+          // TODO: confirm retailer price / project allowance — link points to a
+          // category landing page, not a specific SKU.
           name: "Bidet-Ready Modern One-Piece Elongated Toilet (White)",
           style: ["modern", "minimal"],
           price: 599,
@@ -740,6 +872,12 @@ export const MODERN_BALANCED = {
           type: "bidet_ready",
           priceRange: [500, 700],
           note: "Upgrade backup — bidet-ready rough-in.",
+          vendor: "BOBOX Curated",
+          unitPrice: 599,
+          canonicalKey: "modern-balanced-toilet-bidet-ready-placeholder",
+          isCuratedOnly: true,
+          pricingSource: "pending",
+          pricingNote: "TODO: confirm retailer price / project allowance — category link only.",
         },
       ],
       constraints: [
@@ -773,6 +911,7 @@ export const MODERN_BALANCED = {
         unitPrice: 119,
         canonicalKey: "vigo-cass-vg09040mb4pset",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -790,6 +929,7 @@ export const MODERN_BALANCED = {
           unitPrice: 139,
           canonicalKey: "moen-genta-y5294bl",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "KRAUS Elie 4-Piece Bath Hardware Set (Matte Black)",
@@ -802,6 +942,11 @@ export const MODERN_BALANCED = {
           type: "matte_black_4pc_set",
           priceRange: [130, 170],
           note: "Upgraded backup — heavier-gauge construction.",
+          vendor: "KRAUS",
+          unitPrice: 149,
+          canonicalKey: "kraus-elie-kea-18843mb",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Franklin Brass Maxted 4-Piece Bath Hardware Set (Matte Black)",
@@ -814,6 +959,11 @@ export const MODERN_BALANCED = {
           type: "matte_black_4pc_set",
           priceRange: [80, 110],
           note: "Budget backup.",
+          vendor: "Franklin Brass",
+          unitPrice: 89,
+          canonicalKey: "franklin-brass-maxted-max4pc-mb",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
