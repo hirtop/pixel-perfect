@@ -87,7 +87,7 @@ export function adaptBinProduct(
 ): Product {
   const price = typeof bp.price === "number" ? bp.price : undefined;
   return {
-    id: synthesizeId(packageId, categoryId, index),
+    id: synthesizeId(packageId, categoryId, canonicalProductKey(bp, index)),
     categoryId,
     name: bp.name,
     price,
