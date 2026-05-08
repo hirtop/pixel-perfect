@@ -61,16 +61,16 @@ describe("Phase 2.5 intrinsic fields", () => {
     expect(getEngineProductTotalPrice({})).toBe(0);
   });
 
-  it("tile bins surface estimatedProjectPrice from priceRange upper bound", () => {
+  it("tile bins surface explicit estimatedProjectPrice (Phase 2.6)", () => {
     const slot = resolveSlot(
       "modern-balanced",
       "showerWallTile",
       MODERN_BALANCED.bins.showerWallTile as Bin,
     );
-    // showerWallTile primary: priceRange [480, 960] — engine should treat
-    // 960 as the project allowance, 480 as the unit/per-SF price.
-    expect(slot.product.unitPrice).toBe(480);
-    expect(slot.product.estimatedProjectPrice).toBe(960);
-    expect(getEngineProductTotalPrice(slot.product)).toBe(960);
+    // Phase 2.6: showerWallTile primary now carries explicit
+    // unitPrice=10 + estimatedProjectPrice=720.
+    expect(slot.product.unitPrice).toBe(10);
+    expect(slot.product.estimatedProjectPrice).toBe(720);
+    expect(getEngineProductTotalPrice(slot.product)).toBe(720);
   });
 });
