@@ -42,6 +42,14 @@ export interface EngineDiffConsoleProps {
   /** Optional: pass already-resolved engine categories to avoid rework. */
   engineCategories?: EngineCategory[] | null;
   legacyTier?: ProductTier;
+  /** Phase 2.11 — shadow-mode hookup (dev-only diagnostics). */
+  shadowDiffReport?: {
+    identicalCount: number;
+    curatedOnlyVendorMismatchCount: number;
+    pricingPerOptionACount: number;
+    unexplainedDeltaCount: number;
+  } | null;
+  shadowActive?: boolean;
 }
 
 interface LegacyRow {
