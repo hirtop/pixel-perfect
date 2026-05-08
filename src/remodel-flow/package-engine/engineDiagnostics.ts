@@ -151,10 +151,12 @@ export function diffEngineVsLegacy(
 ): CategoryDiffReport {
   const categoryName = engine?.name ?? legacy?.name ?? "(unknown)";
   const source: "engine" | "legacy" = engine ? "engine" : "legacy";
+  const legacyRecord = legacy as unknown as Record<string, unknown> | null | undefined;
+  const engineRecord = engine as unknown as Record<string, unknown> | null | undefined;
   const differences: FieldDiff[] = [];
   for (const f of COMPARED_FIELDS) {
-    const lv = (legacy as Record<string, unknown> | null | undefined)?.[f];
-    const ev = (engine as Record<string, unknown> | null | undefined)?.[f];
+    const lv = legacyRecord?.[f];
+    const ev = engineRecord?.[f];
     differences.push({
       field: f,
       legacyValue: lv,
