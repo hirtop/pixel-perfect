@@ -110,21 +110,19 @@ const EngineDiffConsole = ({
     const rows = opened.map((eng) => {
       const legacy = lookupLegacyForCategory(eng.name, legacyTier);
       const diff = diffEngineVsLegacy(legacy ?? undefined, eng);
+      // Loose prefix joins (suffixed " (loose)") are intentionally
+      // audit-flagged by adaptEngineProductToLegacy and must NOT be
+      // treated as authoritative legacy enrichment for classification.
+      const enrichedId = eng._engine.enrichedFromLegacyId;
+      const enrichedAuthoritative =
+        enrichedId != null && !enrichedId.endsWith("(loose)");
       const engineProduct = {
         name: eng.selected,
         vendor: eng.vendor,
         price: eng.price,
-        isCuratedOnly: eng._engine.enrichedFromLegacyId == null,
-        enrichedFromLegacyId: eng._engine.enrichedFromLegacyId,
-        // pricingSource is on the underlying Product but not exposed on
-        // EngineCategory directly; re-derive via a heuristic: missing
-        // legacy enrichment + curated-only is the typical Option-A case.
-        pricingSource: undefined as
-          | "retailer"
-          | "project-allowance"
-          | "estimated"
-          | "pending"
-          | undefined,
+        isCuratedOnly: eng._engine.isCuratedOnly,
+        enrichedFromLegacyId: enrichedAuthoritative ? enrichedId : null,
+        pricingSource: eng._engine.pricingSource,
       };
       const classification: DeltaClassification = classifyEngineLegacyDelta({
         engine: engineProduct,
@@ -135,14 +133,18 @@ const EngineDiffConsole = ({
       return { eng, legacy, diff, classification };
     });
 
-    const completeness = getEngineDataCompleteness([]); // placeholder counts
+    // Phase 2.10 — counts derived from the EngineCategory rows we just
+    // built, not from a separate (empty) Product[] sample.
+    const pricingSources = opened.map((e) => e._engine.pricingSource);
     const counts = {
       totalBins: opened.length + deferred.length + empty.length,
       openedBins: opened.length,
       deferredBins: deferred.length,
       emptyBins: empty.length,
-      confirmedPricingCount: completeness.confirmedPricingCount,
-      estimatedPricingCount: completeness.estimatedPricingCount,
+      confirmedPricingCount: pricingSources.filter(
+        (s) => s === "retailer" || s === "project-allowance",
+      ).length,
+      estimatedPricingCount: pricingSources.filter((s) => s === "estimated").length,
       pendingPricingCount: completeness.pendingPricingCount,
       unexplainedDeltaCount: rows.filter((r) => r.classification === "unexplained")
         .length,
