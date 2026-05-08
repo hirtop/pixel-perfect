@@ -81,13 +81,6 @@ const EngineDiffConsole = ({
 }: EngineDiffConsoleProps) => {
   const [open, setOpen] = useState(false);
 
-  // Hard render gate. Belt-and-suspenders; the lazy loader at the call
-  // site is also gated, but render-time gating prevents accidental
-  // mounts in test environments / Storybook.
-  if (!import.meta.env.DEV) return null;
-  if (!ENGINE_DRAWER_ENABLED) return null;
-  if (!ENGINE_DIFF_ENABLED) return null;
-
   const engine = useMemo<EngineCategory[] | null>(() => {
     if (engineCategories !== undefined) return engineCategories;
     try {
