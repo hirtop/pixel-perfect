@@ -327,6 +327,11 @@ const CustomizeOption = () => {
     const legacy = buildCategoriesForTier(tier, roomWidthInches, selectedVanityId);
     if (!ENGINE_DRAWER_ENABLED) return legacy;
     try {
+      // Belt-and-suspenders: if a future refactor accidentally reaches this
+      // path while the flag is false, throw into the catch and fall back.
+      if (!ENGINE_DRAWER_ENABLED) {
+        throw new Error("[engine-drawer] attempted to run while disabled");
+      }
       const engine = buildEngineCategoriesForCustomize({
         urlId: urlTier,
         style: project.style_preferences?.style,
@@ -335,6 +340,8 @@ const CustomizeOption = () => {
       });
       if (!engine) return legacy;
       const { merged, sources } = mergeEngineWithLegacyCategories(legacy, engine);
+      // Curated-only engine rows may have empty tag/spec/disclaimer in dev
+      // mode. This is an expected diagnostic signal for Phase 2.6.
       // Dev-only diagnostic so it's obvious in the console which rows
       // came from the engine. Never reaches production (gated by flag).
       // eslint-disable-next-line no-console
