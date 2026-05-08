@@ -35,7 +35,7 @@ export interface ResumePlanTooltipContent {
 const STATUS_LABEL: Record<PlanStatus, string> = {
   exploring: "Exploring",
   shaping: "Shaping",
-  "ready-to-share": "Ready to share",
+  "ready-to-share": "Well shaped",
 };
 
 export function buildTooltipContent(project: SavedProject): ResumePlanTooltipContent {
