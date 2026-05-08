@@ -9,7 +9,21 @@ import {
 } from "../registry";
 
 describe("Package Engine — placeholder safety", () => {
-  it("flags exactly the 7 Phase-1 placeholder packages", () => {
+  it("matrix is exactly 1 curated + 8 placeholder (0 partial)", () => {
+    const counts = PACKAGE_MANIFEST.reduce(
+      (acc, p) => {
+        acc[p.status] = (acc[p.status] ?? 0) + 1;
+        return acc;
+      },
+      {} as Record<string, number>,
+    );
+    expect(counts.curated).toBe(1);
+    expect(counts.placeholder).toBe(8);
+    expect(counts.partial ?? 0).toBe(0);
+    expect(PACKAGE_MANIFEST.length).toBe(9);
+  });
+
+  it("flags exactly the 8 Phase-1 placeholder packages", () => {
     const placeholders = PACKAGE_MANIFEST.filter(isPlaceholderPackage).map((p) => p.id);
     expect(placeholders.sort()).toEqual(
       [
@@ -33,6 +47,20 @@ describe("Package Engine — placeholder safety", () => {
   it("isCustomerReadyPackage excludes placeholder packages", () => {
     for (const p of PACKAGE_MANIFEST.filter(isPlaceholderPackage)) {
       expect(isCustomerReadyPackage(p)).toBe(false);
+    }
+  });
+
+  it("isCustomerReadyPackage and assert exclude hypothetical 'partial' status", () => {
+    const fakePartial = { status: "partial" as const };
+    expect(isCustomerReadyPackage(fakePartial)).toBe(false);
+    expect(() =>
+      assertCustomerReadyPackage({ id: "modern-balanced", status: "partial", label: "x" }),
+    ).toThrow();
+  });
+
+  it("listCustomerReadyPackages returns only curated entries", () => {
+    for (const p of listCustomerReadyPackages()) {
+      expect(p.status).toBe("curated");
     }
   });
 

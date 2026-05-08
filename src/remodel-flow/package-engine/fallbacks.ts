@@ -41,7 +41,10 @@ export function resolveImage(product: Pick<Product, "image" | "categoryId">): st
 
 /**
  * Returns true when a product should be considered usable for rendering.
- * Currently: not discontinued. Extend in Phase 2 (link health, etc.).
+ *
+ * Phase 1 scope: this only checks `availability !== "discontinued"`. It
+ * intentionally does NOT verify link health, live stock, price freshness,
+ * or retailer reachability — those belong to Phase 2+ enrichment.
  */
 export function isProductUsable(product: Pick<Product, "availability">): boolean {
   return product.availability !== "discontinued";

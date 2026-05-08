@@ -33,7 +33,9 @@ export const PACKAGE_MANIFEST: readonly PackageManifestEntry[] = [
     status: "placeholder",
     label: "Classic — Balanced",
     source: "src/remodel-flow/packages/classic-balanced.ts",
-    notes: "Spec defined; all 11 bins are placeholder. Do not expose as finished.",
+    notes:
+      "Spec + bin scaffolding exist, but every bin is sourcing:'placeholder' " +
+      "with no real SKUs. Treat as placeholder until product data lands.",
   },
 
   // ── Phase 1: 9-package matrix scaffolding ────────────────────────

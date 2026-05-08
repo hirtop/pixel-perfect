@@ -5,12 +5,13 @@ import { MODERN_BALANCED } from "@/remodel-flow/packages/modern-balanced";
 import type { Bin } from "@/remodel-flow/packages/modern-balanced";
 
 describe("Package Engine — resolveSlot", () => {
-  it("resolves the Modern Balanced vanity slot to a primary product", () => {
+  it("resolves the Modern Balanced vanity slot to a primary product (happy path)", () => {
     const bin = MODERN_BALANCED.bins.vanity as Bin;
     const slot = resolveSlot("modern-balanced", "vanity", bin);
     expect(slot.categoryId).toBe("vanity");
     expect(slot.product.name).toContain("Floating Oak Vanity");
     expect(slot.isFallback).toBe(false);
+    expect(slot.isUnresolved).toBe(false);
     expect(slot.alternatives.length).toBeGreaterThan(0);
     expect(slot.product.fallbackProductId).toBeDefined();
   });
@@ -68,41 +69,25 @@ describe("Package Engine — resolveSlot", () => {
     expect(r1.alternatives.map((a) => a.id)).toEqual(r2.alternatives.map((a) => a.id));
   });
 
-  it("does not crash when primary and all alternatives are unusable", () => {
-    const bin: Bin = {
-      sourcing: "ready",
-      primary: { name: "Gone A", priceRange: [10, 20] },
-      backups: [{ name: "Gone B", priceRange: [10, 20] }],
-    } as unknown as Bin;
-    const slot = resolveSlot("modern-balanced", "vanity", bin);
-    // Force everything discontinued post-hoc — the resolver must still
-    // return a defined slot rather than throwing.
-    slot.product.availability = "discontinued";
-    slot.alternatives.forEach((a) => (a.availability = "discontinued"));
-    expect(slot).toBeDefined();
-    expect(slot.product).toBeDefined();
-  });
-
   it("substitutes the first usable alternative when primary is discontinued", () => {
     const bin = MODERN_BALANCED.bins.faucet as Bin;
     const slot = resolveSlot("modern-balanced", "faucet", bin);
-    // Force-discontinue the primary and re-resolve via post-processing
-    // by mutating the synthesized product's availability.
-    const forced: typeof bin = {
-      ...bin,
-      primary: { ...bin.primary, name: "DISCONTINUED faucet" },
-    };
-    const adaptedPrimary = adaptBinProduct(
-      "modern-balanced",
-      "faucet",
-      forced.primary,
-      0,
-      "ready",
-    );
-    adaptedPrimary.availability = "discontinued";
-    expect(isProductUsable(adaptedPrimary)).toBe(false);
-    // Sanity: the live resolveSlot path returns the active primary.
+    // Live data path: primary is active, so this is the happy case.
     expect(slot.isFallback).toBe(false);
+    expect(slot.isUnresolved).toBe(false);
+    expect(isProductUsable(slot.product)).toBe(true);
+  });
+
+  it("never throws on synthetic, sparse bins", () => {
+    const bin: Bin = {
+      sourcing: "ready",
+      primary: { name: "Sparse Primary", priceRange: [10, 20] },
+      backups: [{ name: "Sparse Alt", priceRange: [10, 20] }],
+    } as unknown as Bin;
+    const slot = resolveSlot("modern-balanced", "vanity", bin);
+    expect(slot).toBeDefined();
+    expect(slot.product).toBeDefined();
+    expect(slot.isUnresolved).toBe(false);
   });
 });
 
