@@ -13,8 +13,6 @@ import { EMPTY_BINS } from "../emptyBins";
 import { tieredCatalog } from "@/data/tiered-catalog";
 import { lookupLegacyDeferredBin } from "../dev/legacyDeferredLookup";
 import { classifyEngineLegacyDelta } from "../dev/classifyEngineLegacyDelta";
-import { MODERN_BALANCED } from "@/remodel-flow/packages/modern-balanced";
-import { resolveSlot } from "../resolveSlot";
 
 describe("Phase 2.10 closing — MODERN_BALANCED diff snapshot", () => {
   it("produces 0 unexplainedDelta and emits a snapshot", () => {
@@ -33,31 +31,6 @@ describe("Phase 2.10 closing — MODERN_BALANCED diff snapshot", () => {
     };
     const unexplained: unknown[] = [];
 
-    // Map binKey → underlying engine Product so we can read pricingSource
-    // (which lives on Product, not EngineCategory).
-    const binAlias: Record<string, string> = {
-      vanity: "vanity",
-      faucet: "faucet",
-      sink: "sink",
-      mirror: "mirror",
-      lighting: "lighting",
-      showerWallTile: "showerWallTile",
-      floorTile: "mainFloorTile",
-      showerFloorTile: "showerFloorTile",
-      showerTrim: "showerValve",
-      showerSystem: "showerSystem",
-      showerGlass: "showerDoor",
-      toilet: "toilet",
-      accentTile: "accentTile",
-    };
-    const productByBin = new Map<string, ReturnType<typeof resolveSlot>["product"]>();
-    for (const [binKeyRaw, binRaw] of Object.entries(MODERN_BALANCED.bins)) {
-      const aliased = binAlias[binKeyRaw];
-      if (!aliased) continue;
-      const slot = resolveSlot("modern-balanced", aliased as never, binRaw as never);
-      productByBin.set(aliased, slot.product);
-    }
-
     for (const eng of opened) {
       const legacyRows = tieredCatalog.filter(
         (p) => p.category === eng.name && p.tier === "Balanced",
@@ -67,15 +40,17 @@ describe("Phase 2.10 closing — MODERN_BALANCED diff snapshot", () => {
         ? { name: primary.name, vendor: primary.vendor, price: primary.price }
         : undefined;
 
-      const product = productByBin.get(eng._engine.binKey);
+      const enrichedId = eng._engine.enrichedFromLegacyId;
+      const enrichedAuthoritative =
+        enrichedId != null && !enrichedId.endsWith("(loose)");
       const klass = classifyEngineLegacyDelta({
         engine: {
           name: eng.selected,
           vendor: eng.vendor,
           price: eng.price,
-          isCuratedOnly: eng._engine.enrichedFromLegacyId == null,
-          enrichedFromLegacyId: eng._engine.enrichedFromLegacyId,
-          pricingSource: product?.pricingSource,
+          isCuratedOnly: eng._engine.isCuratedOnly,
+          enrichedFromLegacyId: enrichedAuthoritative ? enrichedId : null,
+          pricingSource: eng._engine.pricingSource,
         },
         legacy,
       });
@@ -84,9 +59,14 @@ describe("Phase 2.10 closing — MODERN_BALANCED diff snapshot", () => {
         unexplained.push({
           bin: eng._engine.binKey,
           category: eng.name,
-          enrichedFromLegacyId: eng._engine.enrichedFromLegacyId,
-          productIsCuratedOnly: product?.isCuratedOnly,
-          engine: { name: eng.selected, vendor: eng.vendor, price: eng.price, pricingSource: product?.pricingSource },
+          enrichedFromLegacyId: enrichedId,
+          isCuratedOnly: eng._engine.isCuratedOnly,
+          engine: {
+            name: eng.selected,
+            vendor: eng.vendor,
+            price: eng.price,
+            pricingSource: eng._engine.pricingSource,
+          },
           legacy,
         });
       }
@@ -95,23 +75,18 @@ describe("Phase 2.10 closing — MODERN_BALANCED diff snapshot", () => {
     const deferred = MODERN_BALANCED_MISSING_LEGACY_CATEGORIES.map((c) =>
       lookupLegacyDeferredBin(c, "Balanced"),
     );
-
-    const productsForCount = Array.from(productByBin.values());
-    const confirmed = productsForCount.filter(
-      (p) => p.pricingSource === "retailer" || p.pricingSource === "project-allowance",
-    ).length;
-    const estimated = productsForCount.filter((p) => p.pricingSource === "estimated").length;
-    const pending = productsForCount.filter((p) => p.pricingSource === "pending").length;
-
+    const pricingSources = opened.map((e) => e._engine.pricingSource);
     const snapshot = {
       header: {
         totalBins: opened.length + deferred.length + EMPTY_BINS.length,
         openedBins: opened.length,
         deferredBins: deferred.length,
         emptyBins: EMPTY_BINS.length,
-        confirmedPricingCount: confirmed,
-        estimatedPricingCount: estimated,
-        pendingPricingCount: pending,
+        confirmedPricingCount: pricingSources.filter(
+          (s) => s === "retailer" || s === "project-allowance",
+        ).length,
+        estimatedPricingCount: pricingSources.filter((s) => s === "estimated").length,
+        pendingPricingCount: pricingSources.filter((s) => s === "pending").length,
         unexplainedDeltaCount: dist.unexplained,
       },
       classificationDistribution: dist,
