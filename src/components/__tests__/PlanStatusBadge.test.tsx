@@ -31,7 +31,7 @@ describe("PlanStatusBadge", () => {
     expect(screen.getByText("Status: Shaping.")).toBeInTheDocument();
   });
 
-  it("renders 'Status: Ready to share.' when locked + 7+ selections", () => {
+  it("renders 'Status: Well shaped.' when locked + 7+ selections", () => {
     render(
       <PlanStatusBadge
         project={{
@@ -41,7 +41,7 @@ describe("PlanStatusBadge", () => {
         }}
       />,
     );
-    expect(screen.getByText("Status: Ready to share.")).toBeInTheDocument();
+    expect(screen.getByText("Status: Well shaped.")).toBeInTheDocument();
   });
 
   it("renders nothing when status is null (stale plan)", () => {
