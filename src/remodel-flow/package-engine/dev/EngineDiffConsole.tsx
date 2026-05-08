@@ -42,6 +42,14 @@ export interface EngineDiffConsoleProps {
   /** Optional: pass already-resolved engine categories to avoid rework. */
   engineCategories?: EngineCategory[] | null;
   legacyTier?: ProductTier;
+  /** Phase 2.11 — shadow-mode hookup (dev-only diagnostics). */
+  shadowDiffReport?: {
+    identicalCount: number;
+    curatedOnlyVendorMismatchCount: number;
+    pricingPerOptionACount: number;
+    unexplainedDeltaCount: number;
+  } | null;
+  shadowActive?: boolean;
 }
 
 interface LegacyRow {
@@ -77,15 +85,15 @@ const EngineDiffConsole = ({
   selectedVanityId,
   engineCategories,
   legacyTier = "Balanced",
+  shadowDiffReport,
+  shadowActive,
 }: EngineDiffConsoleProps) => {
   const [open, setOpen] = useState(false);
 
   const engine = useMemo<EngineCategory[] | null>(() => {
+    // Phase 2.11 — prefer shadow-resolved engine categories from
+    // Customize.tsx; falls back to internal compute only if not supplied.
     if (engineCategories !== undefined) return engineCategories;
-    // TODO(Phase 2.11): pass already-resolved engineCategories from the
-    // /customize page into this console to remove this double-resolution.
-    // Customize.tsx does not currently retain the resolved engine output
-    // because the curated drawer renders directly from MODERN_BALANCED.
     try {
       return buildEngineCategoriesForCustomize({
         urlId,
@@ -171,11 +179,24 @@ const EngineDiffConsole = ({
     >
       <Collapsible open={open} onOpenChange={setOpen}>
         <CollapsibleTrigger className="flex w-full items-center justify-between text-left font-mono text-[11px] uppercase tracking-wider text-foreground/80">
-          <span>[dev] Engine vs Legacy Diff</span>
+          <span>
+            [dev] Engine vs Legacy Diff
+            {shadowActive && (
+              <span
+                className="ml-2 rounded bg-emerald-500/15 px-1.5 py-0.5 text-[9px] text-emerald-700 dark:text-emerald-400"
+                data-testid="engine-shadow-indicator"
+              >
+                shadow-mode active
+              </span>
+            )}
+          </span>
           <span className="text-muted-foreground">
             opened {summary.counts.openedBins} · deferred{" "}
             {summary.counts.deferredBins} · empty {summary.counts.emptyBins} ·
-            unexplained {summary.counts.unexplainedDeltaCount}
+            unexplained{" "}
+            {shadowDiffReport
+              ? shadowDiffReport.unexplainedDeltaCount
+              : summary.counts.unexplainedDeltaCount}
           </span>
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-3 space-y-4">

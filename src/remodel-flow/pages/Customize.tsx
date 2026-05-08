@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES, TIER_BINS, getCategory, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
@@ -13,6 +13,9 @@ import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { getPackage } from "../package-engine/registry";
 import { ENGINE_DRAWER_ENABLED } from "../package-engine/engineDrawerFlag";
 import { ENGINE_DIFF_ENABLED } from "../package-engine/engineDiagnostics";
+import { useEngineShadow } from "../package-engine/useEngineShadow";
+import { buildLegacyDrawerCategoriesFromCatalog } from "../package-engine/dev/buildLegacyDrawerCategoriesFromCatalog";
+import type { BinKey } from "../package-engine/types";
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, Check, Star } from "lucide-react";
 
@@ -106,6 +109,28 @@ const Customize = () => {
   // Live feedback: track direction of change for total and style match.
   const totalChange = useChangeDirection(plan.total);
   const styleChange = useChangeDirection(globalPct);
+
+  // Phase 2.11 — engine shadow compute. Always called to keep hook
+  // order stable; the hook itself returns inactive in production
+  // (ENGINE_DRAWER_ENABLED is false) and for non-modern-balanced.
+  const shadowLegacyCategories = useMemo(() => {
+    if (!ENGINE_DRAWER_ENABLED) return [];
+    return buildLegacyDrawerCategoriesFromCatalog(
+      [
+        "vanity", "sink", "faucet", "mirror",
+        "showerWallTile", "showerFloorTile", "mainFloorTile", "accentTile",
+        "showerDoor", "showerValve", "showerSystem",
+      ] as BinKey[],
+      "Balanced",
+    );
+  }, []);
+  const shadow = useEngineShadow({
+    urlId: state.tier ?? "balanced",
+    style: state.style,
+    selectedVanityId: state.selections?.vanity,
+    legacyCategories: shadowLegacyCategories,
+  });
+
 
   if (!pkg) {
     return (
@@ -356,6 +381,9 @@ const Customize = () => {
               <LazyEngineDiffConsole
                 urlId="balanced"
                 style={state.style}
+                engineCategories={shadow.engineCategories}
+                shadowDiffReport={shadow.diffReport}
+                shadowActive={shadow.isActive}
               />
             </Suspense>
           )}
