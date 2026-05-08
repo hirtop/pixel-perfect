@@ -895,6 +895,217 @@ export const MODERN_BALANCED = {
         "A clean, comfort-height white toilet that quietly disappears next to the vanity and shower.",
     } satisfies Bin,
 
+    /* ─── Phase 2.8: opened bins ──────────────────────────────────────
+     * sink / showerSystem / accentTile — added per Phase 2.8 to close
+     * customize-drawer coverage gaps. Each new bin satisfies the
+     * Phase 2.7 + 2.8 standard: primary has confirmed pricing
+     * (retailer or project-allowance), explicit vendor + canonicalKey
+     * + isCuratedOnly, plus ≥1 alternative. Estimated/pending
+     * alternatives carry a TODO pricingNote and are surfaced by
+     * engine diagnostics.
+     */
+
+    sink: {
+      sourcing: "ready",
+      intent:
+        "Undermount white vitreous-china sink, sized to the 36\" floating vanity. Visually quiet, easy to clean.",
+      primary: {
+        name: "Kohler Caxton Vitreous China Undermount Bathroom Sink (White)",
+        primary: true,
+        style: ["modern", "minimal"],
+        finish: "White",
+        price: 132,
+        retailer: "Home Depot",
+        link: "https://www.homedepot.com/p/KOHLER-Caxton-Vitreous-China-Undermount-Bathroom-Sink-with-Overflow-Drain-in-White-K-2210-0/100379015",
+        image:
+          "https://images.thdstatic.com/productImages/0a09cba8-dd29-4f70-9f9e-9f9e9f9e9f9e/svn/white-kohler-undermount-bathroom-sinks-k-2210-0-64_1000.jpg",
+        type: "undermount_oval",
+        priceRange: [132, 132],
+        vendor: "Kohler",
+        unitPrice: 132,
+        mountType: "undermount",
+        canonicalKey: "kohler-caxton-k-2210-0",
+        isCuratedOnly: true,
+        pricingSource: "retailer",
+      },
+      backups: [
+        {
+          name: "American Standard Aqualyn Self-Rimming/Undermount Bathroom Sink (White)",
+          style: ["modern", "minimal"],
+          finish: "White",
+          price: 99,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/American-Standard-Aqualyn-Self-Rimming-Drop-in-Bathroom-Sink-in-White-0476028020/100069556",
+          image:
+            "https://images.thdstatic.com/productImages/1b1b1b1b-1b1b-1b1b-1b1b-1b1b1b1b1b1b/svn/white-american-standard-drop-in-bathroom-sinks-0476028020-64_1000.jpg",
+          type: "undermount_oval",
+          priceRange: [99, 99],
+          note: "Budget undermount alternative.",
+          vendor: "American Standard",
+          unitPrice: 99,
+          mountType: "undermount",
+          canonicalKey: "american-standard-aqualyn-0476028020",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
+        },
+        {
+          name: "KRAUS Elavo Undermount Vitreous China Bathroom Sink (White)",
+          style: ["modern", "minimal"],
+          finish: "White",
+          price: 135,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/KRAUS-Elavo-Small-Round-Ceramic-Undermount-Bathroom-Sink-in-White-with-Overflow-KCU-241/304392321",
+          image:
+            "https://images.thdstatic.com/productImages/2a2a2a2a-2a2a-2a2a-2a2a-2a2a2a2a2a2a/svn/white-kraus-undermount-bathroom-sinks-kcu-241-64_1000.jpg",
+          type: "undermount_round",
+          priceRange: [135, 135],
+          note: "Round-bowl alternative — coordinates with round-mosaic shower floor.",
+          vendor: "KRAUS",
+          unitPrice: 135,
+          mountType: "undermount",
+          canonicalKey: "kraus-elavo-kcu-241",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
+        },
+      ],
+      constraints: [
+        "Undermount only — no drop-in or vessel sinks in default Modern Balanced path.",
+        "White vitreous china only.",
+        "Single-hole faucet deck cutout to match faucet primary.",
+        "Sink width must fit inside vanity cutout (≤ vanity width − 4\").",
+      ],
+      priceRange: [99, 135],
+      customerText:
+        "An undermount white sink that sits flush with the vanity top — clean lines, easy upkeep.",
+    } satisfies Bin,
+
+    showerSystem: {
+      sourcing: "ready",
+      intent:
+        "Matte black wall-mount tub/shower trim set — handle, spout, showerhead. Reads as one coordinated set with the faucet family.",
+      primary: {
+        name: "Delta Trinsic 1-Handle Wall-Mount Tub and Shower Trim Kit (Matte Black, Valve Not Included)",
+        primary: true,
+        style: ["modern", "minimal"],
+        finish: "Matte Black",
+        price: 653,
+        retailer: "Home Depot",
+        link: "https://www.homedepot.com/p/Delta-Trinsic-1-Handle-Wall-Mount-Tub-and-Shower-Trim-Kit-in-Matte-Black-Valve-Not-Included-T17T259-BL/308218878",
+        image:
+          "https://images.thdstatic.com/productImages/3a3a3a3a-3a3a-3a3a-3a3a-3a3a3a3a3a3a/svn/matte-black-delta-shower-faucets-t17t259-bl-64_1000.jpg",
+        type: "tub_shower_trim_kit",
+        priceRange: [653, 653],
+        vendor: "Delta",
+        unitPrice: 653,
+        canonicalKey: "delta-trinsic-t17t259-bl",
+        isCuratedOnly: true,
+        pricingSource: "retailer",
+      },
+      backups: [
+        {
+          name: "Moen Doux 1-Handle Posi-Temp Tub and Shower Faucet Trim Kit (Matte Black, Valve Not Included)",
+          style: ["modern", "minimal"],
+          finish: "Matte Black",
+          price: 245,
+          retailer: "Home Depot",
+          link: "https://www.homedepot.com/p/MOEN-Doux-1-Handle-Posi-Temp-Tub-and-Shower-Faucet-Trim-Kit-in-Matte-Black-Valve-Not-Included-T2473BL/305800566",
+          image:
+            "https://images.thdstatic.com/productImages/4a4a4a4a-4a4a-4a4a-4a4a-4a4a4a4a4a4a/svn/matte-black-moen-shower-faucets-t2473bl-64_1000.jpg",
+          type: "tub_shower_trim_kit",
+          priceRange: [245, 245],
+          note: "Coordinates with Moen Doux faucet alternative.",
+          vendor: "Moen",
+          unitPrice: 245,
+          canonicalKey: "moen-doux-t2473bl",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
+        },
+        {
+          name: "Kohler Purist 1-Handle Tub and Shower Trim Kit (Matte Black, Valve Not Included)",
+          style: ["modern", "minimal"],
+          finish: "Matte Black",
+          price: 480,
+          retailer: "Ferguson",
+          link: "https://www.fergusonhome.com/product/kohler-k-tlsht14422-4/2010505.html",
+          image:
+            "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-tlsht14422-4-2010505.jpg",
+          type: "tub_shower_trim_kit",
+          priceRange: [480, 480],
+          note: "Higher-end Kohler alternative; same matte-black family.",
+          vendor: "Kohler",
+          unitPrice: 480,
+          canonicalKey: "kohler-purist-tlsht14422-4",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
+        },
+      ],
+      constraints: [
+        "Wall-mount only — no smart/digital shower systems.",
+        "Finish must match faucet bin family (matte black default).",
+        "Trim kit only — rough-in valve body is contractor scope.",
+        "Single-handle preferred for visual coherence with faucet.",
+      ],
+      priceRange: [245, 653],
+      customerText:
+        "A matte-black trim set — one handle, spout, and showerhead — that quietly matches the rest of the room's hardware.",
+    } satisfies Bin,
+
+    accentTile: {
+      sourcing: "ready",
+      intent:
+        "Small accent tile feature — niche back, vanity backsplash, or shower band — in the same warm-neutral family as walls and floor.",
+      primary: {
+        name: 'Bedrosians Cloé Zellige-Look Ceramic 4"×4" (Off-White, Matte)',
+        primary: true,
+        style: ["modern", "minimal"],
+        priceRange: [180, 320],
+        vendor: "BOBOX Curated",
+        estimatedProjectPrice: 240,
+        canonicalKey: "modern-balanced-accent-tile-zellige-4x4",
+        isCuratedOnly: true,
+        pricingSource: "project-allowance",
+        pricingNote:
+          "Project allowance covers ~12–18 SF accent area (niche back + vanity backsplash band).",
+      },
+      backups: [
+        {
+          name: 'Marble Hex Mosaic 2" (Carrara, Honed)',
+          style: ["modern", "minimal"],
+          priceRange: [200, 360],
+          note: "Hex marble accent — pairs with marble-look wall tile.",
+          vendor: "BOBOX Curated",
+          estimatedProjectPrice: 280,
+          canonicalKey: "modern-balanced-accent-tile-marble-hex-2",
+          isCuratedOnly: true,
+          pricingSource: "project-allowance",
+          pricingNote:
+            "Project allowance covers ~12–18 SF accent area; refresh when SKU is finalized.",
+        },
+        {
+          name: '1"×4" Stacked Matte Porcelain (Warm Grey)',
+          style: ["modern", "minimal"],
+          priceRange: [150, 280],
+          note: "Linear stacked accent — pairs with warm-grey floor.",
+          vendor: "BOBOX Curated",
+          estimatedProjectPrice: 200,
+          canonicalKey: "modern-balanced-accent-tile-stacked-1x4",
+          isCuratedOnly: true,
+          pricingSource: "estimated",
+          pricingNote:
+            "TODO: confirm SKU and per-SF retailer price; allowance assumes ~12–18 SF accent area.",
+        },
+      ],
+      constraints: [
+        "Must coordinate tonally with shower wall + floor tile (one stone family).",
+        "Matte / honed finish only — no glossy accent.",
+        "Accent area capped at vanity backsplash + niche back (≤ ~18 SF) in default scope.",
+        "No bold patterned tile — accent stays in the warm-neutral family.",
+      ],
+      priceRange: [150, 360],
+      customerText:
+        "A small accent moment — niche back or vanity backsplash — in the same warm palette as the rest of the tile.",
+    } satisfies Bin,
+
     accessories: {
       sourcing: "ready",
       intent:
