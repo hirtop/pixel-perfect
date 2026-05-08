@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { ArrowRight } from "lucide-react";
 import type { SavedProject } from "@/hooks/useUserProjects";
+import ResumePlanTooltip from "@/components/ResumePlanTooltip";
 
 interface ResumePlanBannerProps {
   project: SavedProject;
@@ -45,7 +46,15 @@ export default function ResumePlanBanner({ project, onResume, loading }: ResumeP
             Pick up exactly where you left off — your latest package, selections, and notes are ready.
           </p>
           {meta && (
-            <p className="text-xs text-muted-foreground mt-2 truncate">{meta}</p>
+            <p className="text-xs text-muted-foreground mt-2 truncate flex items-center gap-1.5">
+              <span className="truncate">{meta}</span>
+              <ResumePlanTooltip project={project} />
+            </p>
+          )}
+          {!meta && (
+            <p className="text-xs text-muted-foreground mt-2 flex items-center gap-1.5">
+              <ResumePlanTooltip project={project} />
+            </p>
           )}
         </div>
         <div className="flex-shrink-0">
