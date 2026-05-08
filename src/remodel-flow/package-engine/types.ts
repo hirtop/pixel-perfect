@@ -174,12 +174,25 @@ export interface Package {
   slots: PackageSlot[];
 }
 
-/** Result of resolving a slot — what the UI should actually render. */
+/**
+ * Result of resolving a slot — what the UI should actually render.
+ *
+ * State matrix:
+ *  - happy path (usable primary):       isFallback=false, isUnresolved=false
+ *  - fell back to usable alternative:   isFallback=true,  isUnresolved=false
+ *  - primary + all alternatives unusable: isFallback=true, isUnresolved=true
+ *
+ * UI MUST treat `isUnresolved=true` as "no renderable product"; do not
+ * present `product` as a normal selection in that state.
+ */
 export interface ResolvedSlot {
   categoryId: BinKey;
   product: Product;
-  /** True when `product` was substituted via fallbackProductId chain. */
+  /** True when `product` was substituted via fallbackProductId chain OR
+   *  when the primary is unusable and no alternative could substitute. */
   isFallback: boolean;
+  /** True when no usable product (primary or alternative) was found. */
+  isUnresolved: boolean;
   /** Ordered alternatives the user can swap to. */
   alternatives: Product[];
 }
