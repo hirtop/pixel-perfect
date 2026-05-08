@@ -54,12 +54,13 @@ export function classifyEngineLegacyDelta(input: ClassifyInput): DeltaClassifica
 
   if (nameSame && vendorSame && priceSame) return "identical";
 
-  // Curated-only product with no legacy enrichment — vendor/name divergence
-  // is expected by design.
+  // Curated-only product with no legacy enrichment — by design, the
+  // engine product is intentionally a different vendor / product-family
+  // than the legacy default. Price divergence is also expected because
+  // the two products are not comparable. This branch does NOT require
+  // a confirmed pricing source — pricing source is tracked separately
+  // by the diagnostic header counts (confirmed/estimated/pending).
   if (e.isCuratedOnly && (e.enrichedFromLegacyId == null)) {
-    if (!priceSame && !CONFIRMED_SOURCES.has(String(e.pricingSource))) {
-      return "unexplained";
-    }
     return "curated-only-vendor-mismatch";
   }
 

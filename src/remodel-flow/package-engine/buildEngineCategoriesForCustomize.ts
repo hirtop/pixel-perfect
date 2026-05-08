@@ -65,6 +65,10 @@ export interface EngineCategory {
     isFallback: boolean;
     isUnresolved: boolean;
     enrichedFromLegacyId: string | null;
+    /** Phase 2.10 — authoritative curated-only flag from the source Product. */
+    isCuratedOnly: boolean;
+    /** Phase 2.10 — pricing source-of-truth from the source Product. */
+    pricingSource?: "retailer" | "project-allowance" | "estimated" | "pending";
   };
 }
 
@@ -246,6 +250,8 @@ export function buildEngineCategoriesForCustomize(
         isFallback: slot.isFallback,
         isUnresolved: slot.isUnresolved,
         enrichedFromLegacyId: primary.enrichedFromLegacyId,
+        isCuratedOnly: !!slot.product.isCuratedOnly,
+        pricingSource: slot.product.pricingSource,
       },
     });
   }

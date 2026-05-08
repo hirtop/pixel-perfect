@@ -22,7 +22,6 @@ import {
 } from "../buildEngineCategoriesForCustomize";
 import {
   diffEngineVsLegacy,
-  getEngineDataCompleteness,
   logCategoryDiffs,
   ENGINE_DIFF_ENABLED,
 } from "../engineDiagnostics";
@@ -83,6 +82,10 @@ const EngineDiffConsole = ({
 
   const engine = useMemo<EngineCategory[] | null>(() => {
     if (engineCategories !== undefined) return engineCategories;
+    // TODO(Phase 2.11): pass already-resolved engineCategories from the
+    // /customize page into this console to remove this double-resolution.
+    // Customize.tsx does not currently retain the resolved engine output
+    // because the curated drawer renders directly from MODERN_BALANCED.
     try {
       return buildEngineCategoriesForCustomize({
         urlId,
@@ -106,21 +109,19 @@ const EngineDiffConsole = ({
     const rows = opened.map((eng) => {
       const legacy = lookupLegacyForCategory(eng.name, legacyTier);
       const diff = diffEngineVsLegacy(legacy ?? undefined, eng);
+      // Loose prefix joins (suffixed " (loose)") are intentionally
+      // audit-flagged by adaptEngineProductToLegacy and must NOT be
+      // treated as authoritative legacy enrichment for classification.
+      const enrichedId = eng._engine.enrichedFromLegacyId;
+      const enrichedAuthoritative =
+        enrichedId != null && !enrichedId.endsWith("(loose)");
       const engineProduct = {
         name: eng.selected,
         vendor: eng.vendor,
         price: eng.price,
-        isCuratedOnly: eng._engine.enrichedFromLegacyId == null,
-        enrichedFromLegacyId: eng._engine.enrichedFromLegacyId,
-        // pricingSource is on the underlying Product but not exposed on
-        // EngineCategory directly; re-derive via a heuristic: missing
-        // legacy enrichment + curated-only is the typical Option-A case.
-        pricingSource: undefined as
-          | "retailer"
-          | "project-allowance"
-          | "estimated"
-          | "pending"
-          | undefined,
+        isCuratedOnly: eng._engine.isCuratedOnly,
+        enrichedFromLegacyId: enrichedAuthoritative ? enrichedId : null,
+        pricingSource: eng._engine.pricingSource,
       };
       const classification: DeltaClassification = classifyEngineLegacyDelta({
         engine: engineProduct,
@@ -131,15 +132,19 @@ const EngineDiffConsole = ({
       return { eng, legacy, diff, classification };
     });
 
-    const completeness = getEngineDataCompleteness([]); // placeholder counts
+    // Phase 2.10 — counts derived from the EngineCategory rows we just
+    // built, not from a separate (empty) Product[] sample.
+    const pricingSources = opened.map((e) => e._engine.pricingSource);
     const counts = {
       totalBins: opened.length + deferred.length + empty.length,
       openedBins: opened.length,
       deferredBins: deferred.length,
       emptyBins: empty.length,
-      confirmedPricingCount: completeness.confirmedPricingCount,
-      estimatedPricingCount: completeness.estimatedPricingCount,
-      pendingPricingCount: completeness.pendingPricingCount,
+      confirmedPricingCount: pricingSources.filter(
+        (s) => s === "retailer" || s === "project-allowance",
+      ).length,
+      estimatedPricingCount: pricingSources.filter((s) => s === "estimated").length,
+      pendingPricingCount: pricingSources.filter((s) => s === "pending").length,
       unexplainedDeltaCount: rows.filter((r) => r.classification === "unexplained")
         .length,
     };

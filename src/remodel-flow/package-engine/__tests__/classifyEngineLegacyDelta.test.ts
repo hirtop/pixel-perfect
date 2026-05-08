@@ -81,7 +81,7 @@ describe("Phase 2.10 — classifyEngineLegacyDelta", () => {
     ).toBe("unexplained");
   });
 
-  it("unexplained: curated-only with price diff but no confirmed source", () => {
+  it("curated-only-vendor-mismatch even when pricing source is pending (price tracked separately)", () => {
     expect(
       classifyEngineLegacyDelta({
         engine: {
@@ -94,6 +94,6 @@ describe("Phase 2.10 — classifyEngineLegacyDelta", () => {
         },
         legacy: { name: "Z", vendor: "W", price: 200 },
       }),
-    ).toBe("unexplained");
+    ).toBe("curated-only-vendor-mismatch");
   });
 });
