@@ -152,6 +152,13 @@ const EngineDiffConsole = ({
     logCategoryDiffs(summary.rows.map((r) => r.diff));
   }, [summary]);
 
+  // Render gate — placed AFTER hooks so the hook order is stable
+  // regardless of flag combination. The flags are build-time constants
+  // so this branch is always taken or never taken in a given build.
+  if (!import.meta.env.DEV) return null;
+  if (!ENGINE_DRAWER_ENABLED) return null;
+  if (!ENGINE_DIFF_ENABLED) return null;
+
   return (
     <section
       data-testid="engine-diff-console"
