@@ -4,6 +4,7 @@ import type { SavedProject } from "@/hooks/useUserProjects";
 import { formatRecency } from "@/components/RecencyHint";
 import { isDefaultLikePlanName } from "@/components/PlanNameEditor";
 import { buildMetadataLine } from "@/components/ResumePlanBanner";
+import { derivePlanStatus, type PlanStatus } from "@/lib/derivePlanStatus";
 
 const NAME_TRUNCATE_AT = 32;
 
