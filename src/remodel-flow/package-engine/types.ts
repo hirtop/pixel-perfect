@@ -184,6 +184,23 @@ export interface Product {
    * curated-only products as a failure.
    */
   isCuratedOnly?: boolean;
+
+  /* ─── Phase 2.6 dev-only diagnostics ─────────────────────────────
+   * Records where each intrinsic field came from. Internal/dev only —
+   * never rendered to customers.
+   */
+  _engineFieldSources?: EngineFieldSources;
+}
+
+/** Phase 2.6 — per-field origin tracking for engine Products. */
+export interface EngineFieldSources {
+  vendor?: "explicit" | "regex" | "legacy" | "missing";
+  widthInches?: "explicit" | "regex" | "missing";
+  mountType?: "explicit" | "regex" | "missing";
+  faucetHoles?: "explicit" | "regex" | "missing";
+  unitPrice?: "explicit" | "derived" | "missing";
+  estimatedProjectPrice?: "explicit" | "derived" | "missing";
+  canonicalKey?: "explicit" | "derived" | "missing";
 }
 
 /** A single category slot inside a Package (e.g. "vanity"). */
