@@ -822,6 +822,7 @@ export const MODERN_BALANCED = {
         unitPrice: 549,
         canonicalKey: "kohler-santa-rosa-k-3810-0",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -839,6 +840,7 @@ export const MODERN_BALANCED = {
           unitPrice: 348,
           canonicalKey: "american-standard-cadet-3-215aa104-020",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Swiss Madison St. Tropez One-Piece Elongated Skirted Toilet (White)",
@@ -851,8 +853,15 @@ export const MODERN_BALANCED = {
           type: "skirted_one_piece",
           priceRange: [400, 600],
           note: "Modern skirted backup.",
+          vendor: "Swiss Madison",
+          unitPrice: 469,
+          canonicalKey: "swiss-madison-st-tropez-sm-1t254",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
+          // TODO: confirm retailer price / project allowance — link points to a
+          // category landing page, not a specific SKU.
           name: "Bidet-Ready Modern One-Piece Elongated Toilet (White)",
           style: ["modern", "minimal"],
           price: 599,
@@ -863,6 +872,12 @@ export const MODERN_BALANCED = {
           type: "bidet_ready",
           priceRange: [500, 700],
           note: "Upgrade backup — bidet-ready rough-in.",
+          vendor: "BOBOX Curated",
+          unitPrice: 599,
+          canonicalKey: "modern-balanced-toilet-bidet-ready-placeholder",
+          isCuratedOnly: true,
+          pricingSource: "pending",
+          pricingNote: "TODO: confirm retailer price / project allowance — category link only.",
         },
       ],
       constraints: [
