@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useRef, useState } from "react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES, TIER_BINS, getCategory, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
@@ -11,8 +11,19 @@ import {
 } from "../packages/modern-balanced";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { getPackage } from "../package-engine/registry";
+import { ENGINE_DRAWER_ENABLED } from "../package-engine/engineDrawerFlag";
+import { ENGINE_DIFF_ENABLED } from "../package-engine/engineDiagnostics";
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, Check, Star } from "lucide-react";
+
+// Dev-only EngineDiffConsole. Lazy-imported behind a build-time gate so
+// production builds tree-shake the dynamic chunk entirely. The flags
+// are statically false in production (engineDrawerFlag computes from
+// import.meta.env.DEV), letting Rollup drop the import.
+const LazyEngineDiffConsole =
+  ENGINE_DRAWER_ENABLED && ENGINE_DIFF_ENABLED
+    ? lazy(() => import("../package-engine/dev/EngineDiffConsole"))
+    : null;
 
 // Curated Modern Balanced bin order + mapping to existing catalog categories.
 // `categoryId` = real catalog category (drives interactive cards + pricing).
