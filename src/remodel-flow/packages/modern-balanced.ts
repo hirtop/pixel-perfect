@@ -754,6 +754,7 @@ export const MODERN_BALANCED = {
         widthInches: 40,
         canonicalKey: "dreamline-lumen-shdr-5340720",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -771,6 +772,7 @@ export const MODERN_BALANCED = {
           widthInches: 34,
           canonicalKey: "dreamline-linea-shdr-3234721",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: 'DreamLine French Linea 34" W × 72" H Patterned-Glass Shower Screen',
@@ -782,6 +784,12 @@ export const MODERN_BALANCED = {
           type: "privacy_panel",
           priceRange: [690, 690],
           note: "Patterned glass option — only when added privacy is desired.",
+          vendor: "DreamLine",
+          unitPrice: 690,
+          widthInches: 34,
+          canonicalKey: "dreamline-french-linea-shdr-3234721-89",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
