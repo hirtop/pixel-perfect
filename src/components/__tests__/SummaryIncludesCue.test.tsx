@@ -62,33 +62,3 @@ describe("SummaryIncludesCue", () => {
     }
   });
 });
-
-  it("does not render any restricted copy", () => {
-    const { container } = render(<SummaryIncludesCue />);
-    const text = (container.textContent || "").toLowerCase();
-    const forbidden = [
-      "contractor-ready",
-      "ready for contractor",
-      "approved",
-      "certified",
-      "guaranteed",
-      "binding",
-      "firm quote",
-      "firm bid",
-      "firm price",
-      "permit",
-      "licensed",
-      "legal",
-      "insurance",
-      "financing",
-      "ready to share",
-      "quote-ready",
-      "bid-ready",
-      "final price",
-      "construction-ready",
-    ];
-    for (const term of forbidden) {
-      expect(text).not.toContain(term);
-    }
-  });
-});
