@@ -42,7 +42,7 @@ describe("Phase 2 parity — modern + balanced engine vs legacy", () => {
     const engineCategoryNames = new Set(engine!.map((c) => c.name));
     // Every engine category must be a recognized legacy category.
     for (const name of engineCategoryNames) {
-      expect(legacyCategoryNames.has(name as string) || (CUSTOMIZABLE_CATEGORIES as readonly string[]).includes(name as string)).toBe(true);
+      expect(legacyCategoryNames.has(name as never) || (CUSTOMIZABLE_CATEGORIES as readonly string[]).includes(name as string)).toBe(true);
     }
   });
 
