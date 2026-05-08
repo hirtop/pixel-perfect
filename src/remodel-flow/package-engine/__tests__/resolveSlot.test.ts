@@ -5,12 +5,13 @@ import { MODERN_BALANCED } from "@/remodel-flow/packages/modern-balanced";
 import type { Bin } from "@/remodel-flow/packages/modern-balanced";
 
 describe("Package Engine — resolveSlot", () => {
-  it("resolves the Modern Balanced vanity slot to a primary product", () => {
+  it("resolves the Modern Balanced vanity slot to a primary product (happy path)", () => {
     const bin = MODERN_BALANCED.bins.vanity as Bin;
     const slot = resolveSlot("modern-balanced", "vanity", bin);
     expect(slot.categoryId).toBe("vanity");
     expect(slot.product.name).toContain("Floating Oak Vanity");
     expect(slot.isFallback).toBe(false);
+    expect(slot.isUnresolved).toBe(false);
     expect(slot.alternatives.length).toBeGreaterThan(0);
     expect(slot.product.fallbackProductId).toBeDefined();
   });
