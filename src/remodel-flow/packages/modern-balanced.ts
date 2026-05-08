@@ -358,9 +358,20 @@ export const MODERN_BALANCED = {
         primary: true,
         style: ["modern", "minimal"],
         priceRange: [260, 520],
+        vendor: "BOBOX Curated",
+        unitPrice: 390,
+        canonicalKey: "modern-balanced-lighting-sconce-pair-flush",
+        isCuratedOnly: true,
       },
       backups: [
-        { name: "Linear Vanity Bar (matte black) + Flush LED", priceRange: [260, 520] },
+        {
+          name: "Linear Vanity Bar (matte black) + Flush LED",
+          priceRange: [260, 520],
+          vendor: "BOBOX Curated",
+          unitPrice: 390,
+          canonicalKey: "modern-balanced-lighting-linear-bar-flush",
+          isCuratedOnly: true,
+        },
         { name: "Single Overhead Pendant (matte black) + Flush LED", priceRange: [260, 520] },
         {
           name: "Flush LED only",
