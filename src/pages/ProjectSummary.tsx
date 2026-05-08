@@ -17,6 +17,7 @@ import { PlanConfidenceFooter } from "@/components/PlanConfidenceFooter";
 import PlanNameEditor from "@/components/PlanNameEditor";
 import RecencyHint from "@/components/RecencyHint";
 import PlanStatusBadge from "@/components/PlanStatusBadge";
+import SummaryIncludesCue from "@/components/SummaryIncludesCue";
 import { toast } from "sonner";
 
 
@@ -355,6 +356,8 @@ const ProjectSummary = () => {
               ))}
             </ul>
           </section>
+
+          <SummaryIncludesCue className="mb-8" />
 
           <section className="mb-12 contractor-section">
             <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 space-y-5">
