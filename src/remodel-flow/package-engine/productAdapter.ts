@@ -4,7 +4,8 @@
  */
 
 import { normalizeBinKey, normalizeTier } from "./normalize";
-import type { BinKey, Tier } from "./types";
+import type { BinKey, Product, ResolvedSlot, Tier } from "./types";
+import { tieredCatalog, type ProductTier, type TieredProduct } from "@/data/tiered-catalog";
 
 export interface NormalizedProduct {
   id: string;
