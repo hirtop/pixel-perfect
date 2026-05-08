@@ -85,15 +85,15 @@ const EngineDiffConsole = ({
   selectedVanityId,
   engineCategories,
   legacyTier = "Balanced",
+  shadowDiffReport,
+  shadowActive,
 }: EngineDiffConsoleProps) => {
   const [open, setOpen] = useState(false);
 
   const engine = useMemo<EngineCategory[] | null>(() => {
+    // Phase 2.11 — prefer shadow-resolved engine categories from
+    // Customize.tsx; falls back to internal compute only if not supplied.
     if (engineCategories !== undefined) return engineCategories;
-    // TODO(Phase 2.11): pass already-resolved engineCategories from the
-    // /customize page into this console to remove this double-resolution.
-    // Customize.tsx does not currently retain the resolved engine output
-    // because the curated drawer renders directly from MODERN_BALANCED.
     try {
       return buildEngineCategoriesForCustomize({
         urlId,
