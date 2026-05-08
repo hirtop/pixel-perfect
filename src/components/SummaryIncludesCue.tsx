@@ -29,7 +29,7 @@ export default function SummaryIncludesCue({ className }: SummaryIncludesCueProp
         <li>Project notes and dimensions, when provided</li>
       </ul>
       <p className="text-xs text-muted-foreground mt-3">
-        Review everything before sharing or making decisions.
+        Review everything before sharing this summary.
       </p>
     </section>
   );
