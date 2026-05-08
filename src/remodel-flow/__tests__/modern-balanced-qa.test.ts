@@ -14,8 +14,8 @@ describe("Modern Balanced QA", () => {
     expect(getPackageFor("modern", "balanced").id).toBe("modern-balanced");
   });
 
-  it("exposes exactly 11 curated bins", () => {
-    expect(Object.keys(MODERN_BALANCED.bins)).toHaveLength(11);
+  it("exposes exactly 14 curated bins (Phase 2.8: +sink, +showerSystem, +accentTile)", () => {
+    expect(Object.keys(MODERN_BALANCED.bins)).toHaveLength(14);
   });
 
   it("faucet bin uses Trinsic / Doux / Trinsic Champagne — no legacy products", () => {
