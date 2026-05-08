@@ -304,6 +304,10 @@ export const MODERN_BALANCED = {
           "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-31364-bnl-8211481.jpg",
         type: "thin_frame_rectangular",
         priceRange: [339, 339],
+        vendor: "Kohler",
+        unitPrice: 339,
+        canonicalKey: "kohler-essential-k-31364",
+        isCuratedOnly: true,
       },
       backups: [
         {
@@ -316,6 +320,10 @@ export const MODERN_BALANCED = {
             "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/kohler/kohler-k-34969-2mb-2351648.jpg",
           type: "warm_frame_rectangular",
           priceRange: [320, 320],
+          vendor: "Kohler",
+          unitPrice: 320,
+          canonicalKey: "kohler-castia-k-34969",
+          isCuratedOnly: true,
         },
         {
           name: "Signature Hardware Curie LED Mirror",
