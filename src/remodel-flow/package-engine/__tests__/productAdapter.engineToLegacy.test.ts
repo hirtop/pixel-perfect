@@ -16,6 +16,7 @@ const baseProduct: Product = {
   styleTags: [],
   bin: "mid",
   availability: "active",
+  canonicalKey: "some-vanity",
 };
 
 describe("productAdapter (engine→legacy)", () => {
