@@ -545,6 +545,7 @@ export const MODERN_BALANCED = {
         estimatedProjectPrice: 720,
         canonicalKey: "daltile-dignitary-dr1224p",
         isCuratedOnly: true,
+        pricingSource: "project-allowance",
       },
       backups: [
         {
@@ -558,8 +559,10 @@ export const MODERN_BALANCED = {
           priceRange: [10, 10],
           vendor: "Daltile",
           unitPrice: 10,
+          estimatedProjectPrice: 720,
           canonicalKey: "daltile-florentine-fl1224fp",
           isCuratedOnly: true,
+          pricingSource: "project-allowance",
         },
         {
           name: 'Daltile Slate 12"×12" Tile',
@@ -572,6 +575,12 @@ export const MODERN_BALANCED = {
           type: "darker_stone",
           priceRange: [9.8, 9.8],
           note: "Darker stone option — only if shower wall tile leans warm grey/stone.",
+          vendor: "Daltile",
+          unitPrice: 9.8,
+          estimatedProjectPrice: 700,
+          canonicalKey: "daltile-slate-s1212p1s",
+          isCuratedOnly: true,
+          pricingSource: "project-allowance",
         },
       ],
       constraints: [
