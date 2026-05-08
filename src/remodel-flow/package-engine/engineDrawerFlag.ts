@@ -19,6 +19,18 @@ export const ENGINE_DRAWER_ENABLED: boolean =
   import.meta.env.DEV && import.meta.env.VITE_BOBOX_ENGINE_DRAWER === "true";
 
 /**
+ * Belt-and-suspenders guard: throws if the engine drawer path is
+ * reached while the flag is disabled. Callers should catch and fall
+ * back to legacy. The optional `enabled` parameter makes this
+ * testable without depending on Vite's static replacement.
+ */
+export function guardEngineDrawerEnabled(enabled = ENGINE_DRAWER_ENABLED): void {
+  if (!enabled) {
+    throw new Error("[engine-drawer] attempted to run while disabled");
+  }
+}
+
+/**
  * Test-only helper. Mirrors the production gate's semantics so tests
  * can verify behavior without depending on Vite's static replacement.
  * NOT used by production code paths.
