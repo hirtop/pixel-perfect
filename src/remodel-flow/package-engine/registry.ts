@@ -79,6 +79,52 @@ export function listPackages(opts: { status?: PackageStatus } = {}): PackageMani
   return [...PACKAGE_MANIFEST];
 }
 
+/* ─── Customer-ready guards ─────────────────────────────────────────
+ * Placeholder-safety helpers. The `status` field is the load-bearing
+ * discriminator: only `curated` packages are safe for customer-facing
+ * UI. `partial` and `placeholder` are internal-only.
+ *
+ * Future render code MUST gate on these helpers — never on slot
+ * counts or developer convention.
+ */
+
+/** True only for fully-sourced packages safe to render to customers. */
+export function isCustomerReadyPackage(
+  pkg: Pick<PackageManifestEntry, "status"> | undefined | null,
+): boolean {
+  return !!pkg && pkg.status === "curated";
+}
+
+/** True for placeholder packages that must not leak into customer UI. */
+export function isPlaceholderPackage(
+  pkg: Pick<PackageManifestEntry, "status"> | undefined | null,
+): boolean {
+  return !!pkg && pkg.status === "placeholder";
+}
+
+/**
+ * Throws when given a package that is NOT customer-ready. Use at the
+ * boundary of any code path that is about to render a finished package
+ * to a customer.
+ */
+export function assertCustomerReadyPackage(
+  pkg: PackageManifestEntry | undefined | null,
+): asserts pkg is PackageManifestEntry {
+  if (!pkg) {
+    throw new Error("assertCustomerReadyPackage: package is missing");
+  }
+  if (pkg.status !== "curated") {
+    throw new Error(
+      `assertCustomerReadyPackage: package "${pkg.id}" has status "${pkg.status}", not "curated"`,
+    );
+  }
+}
+
+/** Listing helper for customer-facing surfaces — placeholders excluded. */
+export function listCustomerReadyPackages(): PackageManifestEntry[] {
+  return PACKAGE_MANIFEST.filter(isCustomerReadyPackage);
+}
+
 /* ─── Legacy route aliases ──────────────────────────────────────────
  * These are tier-only ids that the existing /package/:id and
  * /customize/:id routes accept. They are NOT packages — they fall back

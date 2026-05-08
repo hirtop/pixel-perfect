@@ -15,6 +15,10 @@ import { MODERN_BALANCED } from "@/remodel-flow/packages/modern-balanced";
 import type { BinKey } from "@/remodel-flow/package-engine/types";
 
 export default function PackageDebugView() {
+  // Defense-in-depth: there is intentionally no route and no nav link
+  // to this view, but we also gate on the build-mode env so a stray
+  // import in production code can never render it.
+  if (import.meta.env.PROD) return null;
   if (!import.meta.env.DEV) return null;
 
   const modernBalancedSlots = Object.entries(MODERN_BALANCED.bins).map(

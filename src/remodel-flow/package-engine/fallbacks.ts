@@ -16,9 +16,10 @@ export const GENERIC_IMAGE_PLACEHOLDER =
   );
 
 /**
- * Optional per-category default image. Currently empty — categories
- * fall through directly to the generic placeholder. Wire real assets
- * here in Phase 2 without touching call sites.
+ * Optional per-category default image. Intentionally empty for Phase 1 —
+ * categories fall through directly to the generic placeholder. Phase 2
+ * can populate category-specific fallback assets here without touching
+ * any call sites (resolveImage already reads from this map).
  */
 export const CATEGORY_DEFAULT_IMAGES: Partial<Record<BinKey, string>> = {};
 
