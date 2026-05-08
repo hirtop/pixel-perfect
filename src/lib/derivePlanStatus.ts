@@ -22,6 +22,10 @@ const RECENT_WINDOW_MS = 14 * DAY_MS;
 const STALE_CUTOFF_MS = 60 * DAY_MS;
 
 function countExplicitSelections(p: PlanStatusInput): number {
+  // Canonical signal: customizations.categories is the in-flow record of
+  // user-confirmed per-category picks. Transitional fallback:
+  // workflow_progress.completed_steps for legacy/SavedProject rows that
+  // don't surface customizations through the picker SELECT.
   const customs = p.customizations?.categories;
   if (Array.isArray(customs)) return customs.length;
   const steps = p.workflow_progress?.completed_steps;
@@ -30,6 +34,9 @@ function countExplicitSelections(p: PlanStatusInput): number {
 }
 
 function isPackageLocked(p: PlanStatusInput): boolean {
+  // A package is "locked" once the user has chosen a tier (preferred) or a
+  // named package on the project. We treat either non-empty string as locked
+  // and never consult package logic — purely a presentational read.
   const pkg = p.selected_package;
   if (!pkg) return false;
   return Boolean((pkg.tier && pkg.tier.length > 0) || (pkg.name && pkg.name.length > 0));
