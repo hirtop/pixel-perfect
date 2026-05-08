@@ -685,6 +685,7 @@ export const MODERN_BALANCED = {
         unitPrice: 559,
         canonicalKey: "delta-trinsic-17t-t17t059",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -701,6 +702,7 @@ export const MODERN_BALANCED = {
           unitPrice: 293,
           canonicalKey: "kohler-purist-k-t14491-4",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Moen Engage Shower Head + Handheld Combo",
@@ -712,6 +714,11 @@ export const MODERN_BALANCED = {
             "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/moen/26009.jpg",
           type: "combo_system",
           priceRange: [280, 280],
+          vendor: "Moen",
+          unitPrice: 280,
+          canonicalKey: "moen-engage-1439827",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
