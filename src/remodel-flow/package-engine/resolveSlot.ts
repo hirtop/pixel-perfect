@@ -28,9 +28,53 @@ function inferBin(price: number | undefined): ProductBin {
   return "luxury";
 }
 
-/** Build a stable id for synthesized products. */
-function synthesizeId(packageId: string, categoryId: BinKey, index: number): string {
-  return `${packageId}:${categoryId}:${index}`;
+/**
+ * Build a stable id for synthesized products.
+ *
+ * Stability contract:
+ *   Same BinProduct input → same Product.id across repeated calls,
+ *   reloads, and process boundaries. Phase 2 swap UI relies on these
+ *   ids as React keys and as primary keys in saved-selection state,
+ *   so they MUST be deterministic and resilient to display-name edits.
+ *
+ * Canonical key precedence:
+ *   1. retailer + sku-like tail extracted from `link`
+ *   2. URL slug from `link`
+ *   3. normalized product name slug
+ *   4. numeric index (last-resort suffix only)
+ */
+function slugify(input: string): string {
+  return input
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-")
+    .replace(/^-+|-+$/g, "")
+    .slice(0, 64);
+}
+
+function canonicalProductKey(bp: BinProduct, index: number): string {
+  const link = bp.link?.trim();
+  if (link) {
+    try {
+      const u = new URL(link);
+      // Prefer the last meaningful path segment (often a SKU or slug).
+      const segs = u.pathname.split("/").filter(Boolean);
+      const tail = segs[segs.length - 1];
+      const retailer = bp.retailer ? slugify(bp.retailer) : slugify(u.hostname);
+      if (tail) return `${retailer}-${slugify(tail)}`;
+      if (retailer) return retailer;
+    } catch {
+      // fall through to name-based slug
+    }
+  }
+  if (bp.name) {
+    const named = slugify(bp.name);
+    if (named) return named;
+  }
+  return `idx-${index}`;
+}
+
+function synthesizeId(packageId: string, categoryId: BinKey, key: string): string {
+  return `${packageId}:${categoryId}:${key}`;
 }
 
 /** Adapt a single BinProduct to the canonical Product shape. */
