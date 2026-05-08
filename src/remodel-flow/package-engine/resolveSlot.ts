@@ -151,7 +151,16 @@ function deriveMountType(
   return undefined;
 }
 
-/** Adapt a single BinProduct to the canonical Product shape. */
+/** Adapt a single BinProduct to the canonical Product shape.
+ *
+ * Phase 2.6 priority:
+ *   1. explicit field on BinProduct
+ *   2. fallback to regex/url derivation
+ *   3. undefined if neither exists
+ *
+ * Each intrinsic field's origin is recorded on `_engineFieldSources`
+ * for dev-only diagnostics.
+ */
 export function adaptBinProduct(
   packageId: string,
   categoryId: BinKey,
@@ -160,21 +169,95 @@ export function adaptBinProduct(
   sourcing: "ready" | "placeholder",
   binIntent?: string,
 ): Product {
-  const unitPrice =
-    typeof bp.price === "number" ? bp.price : bp.priceRange?.[0];
-  // For SF-priced materials (tile bins), `bp.priceRange[1]` often carries
-  // a project allowance (per the modern-balanced spec). We only treat the
-  // upper bound as an estimated project price for tile bins.
+  const sources: NonNullable<Product["_engineFieldSources"]> = {};
+
+  // unitPrice
+  let unitPrice: number | undefined;
+  if (typeof bp.unitPrice === "number") {
+    unitPrice = bp.unitPrice;
+    sources.unitPrice = "explicit";
+  } else if (typeof bp.price === "number") {
+    unitPrice = bp.price;
+    sources.unitPrice = "derived";
+  } else if (bp.priceRange?.[0] != null) {
+    unitPrice = bp.priceRange[0];
+    sources.unitPrice = "derived";
+  } else {
+    sources.unitPrice = "missing";
+  }
+
+  // estimatedProjectPrice — explicit wins; otherwise tile-bin upper bound
   const isTileBin =
     categoryId === "showerWallTile" ||
     categoryId === "showerFloorTile" ||
     categoryId === "mainFloorTile" ||
     categoryId === "accentTile";
-  const estimatedProjectPrice =
-    isTileBin && bp.priceRange && bp.priceRange[1] !== unitPrice
-      ? bp.priceRange[1]
-      : undefined;
-  const canonicalKey = canonicalProductKey(bp, index);
+  let estimatedProjectPrice: number | undefined;
+  if (typeof bp.estimatedProjectPrice === "number") {
+    estimatedProjectPrice = bp.estimatedProjectPrice;
+    sources.estimatedProjectPrice = "explicit";
+  } else if (isTileBin && bp.priceRange && bp.priceRange[1] !== unitPrice) {
+    estimatedProjectPrice = bp.priceRange[1];
+    sources.estimatedProjectPrice = "derived";
+  } else {
+    sources.estimatedProjectPrice = "missing";
+  }
+
+  // canonicalKey
+  let canonicalKey: string;
+  if (typeof bp.canonicalKey === "string" && bp.canonicalKey.trim()) {
+    canonicalKey = bp.canonicalKey;
+    sources.canonicalKey = "explicit";
+  } else {
+    canonicalKey = canonicalProductKey(bp, index);
+    sources.canonicalKey = "derived";
+  }
+
+  // vendor
+  let vendor: string | undefined;
+  if (typeof bp.vendor === "string" && bp.vendor.trim()) {
+    vendor = bp.vendor;
+    sources.vendor = "explicit";
+  } else {
+    vendor = deriveVendor(bp);
+    sources.vendor = vendor ? "regex" : "missing";
+  }
+
+  // widthInches
+  let widthInches: number | undefined;
+  if (typeof bp.widthInches === "number") {
+    widthInches = bp.widthInches;
+    sources.widthInches = "explicit";
+  } else {
+    widthInches = deriveWidthInches(bp);
+    sources.widthInches = widthInches != null ? "regex" : "missing";
+  }
+
+  // mountType
+  let mountType: Product["mountType"];
+  if (bp.mountType) {
+    mountType = bp.mountType;
+    sources.mountType = "explicit";
+  } else {
+    mountType = deriveMountType(categoryId, bp, binIntent);
+    sources.mountType = mountType ? "regex" : "missing";
+  }
+
+  // faucetHoles
+  let faucetHoles: Product["faucetHoles"];
+  if (bp.faucetHoles === 0 || bp.faucetHoles === 1 || bp.faucetHoles === 3) {
+    faucetHoles = bp.faucetHoles;
+    sources.faucetHoles = "explicit";
+  } else {
+    faucetHoles = deriveFaucetHoles(bp);
+    sources.faucetHoles = faucetHoles != null ? "regex" : "missing";
+  }
+
+  const isCuratedOnly =
+    typeof bp.isCuratedOnly === "boolean"
+      ? bp.isCuratedOnly
+      : packageId === "modern-balanced";
+
   return {
     id: synthesizeId(packageId, categoryId, canonicalKey),
     categoryId,
@@ -187,18 +270,15 @@ export function adaptBinProduct(
     productUrl: bp.link,
     retailerSource: mapRetailer(bp.retailer),
     availability: sourcing === "ready" ? "active" : "unknown",
-    // Phase 2.5 intrinsic fields
-    vendor: deriveVendor(bp),
-    widthInches: deriveWidthInches(bp),
-    mountType: deriveMountType(categoryId, bp, binIntent),
-    faucetHoles: deriveFaucetHoles(bp),
+    vendor,
+    widthInches,
+    mountType,
+    faucetHoles,
     unitPrice,
     estimatedProjectPrice,
     canonicalKey,
-    // Curated-only flag: every modern-balanced product currently has no
-    // tieredCatalog correspondent (different vendor mix). Marked by
-    // default for the curated package; the parity layer reads this.
-    isCuratedOnly: packageId === "modern-balanced",
+    isCuratedOnly,
+    _engineFieldSources: sources,
   };
 }
 
