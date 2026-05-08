@@ -192,6 +192,9 @@ const RemodelOptions = () => {
                       </div>
                       <p className="text-[11px] font-medium text-primary mb-2">{pkg.bestFor}</p>
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
+                      <div className="mt-2">
+                        <PackageRationaleCue tier={pkg.name as "Budget" | "Balanced" | "Premium"} />
+                      </div>
                     </div>
 
                     <div className="flex items-start gap-2 rounded-lg bg-primary/5 border border-primary/10 px-3 py-2.5">
