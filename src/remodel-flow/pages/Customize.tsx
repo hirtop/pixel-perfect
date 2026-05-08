@@ -1,4 +1,4 @@
-import { Suspense, lazy, useEffect, useRef, useState } from "react";
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES, TIER_BINS, getCategory, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
@@ -13,6 +13,9 @@ import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import { getPackage } from "../package-engine/registry";
 import { ENGINE_DRAWER_ENABLED } from "../package-engine/engineDrawerFlag";
 import { ENGINE_DIFF_ENABLED } from "../package-engine/engineDiagnostics";
+import { useEngineShadow } from "../package-engine/useEngineShadow";
+import { buildLegacyDrawerCategoriesFromCatalog } from "../package-engine/dev/buildLegacyDrawerCategoriesFromCatalog";
+import type { BinKey } from "../package-engine/types";
 import { cn } from "@/lib/utils";
 import { ArrowDown, ArrowUp, Check, Star } from "lucide-react";
 
