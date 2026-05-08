@@ -16,6 +16,7 @@ import { TIER_BASE_LABOR, SHIPPING_ESTIMATE } from "@/data/products";
 import { PlanConfidenceFooter } from "@/components/PlanConfidenceFooter";
 import PlanNameEditor from "@/components/PlanNameEditor";
 import RecencyHint from "@/components/RecencyHint";
+import PlanStatusBadge from "@/components/PlanStatusBadge";
 import { toast } from "sonner";
 
 
@@ -207,6 +208,7 @@ const ProjectSummary = () => {
                 </div>
               ))}
               <RecencyHint updatedAt={project.updated_at} className="pt-0.5" />
+              <PlanStatusBadge project={project} className="block" />
             </div>
 
             <div className="rounded-xl border border-border bg-card p-6 space-y-3">
