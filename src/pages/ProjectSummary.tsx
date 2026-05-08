@@ -359,6 +359,7 @@ const ProjectSummary = () => {
           </section>
 
           <SummaryIncludesCue className="mb-8" />
+          <SummaryExclusionsCue className="mb-8" />
 
           <section className="mb-12 contractor-section">
             <div className="rounded-2xl border border-primary/20 bg-primary/5 p-6 space-y-5">
