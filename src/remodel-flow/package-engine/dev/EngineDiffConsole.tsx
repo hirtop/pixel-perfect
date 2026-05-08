@@ -179,11 +179,24 @@ const EngineDiffConsole = ({
     >
       <Collapsible open={open} onOpenChange={setOpen}>
         <CollapsibleTrigger className="flex w-full items-center justify-between text-left font-mono text-[11px] uppercase tracking-wider text-foreground/80">
-          <span>[dev] Engine vs Legacy Diff</span>
+          <span>
+            [dev] Engine vs Legacy Diff
+            {shadowActive && (
+              <span
+                className="ml-2 rounded bg-emerald-500/15 px-1.5 py-0.5 text-[9px] text-emerald-700 dark:text-emerald-400"
+                data-testid="engine-shadow-indicator"
+              >
+                shadow-mode active
+              </span>
+            )}
+          </span>
           <span className="text-muted-foreground">
             opened {summary.counts.openedBins} · deferred{" "}
             {summary.counts.deferredBins} · empty {summary.counts.emptyBins} ·
-            unexplained {summary.counts.unexplainedDeltaCount}
+            unexplained{" "}
+            {shadowDiffReport
+              ? shadowDiffReport.unexplainedDeltaCount
+              : summary.counts.unexplainedDeltaCount}
           </span>
         </CollapsibleTrigger>
         <CollapsibleContent className="mt-3 space-y-4">
