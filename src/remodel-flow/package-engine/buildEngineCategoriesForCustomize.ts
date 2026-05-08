@@ -159,23 +159,57 @@ export function buildEngineCategoriesForCustomize(
   if (!tier) return null;
   const legacyTier = LEGACY_TIER_FROM_URL[String(opts.urlId).toLowerCase()] ?? "Balanced";
 
-  const out: EngineCategory[] = [];
+  // Resolve everything first so we can reference the selected vanity for
+  // the faucet-hole compatibility check.
+  type ResolvedEntry = {
+    binKey: BinKey;
+    legacyCategory: string;
+    slot: ReturnType<typeof resolveSlot>;
+  };
+  const resolved: ResolvedEntry[] = [];
   for (const [binKeyRaw, binRaw] of Object.entries(MODERN_BALANCED.bins)) {
-    const binKey = binKeyRaw as BinKey;
+    const aliased = MODERN_BALANCED_BIN_ALIAS[binKeyRaw];
+    if (aliased === undefined) continue; // unknown source bin
+    if (aliased === null) continue; // explicitly internal-only
+    const binKey: BinKey = aliased;
     const legacyCategory = BIN_TO_LEGACY_CATEGORY[binKey];
-    if (!legacyCategory) continue; // skip bins outside the customize drawer
+    if (!legacyCategory) continue;
     const bin = binRaw as Bin;
     const slot = resolveSlot(packageId, binKey, bin);
+    resolved.push({ binKey, legacyCategory, slot });
+  }
 
-    // Compatibility filters — read-only, never mutate engine data.
+  // Find the engine vanity selection — drives faucet-hole compatibility.
+  const vanityEntry = resolved.find((r) => r.binKey === "vanity");
+  const selectedVanity =
+    vanityEntry &&
+    (opts.selectedVanityId
+      ? vanityEntry.slot.alternatives.find((a) => a.id === opts.selectedVanityId) ??
+        vanityEntry.slot.product
+      : vanityEntry.slot.product);
+  const selectedVanityHoles = selectedVanity?.faucetHoles;
+
+  const out: EngineCategory[] = [];
+  for (const { binKey, legacyCategory, slot } of resolved) {
+    // Compatibility filters — read-only on alternatives only. Primary is
+    // the curated default and is not silently swapped here (mirrors the
+    // legacy /customize behavior).
     let alts = slot.alternatives;
+
     if (binKey === "vanity" && opts.roomWidthInches && opts.roomWidthInches > 0) {
-      // Engine `Product` has no `width_inches` today; we can't gate the
-      // primary or alternatives without the legacy join. This is an
-      // intentional parity gap — see report.
+      const max = opts.roomWidthInches;
+      alts = alts.filter((a) => {
+        // Drop alternatives whose intrinsic width exceeds the room. When
+        // intrinsic width is unknown, keep the alternative (legacy parity:
+        // unknown-width rows were never gated either).
+        return a.widthInches == null || a.widthInches <= max;
+      });
     }
-    if (binKey === "faucet" && opts.selectedVanityId) {
-      // Same: engine `Product` has no `mount_type`/`faucet_holes` today.
+
+    if (binKey === "faucet" && selectedVanityHoles != null) {
+      alts = alts.filter((a) => {
+        return a.faucetHoles == null || a.faucetHoles === selectedVanityHoles;
+      });
     }
 
     const primary = adaptEngineProductToLegacy(slot.product, {
@@ -214,3 +248,22 @@ export function buildEngineCategoriesForCustomize(
   }
   return out;
 }
+
+/**
+ * Documented parity gap — categories the legacy customize drawer shows
+ * but `MODERN_BALANCED` does not yet have a bin for.
+ *
+ * Phase 2.5 intentionally does NOT inject discontinued/unresolved
+ * placeholders into `MODERN_BALANCED` because the spec file is treated
+ * as authored content, not engine state. Phase 2.1's flip plan must
+ * either (a) add curated bins for these categories or (b) keep them
+ * served by the legacy path until they are sourced.
+ */
+export const MODERN_BALANCED_MISSING_LEGACY_CATEGORIES: readonly string[] = [
+  "Sinks",
+  "Bathtubs",
+  "Tub Valve",
+  "Shower Valve",   // partially covered by `showerTrim` alias today
+  "Shower Systems",
+  "Accent Tile",
+] as const;
