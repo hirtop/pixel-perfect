@@ -238,9 +238,9 @@ export function resolveSlot(
   categoryId: BinKey,
   bin: Bin,
 ): ResolvedSlot {
-  const primary = adaptBinProduct(packageId, categoryId, bin.primary, 0, bin.sourcing);
+  const primary = adaptBinProduct(packageId, categoryId, bin.primary, 0, bin.sourcing, bin.intent);
   const alternatives = bin.backups.map((b, i) =>
-    adaptBinProduct(packageId, categoryId, b, i + 1, bin.sourcing),
+    adaptBinProduct(packageId, categoryId, b, i + 1, bin.sourcing, bin.intent),
   );
 
   // Wire the fallback chain: primary -> first alternative.
