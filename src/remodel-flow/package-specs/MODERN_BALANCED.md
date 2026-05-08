@@ -347,3 +347,27 @@ renderer only accepts products whose tags include **`modern`** or **`minimal`**.
 Helpers (in `src/remodel-flow/packages/modern-balanced.ts`):
 - `isAllowedInModernBalanced(product)`
 - `filterBinForModernBalanced(bin)` — drops blocked products and falls back to the next allowed backup if the primary is blocked
+
+---
+
+## Shower-forward posture *(Phase 2.9, locked)*
+
+MODERN_BALANCED is intentionally a **shower-forward** package. Its curated bins
+form a complete walk-in shower posture (Shower Wall Tile, Shower Floor Tile,
+Shower Glass/Door, Shower Valve, Shower System). There is no curated bathtub
+deck, tub filler, or tub-surround track.
+
+- **Bathtub — deferred.** Freestanding modern tubs have unstable retailer
+  pricing, freight surcharges, and install scope (P-trap relocation, framing,
+  floor load) that conflict with the Phase 2.7 retailer-reality pricing
+  standard. Drop-in/alcove tubs conflict with the modern shower-forward
+  direction.
+- **Tub Valve — deferred and coupled to Bathtub.** Rough-in height, spout
+  type, diverter logic, and finish-match are all downstream of the tub
+  decision. Tub Valve must **not** open independently of Bathtub.
+- **Legacy fallback retained.** Both categories continue to be served by the
+  legacy `/customize` data path so users who want them are not blocked.
+- **Not EMPTY_BINS.** Legacy catalog products exist for both categories.
+  `EMPTY_BINS` is reserved for genuinely empty catalog categories.
+- **Future tub-forward variant** may revisit this decision and open both bins
+  together with a compatible matched-finish primary.
