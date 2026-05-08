@@ -42,6 +42,16 @@ export type BinProduct = {
   estimatedProjectPrice?: number;
   canonicalKey?: string;
   isCuratedOnly?: boolean;
+
+  /* ─── Phase 2.7: pricing source-of-truth ───────────────────────
+   * Tracks origin/confidence of unitPrice / estimatedProjectPrice.
+   *  - "retailer"          confirmed retailer/affiliate unit price
+   *  - "project-allowance" confirmed material allowance (SF-priced)
+   *  - "estimated"         best current estimate; refresh later
+   *  - "pending"           TODO — needs confirmation, do NOT show to customers
+   */
+  pricingSource?: "retailer" | "project-allowance" | "estimated" | "pending";
+  pricingNote?: string;
 };
 
 /** Allowed style tags for curated product validation. */
