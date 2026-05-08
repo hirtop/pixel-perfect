@@ -3,7 +3,7 @@ import { derivePlanStatus, type PlanStatusInput } from "@/lib/derivePlanStatus";
 const STATUS_LABEL: Record<NonNullable<ReturnType<typeof derivePlanStatus>>, string> = {
   exploring: "Exploring",
   shaping: "Shaping",
-  "ready-to-share": "Ready to share",
+  "ready-to-share": "Well shaped",
 };
 
 interface PlanStatusBadgeProps {
