@@ -22,7 +22,6 @@ import {
 } from "../buildEngineCategoriesForCustomize";
 import {
   diffEngineVsLegacy,
-  getEngineDataCompleteness,
   logCategoryDiffs,
   ENGINE_DIFF_ENABLED,
 } from "../engineDiagnostics";
