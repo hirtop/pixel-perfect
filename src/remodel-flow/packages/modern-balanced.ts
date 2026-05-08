@@ -449,6 +449,11 @@ export const MODERN_BALANCED = {
         type: "large_format_porcelain",
         priceRange: [10.11, 10.11],
         note: "Per SF.",
+        vendor: "Daltile",
+        unitPrice: 10.11,
+        estimatedProjectPrice: 720,
+        canonicalKey: "daltile-dignitary-dr1224p",
+        isCuratedOnly: true,
       },
       backups: [
         {
@@ -460,6 +465,10 @@ export const MODERN_BALANCED = {
             "https://s3.img-b.com/image/private/t_base,c_pad,f_auto,dpr_2,w_450,h_450/product/daltile/daltile-fl1224fp-1318054.jpg",
           type: "marble_look",
           priceRange: [10, 10],
+          vendor: "Daltile",
+          unitPrice: 10,
+          canonicalKey: "daltile-florentine-fl1224fp",
+          isCuratedOnly: true,
         },
         {
           name: 'Daltile Slate 12"×12" Tile',
