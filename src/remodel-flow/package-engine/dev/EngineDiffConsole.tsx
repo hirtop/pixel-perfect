@@ -145,7 +145,7 @@ const EngineDiffConsole = ({
         (s) => s === "retailer" || s === "project-allowance",
       ).length,
       estimatedPricingCount: pricingSources.filter((s) => s === "estimated").length,
-      pendingPricingCount: completeness.pendingPricingCount,
+      pendingPricingCount: pricingSources.filter((s) => s === "pending").length,
       unexplainedDeltaCount: rows.filter((r) => r.classification === "unexplained")
         .length,
     };
