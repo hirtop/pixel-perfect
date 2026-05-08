@@ -257,10 +257,29 @@ export function buildEngineCategoriesForCustomize(
  * but `MODERN_BALANCED` does not yet have a curated bin for.
  *
  * Phase 2.8 opened: Sinks, Shower Systems, Accent Tile.
- * Phase 2.8 deferred: Bathtubs, Tub Valve — bathtub pricing/freight/
- * install scope is unstable and tub valve is coupled to bathtub
- * rough-in/spout/diverter decisions. Both remain served by the legacy
- * fallback path until a credible primary with confirmed pricing exists.
+ *
+ * Phase 2.9 — Shower-forward posture (locked):
+ *   MODERN_BALANCED is conceptually a SHOWER-FORWARD package. Its curated
+ *   bins already form a complete walk-in shower posture (showerWallTile,
+ *   showerFloorTile, showerDoor/glass, showerValve, showerSystem). There
+ *   is no curated tub deck, tub filler, or tub-surround track.
+ *
+ *   - "Bathtubs" remains DEFERRED to legacy fallback. Freestanding modern
+ *     tubs have unstable retailer pricing/freight/install scope; drop-in
+ *     and alcove tubs conflict with the shower-forward direction.
+ *   - "Tub Valve" remains DEFERRED and is COUPLED to bathtub: rough-in
+ *     height, spout type, diverter logic, and finish-match are downstream
+ *     of the tub decision. Tub Valve must NOT be opened independently of
+ *     Bathtub. If Bathtub opens in a future phase, Tub Valve must open
+ *     with it using a compatible matched-finish primary.
+ *   - These bins are NOT moved to EMPTY_BINS — legacy/catalog products
+ *     exist for both categories; they are simply not curated for this
+ *     package yet. EMPTY_BINS is reserved for genuinely empty catalog
+ *     categories (e.g. toilet, heatedFloor), not deferred package-
+ *     specific curation choices.
+ *   - A future tub-forward package variant may revisit this decision.
+ *
+ * Until then both categories are served by the legacy fallback path.
  */
 export const MODERN_BALANCED_MISSING_LEGACY_CATEGORIES: readonly string[] = [
   "Bathtubs",
