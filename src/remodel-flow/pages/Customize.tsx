@@ -349,7 +349,17 @@ const Customize = () => {
       />
 
       <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
-        <div className="space-y-8">{sections}</div>
+        <div className="space-y-8">
+          {sections}
+          {LazyEngineDiffConsole && isCuratedModernBalanced && (
+            <Suspense fallback={null}>
+              <LazyEngineDiffConsole
+                urlId="balanced"
+                style={state.style}
+              />
+            </Suspense>
+          )}
+        </div>
 
         <aside className="lg:sticky lg:top-24 h-fit rounded-2xl border border-border bg-card p-5">
           <div className="flex items-start justify-between gap-3">
