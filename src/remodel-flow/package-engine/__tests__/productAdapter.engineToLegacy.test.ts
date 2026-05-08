@@ -16,6 +16,7 @@ const baseProduct: Product = {
   styleTags: [],
   bin: "mid",
   availability: "active",
+  canonicalKey: "some-vanity",
 };
 
 describe("productAdapter (engine→legacy)", () => {
@@ -51,7 +52,7 @@ describe("productAdapter (engine→legacy)", () => {
 
   it("findLegacyMatch returns null for unknown name", () => {
     expect(
-      findLegacyMatch({ name: "zzz nothing matches", productUrl: undefined }, "Balanced"),
+      findLegacyMatch({ name: "zzz nothing matches", productUrl: undefined, canonicalKey: "zzz" }, "Balanced"),
     ).toBeNull();
   });
 
@@ -59,8 +60,9 @@ describe("productAdapter (engine→legacy)", () => {
     const known = tieredCatalog.find((p) => p.tier === "Balanced");
     expect(known).toBeTruthy();
     if (!known) return;
-    const match = findLegacyMatch({ name: known.name, productUrl: undefined }, "Balanced");
-    expect(match?.id).toBe(known.id);
+    const found = findLegacyMatch({ name: known.name, productUrl: undefined, canonicalKey: "" }, "Balanced");
+    expect(found?.match.id).toBe(known.id);
+    expect(found?.strategy).toBe("name");
   });
 
   it("adapts a full ResolvedSlot — modern-balanced vanity", () => {

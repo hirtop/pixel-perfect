@@ -148,37 +148,68 @@ function normalizeForMatch(s: string | undefined | null): string {
   return (s ?? "").toLowerCase().replace(/[^a-z0-9]+/g, "");
 }
 
+/** Pull the SKU-like tail of a URL path (e.g. ".../delta-t17t459-h2o/..." → "delta-t17t459-h2o"). */
+function urlTail(url: string | undefined | null): string | null {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    const segs = u.pathname.split("/").filter(Boolean);
+    const tail = segs[segs.length - 1] ?? null;
+    return tail ? tail.toLowerCase() : null;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Best-effort match an engine `Product` to a legacy `TieredProduct`.
  *
- * Match precedence (most specific first):
- *  1. exact productUrl ↔ affiliateUrl
- *  2. normalized name equality
- *  3. normalized name prefix overlap (≥ 12 chars)
+ * Match precedence (most specific first, Phase 2.5):
+ *   1. canonicalKey ↔ slugified affiliateUrl tail
+ *   2. exact productUrl ↔ affiliateUrl
+ *   3. exact normalized name
+ *   4. (loose) prefix overlap ≥ 12 chars — last resort, flagged via
+ *      `_engine.enrichedFromLegacyId` so callers can audit.
  *
  * Returns null when no confident match — callers MUST handle this and
- * fall back to engine-only fields.
+ * fall back to engine-only fields rather than fabricating data.
  */
 export function findLegacyMatch(
-  product: Pick<Product, "name" | "productUrl">,
+  product: Pick<Product, "name" | "productUrl" | "canonicalKey">,
   tier: ProductTier,
-): TieredProduct | null {
-  const url = product.productUrl?.trim();
+): { match: TieredProduct; strategy: "canonicalKey" | "url" | "name" | "prefix" } | null {
   const candidates = tieredCatalog.filter((p) => p.tier === tier);
+
+  // 1. canonicalKey vs URL tails of legacy rows
+  if (product.canonicalKey) {
+    const ck = product.canonicalKey.toLowerCase();
+    const byCk = candidates.find((p) => {
+      const tail = urlTail(p.affiliateUrl);
+      return tail !== null && (tail === ck || ck.endsWith(tail) || tail.endsWith(ck));
+    });
+    if (byCk) return { match: byCk, strategy: "canonicalKey" };
+  }
+
+  // 2. exact productUrl ↔ affiliateUrl
+  const url = product.productUrl?.trim();
   if (url) {
     const byUrl = candidates.find((p) => p.affiliateUrl && p.affiliateUrl === url);
-    if (byUrl) return byUrl;
+    if (byUrl) return { match: byUrl, strategy: "url" };
   }
+
+  // 3. exact normalized name
   const target = normalizeForMatch(product.name);
   if (!target) return null;
   const exact = candidates.find((p) => normalizeForMatch(p.name) === target);
-  if (exact) return exact;
+  if (exact) return { match: exact, strategy: "name" };
+
+  // 4. loose prefix
   if (target.length >= 12) {
     const prefix = candidates.find((p) => {
       const n = normalizeForMatch(p.name);
       return n.length >= 12 && (n.startsWith(target.slice(0, 12)) || target.startsWith(n.slice(0, 12)));
     });
-    if (prefix) return prefix;
+    if (prefix) return { match: prefix, strategy: "prefix" };
   }
   return null;
 }
@@ -188,7 +219,8 @@ export function findLegacyMatch(
  * Optionally enriches from `tieredCatalog` when a confident match exists.
  *
  * Never invents customer-facing fields: missing vendor/spec stay empty,
- * not fabricated.
+ * not fabricated. The engine-intrinsic `vendor` (Phase 2.5) is preferred
+ * when no legacy enrichment is found.
  */
 export function adaptEngineProductToLegacy(
   product: Product,
@@ -198,14 +230,20 @@ export function adaptEngineProductToLegacy(
     isUnresolved?: boolean;
   },
 ): LegacyDrawerProductFields {
-  const enrich = findLegacyMatch(product, opts.legacyTier);
+  const found = findLegacyMatch(product, opts.legacyTier);
+  const enrich = found?.match ?? null;
+  const enrichTag =
+    found?.strategy === "prefix" ? `${enrich!.id} (loose)` : enrich?.id ?? null;
+  // Phase 2.5: prefer engine-intrinsic price; fall back to legacy.
+  const enginePrice =
+    product.estimatedProjectPrice ?? product.unitPrice ?? product.price;
   return {
     id: product.id,
     name: enrich?.name ?? product.name,
     price: enrich
       ? (enrich.estimatedProjectPrice ?? enrich.price)
-      : (product.price ?? 0),
-    vendor: enrich?.vendor ?? "",
+      : (enginePrice ?? 0),
+    vendor: enrich?.vendor ?? product.vendor ?? "",
     finish: enrich?.finish ?? product.finish,
     image: product.image ?? enrich?.image,
     tag: enrich?.tag,
@@ -217,7 +255,7 @@ export function adaptEngineProductToLegacy(
     laborNote: enrich?.laborNote,
     isUnresolved: !!opts.isUnresolved,
     isFallback: !!opts.isFallback,
-    enrichedFromLegacyId: enrich?.id ?? null,
+    enrichedFromLegacyId: enrichTag,
   };
 }
 
