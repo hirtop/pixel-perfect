@@ -83,6 +83,10 @@ const EngineDiffConsole = ({
 
   const engine = useMemo<EngineCategory[] | null>(() => {
     if (engineCategories !== undefined) return engineCategories;
+    // TODO(Phase 2.11): pass already-resolved engineCategories from the
+    // /customize page into this console to remove this double-resolution.
+    // Customize.tsx does not currently retain the resolved engine output
+    // because the curated drawer renders directly from MODERN_BALANCED.
     try {
       return buildEngineCategoriesForCustomize({
         urlId,
