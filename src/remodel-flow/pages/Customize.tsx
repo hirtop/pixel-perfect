@@ -110,6 +110,28 @@ const Customize = () => {
   const totalChange = useChangeDirection(plan.total);
   const styleChange = useChangeDirection(globalPct);
 
+  // Phase 2.11 — engine shadow compute. Always called to keep hook
+  // order stable; the hook itself returns inactive in production
+  // (ENGINE_DRAWER_ENABLED is false) and for non-modern-balanced.
+  const shadowLegacyCategories = useMemo(() => {
+    if (!ENGINE_DRAWER_ENABLED) return [];
+    return buildLegacyDrawerCategoriesFromCatalog(
+      [
+        "vanity", "sink", "faucet", "mirror",
+        "showerWallTile", "showerFloorTile", "mainFloorTile", "accentTile",
+        "showerDoor", "showerValve", "showerSystem",
+      ] as BinKey[],
+      "Balanced",
+    );
+  }, []);
+  const shadow = useEngineShadow({
+    urlId: state.tier ?? "balanced",
+    style: state.style,
+    selectedVanityId: state.selections?.vanity,
+    legacyCategories: shadowLegacyCategories,
+  });
+
+
   if (!pkg) {
     return (
       <div>
