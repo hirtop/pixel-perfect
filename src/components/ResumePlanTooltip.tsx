@@ -62,10 +62,11 @@ export default function ResumePlanTooltip({ project }: ResumePlanTooltipProps) {
       <PopoverTrigger asChild>
         <button
           type="button"
-          aria-label="View saved plan details"
-          className="inline-flex items-center justify-center rounded-full p-1 text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
+          aria-label="About this plan"
+          title="About this plan"
+          className="inline-flex items-center justify-center rounded-full p-2 text-muted-foreground hover:text-foreground focus:outline-none focus-visible:ring-2 focus-visible:ring-ring transition-colors"
         >
-          <Info className="h-3.5 w-3.5" aria-hidden="true" />
+          <Info className="h-4 w-4" aria-hidden="true" />
         </button>
       </PopoverTrigger>
       <PopoverContent
