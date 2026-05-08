@@ -132,14 +132,17 @@ export const MODERN_BALANCED_PRICE_BANDS: Record<
 > = {
   vanity:          [1200, 2200],
   faucet:          [250, 450],
+  sink:            [80, 200],
   mirror:          [200, 400],
   lighting:        [150, 400],
   showerWallTile:  [6, 14],   // per SF
   floorTile:       [6, 14],   // per SF
   showerFloorTile: [10, 50],  // per SF (mosaic sheet)
   showerTrim:      [250, 600],
+  showerSystem:    [240, 700],
   showerGlass:     [600, 1100],
   toilet:          [300, 700],
+  accentTile:      [10, 30],  // per SF (allowance)
   accessories:     [80, 170],
 };
 
