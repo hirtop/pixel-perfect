@@ -185,6 +185,13 @@ export interface Product {
    */
   isCuratedOnly?: boolean;
 
+  /* ─── Phase 2.7: pricing source-of-truth ─────────────────────────
+   * Carries the BinProduct pricing origin + optional note. Dev/diagnostic
+   * use only — never rendered as customer-facing copy.
+   */
+  pricingSource?: "retailer" | "project-allowance" | "estimated" | "pending";
+  pricingNote?: string;
+
   /* ─── Phase 2.6 dev-only diagnostics ─────────────────────────────
    * Records where each intrinsic field came from. Internal/dev only —
    * never rendered to customers.
@@ -201,6 +208,8 @@ export interface EngineFieldSources {
   unitPrice?: "explicit" | "derived" | "missing";
   estimatedProjectPrice?: "explicit" | "derived" | "missing";
   canonicalKey?: "explicit" | "derived" | "missing";
+  /** Phase 2.7 — pricing source-of-truth tracking. */
+  pricingSource?: "explicit" | "missing";
 }
 
 /** A single category slot inside a Package (e.g. "vanity"). */
