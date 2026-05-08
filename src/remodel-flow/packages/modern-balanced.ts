@@ -5,6 +5,23 @@
  *
  * Documentation/data only. NOT wired into the UI or engine yet.
  * Do not import from production flow code until integration is planned.
+ *
+ * ─── Phase 2.9: Shower-forward posture (locked) ───────────────────────
+ * MODERN_BALANCED is intentionally a SHOWER-FORWARD package. The curated
+ * bins form a complete walk-in shower posture (showerWallTile,
+ * showerFloorTile, showerDoor, showerValve, showerSystem) with no
+ * curated bathtub deck, tub filler, or tub-surround track.
+ *
+ *   - `bathtub` is intentionally DEFERRED to the legacy fallback path
+ *     and MUST NOT be added to MODERN_BALANCED.bins in this phase.
+ *   - `tubValve` is intentionally DEFERRED and is COUPLED to `bathtub`.
+ *     Do NOT open `tubValve` without also opening `bathtub` with a
+ *     compatible rough-in / spout / diverter / matched-finish decision.
+ *     Do NOT open `bathtub` without `tubValve`.
+ *   - Neither bin is an EMPTY_BIN — legacy catalog products exist for
+ *     both. EMPTY_BINS is reserved for genuinely empty catalog
+ *     categories, not deferred package-specific curation choices.
+ *   - A future tub-forward package variant may revisit this.
  */
 
 export type BinProduct = {
