@@ -30,14 +30,14 @@ describe("Phase 2.5 intrinsic fields", () => {
     expect(slot.product.unitPrice).toBe(329);
   });
 
-  it("canonicalKey is stable and URL-derived when link present", () => {
+  it("canonicalKey prefers explicit over URL-derived", () => {
     const slot = resolveSlot(
       "modern-balanced",
       "faucet",
       MODERN_BALANCED.bins.faucet as Bin,
     );
-    // Delta Trinsic SKU tail
-    expect(slot.product.canonicalKey).toContain("301646776");
+    // Phase 2.6: explicit canonicalKey takes precedence over URL/SKU derivation.
+    expect(slot.product.canonicalKey).toBe("delta-trinsic-559lf-bllpu");
   });
 
   it("isCuratedOnly is set on modern-balanced products", () => {
