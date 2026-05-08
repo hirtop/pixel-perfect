@@ -144,15 +144,27 @@ export function resolveSlot(
         categoryId,
         product: fallback,
         isFallback: true,
+        isUnresolved: false,
         alternatives: remaining,
       };
     }
+    // Primary unusable AND no usable alternative — explicit unresolved
+    // state. Keep `product` as the primary so callers don't crash on a
+    // missing field, but downstream UI must gate on `isUnresolved`.
+    return {
+      categoryId,
+      product: primary,
+      isFallback: true,
+      isUnresolved: true,
+      alternatives,
+    };
   }
 
   return {
     categoryId,
     product: primary,
     isFallback: false,
+    isUnresolved: false,
     alternatives,
   };
 }
