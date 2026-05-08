@@ -510,6 +510,11 @@ export const MODERN_BALANCED = {
         type: "round_mosaic",
         priceRange: [47.35, 47.35],
         note: "Project estimate: $568.",
+        vendor: "Bedrosians",
+        unitPrice: 47.35,
+        estimatedProjectPrice: 568,
+        canonicalKey: "bedrosians-round-mosaic-decmak2rmom",
+        isCuratedOnly: true,
       },
       backups: [
         {
@@ -523,6 +528,11 @@ export const MODERN_BALANCED = {
           type: "hex_mosaic",
           priceRange: [14.84, 14.84],
           note: "Project estimate: $178.",
+          vendor: "Daltile",
+          unitPrice: 14.84,
+          estimatedProjectPrice: 178,
+          canonicalKey: "daltile-hex-mosaic-d2hexgmsp",
+          isCuratedOnly: true,
         },
         {
           name: 'Merola Tile 2" Hex White Marble Look Mosaic',
