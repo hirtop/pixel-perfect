@@ -70,6 +70,8 @@ function canonicalProductKey(bp: BinProduct, index: number): string {
     const named = slugify(bp.name);
     if (named) return named;
   }
+  // Last-resort fallback. NOTE: `idx-${index}` is dev-only and unstable
+  // across reorderings of a bin's backups — never persist these ids.
   return `idx-${index}`;
 }
 
