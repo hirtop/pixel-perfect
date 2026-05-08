@@ -22,8 +22,6 @@ import type { EngineCategory } from "./buildEngineCategoriesForCustomize";
 
 export interface MergeableCategory {
   name: string;
-  // The merge helper is shape-agnostic beyond `name` — caller types win.
-  [k: string]: unknown;
 }
 
 export interface MergedCategory<L extends MergeableCategory> {
