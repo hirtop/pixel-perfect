@@ -33,6 +33,10 @@ import {
 } from "@/lib/verifiedLink";
 import { getTradeoffCopy } from "@/lib/swapTradeoff";
 import { PlanConfidenceFooter } from "@/components/PlanConfidenceFooter";
+// ─── Phase 2.1: dev-only engine drawer wiring (legacy by default) ───
+import { ENGINE_DRAWER_ENABLED } from "@/remodel-flow/package-engine/engineDrawerFlag";
+import { buildEngineCategoriesForCustomize } from "@/remodel-flow/package-engine/buildEngineCategoriesForCustomize";
+import { mergeEngineWithLegacyCategories } from "@/remodel-flow/package-engine/mergeEngineCategories";
 // ─── Local types for component state ────────────────────────────────
 
 interface Alternative {
@@ -316,10 +320,38 @@ const CustomizeOption = () => {
     return cats.find((c) => c.name === "Vanities")?.selected;
   }, [project.customizations]);
 
-  const initialCategories = useMemo(
-    () => buildCategoriesForTier(tier, roomWidthInches, selectedVanityId),
-    [tier, roomWidthInches, selectedVanityId]
-  );
+  // Legacy categories — production source of truth. Engine path (dev-only)
+  // overlays covered Modern + Balanced rows on top of this list. Categories
+  // not produced by the engine remain served by legacy verbatim.
+  const initialCategories = useMemo(() => {
+    const legacy = buildCategoriesForTier(tier, roomWidthInches, selectedVanityId);
+    if (!ENGINE_DRAWER_ENABLED) return legacy;
+    try {
+      const engine = buildEngineCategoriesForCustomize({
+        urlId: urlTier,
+        style: project.style_preferences?.style,
+        roomWidthInches,
+        selectedVanityId,
+      });
+      if (!engine) return legacy;
+      const { merged, sources } = mergeEngineWithLegacyCategories(legacy, engine);
+      // Dev-only diagnostic so it's obvious in the console which rows
+      // came from the engine. Never reaches production (gated by flag).
+      // eslint-disable-next-line no-console
+      console.info("[engine-drawer] merged categories", {
+        engineCount: sources.filter((s) => s === "engine").length,
+        legacyCount: sources.filter((s) => s === "legacy").length,
+        sources: legacy.map((c, i) => ({ name: c.name, source: sources[i] })),
+      });
+      return merged;
+    } catch (err) {
+      // Defensive: never let an engine bug break the customer drawer in
+      // dev. Fall back to legacy and surface the error in the console.
+      // eslint-disable-next-line no-console
+      console.error("[engine-drawer] failed, falling back to legacy", err);
+      return legacy;
+    }
+  }, [tier, roomWidthInches, selectedVanityId, urlTier, project.style_preferences?.style]);
 
   const otherItemsTotal = useMemo(() => getStaticItemsTotal(tier), [tier]);
   const baseLaborForTier = TIER_BASE_LABOR[tier];
