@@ -250,6 +250,8 @@ export function buildEngineCategoriesForCustomize(
         isFallback: slot.isFallback,
         isUnresolved: slot.isUnresolved,
         enrichedFromLegacyId: primary.enrichedFromLegacyId,
+        isCuratedOnly: !!slot.product.isCuratedOnly,
+        pricingSource: slot.product.pricingSource,
       },
     });
   }
