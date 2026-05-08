@@ -695,6 +695,10 @@ export const MODERN_BALANCED = {
           "https://images.thdstatic.com/productImages/3d8c2a7e-3a4b-4f6a-9c4f-8b8b8b8b8b8b/svn/white-kohler-one-piece-toilets-k-3810-0-64_1000.jpg",
         type: "one_piece_elongated",
         priceRange: [450, 600],
+        vendor: "Kohler",
+        unitPrice: 549,
+        canonicalKey: "kohler-santa-rosa-k-3810-0",
+        isCuratedOnly: true,
       },
       backups: [
         {
@@ -708,6 +712,10 @@ export const MODERN_BALANCED = {
           type: "two_piece_elongated",
           priceRange: [300, 400],
           note: "Budget backup.",
+          vendor: "American Standard",
+          unitPrice: 348,
+          canonicalKey: "american-standard-cadet-3-215aa104-020",
+          isCuratedOnly: true,
         },
         {
           name: "Swiss Madison St. Tropez One-Piece Elongated Skirted Toilet (White)",
