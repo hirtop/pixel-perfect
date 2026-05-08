@@ -283,6 +283,7 @@ export const MODERN_BALANCED = {
         faucetHoles: 1,
         canonicalKey: "delta-trinsic-559lf-bllpu",
         isCuratedOnly: true,
+        pricingSource: "retailer",
       },
       backups: [
         {
@@ -301,6 +302,7 @@ export const MODERN_BALANCED = {
           faucetHoles: 1,
           canonicalKey: "moen-doux-s6910bl",
           isCuratedOnly: true,
+          pricingSource: "retailer",
         },
         {
           name: "Delta Trinsic Single Hole Bathroom Faucet",
@@ -314,6 +316,12 @@ export const MODERN_BALANCED = {
           type: "single_hole",
           priceRange: [379, 379],
           note: "Alternate finish — only if lighting/trim/accessories swap to champagne bronze family.",
+          vendor: "Delta",
+          unitPrice: 379,
+          faucetHoles: 1,
+          canonicalKey: "delta-trinsic-559lf-czmpu",
+          isCuratedOnly: true,
+          pricingSource: "retailer",
         },
       ],
       constraints: [
