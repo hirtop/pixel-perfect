@@ -11,6 +11,7 @@ import { useBathroomPhotoScans } from "@/hooks/useBathroomPhotoScans";
 import BathroomInsights from "@/components/BathroomInsights";
 import ProjectSnapshot from "@/components/ProjectSnapshot";
 import PackageRationaleCue from "@/components/PackageRationaleCue";
+import PackagePersonaCue from "@/components/PackagePersonaCue";
 import budgetImg from "@/assets/package-budget.jpg";
 import balancedImg from "@/assets/package-balanced.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
@@ -192,8 +193,9 @@ const RemodelOptions = () => {
                       </div>
                       <p className="text-[11px] font-medium text-primary mb-2">{pkg.bestFor}</p>
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
-                      <div className="mt-2">
+                      <div className="mt-2 space-y-1">
                         <PackageRationaleCue tier={pkg.name as "Budget" | "Balanced" | "Premium"} />
+                        <PackagePersonaCue tier={pkg.name as "Budget" | "Balanced" | "Premium"} />
                       </div>
                     </div>
 
