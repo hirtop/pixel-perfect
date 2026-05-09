@@ -166,11 +166,11 @@ describe("SummaryIncludesCue — Phase 2B faucet surfacing", () => {
     }
   });
 
-  it("renders updated vanity caveat (faucet included)", () => {
+  it("renders updated vanity caveat (faucet and floor tile included)", () => {
     render(<SummaryIncludesCue tier="balanced" />);
     expect(
       screen.getByText(
-        "Countertop and sink included with vanity. Faucet included in this package.",
+        "Countertop and sink included with vanity. Faucet and floor tile included in this package.",
       ),
     ).toBeInTheDocument();
   });
