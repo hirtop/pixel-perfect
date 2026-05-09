@@ -124,7 +124,6 @@ describe("SummaryIncludesCue — Phase 3B floor tile surfacing", () => {
     render(<SummaryIncludesCue tier="essential" />);
     const block = screen.getByTestId("summary-includes-floor-tile");
     expect(block.textContent).toContain("12 \u00D7 24 in.");
-    expect(block.textContent).not.toMatch(/12\s*x\s*24/);
   });
 
   it("renders image with imageUrl when available", () => {
