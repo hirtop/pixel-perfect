@@ -54,16 +54,13 @@ describe("SummaryIncludesCue — Phase 1C vanity surfacing", () => {
   it.each(TIERS)("renders the primary vanity for tier %s", (tier) => {
     render(<SummaryIncludesCue tier={tier} />);
     const primary = getPrimaryVanityForTier(tier)!;
-    expect(screen.getByText(primary.cleanedDisplayName)).toBeInTheDocument();
-    expect(
-      screen.getByText(new RegExp(`finish:\\s*${primary.colorFinish}`, "i")),
-    ).toBeInTheDocument();
-    expect(
-      screen.getByText(
-        new RegExp(`countertop:\\s*${primary.countertopMaterial}`, "i"),
-      ),
-    ).toBeInTheDocument();
-    expect(screen.getByText(APPROVED_CAVEAT)).toBeInTheDocument();
+    const block = screen.getByTestId("summary-includes-vanity");
+    const text = block.textContent || "";
+    expect(text).toContain(primary.cleanedDisplayName);
+    expect(text).toContain(`Finish: ${primary.colorFinish}`);
+    expect(text).toContain(`Countertop: ${primary.countertopMaterial}`);
+    expect(text).toContain("Sink:");
+    expect(text).toContain(APPROVED_CAVEAT);
   });
 
   it("renders image with imageUrl when available", () => {
