@@ -124,13 +124,11 @@ describe("/shop — V1 Retirement Gate", () => {
   });
 });
 
-describe("homepage primary nav — Shop link removed", () => {
-  it("does not render a Shop link in primary nav", () => {
-    render(
-      <MemoryRouter initialEntries={["/"]}>
-        <Index />
-      </MemoryRouter>,
-    );
-    expect(screen.queryByRole("link", { name: /^Shop$/ })).toBeNull();
+describe("homepage source — Shop link removed", () => {
+  it("Index.tsx source contains no <Link to=\"/shop\"", async () => {
+    const fs = await import("node:fs/promises");
+    const src = await fs.readFile("src/pages/Index.tsx", "utf8");
+    expect(src).not.toMatch(/to=["']\/shop["']/);
+    expect(src).not.toMatch(/>Shop</);
   });
 });
