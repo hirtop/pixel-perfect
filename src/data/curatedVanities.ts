@@ -170,7 +170,7 @@ export const curatedVanities: CuratedVanity[] = [
       "Three drawers, one cabinet with inner shelf, two hardware sets",
     styleTags: ["modern", "clean-line", "white"],
     qualityNotes:
-      "Assembled vanity with engineered stone top and matching backsplash; consistent value-tier choice for a clean modern refresh.",
+      "Assembled vanity with engineered stone top and matching backsplash; consistent value-tier choice for a clean modern refresh. Faucet hole pattern not stated in retailer spec table at curation date (Home Depot SKU 324252709); marked unknown pending direct manufacturer-spec verification.",
     whyFitsThisTier:
       "Clean modern profile at value pricing with a stone-look top and integrated sink.",
     replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
