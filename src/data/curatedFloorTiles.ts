@@ -276,7 +276,7 @@ export const curatedFloorTiles: CuratedFloorTile[] = [
     piecesPerBox: 15,
     sqFtPerBox: 14.53,
     installationNotes:
-      "Plank layout; recommended 1/3 stagger to limit lippage. Standard thinset.",
+      "Plank layout; use 1/3 stagger to limit lippage. Standard thinset.",
     maintenanceNotes:
       "Sweep and damp mop. Neutral pH cleaner. No sealing required.",
     styleTags: ["modern", "wood-look", "plank", "warm-grey", "textured"],
