@@ -168,101 +168,263 @@ function placeholderSlot(args: {
   };
 }
 
+// Verified-product captured date for Phase 1B sourcing pass.
+const VERIFIED_DATE = "2026-05-09";
+
 export const curatedVanities: CuratedVanity[] = [
-  // ── Essential ($400–$900) ──────────────────────────────────────────
-  placeholderSlot({
+  // ── Essential ($400–$900) — Home Decorators Collection Bilston (Home Depot) ──
+  {
     id: "modern-essential-vanity-primary",
     tier: "essential",
+    style: "modern",
+    category: "vanity",
     binRole: "primary",
-    priceUSD: 650,
-    colorFinish: "Matte white",
-    countertopMaterial: "Cultured marble",
-    sinkType: "Integrated single basin",
-    storageNotes: "Two soft-close doors, one drawer",
-    styleTags: ["modern", "clean-line", "value"],
-    qualityNotes: "Clean modern profile suited to a value refresh.",
-    whyFitsThisTier:
-      "Simple modern vanity at value pricing while keeping a tidy finish.",
+    productName:
+      "Home Decorators Collection Bilston 36 in. Single Sink White Bath Vanity with White Engineered Stone Top (Assembled)",
+    cleanedDisplayName: "Bilston 36 in. White Vanity with Engineered Stone Top",
+    brand: "Home Decorators Collection",
+    retailer: "Home Depot",
+    productUrl:
+      "https://www.homedepot.com/p/Home-Decorators-Collection-Bilston-36-in-Single-Sink-White-Bath-Vanity-with-White-Engineered-Stone-Top-Assembled-Bilston-36W/324252709",
+    priceUSD: 494,
+    priceCapturedDate: VERIFIED_DATE,
+    widthInches: 36,
+    colorFinish: "White",
+    countertopIncluded: true,
+    countertopMaterial: "White engineered stone",
+    sinkIncluded: true,
+    sinkType: "Single integrated basin",
     faucetIncluded: false,
-  }),
-  placeholderSlot({
+    storageNotes: "Three drawers, one cabinet with inner shelf, two hardware sets",
+    styleTags: ["modern", "clean-line", "white"],
+    qualityNotes:
+      "Assembled vanity with engineered stone top and matching backsplash; consistent value-tier choice for a clean modern refresh.",
+    whyFitsThisTier:
+      "Clean modern profile at value pricing with a stone-look top and integrated sink.",
+    replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
+    caveats: "Faucet not included.",
+    availabilityStatus: "in_stock",
+    imageUrl:
+      "https://images.thdstatic.com/productImages/b88f4142-acf9-40b5-893e-451f5e166269/svn/home-decorators-collection-bathroom-vanities-with-tops-bilston-36w-64_600.jpg",
+    imageLicense: "retailer",
+    isRealProduct: true,
+    isPlaceholder: false,
+    sku: "324252709",
+    modelNumber: "Bilston 36W",
+    dimensions: "36 in W x 19 in D x 34.5 in H",
+    backsplashIncluded: true,
+  },
+  {
     id: "modern-essential-vanity-backup1",
     tier: "essential",
+    style: "modern",
+    category: "vanity",
     binRole: "backup1",
-    priceUSD: 720,
-    colorFinish: "Light oak",
-    countertopMaterial: "Cultured marble",
-    sinkType: "Integrated single basin",
-    storageNotes: "Two doors, interior shelf",
-    styleTags: ["modern", "warm-wood"],
-    qualityNotes: "Warm wood-tone alternative for the same value tier.",
-    whyFitsThisTier:
-      "Backup option preserving the clean modern look in a wood-tone finish.",
+    productName:
+      "Home Decorators Collection Bilston 36 in. Single Sink Spiced Walnut Bath Vanity with White Engineered Stone Top (Assembled)",
+    cleanedDisplayName:
+      "Bilston 36 in. Spiced Walnut Vanity with Engineered Stone Top",
+    brand: "Home Decorators Collection",
+    retailer: "Home Depot",
+    productUrl:
+      "https://www.homedepot.com/p/Home-Decorators-Collection-Bilston-36-in-Single-Sink-Spiced-Walnut-Bath-Vanity-with-White-Engineered-Stone-Top-Assembled-Bilston-36SW/324252707",
+    priceUSD: 494,
+    priceCapturedDate: VERIFIED_DATE,
+    widthInches: 36,
+    colorFinish: "Spiced Walnut",
+    countertopIncluded: true,
+    countertopMaterial: "White engineered stone",
+    sinkIncluded: true,
+    sinkType: "Single integrated basin",
     faucetIncluded: false,
-  }),
-  placeholderSlot({
+    storageNotes: "Three drawers, one cabinet with inner shelf, two hardware sets",
+    styleTags: ["modern", "warm-wood", "walnut"],
+    qualityNotes:
+      "Same Bilston construction in a warm walnut finish; assembled with matching backsplash.",
+    whyFitsThisTier:
+      "Wood-tone alternative within the same value tier and material story.",
+    replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
+    caveats: "Faucet not included.",
+    availabilityStatus: "in_stock",
+    imageUrl:
+      "https://images.thdstatic.com/productImages/7d2d7762-05ec-4f0a-8c9c-a92938fdd191/svn/home-decorators-collection-bathroom-vanities-with-tops-bilston-36sw-64_600.jpg",
+    imageLicense: "retailer",
+    isRealProduct: true,
+    isPlaceholder: false,
+    sku: "324252707",
+    modelNumber: "Bilston 36SW",
+    dimensions: "36 in W x 19 in D x 34.5 in H",
+    backsplashIncluded: true,
+  },
+  {
     id: "modern-essential-vanity-backup2",
     tier: "essential",
+    style: "modern",
+    category: "vanity",
     binRole: "backup2",
-    priceUSD: 820,
-    colorFinish: "Charcoal grey",
-    countertopMaterial: "Cultured marble",
-    sinkType: "Integrated single basin",
-    storageNotes: "Two doors, two drawers",
-    styleTags: ["modern", "dark-finish"],
-    qualityNotes: "Darker finish for a higher-contrast modern look.",
-    whyFitsThisTier:
-      "Alternate finish keeping value pricing and modern lines.",
+    productName:
+      "Home Decorators Collection Bilston 36 in. Single Sink Dove Gray Bath Vanity with White Engineered Stone Top (Assembled)",
+    cleanedDisplayName:
+      "Bilston 36 in. Dove Gray Vanity with Engineered Stone Top",
+    brand: "Home Decorators Collection",
+    retailer: "Home Depot",
+    productUrl:
+      "https://www.homedepot.com/p/Home-Decorators-Collection-Bilston-36-in-Single-Sink-Dove-Gray-Bath-Vanity-with-White-Engineered-Stone-Top-Assembled-Bilston-36G/324252196",
+    priceUSD: 549,
+    priceCapturedDate: VERIFIED_DATE,
+    widthInches: 36,
+    colorFinish: "Dove Gray",
+    countertopIncluded: true,
+    countertopMaterial: "White engineered stone",
+    sinkIncluded: true,
+    sinkType: "Single integrated basin",
     faucetIncluded: false,
-  }),
+    storageNotes: "Three drawers, one cabinet with inner shelf, two hardware sets",
+    styleTags: ["modern", "soft-grey"],
+    qualityNotes:
+      "Same Bilston construction in a soft grey finish; assembled with matching backsplash.",
+    whyFitsThisTier:
+      "Cool-tone alternative within the same value tier and material story.",
+    replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
+    caveats: "Faucet not included.",
+    availabilityStatus: "in_stock",
+    imageUrl:
+      "https://images.thdstatic.com/productImages/607962d6-ba9c-4f85-84d7-0a30d6a247c4/svn/home-decorators-collection-bathroom-vanities-with-tops-bilston-36g-64_600.jpg",
+    imageLicense: "retailer",
+    isRealProduct: true,
+    isPlaceholder: false,
+    sku: "324252196",
+    modelNumber: "Bilston 36G",
+    dimensions: "36 in W x 19 in D x 34.5 in H",
+    backsplashIncluded: true,
+  },
 
   // ── Balanced ($900–$1,800) ─────────────────────────────────────────
-  placeholderSlot({
+  {
     id: "modern-balanced-vanity-primary",
     tier: "balanced",
+    style: "modern",
+    category: "vanity",
     binRole: "primary",
-    priceUSD: 1295,
-    colorFinish: "Natural oak",
-    countertopMaterial: "Engineered quartz",
+    productName:
+      "Ariel Cambridge 36 in. Right Offset Single Rectangular Sink Bathroom Vanity with Carrara White Quartz Countertop in Oak",
+    cleanedDisplayName:
+      "Ariel Cambridge 36 in. Oak Vanity with Carrara White Quartz Top",
+    brand: "Ariel",
+    retailer: "Ariel Bath",
+    productUrl:
+      "https://www.arielbath.com/ariel-cambridge-36-inch-right-offset-single-rectangular-sink-bathroom-vanity-with-carrara-white-quartz-countertop-1-5-inch-edge-in-oak-a036srcqrvowoa",
+    priceUSD: 1189,
+    priceCapturedDate: VERIFIED_DATE,
+    widthInches: 36,
+    colorFinish: "Oak",
+    countertopIncluded: true,
+    countertopMaterial: "Carrara White quartz (man-made stone)",
+    sinkIncluded: true,
     sinkType: "Undermount rectangular porcelain",
-    storageNotes: "Soft-close doors and drawers, full interior storage",
-    styleTags: ["modern", "warm-wood", "quartz-top"],
-    qualityNotes:
-      "Stronger material presence than Essential with a quartz top and undermount sink.",
-    whyFitsThisTier:
-      "Complete modern upgrade with cohesive finishes and improved storage.",
     faucetIncluded: false,
-  }),
-  placeholderSlot({
+    storageNotes:
+      "Five soft-close drawers with dovetail boxes, two soft-close doors, full-extension glides",
+    styleTags: ["modern", "oak", "quartz-top"],
+    qualityNotes:
+      "Solid oak veneer cabinet, Carrara White quartz top with 1.5 in mitered edge and matching 4 in backsplash, undermount porcelain sink, dovetail drawer boxes.",
+    whyFitsThisTier:
+      "Cohesive upgrade in materials and storage versus Essential while staying within the Balanced band.",
+    replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
+    caveats: "Faucet and drain not included. Brand-direct site.",
+    availabilityStatus: "in_stock",
+    imageUrl:
+      "https://www.arielbath.com/media/catalog/product/A/0/A036SRCQRVOWOA_productimage.jpg",
+    imageLicense: "retailer",
+    isRealProduct: true,
+    isPlaceholder: false,
+    sku: "A036SRCQRVOWOA",
+    modelNumber: "A036SRCQRVOWOA",
+    dimensions: "36.25 in W x 22 in D x 36 in H",
+    backsplashIncluded: true,
+  },
+  {
     id: "modern-balanced-vanity-backup1",
     tier: "balanced",
+    style: "modern",
+    category: "vanity",
     binRole: "backup1",
-    priceUSD: 1490,
-    colorFinish: "Matte black",
-    countertopMaterial: "Engineered quartz",
-    sinkType: "Undermount rectangular porcelain",
-    storageNotes: "Soft-close drawers, organized interior",
-    styleTags: ["modern", "matte-black"],
-    qualityNotes: "High-contrast modern look with a quartz top.",
-    whyFitsThisTier:
-      "Backup with the same upgraded material story in a darker finish.",
+    productName:
+      "ARIEL Hepburn 36 in. Single Sink Freestanding Bathroom Vanity in White with Pure White Quartz Top",
+    cleanedDisplayName:
+      "Ariel Hepburn 36 in. White Vanity with Pure White Quartz Top",
+    brand: "Ariel",
+    retailer: "Home Depot",
+    productUrl:
+      "https://www.homedepot.com/p/ARIEL-Hepburn-36-in-W-x-22-in-D-x-36-in-H-Single-Freestanding-in-White-Bath-Vanity-with-Pure-White-Quartz-Top-T037SLWQOVOWHT/323469737",
+    priceUSD: 1087,
+    priceCapturedDate: VERIFIED_DATE,
+    widthInches: 36,
+    colorFinish: "White",
+    countertopIncluded: true,
+    countertopMaterial: "Pure White quartz",
+    sinkIncluded: true,
+    sinkType: "Single sink (freestanding vanity-with-top combo)",
     faucetIncluded: false,
-  }),
-  placeholderSlot({
+    storageNotes: "Soft-closing doors and drawers, solid hardwood and plywood cabinet",
+    styleTags: ["modern", "white", "quartz-top"],
+    qualityNotes:
+      "Solid hardwood and plywood construction with a Pure White quartz top; soft-closing doors and drawers.",
+    whyFitsThisTier:
+      "White quartz finish alternative in the Balanced range with similar material story.",
+    replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
+    caveats: "Faucet not included.",
+    availabilityStatus: "in_stock",
+    imageUrl:
+      "https://images.thdstatic.com/productImages/08920e2d-e77f-4332-99d8-a21a5ffd2c04/svn/ariel-bathroom-vanities-with-tops-t037slwqovowht-64_600.jpg",
+    imageLicense: "retailer",
+    isRealProduct: true,
+    isPlaceholder: false,
+    sku: "323469737",
+    modelNumber: "T037SLWQOVOWHT",
+    dimensions: "36 in W x 22 in D x 36 in H",
+  },
+  {
     id: "modern-balanced-vanity-backup2",
     tier: "balanced",
+    style: "modern",
+    category: "vanity",
     binRole: "backup2",
-    priceUSD: 1675,
-    colorFinish: "Walnut veneer",
-    countertopMaterial: "Engineered quartz",
-    sinkType: "Undermount oval porcelain",
-    storageNotes: "Soft-close drawers, full-extension glides",
-    styleTags: ["modern", "walnut", "quartz-top"],
-    qualityNotes: "Walnut alternative with comparable material quality.",
-    whyFitsThisTier:
-      "Alternate wood tone preserving the upgraded Balanced material story.",
+    productName:
+      "Wyndham Collection Deborah 36 in. Single Bathroom Vanity in Dark Espresso with Marble Vanity Top in White Carrara with White Basin",
+    cleanedDisplayName:
+      "Wyndham Deborah 36 in. Dark Espresso Vanity with White Carrara Marble Top",
+    brand: "Wyndham Collection",
+    retailer: "Home Depot",
+    productUrl:
+      "https://www.homedepot.com/p/Wyndham-Collection-Deborah-36-in-Single-Bathroom-Vanity-in-Dark-Espresso-with-Marble-Vanity-Top-in-White-Carrara-with-White-Basin-WCS202036SDECMUNOMXX/306934727",
+    priceUSD: 1061,
+    priceCapturedDate: VERIFIED_DATE,
+    widthInches: 36,
+    colorFinish: "Dark Espresso",
+    countertopIncluded: true,
+    countertopMaterial: "White Carrara marble",
+    sinkIncluded: true,
+    sinkType: "Single white basin (oval)",
     faucetIncluded: false,
-  }),
+    storageNotes: "Two doors, one drawer; included backsplash",
+    styleTags: ["modern", "dark-espresso", "marble-top"],
+    qualityNotes:
+      "Single-sink vanity-with-top combo featuring a White Carrara marble top and matching backsplash.",
+    whyFitsThisTier:
+      "Darker-finish alternative within the Balanced range with a natural-stone top.",
+    replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
+    caveats: "Faucet not included.",
+    availabilityStatus: "in_stock",
+    imageUrl:
+      "https://images.thdstatic.com/productImages/89343a0f-0697-491d-a1fe-2ac52ad74bdf/svn/wyndham-collection-bathroom-vanities-with-tops-wcs202036sdecmunomxx-64_600.jpg",
+    imageLicense: "retailer",
+    isRealProduct: true,
+    isPlaceholder: false,
+    sku: "306934727",
+    modelNumber: "WCS202036SDECMUNOMXX",
+    backsplashIncluded: true,
+  },
 
   // ── Premium ($1,800–$3,500) ────────────────────────────────────────
   placeholderSlot({
