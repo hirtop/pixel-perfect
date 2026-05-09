@@ -159,7 +159,7 @@ function placeholderSlot(args: {
     whyFitsThisTier: args.whyFitsThisTier,
     replacementReason:
       "Placeholder slot pending verified retailer SKU sourcing.",
-    caveats: "Internal placeholder — not surfaced to customers.",
+    caveats: "Internal placeholder — internal-only scaffolding.",
     availabilityStatus: "unverified",
     imageUrl: null,
     imageLicense: "unknown",
