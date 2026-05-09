@@ -65,6 +65,8 @@ describe("SummaryIncludesCue — Phase 1C vanity surfacing", () => {
     expect(text).toContain(`Countertop: ${primary.countertopMaterial}`);
     expect(text).toContain("Sink:");
     expect(text).toContain(APPROVED_CAVEAT);
+    expect(text).not.toContain(PRIOR_CAVEAT);
+    expect(text).not.toContain(OLD_CAVEAT);
   });
 
   it("renders image with imageUrl when available", () => {
