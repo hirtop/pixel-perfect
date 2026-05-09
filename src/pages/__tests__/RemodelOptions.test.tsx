@@ -33,7 +33,7 @@ vi.mock("@/assets/package-budget.jpg", () => ({ default: "" }));
 vi.mock("@/assets/package-balanced.jpg", () => ({ default: "" }));
 vi.mock("@/assets/package-premium.jpg", () => ({ default: "" }));
 
-describe("RemodelOptions Pass 18 copy cleanup", () => {
+describe("RemodelOptions Pass 19 copy cleanup", () => {
   it("does not render 'Most Popular' on Balanced card", () => {
     render(
       <MemoryRouter>
