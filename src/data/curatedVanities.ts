@@ -170,7 +170,7 @@ export const curatedVanities: CuratedVanity[] = [
       "Three drawers, one cabinet with inner shelf, two hardware sets",
     styleTags: ["modern", "clean-line", "white"],
     qualityNotes:
-      "Assembled vanity with engineered stone top and matching backsplash; consistent value-tier choice for a clean modern refresh.",
+      "Assembled vanity with engineered stone top and matching backsplash; consistent value-tier choice for a clean modern refresh. Faucet hole pattern not stated in retailer spec table at curation date (Home Depot SKU 324252709); marked unknown pending direct manufacturer-spec verification.",
     whyFitsThisTier:
       "Clean modern profile at value pricing with a stone-look top and integrated sink.",
     replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
@@ -217,7 +217,7 @@ export const curatedVanities: CuratedVanity[] = [
       "Three drawers, one cabinet with inner shelf, two hardware sets",
     styleTags: ["modern", "warm-wood", "walnut"],
     qualityNotes:
-      "Same Bilston construction in a warm walnut finish; assembled with matching backsplash.",
+      "Same Bilston construction in a warm walnut finish; assembled with matching backsplash. Faucet hole pattern not stated in retailer spec table at curation date (Home Depot SKU 324252707); marked unknown pending direct manufacturer-spec verification.",
     whyFitsThisTier:
       "Wood-tone alternative within the same value tier and material story.",
     replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
@@ -266,7 +266,7 @@ export const curatedVanities: CuratedVanity[] = [
     storageNotes: "Two-door cabinet with shelving; assembled.",
     styleTags: ["modern", "warm-neutral", "sandstorm"],
     qualityNotes:
-      "Different product family from Bilston, providing real Essential-tier diversity. Limited review history at curation date.",
+      "Different product family from Bilston, providing real Essential-tier diversity. Limited review history at curation date. Faucet hole pattern not stated in retailer spec table at curation date (Home Depot SKU 333363871); marked unknown pending direct manufacturer-spec verification.",
     whyFitsThisTier:
       "Modern silhouette and engineered stone top within the value range from a different cabinet family.",
     replacementReason:
