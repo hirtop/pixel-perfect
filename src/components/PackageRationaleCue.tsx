@@ -8,7 +8,7 @@ const RATIONALE_COPY: Record<PackageRationaleCueProps["tier"], string> = {
   Balanced:
     "Shower-forward modern remodel with cohesive finishes and curated retailer-anchored selections, designed around existing plumbing.",
   Premium:
-    "Modern look with upgraded fixtures, larger formats, and detailed finish work, designed around existing plumbing.",
+    "Designer-grade materials and finishes, designed around existing plumbing.",
 };
 
 const PackageRationaleCue = ({ tier }: PackageRationaleCueProps) => {
