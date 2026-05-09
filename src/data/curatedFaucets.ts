@@ -515,7 +515,7 @@ export const curatedFaucets: CuratedFaucet[] = [
       "polished-chrome",
       "lever",
     ],
-    qualityNotes: "Iconic Kohler Modern faucet line; lever variant.",
+    qualityNotes: "Kohler Purist line, lever variant.",
     whyFitsThisTier:
       "Higher-tier Modern widespread; covers Amberly primary three-hole and Breckenridge backup2 three-hole vanities. Lever handles preserve Modern aesthetic.",
     replacementReason:
