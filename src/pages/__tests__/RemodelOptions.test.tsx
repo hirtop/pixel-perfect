@@ -137,6 +137,28 @@ describe("RemodelOptions Pass 24 Premium copy fix", () => {
     ).toBeInTheDocument();
   });
 
+  it("does not render old Premium bullet 'Custom vanity with natural stone top'", () => {
+    render(
+      <MemoryRouter>
+        <RemodelOptions />
+      </MemoryRouter>
+    );
+    expect(
+      screen.queryByText("Custom vanity with natural stone top")
+    ).not.toBeInTheDocument();
+  });
+
+  it("renders new Premium bullet 'Higher-end vanity with stone top'", () => {
+    render(
+      <MemoryRouter>
+        <RemodelOptions />
+      </MemoryRouter>
+    );
+    expect(
+      screen.getByText("Higher-end vanity with stone top")
+    ).toBeInTheDocument();
+  });
+
   it("Modern Premium card subtree does not contain layout-flexibility wording", () => {
     render(
       <MemoryRouter>

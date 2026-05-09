@@ -52,7 +52,7 @@ const packages = [
     image: premiumImg,
     summary: "Natural stone, designer hardware, and upgraded finish work.",
     highlights: [
-      "Custom vanity with natural stone top",
+      "Higher-end vanity with stone top",
       "Natural stone or designer tile",
       "Brass or matte black fixtures",
       "Higher-grade fixtures and tile within existing layout",
