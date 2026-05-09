@@ -187,6 +187,8 @@ const ProjectSummary = () => {
             </p>
           </div>
 
+          <SummaryFramingCue />
+
           <div className="rounded-2xl overflow-hidden aspect-[21/9] mb-12">
             <img src={summaryHeroImg} alt="Selected bathroom remodel direction" className="w-full h-full object-cover" width={800} height={600} />
           </div>
