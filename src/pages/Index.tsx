@@ -225,7 +225,6 @@ export default function LandingPage() {
             <a href="#transform" className="hover:text-foreground transition-colors">Before & After</a>
             <a href="#why" className="hover:text-foreground transition-colors">Why BOBOX</a>
             <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
-            <Link to="/shop" className="hover:text-foreground transition-colors">Shop</Link>
           </div>
           <div className="flex items-center gap-3">
             <AccountMenu />
