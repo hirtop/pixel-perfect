@@ -7,12 +7,12 @@ const PackageComparisonCue = () => {
     <section
       data-testid="package-comparison-cue"
       aria-label="How to choose"
-      className="w-full rounded-xl border border-border bg-secondary/30 px-5 py-4"
+      className="w-full rounded-lg border border-border/50 bg-secondary/15 px-4 py-3 sm:px-5 sm:py-3.5"
     >
       <h2 className="font-heading text-sm font-semibold text-foreground mb-1">
         {HEADING}
       </h2>
-      <p className="text-sm text-muted-foreground leading-relaxed">
+      <p className="text-[13px] sm:text-sm text-muted-foreground leading-relaxed">
         {BODY}
       </p>
     </section>
