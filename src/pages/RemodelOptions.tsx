@@ -183,7 +183,6 @@ const RemodelOptions = () => {
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <h2 className="font-heading text-xl text-foreground">{pkg.displayName}</h2>
                       </div>
-                      <p className="text-[11px] font-medium text-primary mb-2">{pkg.bestFor}</p>
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
                       <div className="mt-2 space-y-1">
                         <PackageRationaleCue tier={pkg.name as "Budget" | "Balanced" | "Premium"} />
@@ -216,9 +215,9 @@ const RemodelOptions = () => {
                     </ul>
                     <Button
                       className={`w-full h-11 text-sm font-semibold rounded-lg ${
-                        pkg.featured || isSelected ? "" : "bg-secondary text-foreground hover:bg-secondary/80"
+                        isSelected ? "" : "bg-secondary text-foreground hover:bg-secondary/80"
                       }`}
-                      variant={pkg.featured || isSelected ? "default" : "secondary"}
+                      variant={isSelected ? "default" : "secondary"}
                       onClick={() => selectPackage(pkg.name)}
                     >
                       {isSelected ? "View Selected Package" : "View Package"}
