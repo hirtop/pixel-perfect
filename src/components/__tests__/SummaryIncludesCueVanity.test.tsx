@@ -9,8 +9,10 @@ import {
 const TIERS: CuratedVanityTier[] = ["essential", "balanced", "premium"];
 
 const APPROVED_CAVEAT =
-  "Countertop and sink included with vanity. Faucet included in this package.";
+  "Countertop and sink included with vanity. Faucet and floor tile included in this package.";
 const OLD_CAVEAT = "Faucet selected separately";
+const PRIOR_CAVEAT =
+  "Countertop and sink included with vanity. Faucet included in this package.";
 
 const FORBIDDEN = [
   "recommended",
