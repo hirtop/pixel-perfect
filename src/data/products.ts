@@ -132,7 +132,7 @@ export function getBathroomInsights(project: {
 export const packageFitReasons: Record<string, string> = {
   Budget: "Refreshes all visible surfaces on your existing plumbing — least disruption, fastest install.",
   Balanced: "Upgrades materials and finishes without moving plumbing — keeps labor costs predictable.",
-  Premium: "Designer-grade materials with flexibility to change the layout if needed.",
+  Premium: "Designer-grade materials and finishes, designed around existing plumbing.",
 };
 
 // ─── Package tier pricing ───────────────────────────────────────────
