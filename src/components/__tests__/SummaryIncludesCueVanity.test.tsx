@@ -8,7 +8,9 @@ import {
 
 const TIERS: CuratedVanityTier[] = ["essential", "balanced", "premium"];
 
-const APPROVED_CAVEAT = "Countertop and sink included. Faucet selected separately.";
+const APPROVED_CAVEAT =
+  "Countertop and sink included with vanity. Faucet included in this package.";
+const OLD_CAVEAT = "Faucet selected separately";
 
 const FORBIDDEN = [
   "recommended",
