@@ -217,7 +217,7 @@ export const curatedVanities: CuratedVanity[] = [
       "Three drawers, one cabinet with inner shelf, two hardware sets",
     styleTags: ["modern", "warm-wood", "walnut"],
     qualityNotes:
-      "Same Bilston construction in a warm walnut finish; assembled with matching backsplash.",
+      "Same Bilston construction in a warm walnut finish; assembled with matching backsplash. Faucet hole pattern not stated in retailer spec table at curation date (Home Depot SKU 324252707); marked unknown pending direct manufacturer-spec verification.",
     whyFitsThisTier:
       "Wood-tone alternative within the same value tier and material story.",
     replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
