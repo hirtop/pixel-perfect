@@ -12,6 +12,7 @@ import BathroomInsights from "@/components/BathroomInsights";
 import ProjectSnapshot from "@/components/ProjectSnapshot";
 import PackageRationaleCue from "@/components/PackageRationaleCue";
 import PackagePersonaCue from "@/components/PackagePersonaCue";
+import PackageComparisonCue from "@/components/PackageComparisonCue";
 import budgetImg from "@/assets/package-budget.jpg";
 import balancedImg from "@/assets/package-balanced.jpg";
 import premiumImg from "@/assets/package-premium.jpg";
@@ -123,6 +124,10 @@ const RemodelOptions = () => {
 
           <div className="mb-6 max-w-4xl mx-auto">
             <ProjectSnapshot snapshot={snapshot} onNextStepClick={scrollToTier} />
+          </div>
+
+          <div className="mb-8 max-w-4xl mx-auto">
+            <PackageComparisonCue />
           </div>
 
           {insights.length > 0 && (

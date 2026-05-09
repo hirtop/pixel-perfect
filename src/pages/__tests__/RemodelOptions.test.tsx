@@ -33,6 +33,46 @@ vi.mock("@/assets/package-budget.jpg", () => ({ default: "" }));
 vi.mock("@/assets/package-balanced.jpg", () => ({ default: "" }));
 vi.mock("@/assets/package-premium.jpg", () => ({ default: "" }));
 
+describe("RemodelOptions Pass 20 comparison cue", () => {
+  it("renders exactly one PackageComparisonCue", () => {
+    render(
+      <MemoryRouter>
+        <RemodelOptions />
+      </MemoryRouter>
+    );
+    expect(screen.getAllByTestId("package-comparison-cue")).toHaveLength(1);
+  });
+
+  it("renders PackageComparisonCue between ProjectSnapshot and the first package card", () => {
+    const { container } = render(
+      <MemoryRouter>
+        <RemodelOptions />
+      </MemoryRouter>
+    );
+    const cue = container.querySelector('[data-testid="package-comparison-cue"]');
+    const snapshotHeading = screen.getByText("Next Step");
+    const firstCardHeading = screen.getByRole("heading", { name: "Essential" });
+    expect(cue).toBeTruthy();
+    // DOM order check via documentPosition
+    expect(
+      snapshotHeading.compareDocumentPosition(cue!) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+    expect(
+      cue!.compareDocumentPosition(firstCardHeading) & Node.DOCUMENT_POSITION_FOLLOWING
+    ).toBeTruthy();
+  });
+
+  it("PackageComparisonCue subtree does not mention Essential/Balanced/Premium", () => {
+    render(
+      <MemoryRouter>
+        <RemodelOptions />
+      </MemoryRouter>
+    );
+    const cue = screen.getByTestId("package-comparison-cue");
+    expect(cue.textContent ?? "").not.toMatch(/Essential|Balanced|Premium/);
+  });
+});
+
 describe("RemodelOptions Pass 19 copy cleanup", () => {
   it("does not render 'Most Popular' on Balanced card", () => {
     render(
