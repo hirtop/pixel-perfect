@@ -268,13 +268,16 @@ export default function LandingPage() {
             <motion.p
               variants={fadeUp}
               custom={1}
-              className="text-lg md:text-xl text-primary-foreground/80 mb-10 font-body leading-relaxed max-w-lg"
+              className="text-lg md:text-xl text-primary-foreground/80 mb-4 font-body leading-relaxed max-w-lg"
             >
               BOBOX Remodel helps you turn a bathroom photo into visual remodel
               packages with live budgets, real product suggestions, and a simple
               project plan.
             </motion.p>
-            <motion.div variants={fadeUp} custom={2} className="flex flex-wrap gap-4">
+            <motion.div variants={fadeUp} custom={2}>
+              <HomepageClarityCue />
+            </motion.div>
+            <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
                 Design Your Bathroom
               </Button>
