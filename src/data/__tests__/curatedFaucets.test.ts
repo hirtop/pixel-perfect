@@ -245,3 +245,41 @@ describe("curatedFaucets — forbidden BOBOX-facing copy", () => {
     }
   });
 });
+
+describe("curatedFaucets — Phase 2A-fix", () => {
+  it("Balanced tier has at least one non-matte-black faucet", () => {
+    const balanced = getCuratedFaucetsByTier("balanced");
+    const nonMatteBlack = balanced.filter(
+      (f) => f.finish.toLowerCase() !== "matte black",
+    );
+    expect(nonMatteBlack.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("Balanced backup1 is single-hole and non-matte-black", () => {
+    const b1 = getCuratedFaucetsByTier("balanced").find(
+      (f) => f.binRole === "backup1",
+    )!;
+    expect(b1.faucetType).toBe("single-hole");
+    expect(b1.finish.toLowerCase()).not.toBe("matte black");
+  });
+
+  it("Premium primary qualityNotes does not contain 'iconic'", () => {
+    const p = getPrimaryFaucetForTier("premium")!;
+    expect(p.qualityNotes.toLowerCase()).not.toContain("iconic");
+  });
+
+  it("Balanced rows: known flowRateGPM, or unknown with explanatory caveat/note", () => {
+    const balanced = getCuratedFaucetsByTier("balanced");
+    for (const f of balanced) {
+      if (f.flowRateGPM === "unknown") {
+        const text = (f.caveats + " " + f.qualityNotes).toLowerCase();
+        expect(
+          text.includes("flow") || text.includes("gpm"),
+          `${f.id} GPM unknown but no caveat/note explaining`,
+        ).toBe(true);
+      } else {
+        expect(typeof f.flowRateGPM).toBe("number");
+      }
+    }
+  });
+});
