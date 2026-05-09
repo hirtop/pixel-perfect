@@ -77,11 +77,11 @@ function VanityBlock({ tier }: { tier: CuratedVanityTier }) {
           <p className="font-medium text-foreground">
             {vanity.cleanedDisplayName}
           </p>
-          <ul className="mt-1.5 text-xs text-muted-foreground space-y-0.5">
-            <li>Finish: {vanity.colorFinish}</li>
-            <li>Countertop: {vanity.countertopMaterial}</li>
-            <li>Sink: {sinkLabel}</li>
-          </ul>
+          <div className="mt-1.5 text-xs text-muted-foreground space-y-0.5">
+            <div>Finish: {vanity.colorFinish}</div>
+            <div>Countertop: {vanity.countertopMaterial}</div>
+            <div>Sink: {sinkLabel}</div>
+          </div>
           <p className="mt-2 text-xs text-muted-foreground">
             {VANITY_CAVEAT}
           </p>
