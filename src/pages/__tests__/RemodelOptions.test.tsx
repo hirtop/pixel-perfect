@@ -51,4 +51,13 @@ describe("RemodelOptions Pass 19 copy cleanup", () => {
     );
     expect(screen.queryByText(/Best for/i)).not.toBeInTheDocument();
   });
+
+  it("does not render any 'Recommended' text on the page", () => {
+    render(
+      <MemoryRouter>
+        <RemodelOptions />
+      </MemoryRouter>
+    );
+    expect(screen.queryByText(/Recommended/i)).not.toBeInTheDocument();
+  });
 });
