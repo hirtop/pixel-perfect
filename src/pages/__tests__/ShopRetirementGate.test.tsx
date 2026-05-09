@@ -2,7 +2,6 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import Shop from "../Shop";
-import Index from "../Index";
 
 vi.mock("@/components/AccountMenu", () => ({
   default: () => <div data-testid="account-menu" />,
