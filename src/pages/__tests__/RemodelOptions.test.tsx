@@ -50,7 +50,7 @@ describe("RemodelOptions Pass 20 comparison cue", () => {
       </MemoryRouter>
     );
     const cue = container.querySelector('[data-testid="package-comparison-cue"]');
-    const snapshotHeading = screen.getByRole("heading", { name: "Next Step" });
+    const snapshotHeading = screen.getByText("Next Step");
     const firstCardHeading = screen.getByRole("heading", { name: "Essential" });
     expect(cue).toBeTruthy();
     // DOM order check via documentPosition
