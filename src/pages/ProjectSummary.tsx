@@ -19,6 +19,7 @@ import RecencyHint from "@/components/RecencyHint";
 import PlanStatusBadge from "@/components/PlanStatusBadge";
 import SummaryIncludesCue from "@/components/SummaryIncludesCue";
 import SummaryExclusionsCue from "@/components/SummaryExclusionsCue";
+import SummaryFramingCue from "@/components/SummaryFramingCue";
 import { toast } from "sonner";
 
 
