@@ -21,7 +21,6 @@ const packages = [
     name: "Budget",
     displayName: "Essential",
     image: budgetImg,
-    bestFor: "Best for fast refreshes on existing plumbing.",
     summary: "Replace the vanity, re-tile, and update fixtures — all on existing plumbing in about a week.",
     highlights: [
       "New vanity & sink — no plumbing changes",
@@ -36,7 +35,6 @@ const packages = [
     name: "Balanced",
     displayName: "Balanced",
     image: balancedImg,
-    bestFor: "Best for upgrading materials on existing plumbing.",
     summary: "Step up to quartz, porcelain, and coordinated hardware for a room that looks and feels meaningfully different.",
     highlights: [
       "Floating vanity with quartz countertop",
@@ -44,7 +42,6 @@ const packages = [
       "Coordinated brushed nickel fixtures",
       "Dual wall sconces for even lighting",
     ],
-    featured: true,
     fit: packageFitReasons.Balanced,
     pricing: packagePricing.Balanced,
   },
@@ -52,7 +49,6 @@ const packages = [
     name: "Premium",
     displayName: "Premium",
     image: premiumImg,
-    bestFor: "Best for designer finishes and layout flexibility.",
     summary: "Natural stone, designer hardware, and the flexibility to rethink the layout — not just the finishes.",
     highlights: [
       "Custom vanity with natural stone top",
