@@ -108,18 +108,19 @@ describe("curatedVanities — required fields", () => {
     }
   });
 
-  it("real products use approved retailer URLs; placeholders may have null URL", () => {
+  it("all entries are real verified products with approved retailer URLs and image URLs", () => {
     for (const v of curatedVanities) {
-      if (v.isRealProduct) {
-        expect(v.productUrl).toBeTruthy();
-        expect(isApprovedRetailerUrl(v.productUrl as string)).toBe(true);
-      } else {
-        // Placeholders allowed to have null URL; if set, must still be approved.
-        if (v.productUrl) {
-          expect(isApprovedRetailerUrl(v.productUrl)).toBe(true);
-        }
-      }
+      expect(v.isRealProduct).toBe(true);
+      expect(v.isPlaceholder).toBe(false);
+      expect(v.productUrl).toBeTruthy();
+      expect(v.imageUrl).toBeTruthy();
+      expect(isApprovedRetailerUrl(v.productUrl as string)).toBe(true);
     }
+  });
+
+  it("no placeholder slots remain", () => {
+    expect(curatedVanities.some((v) => v.isPlaceholder)).toBe(false);
+    expect(curatedVanities.every((v) => v.isRealProduct)).toBe(true);
   });
 });
 
