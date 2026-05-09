@@ -266,7 +266,7 @@ export const curatedVanities: CuratedVanity[] = [
     storageNotes: "Two-door cabinet with shelving; assembled.",
     styleTags: ["modern", "warm-neutral", "sandstorm"],
     qualityNotes:
-      "Different product family from Bilston, providing real Essential-tier diversity. Limited review history at curation date.",
+      "Different product family from Bilston, providing real Essential-tier diversity. Limited review history at curation date. Faucet hole pattern not stated in retailer spec table at curation date (Home Depot SKU 333363871); marked unknown pending direct manufacturer-spec verification.",
     whyFitsThisTier:
       "Modern silhouette and engineered stone top within the value range from a different cabinet family.",
     replacementReason:
