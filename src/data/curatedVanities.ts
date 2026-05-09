@@ -552,6 +552,7 @@ export const curatedVanities: CuratedVanity[] = [
     modelNumber: "330-V36-LNO-3ENC",
     dimensions: "36.0 in W x 23.5 in D x 34.2 in H",
   },
+];
 
 // ─── Selectors ──────────────────────────────────────────────────────
 
