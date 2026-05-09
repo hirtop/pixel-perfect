@@ -6,9 +6,18 @@ export interface Identity {
 }
 
 /**
- * Ensure the user has a Supabase session.
- * If none exists, attempt anonymous sign-in (when enabled in the project).
- * Returns { userId } or { userId: null } if identity could not be established.
+ * Read-only identity check. Returns the current Supabase user id if a session
+ * exists, otherwise { userId: null } without mutating auth state.
+ *
+ * Anonymous sign-in is intentionally NOT attempted here:
+ * - Anonymous auth is disabled for this project, so the call returns 422 and
+ *   pollutes the network log on every unauthenticated page load.
+ * - Worse, calling signInAnonymously() during a hard navigation can race the
+ *   initial getSession() rehydrate and clear the in-memory authenticated
+ *   session, which previously broke /summary for signed-in users.
+ *
+ * TODO: a separate canonical-domain redirect (www <-> apex) should be handled
+ * outside this module if/when that work is scoped.
  */
 export async function ensureIdentity(): Promise<Identity> {
   try {
@@ -19,16 +28,7 @@ export async function ensureIdentity(): Promise<Identity> {
         isAnonymous: Boolean((session.user as { is_anonymous?: boolean }).is_anonymous),
       };
     }
-
-    const { data, error } = await supabase.auth.signInAnonymously();
-    if (error) {
-      console.warn("[persistence/identity] anonymous sign-in failed:", error.message);
-      return { userId: null, isAnonymous: false };
-    }
-    return {
-      userId: data.user?.id ?? null,
-      isAnonymous: true,
-    };
+    return { userId: null, isAnonymous: false };
   } catch (err) {
     console.error("[persistence/identity] unexpected error:", err);
     return { userId: null, isAnonymous: false };
