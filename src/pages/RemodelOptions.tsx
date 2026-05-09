@@ -108,35 +108,35 @@ const RemodelOptions = () => {
         </div>
       </nav>
 
-      <main className="pt-28 pb-20 px-6">
+      <main className="pt-28 pb-20 px-4 sm:px-6">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           className="max-w-6xl mx-auto"
         >
-          <div className="text-center mb-8">
+          <div className="text-center mb-10 sm:mb-12">
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Your Remodel Options</h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto leading-relaxed">
               Three curated directions for your space and budget. Every package is designed to work as a whole — swap individual products without breaking the look.
             </p>
           </div>
 
-          <div className="mb-6 max-w-4xl mx-auto">
+          <div className="mb-8 sm:mb-10 max-w-4xl mx-auto">
             <ProjectSnapshot snapshot={snapshot} onNextStepClick={scrollToTier} />
           </div>
 
-          <div className="mb-8 max-w-4xl mx-auto">
+          <div className="mb-8 sm:mb-10 max-w-4xl mx-auto">
             <PackageComparisonCue />
           </div>
 
           {insights.length > 0 && (
-            <div className="mb-8 max-w-3xl mx-auto">
+            <div className="mb-8 sm:mb-10 max-w-3xl mx-auto">
               <BathroomInsights insights={insights} compact />
             </div>
           )}
 
-          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 rounded-xl bg-secondary/40 border border-border px-6 py-4 mb-12 text-sm">
+          <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-2 rounded-xl bg-secondary/40 border border-border px-6 py-4 mb-12 sm:mb-14 text-sm">
             <div>
               <span className="text-muted-foreground">Materials Range </span>
               <span className="font-semibold text-foreground">$3,000 – $18,000</span>
@@ -157,7 +157,7 @@ const RemodelOptions = () => {
             )}
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-7 items-stretch">
             {packages.map((pkg, i) => {
               const isSelected = project.selected_package.name === pkg.name;
               const isPreferred = !project.selected_package.name && project.style_preferences.budget_level?.toLowerCase().includes(pkg.name.toLowerCase());
@@ -168,7 +168,7 @@ const RemodelOptions = () => {
                   initial={{ opacity: 0, y: 24 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.12, duration: 0.5 }}
-                  className={`group rounded-2xl border-2 overflow-hidden transition-all duration-200 hover:shadow-lg ${
+                  className={`group flex flex-col rounded-2xl border-2 overflow-hidden transition-all duration-200 hover:shadow-lg ${
                     isSelected || isPreferred
                       ? "border-primary shadow-md ring-2 ring-primary/20"
                       : "border-border hover:border-primary/30"
@@ -183,13 +183,13 @@ const RemodelOptions = () => {
                     )}
                   </div>
 
-                  <div className="p-6 space-y-4">
+                  <div className="flex flex-col flex-1 p-6 gap-5">
                     <div>
-                      <div className="flex items-center justify-between gap-2 mb-1">
+                      <div className="flex items-center justify-between gap-2 mb-1.5">
                         <h2 className="font-heading text-xl text-foreground">{pkg.displayName}</h2>
                       </div>
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
-                      <div className="mt-2 space-y-1">
+                      <div className="mt-3 space-y-1.5">
                         <PackageRationaleCue tier={pkg.name as "Budget" | "Balanced" | "Premium"} />
                         <PackagePersonaCue tier={pkg.name as "Budget" | "Balanced" | "Premium"} />
                       </div>
@@ -200,7 +200,7 @@ const RemodelOptions = () => {
                       <p className="text-xs text-foreground leading-relaxed">{pkg.fit}</p>
                     </div>
 
-                    <div className="space-y-1 text-sm">
+                    <div className="space-y-1.5 text-sm">
                       <div className="flex justify-between">
                         <span className="text-muted-foreground">Materials</span>
                         <span className="font-medium text-foreground">{pkg.pricing.materialRange}</span>
@@ -210,7 +210,7 @@ const RemodelOptions = () => {
                         <span className="font-semibold text-foreground">{pkg.pricing.projectRange}</span>
                       </div>
                     </div>
-                    <ul className="space-y-1.5">
+                    <ul className="space-y-2">
                       {pkg.highlights.map((h) => (
                         <li key={h} className="flex items-center gap-2 text-sm text-muted-foreground">
                           <Check className="h-3.5 w-3.5 text-primary flex-shrink-0" />
@@ -218,23 +218,27 @@ const RemodelOptions = () => {
                         </li>
                       ))}
                     </ul>
-                    <Button
-                      className={`w-full h-11 text-sm font-semibold rounded-lg ${
-                        isSelected ? "" : "bg-secondary text-foreground hover:bg-secondary/80"
-                      }`}
-                      variant={isSelected ? "default" : "secondary"}
-                      onClick={() => selectPackage(pkg.name)}
-                    >
-                      {isSelected ? "View Selected Package" : "View Package"}
-                    </Button>
-                    <p className="text-[10px] text-muted-foreground text-center">Customize products on the next step</p>
+                    <div className="mt-auto space-y-2">
+                      <Button
+                        className={`w-full h-11 text-sm font-semibold rounded-lg ${
+                          isSelected
+                            ? ""
+                            : "bg-primary/10 text-primary border border-primary/30 hover:bg-primary/15 hover:border-primary/50"
+                        }`}
+                        variant={isSelected ? "default" : "ghost"}
+                        onClick={() => selectPackage(pkg.name)}
+                      >
+                        {isSelected ? "View Selected Package" : "View Package"}
+                      </Button>
+                      <p className="text-[10px] text-muted-foreground text-center">Customize products on the next step</p>
+                    </div>
                   </div>
                 </motion.div>
               );
             })}
           </div>
 
-          <p className="text-center text-xs text-muted-foreground mt-8 max-w-lg mx-auto leading-relaxed">
+          <p className="text-center text-xs text-muted-foreground mt-10 sm:mt-12 max-w-lg mx-auto leading-relaxed">
             Prices are estimates based on national averages. Final pricing depends on your contractor, region, and site conditions. You can swap individual products on the next step.
           </p>
         </motion.div>
