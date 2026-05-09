@@ -120,19 +120,13 @@ const ProjectSummary = () => {
     { label: "Bathing Setup", value: project.bathing_setup || "Not yet selected" },
   ];
 
-  const packageItems = project.customizations.categories && project.customizations.categories.length > 0
-    ? defaultPackageItems.map((dp) => {
-        const custom = project.customizations.categories!.find((c) => c.name === dp.name);
-        if (custom) {
-          return { ...dp, item: custom.selected };
-        }
-        return dp;
-      })
-    : defaultPackageItems;
+  // V1 /shop Retirement Gate: do not let legacy /shop selection state
+  // (project.customizations.categories) feed the /summary package list or
+  // materials total. The curated vanity surface below reads only from
+  // curatedVanities.ts via SummaryIncludesCue.
+  const packageItems = defaultPackageItems;
 
-  const materialsTotal = project.customizations.categories && project.customizations.categories.length > 0
-    ? project.customizations.categories.reduce((sum, c) => sum + c.price, 0)
-    : 8400;
+  const materialsTotal = 8400;
 
   const budgetLines = [
     { label: "Materials", value: `$${materialsTotal.toLocaleString()}` },
