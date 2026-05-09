@@ -166,20 +166,16 @@ const RemodelOptions = () => {
                   className={`group rounded-2xl border-2 overflow-hidden transition-all duration-200 hover:shadow-lg ${
                     isSelected || isPreferred
                       ? "border-primary shadow-md ring-2 ring-primary/20"
-                      : pkg.featured
-                        ? "border-primary shadow-md ring-1 ring-primary/10"
-                        : "border-border hover:border-primary/30"
+                      : "border-border hover:border-primary/30"
                   }`}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img src={pkg.image} alt={`${pkg.displayName} bathroom remodel`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width={800} height={600} loading={i === 0 ? undefined : "lazy"} />
-                    {(isSelected || isPreferred) ? (
+                    {(isSelected || isPreferred) && (
                       <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
                         <Check className="h-3 w-3" /> Your Selection
                       </div>
-                    ) : pkg.featured ? (
-                      <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">Most Popular</div>
-                    ) : null}
+                    )}
                   </div>
 
                   <div className="p-6 space-y-4">
