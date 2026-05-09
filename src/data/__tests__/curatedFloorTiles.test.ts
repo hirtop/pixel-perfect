@@ -285,6 +285,31 @@ describe("curatedFloorTiles — material and floor-rating rules", () => {
   });
 });
 
+describe("curatedFloorTiles — Premium look diversity", () => {
+  it("Premium tier does not have all 3 marble-look SKUs", () => {
+    const premium = getCuratedFloorTilesByTier("premium");
+    const marbleLook = premium.filter((t) => t.tileLook === "marble-look");
+    expect(marbleLook.length).toBeLessThan(3);
+  });
+
+  it("Premium backup2 is not marble-look", () => {
+    const backups = getBackupFloorTilesForTier("premium");
+    const backup2 = backups.find((b) => b.binRole === "backup2");
+    expect(backup2).toBeDefined();
+    expect(backup2!.tileLook).not.toBe("marble-look");
+  });
+
+  it("at least 4 distinct brands across the 9 SKUs", () => {
+    const brands = new Set(curatedFloorTiles.map((t) => t.brand));
+    expect(brands.size).toBeGreaterThanOrEqual(4);
+  });
+
+  it("at least 3 distinct retailers across the 9 SKUs", () => {
+    const retailers = new Set(curatedFloorTiles.map((t) => t.retailer));
+    expect(retailers.size).toBeGreaterThanOrEqual(3);
+  });
+});
+
 describe("curatedFloorTiles — forbidden BOBOX-facing copy", () => {
   it("no forbidden phrases in copy fields", () => {
     for (const t of curatedFloorTiles) {
