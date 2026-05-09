@@ -98,7 +98,7 @@ const ProjectSnapshot = ({ snapshot, onNextStepClick }: Props) => {
 
         {/* Next step */}
         <div className="p-6 bg-secondary/20">
-          <SectionLabel icon={Compass}>Recommended Next Step</SectionLabel>
+          <SectionLabel icon={Compass}>Next Step</SectionLabel>
           <p className="text-sm text-foreground leading-relaxed">{snapshot.nextStep.text}</p>
           {onNextStepClick && snapshot.nextStep.highlightTier && (
             <button
