@@ -427,54 +427,131 @@ export const curatedVanities: CuratedVanity[] = [
   },
 
   // ── Premium ($1,800–$3,500) ────────────────────────────────────────
-  placeholderSlot({
+  {
     id: "modern-premium-vanity-primary",
     tier: "premium",
+    style: "modern",
+    category: "vanity",
     binRole: "primary",
-    priceUSD: 2495,
-    colorFinish: "Rift-cut white oak",
-    countertopMaterial: "Natural stone (marble-look)",
-    sinkType: "Undermount porcelain rectangular",
-    storageNotes: "Soft-close drawers, dovetail joinery, interior organizers",
-    styleTags: ["modern", "designer", "stone-top"],
-    qualityNotes:
-      "Designer-grade finish work and a natural-stone-style top with refined hardware.",
-    whyFitsThisTier:
-      "Highest visual quality of the modern set with refined materials and hardware.",
+    productName:
+      "James Martin Vanities Amberly 36.0 in. W x 23.5 in. D x 34.7 in. H Bathroom Vanity in Mid-Century Walnut with Carrara Marble Top",
+    cleanedDisplayName:
+      "James Martin Amberly 36 in. Mid-Century Walnut Vanity with Carrara Marble Top",
+    brand: "James Martin Vanities",
+    retailer: "Home Depot",
+    productUrl:
+      "https://www.homedepot.com/p/James-Martin-Vanities-Amberly-36-0-in-W-x-23-5-in-D-x-34-7-in-H-Bathroom-Vanity-in-Mid-Century-Walnut-with-Carrara-Marble-Marble-Top-670-V36-WLT-3CAR/325052368",
+    priceUSD: 2564,
+    priceCapturedDate: VERIFIED_DATE,
+    widthInches: 36,
+    colorFinish: "Mid-Century Walnut",
+    countertopIncluded: true,
+    countertopMaterial: "Carrara White marble",
+    sinkIncluded: true,
+    sinkType: "Single sink (pre-drilled three-hole top, vanity-with-top combo)",
     faucetIncluded: false,
-  }),
-  placeholderSlot({
+    storageNotes: "Removable base, oval hardware, drawer and door storage",
+    styleTags: ["modern", "mid-century", "walnut", "marble-top"],
+    qualityNotes:
+      "Mid-Century Modern profile with removable base, oval hardware, and a pre-drilled three-hole Carrara Marble top.",
+    whyFitsThisTier:
+      "Designer-grade finish work and natural-stone top within the upper modern range.",
+    replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
+    caveats: "Faucet not included.",
+    availabilityStatus: "in_stock",
+    imageUrl:
+      "https://images.thdstatic.com/productImages/3860bc48-e74c-5738-b010-72060232bdab/svn/james-martin-vanities-bathroom-vanities-with-tops-670-v36-wlt-3car-64_600.jpg",
+    imageLicense: "retailer",
+    isRealProduct: true,
+    isPlaceholder: false,
+    sku: "325052368",
+    modelNumber: "670-V36-WLT-3CAR",
+    dimensions: "36.0 in W x 23.5 in D x 34.7 in H",
+  },
+  {
     id: "modern-premium-vanity-backup1",
     tier: "premium",
+    style: "modern",
+    category: "vanity",
     binRole: "backup1",
-    priceUSD: 2890,
-    colorFinish: "Matte navy",
-    countertopMaterial: "Natural stone (marble-look)",
-    sinkType: "Undermount porcelain rectangular",
-    storageNotes: "Soft-close drawers, organized interior, brushed pulls",
-    styleTags: ["modern", "designer", "deep-tone"],
-    qualityNotes: "Deep-tone alternative with refined finish work.",
-    whyFitsThisTier:
-      "Backup keeping the upgraded modern feel in a darker palette.",
+    productName:
+      "James Martin Vanities Lorelai 36.0 in. W x 23.5 in. D x 34.06 in. H Single Bathroom Vanity in Light Natural Oak with Carrara White Marble Top",
+    cleanedDisplayName:
+      "James Martin Lorelai 36 in. Light Natural Oak Vanity with Carrara Marble Top",
+    brand: "James Martin Vanities",
+    retailer: "Home Depot",
+    productUrl:
+      "https://www.homedepot.com/p/James-Martin-Vanities-Lorelai-36-0-in-W-x-23-5-in-D-x-34-06-in-H-Single-Bathroom-Vanity-in-Light-Natural-Oak-with-Carrara-White-Marble-Top-424-V36-LNO-3CAR/330023886",
+    priceUSD: 2602,
+    priceCapturedDate: VERIFIED_DATE,
+    widthInches: 36,
+    colorFinish: "Light Natural Oak",
+    countertopIncluded: true,
+    countertopMaterial: "Carrara White marble",
+    sinkIncluded: true,
+    sinkType: "Porcelain sink (single)",
     faucetIncluded: false,
-  }),
-  placeholderSlot({
+    storageNotes:
+      "USB and electric outlet, drawers and door cabinet storage, solid wood frame",
+    styleTags: ["modern", "natural-oak", "marble-top"],
+    qualityNotes:
+      "Carrara White marble top with porcelain sink on a solid wood frame; integrated USB and electrical outlet.",
+    whyFitsThisTier:
+      "Natural-oak alternative within the upper modern range with a marble top.",
+    replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
+    caveats: "Faucet not included.",
+    availabilityStatus: "in_stock",
+    imageUrl:
+      "https://images.thdstatic.com/productImages/11353c4e-649a-55a0-8478-e172d6c30316/svn/james-martin-vanities-bathroom-vanities-with-tops-424-v36-lno-3car-64_600.jpg",
+    imageLicense: "retailer",
+    isRealProduct: true,
+    isPlaceholder: false,
+    sku: "330023886",
+    modelNumber: "424-V36-LNO-3CAR",
+    dimensions: "36.0 in W x 23.5 in D x 34.06 in H",
+  },
+  {
     id: "modern-premium-vanity-backup2",
     tier: "premium",
+    style: "modern",
+    category: "vanity",
     binRole: "backup2",
-    priceUSD: 3250,
-    colorFinish: "Smoked oak",
-    countertopMaterial: "Natural stone slab",
-    sinkType: "Undermount porcelain oval",
-    storageNotes: "Soft-close drawers, integrated organizers",
-    styleTags: ["modern", "designer", "stone-top"],
-    qualityNotes:
-      "Top of the modern range with stone slab top and detailed finish work.",
-    whyFitsThisTier:
-      "Alternate finish at the upper end of the modern range.",
+    productName:
+      "James Martin Vanities Breckenridge 36.0 in. W x 23.5 in. D x 34.2 in. H Bathroom Vanity in Light Oak with Ethereal Noctis Quartz Top",
+    cleanedDisplayName:
+      "James Martin Breckenridge 36 in. Light Natural Oak Vanity with Ethereal Noctis Quartz Top",
+    brand: "James Martin Vanities",
+    retailer: "Home Depot",
+    productUrl:
+      "https://www.homedepot.com/p/James-Martin-Vanities-Breckenridge-36-0-in-W-x-23-5-in-D-x-34-2-in-H-Bathroom-Vanity-in-Light-Oak-with-Ethereal-Noctis-Quartz-Top-330-V36-LNO-3ENC/325052736",
+    priceUSD: 3020,
+    priceCapturedDate: VERIFIED_DATE,
+    widthInches: 36,
+    colorFinish: "Light Natural Oak",
+    countertopIncluded: true,
+    countertopMaterial: "Ethereal Noctis quartz",
+    sinkIncluded: true,
+    sinkType: "Single sink (pre-drilled three-hole top, vanity-with-top combo)",
     faucetIncluded: false,
-  }),
-];
+    storageNotes:
+      "Modern Farmhouse profile with Shaker-style fronts and a lower display shelf",
+    styleTags: ["modern", "natural-oak", "quartz-top"],
+    qualityNotes:
+      "Modern Farmhouse profile with Shaker fronts and a pre-drilled three-hole Ethereal Noctis quartz top.",
+    whyFitsThisTier:
+      "Higher-end alternate finish with a quartz top at the top of the modern range.",
+    replacementReason: "Verified retailer SKU replacing Phase 1 placeholder.",
+    caveats: "Faucet not included.",
+    availabilityStatus: "in_stock",
+    imageUrl:
+      "https://images.thdstatic.com/productImages/0067cb09-050c-504c-ac2c-042cf09428e9/svn/james-martin-vanities-bathroom-vanities-with-tops-330-v36-lno-3enc-64_600.jpg",
+    imageLicense: "retailer",
+    isRealProduct: true,
+    isPlaceholder: false,
+    sku: "325052736",
+    modelNumber: "330-V36-LNO-3ENC",
+    dimensions: "36.0 in W x 23.5 in D x 34.2 in H",
+  },
 
 // ─── Selectors ──────────────────────────────────────────────────────
 
