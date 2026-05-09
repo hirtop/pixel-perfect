@@ -21,7 +21,6 @@ const packages = [
     name: "Budget",
     displayName: "Essential",
     image: budgetImg,
-    bestFor: "Best for fast refreshes on existing plumbing.",
     summary: "Replace the vanity, re-tile, and update fixtures — all on existing plumbing in about a week.",
     highlights: [
       "New vanity & sink — no plumbing changes",
@@ -36,7 +35,6 @@ const packages = [
     name: "Balanced",
     displayName: "Balanced",
     image: balancedImg,
-    bestFor: "Best for upgrading materials on existing plumbing.",
     summary: "Step up to quartz, porcelain, and coordinated hardware for a room that looks and feels meaningfully different.",
     highlights: [
       "Floating vanity with quartz countertop",
@@ -44,7 +42,6 @@ const packages = [
       "Coordinated brushed nickel fixtures",
       "Dual wall sconces for even lighting",
     ],
-    featured: true,
     fit: packageFitReasons.Balanced,
     pricing: packagePricing.Balanced,
   },
@@ -52,7 +49,6 @@ const packages = [
     name: "Premium",
     displayName: "Premium",
     image: premiumImg,
-    bestFor: "Best for designer finishes and layout flexibility.",
     summary: "Natural stone, designer hardware, and the flexibility to rethink the layout — not just the finishes.",
     highlights: [
       "Custom vanity with natural stone top",
@@ -170,20 +166,16 @@ const RemodelOptions = () => {
                   className={`group rounded-2xl border-2 overflow-hidden transition-all duration-200 hover:shadow-lg ${
                     isSelected || isPreferred
                       ? "border-primary shadow-md ring-2 ring-primary/20"
-                      : pkg.featured
-                        ? "border-primary shadow-md ring-1 ring-primary/10"
-                        : "border-border hover:border-primary/30"
+                      : "border-border hover:border-primary/30"
                   }`}
                 >
                   <div className="relative aspect-[4/3] overflow-hidden">
                     <img src={pkg.image} alt={`${pkg.displayName} bathroom remodel`} className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105" width={800} height={600} loading={i === 0 ? undefined : "lazy"} />
-                    {(isSelected || isPreferred) ? (
+                    {(isSelected || isPreferred) && (
                       <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1">
                         <Check className="h-3 w-3" /> Your Selection
                       </div>
-                    ) : pkg.featured ? (
-                      <div className="absolute top-3 left-3 bg-primary text-primary-foreground text-xs font-semibold px-3 py-1 rounded-full">Most Popular</div>
-                    ) : null}
+                    )}
                   </div>
 
                   <div className="p-6 space-y-4">
@@ -191,7 +183,6 @@ const RemodelOptions = () => {
                       <div className="flex items-center justify-between gap-2 mb-1">
                         <h2 className="font-heading text-xl text-foreground">{pkg.displayName}</h2>
                       </div>
-                      <p className="text-[11px] font-medium text-primary mb-2">{pkg.bestFor}</p>
                       <p className="text-sm text-muted-foreground leading-relaxed">{pkg.summary}</p>
                       <div className="mt-2 space-y-1">
                         <PackageRationaleCue tier={pkg.name as "Budget" | "Balanced" | "Premium"} />
@@ -224,9 +215,9 @@ const RemodelOptions = () => {
                     </ul>
                     <Button
                       className={`w-full h-11 text-sm font-semibold rounded-lg ${
-                        pkg.featured || isSelected ? "" : "bg-secondary text-foreground hover:bg-secondary/80"
+                        isSelected ? "" : "bg-secondary text-foreground hover:bg-secondary/80"
                       }`}
-                      variant={pkg.featured || isSelected ? "default" : "secondary"}
+                      variant={isSelected ? "default" : "secondary"}
                       onClick={() => selectPackage(pkg.name)}
                     >
                       {isSelected ? "View Selected Package" : "View Package"}

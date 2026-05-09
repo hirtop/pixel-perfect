@@ -4,11 +4,11 @@ interface PackageRationaleCueProps {
 
 const RATIONALE_COPY: Record<PackageRationaleCueProps["tier"], string> = {
   Budget:
-    "Clean modern refresh with streamlined finishes and fewer upgrades.",
+    "Clean modern refresh with streamlined finishes and fewer upgrades, designed around existing plumbing.",
   Balanced:
-    "Shower-forward modern remodel with cohesive finishes and curated retailer-anchored selections.",
+    "Shower-forward modern remodel with cohesive finishes and curated retailer-anchored selections, designed around existing plumbing.",
   Premium:
-    "Modern look with upgraded fixtures, larger formats, and detailed finish work.",
+    "Modern look with upgraded fixtures, larger formats, and detailed finish work, designed around existing plumbing.",
 };
 
 const PackageRationaleCue = ({ tier }: PackageRationaleCueProps) => {
