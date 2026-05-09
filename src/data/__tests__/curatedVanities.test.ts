@@ -6,6 +6,8 @@ import {
   getBackupVanitiesForTier,
   isApprovedRetailerUrl,
   TIER_PRICE_BANDS,
+  SINK_TYPE_VALUES,
+  FAUCET_HOLE_PATTERN_VALUES,
   type CuratedVanityTier,
 } from "../curatedVanities";
 
@@ -35,7 +37,6 @@ const FORBIDDEN_PHRASES = [
   "custom",
 ];
 
-// "best" needs word-boundary check (avoid matching inside other words)
 const BEST_REGEX = /\bbest\b/i;
 
 describe("curatedVanities — structure", () => {
@@ -73,38 +74,55 @@ describe("curatedVanities — structure", () => {
     const ids = curatedVanities.map((v) => v.id);
     expect(new Set(ids).size).toBe(ids.length);
   });
+
+  it("productUrls are unique", () => {
+    const urls = curatedVanities.map((v) => v.productUrl);
+    expect(new Set(urls).size).toBe(urls.length);
+  });
 });
 
 describe("curatedVanities — required fields", () => {
-  it.each(curatedVanities)(
-    "$id has correct fixed shape",
-    (v) => {
-      expect(v.style).toBe("modern");
-      expect(v.category).toBe("vanity");
-      expect(v.widthInches).toBe(36);
-      expect(v.countertopIncluded).toBe(true);
-      expect(v.sinkIncluded).toBe(true);
-      expect(v.countertopMaterial.trim().length).toBeGreaterThan(0);
-      expect(v.sinkType.trim().length).toBeGreaterThan(0);
-      expect([true, false, "unknown"]).toContain(v.faucetIncluded);
-      expect(v.priceCapturedDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
-      expect(v.productName.trim().length).toBeGreaterThan(0);
-      expect(v.cleanedDisplayName.trim().length).toBeGreaterThan(0);
-      expect(v.brand.trim().length).toBeGreaterThan(0);
-      expect(v.retailer.trim().length).toBeGreaterThan(0);
-      expect(typeof v.priceUSD).toBe("number");
-      expect(v.colorFinish.trim().length).toBeGreaterThan(0);
-      expect(Array.isArray(v.styleTags)).toBe(true);
-      expect(typeof v.isRealProduct).toBe("boolean");
-      expect(typeof v.isPlaceholder).toBe("boolean");
-    },
-  );
+  it.each(curatedVanities)("$id has correct fixed shape", (v) => {
+    expect(v.style).toBe("modern");
+    expect(v.category).toBe("vanity");
+    expect(v.widthInches).toBe(36);
+    expect(v.countertopIncluded).toBe(true);
+    expect(v.sinkIncluded).toBe(true);
+    expect(v.countertopMaterial.trim().length).toBeGreaterThan(0);
+    expect(SINK_TYPE_VALUES).toContain(v.sinkType);
+    expect(FAUCET_HOLE_PATTERN_VALUES).toContain(v.faucetHolePattern);
+    expect([true, false, "unknown"]).toContain(v.faucetIncluded);
+    expect(v.priceCapturedDate).toMatch(/^\d{4}-\d{2}-\d{2}$/);
+    expect(v.productName.trim().length).toBeGreaterThan(0);
+    expect(v.cleanedDisplayName.trim().length).toBeGreaterThan(0);
+    expect(v.brand.trim().length).toBeGreaterThan(0);
+    expect(v.retailer.trim().length).toBeGreaterThan(0);
+    expect(typeof v.priceUSD).toBe("number");
+    expect(typeof v.priceUSDObserved).toBe("number");
+    expect(typeof v.priceUSDRegular).toBe("number");
+    expect(v.priceUSD).toBe(v.priceUSDObserved);
+    expect(v.colorFinish.trim().length).toBeGreaterThan(0);
+    expect(Array.isArray(v.styleTags)).toBe(true);
+    expect(typeof v.isRealProduct).toBe("boolean");
+    expect(typeof v.isPlaceholder).toBe("boolean");
+    expect(v.imageLicense).toBeTruthy();
+  });
 
-  it("price falls within tier band for every entry", () => {
+  it("observed price falls within tier band for every entry", () => {
     for (const v of curatedVanities) {
       const band = TIER_PRICE_BANDS[v.tier];
-      expect(v.priceUSD).toBeGreaterThanOrEqual(band.min);
-      expect(v.priceUSD).toBeLessThanOrEqual(band.max);
+      expect(v.priceUSDObserved).toBeGreaterThanOrEqual(band.min);
+      expect(v.priceUSDObserved).toBeLessThanOrEqual(band.max);
+    }
+  });
+
+  it("if observed < regular, caveats mention sale and regular price", () => {
+    for (const v of curatedVanities) {
+      if (v.priceUSDObserved < v.priceUSDRegular) {
+        const c = v.caveats.toLowerCase();
+        expect(c).toMatch(/sale/);
+        expect(c).toMatch(/regular/);
+      }
     }
   });
 
@@ -129,6 +147,40 @@ describe("curatedVanities — countertop/sink validation", () => {
     for (const v of curatedVanities) {
       expect(v.caveats.toLowerCase()).not.toContain("sold separately");
     }
+  });
+});
+
+describe("curatedVanities — tier diversity", () => {
+  it("Essential is not three Bilston entries", () => {
+    const essential = getCuratedVanitiesByTier("essential");
+    const bilstonCount = essential.filter((v) =>
+      v.productName.toLowerCase().includes("bilston"),
+    ).length;
+    expect(bilstonCount).toBeLessThan(3);
+  });
+
+  it("Essential has at least one non-Bilston backup", () => {
+    const backups = getBackupVanitiesForTier("essential");
+    const hasNonBilston = backups.some(
+      (v) => !v.productName.toLowerCase().includes("bilston"),
+    );
+    expect(hasNonBilston).toBe(true);
+  });
+
+  it("Premium is not three James Martin warm-wood SKUs", () => {
+    const premium = getCuratedVanitiesByTier("premium");
+    const jmCount = premium.filter((v) =>
+      v.brand.toLowerCase().includes("james martin"),
+    ).length;
+    expect(jmCount).toBeLessThan(3);
+  });
+
+  it("Premium has at least one non-James-Martin entry providing palette diversity", () => {
+    const premium = getCuratedVanitiesByTier("premium");
+    const hasOther = premium.some(
+      (v) => !v.brand.toLowerCase().includes("james martin"),
+    );
+    expect(hasOther).toBe(true);
   });
 });
 
