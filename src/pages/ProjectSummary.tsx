@@ -361,7 +361,7 @@ const ProjectSummary = () => {
             </ul>
           </section>
 
-          <SummaryIncludesCue className="mb-8" />
+          <SummaryIncludesCue className="mb-8" tier={savedTierLower} />
           <SummaryExclusionsCue className="mb-8" />
 
           <section className="mb-12 contractor-section">
