@@ -446,7 +446,7 @@ export default function LandingPage() {
         <ShopProducts limit={3} hideFilters hideHeader className="py-0 bg-transparent" />
         <div className="text-center mt-10">
           <Button size="lg" variant="outline" asChild>
-            <Link to="/shop">Browse All Products →</Link>
+            <Link to="/options">View packages</Link>
           </Button>
         </div>
       </section>
