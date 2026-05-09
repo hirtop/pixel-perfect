@@ -109,11 +109,10 @@ describe("RemodelOptions Pass 24 Premium copy fix", () => {
         <RemodelOptions />
       </MemoryRouter>
     );
-    expect(
-      screen.getByText(
-        "Designer-grade materials and finishes, designed around existing plumbing."
-      )
-    ).toBeInTheDocument();
+    const rationale = screen.getByTestId("package-rationale-cue-premium");
+    expect(rationale.textContent).toBe(
+      "Designer-grade materials and finishes, designed around existing plumbing."
+    );
   });
 
   it("renders Modern Premium bullet 'Higher-grade fixtures and tile within existing layout'", () => {
