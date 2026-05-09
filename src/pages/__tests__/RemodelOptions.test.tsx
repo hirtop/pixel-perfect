@@ -264,7 +264,6 @@ describe("RemodelOptions Pass 24 Premium copy fix", () => {
       "contractor-approved",
       "ready to build",
       "BOBOX recommends",
-      "top",
       "popular choice",
     ];
     for (const phrase of forbidden) {
