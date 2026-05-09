@@ -2,11 +2,12 @@ import { describe, it, expect } from "vitest";
 import { render, screen } from "@testing-library/react";
 import PackageRationaleCue, { RATIONALE_COPY } from "../PackageRationaleCue";
 
-const ESSENTIAL = "Clean modern refresh with streamlined finishes and fewer upgrades.";
+const ESSENTIAL =
+  "Clean modern refresh with streamlined finishes and fewer upgrades, designed around existing plumbing.";
 const BALANCED =
-  "Shower-forward modern remodel with cohesive finishes and curated retailer-anchored selections.";
+  "Shower-forward modern remodel with cohesive finishes and curated retailer-anchored selections, designed around existing plumbing.";
 const PREMIUM =
-  "Modern look with upgraded fixtures, larger formats, and detailed finish work.";
+  "Modern look with upgraded fixtures, larger formats, and detailed finish work, designed around existing plumbing.";
 
 const RESTRICTED = [
   "best",
