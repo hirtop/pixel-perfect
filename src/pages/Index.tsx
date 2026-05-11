@@ -380,107 +380,34 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Shop teaser */}
-      <section id="shop-teaser" className="py-24 bg-card">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12 max-w-2xl mx-auto">
-            <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
-              Shop Products
-            </p>
-            <h2 className="font-heading text-3xl md:text-5xl text-foreground mb-4">
-              Curated Products for Your Remodel
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Handpicked fixtures and finishes from trusted brands.
-            </p>
-          </div>
-        </div>
-        <ShopProducts limit={3} hideFilters hideHeader className="py-0 bg-transparent" />
-        <div className="text-center mt-10">
-          <Button size="lg" variant="outline" asChild>
-            <Link to="/options">View packages</Link>
-          </Button>
-        </div>
-      </section>
-
-      {/* Pricing */}
+      {/* Early Access (replaces legacy Pricing + Shop teaser) */}
       <section id="pricing" className="py-24 bg-card">
         <div className="container mx-auto px-6">
           <motion.div
-            className="text-center mb-16"
+            className="text-center max-w-2xl mx-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
           >
             <motion.p variants={fadeUp} custom={0} className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
-              Pricing
+              Early Access
             </motion.p>
             <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground mb-4">
-              Free to plan, pro to optimize
+              Free to plan during V1.
             </motion.h2>
-            <motion.p variants={fadeUp} custom={2} className="text-muted-foreground max-w-md mx-auto leading-relaxed">
-              Start free, then unlock deeper planning tools as your project gets more detailed.
+            <motion.p variants={fadeUp} custom={2} className="text-muted-foreground leading-relaxed mb-8">
+              BOBOX Remodel is free to use while we refine the bathroom package planner. A paid tier with deeper planning tools is in development.
             </motion.p>
+            <motion.div variants={fadeUp} custom={3}>
+              <Button
+                size="lg"
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                onClick={() => window.open("https://docs.google.com/forms/d/e/1FAIpQLSfK1F5seSe_XQkkM7S53eLP6-D8bYV2KGaLR8u3IguVGUHv9Q/viewform", "_blank", "noopener,noreferrer")}
+              >
+                Join the waitlist
+              </Button>
+            </motion.div>
           </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-            {plans.map((plan, i) => (
-              <motion.div
-                key={plan.name}
-                className={`rounded-2xl p-8 border ${
-                  plan.highlighted
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background text-foreground border-border"
-                }`}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeUp}
-                custom={i}
-              >
-                <h3 className="font-heading text-2xl mb-1">{plan.name}</h3>
-                <p className="text-3xl font-bold mb-6">{plan.price}</p>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <span className={`w-1.5 h-1.5 rounded-full ${plan.highlighted ? "bg-primary-foreground" : "bg-primary"}`} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className={`w-full ${
-                    plan.highlighted
-                      ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-                      : "bg-primary text-primary-foreground hover:bg-primary/90"
-                  }`}
-                  onClick={() => plan.highlighted ? window.open("https://docs.google.com/forms/d/e/1FAIpQLSfK1F5seSe_XQkkM7S53eLP6-D8bYV2KGaLR8u3IguVGUHv9Q/viewform", "_blank", "noopener,noreferrer") : handlePrimaryCta()}
-                >
-                  {plan.cta}
-                </Button>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-6 py-3">
-              <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-                Coming Soon
-              </span>
-              <span className="w-px h-4 bg-border" />
-              <span className="text-sm text-muted-foreground">
-                Kitchen Remodel Planning — join the waitlist to get early access
-              </span>
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLScacp6SFiJA0ZJZtE5hcrgIfHV19KA6E-JuunztHox29tqz1w/viewform"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium text-primary hover:underline"
-              >
-                Join waitlist →
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 
