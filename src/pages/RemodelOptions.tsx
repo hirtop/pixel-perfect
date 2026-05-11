@@ -239,7 +239,7 @@ const RemodelOptions = () => {
           </div>
 
           <p className="text-center text-xs text-muted-foreground mt-10 sm:mt-12 max-w-lg mx-auto leading-relaxed">
-            Prices are estimates based on national averages. Final pricing depends on your contractor, region, and site conditions. You can swap individual products on the next step.
+            Prices are estimates based on national averages. Review final product availability, labor, and site details with your project professional.
           </p>
         </motion.div>
       </main>
