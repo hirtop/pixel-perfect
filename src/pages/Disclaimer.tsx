@@ -37,26 +37,9 @@ const Disclaimer = () => {
 
           <article className="space-y-12">
             <section>
-              <h2 className="text-2xl font-semibold tracking-tight mb-4">
-                Affiliate Disclosure
-              </h2>
+              <h2 className="text-2xl font-semibold tracking-tight mb-4">Disclosure</h2>
               <p className="text-base leading-relaxed text-muted-foreground">
-                BOBOX Remodel participates in affiliate marketing programs. This means we may earn a
-                commission when you click on links to products and make a purchase, at no additional
-                cost to you. We only recommend products we believe are relevant and useful for your
-                remodel project. Our editorial content is not influenced by affiliate relationships.
-              </p>
-            </section>
-
-            <section>
-              <h2 className="text-2xl font-semibold tracking-tight mb-4">Disclaimer</h2>
-              <p className="text-base leading-relaxed text-muted-foreground">
-                The information provided on BOBOX Remodel is for general informational purposes
-                only. All remodel cost estimates, product recommendations, and contractor
-                suggestions are provided as guidance only. BOBOX Remodel makes no representations or
-                warranties of any kind regarding the accuracy or completeness of any information on
-                this site. Always consult qualified professionals before beginning any remodel
-                project.
+                BOBOX Remodel provides planning information and estimated package guidance. It is not a contractor, legal advisor, or final quoting service. Always review scope, pricing, site conditions, and product availability with qualified professionals before starting work.
               </p>
             </section>
 
