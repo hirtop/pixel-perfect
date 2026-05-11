@@ -147,6 +147,37 @@ const ProjectSummary = () => {
     navigate("/subcontractors");
   };
 
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-background flex flex-col">
+        <nav className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
+          <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
+            <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
+              BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
+            </Link>
+            <AccountMenu />
+          </div>
+        </nav>
+        <main className="flex-1 flex items-center justify-center px-6 py-20">
+          <div className="max-w-xl w-full text-center">
+            <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">No project summary yet</h1>
+            <p className="text-muted-foreground leading-relaxed mb-8">
+              Start a bathroom project or sign in to view a saved project summary.
+            </p>
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-3">
+              <Button asChild size="lg">
+                <Link to="/remodel-flow/start">Start a Bathroom Project</Link>
+              </Button>
+              <Button asChild size="lg" variant="outline">
+                <Link to="/auth">Sign In</Link>
+              </Button>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen bg-background">
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
