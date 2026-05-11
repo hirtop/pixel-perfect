@@ -153,8 +153,8 @@ export default function LandingPage() {
 
   // Header CTA: signed-in users with saved projects see "Your Projects"
   // (opens picker). Otherwise "Start a Bathroom Project". We never show
-  // "Continue Your Project" as a dominant button because it's ambiguous
-  // when multiple projects exist.
+  // an ambiguous resume-this-project button because multiple projects
+  // may exist; users explicitly pick one from the dialog.
   const navCtaText = isProjectStateLoading
     ? "Loading..."
     : canContinue
