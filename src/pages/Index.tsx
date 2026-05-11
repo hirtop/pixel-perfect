@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, type Variants } from "framer-motion";
-import { Camera, Layers, DollarSign, TrendingUp, ShoppingBag, ListChecks, Users, Plus } from "lucide-react";
+import { Layers, Package, ListChecks, FileText, MessageSquare, Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
@@ -15,7 +15,6 @@ import { hydrateFlowFromSavedProject } from "@/remodel-flow/package-engine/hydra
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
-import ShopProducts from "@/components/ShopProducts";
 import ResumePlanBanner from "@/components/ResumePlanBanner";
 
 const fadeUp: Variants = {
@@ -29,72 +28,42 @@ const fadeUp: Variants = {
 
 const steps = [
   {
-    icon: Camera,
-    title: "Upload Your Bathroom",
-    desc: "Add photos of your current bathroom and enter simple dimensions.",
-  },
-  {
     icon: Layers,
-    title: "Compare Remodel Packages",
-    desc: "Review budget, balanced, and premium remodel options tailored to your style.",
+    title: "Pick a style and tier.",
+    desc: "Choose a Modern style direction and a package tier — Essential, Balanced, or Premium.",
   },
   {
-    icon: DollarSign,
-    title: "Track Budget and Shop",
-    desc: "See live pricing updates as you explore products and build your remodel plan.",
+    icon: Package,
+    title: "Review the package products.",
+    desc: "See the vanity, faucet, and floor tile included in your selected package.",
+  },
+  {
+    icon: FileText,
+    title: "Prepare a planning summary.",
+    desc: "Take your selections and project notes into a planning summary to review with a project professional.",
   },
 ];
 
 const whyItems = [
   {
-    icon: TrendingUp,
-    title: "Live Budget Updates",
-    desc: "Watch your remodel total update as you compare products.",
+    icon: Layers,
+    title: "Package-led planning.",
+    desc: "Each package combines a vanity, faucet, and floor tile that work together.",
   },
   {
-    icon: ShoppingBag,
-    title: "Real Product Options",
-    desc: "Explore curated products from trusted vendors.",
+    icon: Package,
+    title: "Real package products.",
+    desc: "See named products inside your selected package instead of generic placeholders.",
   },
   {
     icon: ListChecks,
-    title: "Simple Remodel Workflow",
+    title: "Simple remodel workflow.",
     desc: "Understand the typical project sequence step by step.",
   },
   {
-    icon: Users,
-    title: "Help When Needed",
-    desc: "Connect with verified pros when you're ready.",
-  },
-];
-
-const plans = [
-  {
-    name: "Free",
-    price: "$0",
-    features: [
-      "1 bathroom project",
-      "3 remodel package options",
-      "Live budget estimate",
-      "AI photo risk scan",
-      "AI shopping assistant",
-    ],
-    cta: "Get Started",
-    highlighted: false,
-  },
-  {
-    name: "Pro",
-    price: "$49/mo",
-    features: [
-      "Unlimited projects",
-      "PDF project summary export",
-      "Subcontractor handoff tools",
-      "Agreement templates",
-      "Priority support",
-      "Early access to new features",
-    ],
-    cta: "Join Pro Waitlist",
-    highlighted: true,
+    icon: MessageSquare,
+    title: "Built for the next conversation.",
+    desc: "Your planning summary is designed to be reviewed with a project professional.",
   },
 ];
 
@@ -186,7 +155,7 @@ export default function LandingPage() {
   const ctaText = isProjectStateLoading
     ? "Loading Your Projects..."
     : !canContinue
-      ? "Start Your Bathroom Project"
+      ? "Start a Bathroom Project"
       : hasMultiple && !flowHasProgress
         ? "View Your Projects"
         : "Continue Your Project";
@@ -194,28 +163,16 @@ export default function LandingPage() {
   const navCtaText = isProjectStateLoading
     ? "Loading..."
     : !canContinue
-      ? "Start Your Bathroom Project"
+      ? "Start a Bathroom Project"
       : hasMultiple && !flowHasProgress
         ? "Your Projects"
         : "Continue Your Project";
 
   return (
     <div className="min-h-screen bg-background">
-      <div style={{ width: '100%', backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', textAlign: 'center', padding: '10px 16px', position: 'relative', zIndex: 60 }}>
-        <p style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>
-          🏠 Kitchen Remodel Planning — coming soon.{" "}
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLScacp6SFiJA0ZJZtE5hcrgIfHV19KA6E-JuunztHox29tqz1w/viewform"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontWeight: 700, textDecoration: 'underline' }}
-          >
-            Join the waitlist →
-          </a>
-        </p>
-      </div>
+
       {/* Nav */}
-      <nav className="fixed top-10 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 h-16">
           <span className="font-heading text-xl tracking-tight text-foreground">
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
@@ -224,7 +181,7 @@ export default function LandingPage() {
             <a href="#how" className="hover:text-foreground transition-colors">How It Works</a>
             <a href="#transform" className="hover:text-foreground transition-colors">Before & After</a>
             <a href="#why" className="hover:text-foreground transition-colors">Why BOBOX</a>
-            <a href="#pricing" className="hover:text-foreground transition-colors">Pricing</a>
+            <a href="#pricing" className="hover:text-foreground transition-colors">Early Access</a>
           </div>
           <div className="flex items-center gap-3">
             <AccountMenu />
@@ -258,27 +215,22 @@ export default function LandingPage() {
               custom={0}
               className="font-heading text-3xl md:text-5xl lg:text-[3.25rem] leading-snug md:leading-[1.2] text-primary-foreground mb-6 max-w-lg"
             >
-              Upload your bathroom photos.
-              <br />
-              Compare remodel options.
-              <br />
-              <span className="text-accent">Shop with confidence.</span>
+              Plan your bathroom remodel{" "}
+              <span className="text-accent">by package.</span>
             </motion.h1>
             <motion.p
               variants={fadeUp}
               custom={1}
               className="text-lg md:text-xl text-primary-foreground/80 mb-4 font-body leading-relaxed max-w-lg"
             >
-              BOBOX Remodel helps you turn a bathroom photo into visual remodel
-              packages with live budgets, real product suggestions, and a simple
-              project plan.
+              Choose a remodel package, review the products inside it, and prepare a planning summary to discuss final scope, labor, and site details with a project professional.
             </motion.p>
             <motion.div variants={fadeUp} custom={2}>
               <HomepageClarityCue />
             </motion.div>
             <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
-                Design Your Bathroom
+                Start a Bathroom Project
               </Button>
               {canContinue && (
                 <Button size="lg" variant="outline" className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
@@ -428,107 +380,34 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Shop teaser */}
-      <section id="shop-teaser" className="py-24 bg-card">
-        <div className="container mx-auto px-6">
-          <div className="text-center mb-12 max-w-2xl mx-auto">
-            <p className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
-              Shop Products
-            </p>
-            <h2 className="font-heading text-3xl md:text-5xl text-foreground mb-4">
-              Curated Products for Your Remodel
-            </h2>
-            <p className="text-muted-foreground leading-relaxed">
-              Handpicked fixtures and finishes from trusted brands.
-            </p>
-          </div>
-        </div>
-        <ShopProducts limit={3} hideFilters hideHeader className="py-0 bg-transparent" />
-        <div className="text-center mt-10">
-          <Button size="lg" variant="outline" asChild>
-            <Link to="/options">View packages</Link>
-          </Button>
-        </div>
-      </section>
-
-      {/* Pricing */}
+      {/* Early Access (replaces legacy Pricing + Shop teaser) */}
       <section id="pricing" className="py-24 bg-card">
         <div className="container mx-auto px-6">
           <motion.div
-            className="text-center mb-16"
+            className="text-center max-w-2xl mx-auto"
             initial="hidden"
             whileInView="visible"
             viewport={{ once: true, amount: 0.3 }}
           >
             <motion.p variants={fadeUp} custom={0} className="text-primary font-semibold text-sm uppercase tracking-widest mb-3">
-              Pricing
+              Early Access
             </motion.p>
             <motion.h2 variants={fadeUp} custom={1} className="font-heading text-3xl md:text-5xl text-foreground mb-4">
-              Free to plan, pro to optimize
+              Free to plan during V1.
             </motion.h2>
-            <motion.p variants={fadeUp} custom={2} className="text-muted-foreground max-w-md mx-auto leading-relaxed">
-              Start free, then unlock deeper planning tools as your project gets more detailed.
+            <motion.p variants={fadeUp} custom={2} className="text-muted-foreground leading-relaxed mb-8">
+              BOBOX Remodel is free to use while we refine the bathroom package planner. A paid tier with deeper planning tools is in development.
             </motion.p>
+            <motion.div variants={fadeUp} custom={3}>
+              <Button
+                size="lg"
+                className="bg-primary text-primary-foreground hover:bg-primary/90"
+                onClick={() => window.open("https://docs.google.com/forms/d/e/1FAIpQLSfK1F5seSe_XQkkM7S53eLP6-D8bYV2KGaLR8u3IguVGUHv9Q/viewform", "_blank", "noopener,noreferrer")}
+              >
+                Join the waitlist
+              </Button>
+            </motion.div>
           </motion.div>
-
-          <div className="grid md:grid-cols-2 gap-8 max-w-2xl mx-auto">
-            {plans.map((plan, i) => (
-              <motion.div
-                key={plan.name}
-                className={`rounded-2xl p-8 border ${
-                  plan.highlighted
-                    ? "bg-primary text-primary-foreground border-primary"
-                    : "bg-background text-foreground border-border"
-                }`}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, amount: 0.3 }}
-                variants={fadeUp}
-                custom={i}
-              >
-                <h3 className="font-heading text-2xl mb-1">{plan.name}</h3>
-                <p className="text-3xl font-bold mb-6">{plan.price}</p>
-                <ul className="space-y-3 mb-8">
-                  {plan.features.map((f) => (
-                    <li key={f} className="flex items-center gap-2 text-sm">
-                      <span className={`w-1.5 h-1.5 rounded-full ${plan.highlighted ? "bg-primary-foreground" : "bg-primary"}`} />
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                <Button
-                  className={`w-full ${
-                    plan.highlighted
-                      ? "bg-primary-foreground text-primary hover:bg-primary-foreground/90"
-                      : "bg-primary text-primary-foreground hover:bg-primary/90"
-                  }`}
-                  onClick={() => plan.highlighted ? window.open("https://docs.google.com/forms/d/e/1FAIpQLSfK1F5seSe_XQkkM7S53eLP6-D8bYV2KGaLR8u3IguVGUHv9Q/viewform", "_blank", "noopener,noreferrer") : handlePrimaryCta()}
-                >
-                  {plan.cta}
-                </Button>
-              </motion.div>
-            ))}
-          </div>
-
-          <div className="mt-12 text-center">
-            <div className="inline-flex items-center gap-3 rounded-full border border-border bg-card px-6 py-3">
-              <span className="text-xs font-semibold uppercase tracking-widest text-primary">
-                Coming Soon
-              </span>
-              <span className="w-px h-4 bg-border" />
-              <span className="text-sm text-muted-foreground">
-                Kitchen Remodel Planning — join the waitlist to get early access
-              </span>
-              <a
-                href="https://docs.google.com/forms/d/e/1FAIpQLScacp6SFiJA0ZJZtE5hcrgIfHV19KA6E-JuunztHox29tqz1w/viewform"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-sm font-medium text-primary hover:underline"
-              >
-                Join waitlist →
-              </a>
-            </div>
-          </div>
         </div>
       </section>
 
@@ -544,7 +423,7 @@ export default function LandingPage() {
                 Contact
               </Link>
               <Link to="/disclaimer" className="hover:text-primary-foreground transition-colors">
-                Affiliate Disclosure
+                Disclosure
               </Link>
             </nav>
             <p className="text-sm">
