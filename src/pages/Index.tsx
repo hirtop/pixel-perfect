@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion, type Variants } from "framer-motion";
-import { Camera, Layers, DollarSign, TrendingUp, ShoppingBag, ListChecks, Users, Plus } from "lucide-react";
+import { Layers, Package, ListChecks, FileText, MessageSquare, Plus } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
@@ -15,7 +15,6 @@ import { hydrateFlowFromSavedProject } from "@/remodel-flow/package-engine/hydra
 import heroImg from "@/assets/hero-bathroom.jpg";
 import beforeImg from "@/assets/before-bathroom.jpg";
 import afterImg from "@/assets/after-bathroom.jpg";
-import ShopProducts from "@/components/ShopProducts";
 import ResumePlanBanner from "@/components/ResumePlanBanner";
 
 const fadeUp: Variants = {
