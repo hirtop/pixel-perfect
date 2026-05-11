@@ -354,7 +354,7 @@ export default function LandingPage() {
               Built for real remodel decisions
             </motion.h2>
             <motion.p variants={fadeUp} custom={2} className="text-muted-foreground max-w-lg mx-auto leading-relaxed">
-              BOBOX combines visual planning, product guidance, live budget tracking, and simple project workflow in one clean experience.
+              BOBOX is a package-led bathroom remodel planner designed to prepare you for the next conversation with a project professional.
             </motion.p>
           </motion.div>
 
