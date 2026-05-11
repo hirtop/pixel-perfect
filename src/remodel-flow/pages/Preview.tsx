@@ -113,10 +113,10 @@ const Preview = () => {
         if (hideTimer.current) window.clearTimeout(hideTimer.current);
         hideTimer.current = window.setTimeout(() => setSavedAt(0), 2000);
       } else {
-        toast("Saved locally — will sync when online");
+        toast(user ? "Saved locally — will sync when online" : "Sign in to save this project to your account.");
       }
     } catch {
-      toast("Saved locally — will sync when online");
+      toast(user ? "Saved locally — will sync when online" : "Sign in to save this project to your account.");
     } finally {
       setSaving(false);
     }
