@@ -151,21 +151,39 @@ export default function LandingPage() {
     goStartFresh();
   };
 
-  const ctaText = isProjectStateLoading
-    ? "Loading Your Projects..."
-    : !canContinue
-      ? "Start a Bathroom Project"
-      : hasMultiple && !flowHasProgress
-        ? "View Your Projects"
-        : "Continue Your Project";
-
+  // Header CTA: signed-in users with saved projects see "Your Projects"
+  // (opens picker). Otherwise "Start a Bathroom Project". We never show
+  // "Continue Your Project" as a dominant button because it's ambiguous
+  // when multiple projects exist.
   const navCtaText = isProjectStateLoading
     ? "Loading..."
-    : !canContinue
-      ? "Start a Bathroom Project"
-      : hasMultiple && !flowHasProgress
-        ? "Your Projects"
-        : "Continue Your Project";
+    : canContinue
+      ? "Your Projects"
+      : "Start a Bathroom Project";
+
+  const handleNavCta = () => {
+    if (isProjectStateLoading) return;
+    if (canContinue) {
+      // Open the picker for signed-in users with projects, regardless of
+      // count, so they explicitly choose what to resume.
+      if (hasSavedLegacyProject) {
+        setPickerOpen(true);
+        return;
+      }
+      // Flow progress only (no Supabase rows yet) — resume in-memory flow.
+      navigate(flowResumeRoute);
+      return;
+    }
+    goStartFresh();
+  };
+
+  const handleContinueLatest = () => {
+    if (isProjectStateLoading) return;
+    if (flowHasProgress) {
+      navigate(flowResumeRoute);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-background">
