@@ -127,17 +127,17 @@ const Preview = () => {
       <div className="mx-auto max-w-xl text-center py-16">
         <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">Step 05</p>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-          Your design isn’t ready yet
+          Your package preview is not ready yet
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Pick a style and tier first to see your bathroom design.
+          Choose a package tier first, then review your planning summary.
         </p>
         <button
           type="button"
-          onClick={() => navigate(state.style ? "/remodel-flow/tier" : "/remodel-flow/style")}
+          onClick={() => navigate("/options")}
           className="mt-8 inline-flex items-center justify-center rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
-          {state.style ? "Choose a tier" : "Pick a style"} →
+          Choose a package →
         </button>
       </div>
     );
