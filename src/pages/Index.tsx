@@ -155,7 +155,7 @@ export default function LandingPage() {
   const ctaText = isProjectStateLoading
     ? "Loading Your Projects..."
     : !canContinue
-      ? "Start Your Bathroom Project"
+      ? "Start a Bathroom Project"
       : hasMultiple && !flowHasProgress
         ? "View Your Projects"
         : "Continue Your Project";
@@ -163,7 +163,7 @@ export default function LandingPage() {
   const navCtaText = isProjectStateLoading
     ? "Loading..."
     : !canContinue
-      ? "Start Your Bathroom Project"
+      ? "Start a Bathroom Project"
       : hasMultiple && !flowHasProgress
         ? "Your Projects"
         : "Continue Your Project";
