@@ -33,6 +33,7 @@ const NARRATIVES: Record<string, string> = {
 
 const Preview = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { state, designId: ctxDesignId } = useFlow();
   const plan = resolvePlan(state);
   const pkg = state.tier ? PACKAGES[state.tier] : undefined;
