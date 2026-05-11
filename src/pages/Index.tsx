@@ -4,7 +4,6 @@ import { Layers, Package, ListChecks, FileText, MessageSquare, Plus } from "luci
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
-import HomepageClarityCue from "@/components/HomepageClarityCue";
 import { useAuth } from "@/hooks/useAuth";
 import { useProject } from "@/contexts/ProjectContext";
 import { useUserProjects } from "@/hooks/useUserProjects";
