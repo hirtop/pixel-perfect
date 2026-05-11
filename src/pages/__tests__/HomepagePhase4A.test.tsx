@@ -85,4 +85,15 @@ describe("Homepage Phase 4A — copy gate", () => {
     expect(SRC).not.toMatch(/to=["']\/shop["']/);
     expect(SRC).not.toMatch(/>Shop</);
   });
+  it("does not link to /subcontractors from the homepage", () => {
+    expect(SRC).not.toMatch(/to=["']\/subcontractors["']/);
+    expect(SRC).not.toMatch(/navigate\(["']\/subcontractors["']\)/);
+  });
+  it("uses Your Projects label for signed-in CTA", () => {
+    expect(SRC).toContain("Your Projects");
+    expect(SRC).toContain("Start a New Project");
+  });
+  it("renders Sign In CTA for signed-out hero", () => {
+    expect(SRC).toContain("Sign In");
+  });
 });
