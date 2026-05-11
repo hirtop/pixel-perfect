@@ -423,7 +423,7 @@ export default function LandingPage() {
                 Contact
               </Link>
               <Link to="/disclaimer" className="hover:text-primary-foreground transition-colors">
-                Affiliate Disclosure
+                Disclosure
               </Link>
             </nav>
             <p className="text-sm">
