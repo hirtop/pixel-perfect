@@ -170,19 +170,7 @@ export default function LandingPage() {
 
   return (
     <div className="min-h-screen bg-background">
-      <div style={{ width: '100%', backgroundColor: 'hsl(var(--primary))', color: 'hsl(var(--primary-foreground))', textAlign: 'center', padding: '10px 16px', position: 'relative', zIndex: 60 }}>
-        <p style={{ fontSize: '15px', fontWeight: 600, margin: 0 }}>
-          🏠 Kitchen Remodel Planning — coming soon.{" "}
-          <a
-            href="https://docs.google.com/forms/d/e/1FAIpQLScacp6SFiJA0ZJZtE5hcrgIfHV19KA6E-JuunztHox29tqz1w/viewform"
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{ fontWeight: 700, textDecoration: 'underline' }}
-          >
-            Join the waitlist →
-          </a>
-        </p>
-      </div>
+
       {/* Nav */}
       <nav className="fixed top-10 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-6xl mx-auto flex items-center justify-between px-6 h-16">
