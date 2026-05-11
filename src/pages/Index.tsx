@@ -4,7 +4,6 @@ import { Layers, Package, ListChecks, FileText, MessageSquare, Plus } from "luci
 import { Link, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import AccountMenu from "@/components/AccountMenu";
-import HomepageClarityCue from "@/components/HomepageClarityCue";
 import { useAuth } from "@/hooks/useAuth";
 import { useProject } from "@/contexts/ProjectContext";
 import { useUserProjects } from "@/hooks/useUserProjects";
@@ -152,21 +151,39 @@ export default function LandingPage() {
     goStartFresh();
   };
 
-  const ctaText = isProjectStateLoading
-    ? "Loading Your Projects..."
-    : !canContinue
-      ? "Start a Bathroom Project"
-      : hasMultiple && !flowHasProgress
-        ? "View Your Projects"
-        : "Continue Your Project";
-
+  // Header CTA: signed-in users with saved projects see "Your Projects"
+  // (opens picker). Otherwise "Start a Bathroom Project". We never show
+  // an ambiguous resume-this-project button because multiple projects
+  // may exist; users explicitly pick one from the dialog.
   const navCtaText = isProjectStateLoading
     ? "Loading..."
-    : !canContinue
-      ? "Start a Bathroom Project"
-      : hasMultiple && !flowHasProgress
-        ? "Your Projects"
-        : "Continue Your Project";
+    : canContinue
+      ? "Your Projects"
+      : "Start a Bathroom Project";
+
+  const handleNavCta = () => {
+    if (isProjectStateLoading) return;
+    if (canContinue) {
+      // Open the picker for signed-in users with projects, regardless of
+      // count, so they explicitly choose what to resume.
+      if (hasSavedLegacyProject) {
+        setPickerOpen(true);
+        return;
+      }
+      // Flow progress only (no Supabase rows yet) — resume in-memory flow.
+      navigate(flowResumeRoute);
+      return;
+    }
+    goStartFresh();
+  };
+
+  const handleContinueLatest = () => {
+    if (isProjectStateLoading) return;
+    if (flowHasProgress) {
+      navigate(flowResumeRoute);
+    }
+  };
+
 
   return (
     <div className="min-h-screen bg-background">
@@ -185,7 +202,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <AccountMenu />
-            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleNavCta} disabled={isProjectStateLoading}>
               {navCtaText}
             </Button>
           </div>
@@ -225,26 +242,61 @@ export default function LandingPage() {
             >
               Choose a remodel package, review the products inside it, and prepare a planning summary to discuss final scope, labor, and site details with a project professional.
             </motion.p>
-            <motion.div variants={fadeUp} custom={2}>
-              <HomepageClarityCue />
-            </motion.div>
-            <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
-                Start a Bathroom Project
-              </Button>
-              {canContinue && (
-                <Button size="lg" variant="outline" className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
-                  {ctaText}
-                </Button>
-              )}
-              {canContinue && (
+            <motion.div variants={fadeUp} custom={2} className="flex flex-wrap items-center gap-4">
+              {!user ? (
+                <>
+                  <Button
+                    size="lg"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
+                    onClick={goStartFresh}
+                  >
+                    Start a Bathroom Project
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8"
+                  >
+                    <Link to="/auth">Sign In</Link>
+                  </Button>
+                </>
+              ) : canContinue ? (
+                <>
+                  <Button
+                    size="lg"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
+                    onClick={handleNavCta}
+                    disabled={isProjectStateLoading}
+                  >
+                    Your Projects
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8 gap-2"
+                    onClick={goStartFresh}
+                  >
+                    <Plus className="h-4 w-4" /> Start a New Project
+                  </Button>
+                  {flowHasProgress && (
+                    <button
+                      type="button"
+                      onClick={handleContinueLatest}
+                      className="text-sm font-medium text-primary-foreground/80 underline underline-offset-4 hover:text-primary-foreground transition-colors"
+                    >
+                      Continue Latest Project
+                    </button>
+                  )}
+                </>
+              ) : (
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8 gap-2"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
                   onClick={goStartFresh}
+                  disabled={isProjectStateLoading}
                 >
-                  <Plus className="h-4 w-4" /> Start a New Project
+                  Start a Bathroom Project
                 </Button>
               )}
             </motion.div>
