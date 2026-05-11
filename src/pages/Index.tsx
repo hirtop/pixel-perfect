@@ -215,27 +215,22 @@ export default function LandingPage() {
               custom={0}
               className="font-heading text-3xl md:text-5xl lg:text-[3.25rem] leading-snug md:leading-[1.2] text-primary-foreground mb-6 max-w-lg"
             >
-              Upload your bathroom photos.
-              <br />
-              Compare remodel options.
-              <br />
-              <span className="text-accent">Shop with confidence.</span>
+              Plan your bathroom remodel{" "}
+              <span className="text-accent">by package.</span>
             </motion.h1>
             <motion.p
               variants={fadeUp}
               custom={1}
               className="text-lg md:text-xl text-primary-foreground/80 mb-4 font-body leading-relaxed max-w-lg"
             >
-              BOBOX Remodel helps you turn a bathroom photo into visual remodel
-              packages with live budgets, real product suggestions, and a simple
-              project plan.
+              Choose a remodel package, review the products inside it, and prepare a planning summary to discuss final scope, labor, and site details with a project professional.
             </motion.p>
             <motion.div variants={fadeUp} custom={2}>
               <HomepageClarityCue />
             </motion.div>
             <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-4">
               <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
-                Design Your Bathroom
+                Start a Bathroom Project
               </Button>
               {canContinue && (
                 <Button size="lg" variant="outline" className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
