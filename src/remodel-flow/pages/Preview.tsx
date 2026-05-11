@@ -10,6 +10,7 @@ import { buildRenderRequest } from "../render";
 import { saveDesign } from "../persistence/client";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import heroBathroom from "../assets/hero-bathroom.jpg";
 
 const fmt = (n: number) =>
