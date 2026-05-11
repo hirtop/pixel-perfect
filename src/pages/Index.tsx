@@ -28,72 +28,42 @@ const fadeUp: Variants = {
 
 const steps = [
   {
-    icon: Camera,
-    title: "Upload Your Bathroom",
-    desc: "Add photos of your current bathroom and enter simple dimensions.",
-  },
-  {
     icon: Layers,
-    title: "Compare Remodel Packages",
-    desc: "Review budget, balanced, and premium remodel options tailored to your style.",
+    title: "Pick a style and tier.",
+    desc: "Choose a Modern style direction and a package tier — Essential, Balanced, or Premium.",
   },
   {
-    icon: DollarSign,
-    title: "Track Budget and Shop",
-    desc: "See live pricing updates as you explore products and build your remodel plan.",
+    icon: Package,
+    title: "Review the package products.",
+    desc: "See the vanity, faucet, and floor tile included in your selected package.",
+  },
+  {
+    icon: FileText,
+    title: "Prepare a planning summary.",
+    desc: "Take your selections and project notes into a planning summary to review with a project professional.",
   },
 ];
 
 const whyItems = [
   {
-    icon: TrendingUp,
-    title: "Live Budget Updates",
-    desc: "Watch your remodel total update as you compare products.",
+    icon: Layers,
+    title: "Package-led planning.",
+    desc: "Each package combines a vanity, faucet, and floor tile that work together.",
   },
   {
-    icon: ShoppingBag,
-    title: "Real Product Options",
-    desc: "Explore curated products from trusted vendors.",
+    icon: Package,
+    title: "Real package products.",
+    desc: "See named products inside your selected package instead of generic placeholders.",
   },
   {
     icon: ListChecks,
-    title: "Simple Remodel Workflow",
+    title: "Simple remodel workflow.",
     desc: "Understand the typical project sequence step by step.",
   },
   {
-    icon: Users,
-    title: "Help When Needed",
-    desc: "Connect with verified pros when you're ready.",
-  },
-];
-
-const plans = [
-  {
-    name: "Free",
-    price: "$0",
-    features: [
-      "1 bathroom project",
-      "3 remodel package options",
-      "Live budget estimate",
-      "AI photo risk scan",
-      "AI shopping assistant",
-    ],
-    cta: "Get Started",
-    highlighted: false,
-  },
-  {
-    name: "Pro",
-    price: "$49/mo",
-    features: [
-      "Unlimited projects",
-      "PDF project summary export",
-      "Subcontractor handoff tools",
-      "Agreement templates",
-      "Priority support",
-      "Early access to new features",
-    ],
-    cta: "Join Pro Waitlist",
-    highlighted: true,
+    icon: MessageSquare,
+    title: "Built for the next conversation.",
+    desc: "Your planning summary is designed to be reviewed with a project professional.",
   },
 ];
 
