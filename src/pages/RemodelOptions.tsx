@@ -118,7 +118,7 @@ const RemodelOptions = () => {
           <div className="text-center mb-10 sm:mb-12">
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Your Remodel Options</h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto leading-relaxed">
-              Three curated directions for your space and budget. Every package is designed to work as a whole — swap individual products without breaking the look.
+              Three package directions for your bathroom and budget. Each package is built around a consistent style and scope.
             </p>
           </div>
 
