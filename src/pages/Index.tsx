@@ -202,7 +202,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <AccountMenu />
-            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
+            <Button size="sm" className="bg-primary text-primary-foreground hover:bg-primary/90" onClick={handleNavCta} disabled={isProjectStateLoading}>
               {navCtaText}
             </Button>
           </div>
