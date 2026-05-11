@@ -242,26 +242,61 @@ export default function LandingPage() {
             >
               Choose a remodel package, review the products inside it, and prepare a planning summary to discuss final scope, labor, and site details with a project professional.
             </motion.p>
-            <motion.div variants={fadeUp} custom={2}>
-              <HomepageClarityCue />
-            </motion.div>
-            <motion.div variants={fadeUp} custom={3} className="flex flex-wrap gap-4">
-              <Button size="lg" className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
-                Start a Bathroom Project
-              </Button>
-              {canContinue && (
-                <Button size="lg" variant="outline" className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8" onClick={handlePrimaryCta} disabled={isProjectStateLoading}>
-                  {ctaText}
-                </Button>
-              )}
-              {canContinue && (
+            <motion.div variants={fadeUp} custom={2} className="flex flex-wrap items-center gap-4">
+              {!user ? (
+                <>
+                  <Button
+                    size="lg"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
+                    onClick={goStartFresh}
+                  >
+                    Start a Bathroom Project
+                  </Button>
+                  <Button
+                    asChild
+                    size="lg"
+                    variant="outline"
+                    className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8"
+                  >
+                    <Link to="/auth">Sign In</Link>
+                  </Button>
+                </>
+              ) : canContinue ? (
+                <>
+                  <Button
+                    size="lg"
+                    className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
+                    onClick={handleNavCta}
+                    disabled={isProjectStateLoading}
+                  >
+                    Your Projects
+                  </Button>
+                  <Button
+                    size="lg"
+                    variant="outline"
+                    className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8 gap-2"
+                    onClick={goStartFresh}
+                  >
+                    <Plus className="h-4 w-4" /> Start a New Project
+                  </Button>
+                  {flowHasProgress && (
+                    <button
+                      type="button"
+                      onClick={handleContinueLatest}
+                      className="text-sm font-medium text-primary-foreground/80 underline underline-offset-4 hover:text-primary-foreground transition-colors"
+                    >
+                      Continue Latest Project
+                    </button>
+                  )}
+                </>
+              ) : (
                 <Button
                   size="lg"
-                  variant="outline"
-                  className="bg-white/90 border-foreground/30 text-foreground hover:bg-white hover:border-foreground/50 backdrop-blur-sm text-base px-8 gap-2"
+                  className="bg-primary text-primary-foreground hover:bg-primary/90 text-base px-8"
                   onClick={goStartFresh}
+                  disabled={isProjectStateLoading}
                 >
-                  <Plus className="h-4 w-4" /> Start a New Project
+                  Start a Bathroom Project
                 </Button>
               )}
             </motion.div>
