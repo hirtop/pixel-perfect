@@ -38,6 +38,14 @@ const FORBIDDEN = [
   "Affiliate Disclosure",
   "Design Your Bathroom",
   "Help When Needed",
+  // Phase 4A-fix: duplicate hero paragraph removed
+  "BOBOX helps you plan a bathroom remodel by package.",
+  "BOBOX helps you choose and adjust a curated bathroom remodel package",
+  "curated bathroom remodel package",
+  "HomepageClarityCue",
+  // Phase 4A-fix: ambiguous "Continue Your Project" hero/header CTA removed
+  "Continue Your Project",
+  "View Your Projects",
 ];
 
 describe("Homepage Phase 4A — copy gate", () => {
