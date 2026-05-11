@@ -118,7 +118,7 @@ const RemodelOptions = () => {
           <div className="text-center mb-10 sm:mb-12">
             <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Your Remodel Options</h1>
             <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto leading-relaxed">
-              Three curated directions for your space and budget. Every package is designed to work as a whole — swap individual products without breaking the look.
+              Three package directions for your bathroom and budget. Each package is built around a consistent style and scope.
             </p>
           </div>
 
@@ -239,7 +239,7 @@ const RemodelOptions = () => {
           </div>
 
           <p className="text-center text-xs text-muted-foreground mt-10 sm:mt-12 max-w-lg mx-auto leading-relaxed">
-            Prices are estimates based on national averages. Final pricing depends on your contractor, region, and site conditions. You can swap individual products on the next step.
+            Prices are estimates based on national averages. Review final product availability, labor, and site details with your project professional.
           </p>
         </motion.div>
       </main>

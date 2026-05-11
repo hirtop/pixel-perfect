@@ -73,18 +73,18 @@ const Start = () => {
       )}
 
       <StepHeader
-        eyebrow="Next-gen flow · preview"
-        title="Design your bathroom in five simple steps."
-        description="A faster, resolver-driven planning experience. Pick a style, choose a tier, customize what matters, and preview a complete plan."
+        eyebrow="Bathroom project intake"
+        title="Start your bathroom remodel plan."
+        description="Answer a few questions so BOBOX can help you compare package options and prepare a planning summary."
       />
 
       <div className="grid gap-4 md:grid-cols-3">
         {[
-          { n: "1", t: "Pick a style", d: "Modern, spa, classic, or minimal." },
-          { n: "2", t: "Choose a tier", d: "Essential, balanced, or premium." },
-          { n: "3", t: "Select a package", d: "Choose a curated design that fits your style and budget." },
-          { n: "4", t: "Customize your plan", d: "Adjust finishes and fixtures to match your preferences." },
-          { n: "5", t: "Preview your bathroom design", d: "See a visual concept of your complete bathroom." },
+          { n: "1", t: "Start with your project", d: "Tell us the basics about your bathroom and project goals." },
+          { n: "2", t: "Choose your style", d: "Start with the Modern package direction for V1." },
+          { n: "3", t: "Pick a package tier", d: "Compare Essential, Balanced, and Premium package levels." },
+          { n: "4", t: "Review package products", d: "See the vanity, faucet, and floor tile selected for your package." },
+          { n: "5", t: "Prepare your summary", d: "Use your project summary to discuss final scope, labor, and site details with a project professional." },
         ].map((s) => (
           <div key={s.n} className="rounded-2xl border border-border bg-card p-5">
             <p className="text-xs text-muted-foreground tracking-widest">{s.n}</p>
@@ -99,7 +99,7 @@ const Start = () => {
           to="/remodel-flow/style"
           className="inline-flex items-center gap-2 rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
-          Start designing →
+          Start project intake →
         </Link>
       </div>
     </div>

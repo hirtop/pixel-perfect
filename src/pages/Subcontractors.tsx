@@ -1,260 +1,36 @@
-import { useState } from "react";
-import { motion } from "framer-motion";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowLeft, Star, ShieldCheck, BadgeCheck, FileText, Home, ImageIcon } from "lucide-react";
-import { toast } from "sonner";
+/**
+ * /subcontractors — V1 Retirement Gate placeholder.
+ *
+ * Subcontractor bidding belongs to a future BOBOX product (BOBOX Bid),
+ * not BOBOX Remodel V1. Route is preserved to avoid 404s.
+ */
+import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { useProject } from "@/contexts/ProjectContext";
-import { usePhotoSignedUrls } from "@/hooks/usePhotoSignedUrls";
-
-interface Pro {
-  name: string;
-  trade: string;
-  location: string;
-  rating: number;
-  reviews: number;
-  badges: string[];
-  desc: string;
-  sponsored?: boolean;
-}
-
-const verifiedPros: Pro[] = [
-  { name: "Clearwater Plumbing Co.", trade: "Plumber", location: "Austin, TX", rating: 4.9, reviews: 127, badges: ["Licensed", "Insured", "Verified"], desc: "Full-service residential plumbing with bathroom remodel expertise." },
-  { name: "Bright Line Electric", trade: "Electrician", location: "Austin, TX", rating: 4.8, reviews: 94, badges: ["Licensed", "Insured", "Verified"], desc: "Specializing in bathroom lighting upgrades and code-compliant wiring." },
-  { name: "Stone & Surface Tile", trade: "Tile Installer", location: "Round Rock, TX", rating: 4.9, reviews: 68, badges: ["Insured", "Verified"], desc: "Precision tile work for floors, walls, and shower surrounds." },
-  { name: "Apex Shower Glass", trade: "Shower Glass Installer", location: "Cedar Park, TX", rating: 4.7, reviews: 53, badges: ["Licensed", "Insured"], desc: "Custom frameless shower enclosures and hardware installation." },
-  { name: "Fresh Coat Painters", trade: "Painter", location: "Austin, TX", rating: 4.8, reviews: 112, badges: ["Insured", "Verified"], desc: "Clean, efficient interior painting with low-VOC finishes." },
-];
-
-const sponsoredPros: Pro[] = [
-  { name: "ProBath Solutions", trade: "General Contractor", location: "Austin, TX", rating: 4.6, reviews: 41, badges: ["Licensed", "Insured"], desc: "Full bathroom renovations from design to completion.", sponsored: true },
-  { name: "LuxeFinish Interiors", trade: "Design & Build", location: "Austin, TX", rating: 4.5, reviews: 29, badges: ["Insured"], desc: "Turnkey bathroom remodel services with in-house design.", sponsored: true },
-];
-
-const BadgePill = ({ label }: { label: string }) => (
-  <span className="inline-flex items-center gap-1 rounded-full bg-primary/10 px-2 py-0.5 text-[10px] font-semibold text-primary">
-    <ShieldCheck className="h-2.5 w-2.5" />
-    {label}
-  </span>
-);
+import AccountMenu from "@/components/AccountMenu";
 
 const Subcontractors = () => {
-  const { project, updateProject, markStepComplete } = useProject();
-  const navigate = useNavigate();
-  const { photos: referencePhotos } = usePhotoSignedUrls(project.photos.metadata);
-  const photoCount = project.photos.metadata.length;
-  const hasNotes = !!project.photos.notes?.trim();
-
-  const [interactions, setInteractions] = useState<Record<string, { quote: boolean; summary: boolean }>>(
-    () => {
-      const map: Record<string, { quote: boolean; summary: boolean }> = {};
-      project.subcontractor_interactions.forEach((si) => {
-        map[si.name] = { quote: !!si.quote_requested, summary: !!si.summary_sent };
-      });
-      return map;
-    }
-  );
-  const [zipCode, setZipCode] = useState("");
-  const [zipSubmitted, setZipSubmitted] = useState(false);
-
-  const recordInteraction = (proName: string, type: "quote" | "summary") => {
-    setInteractions((prev) => {
-      const current = prev[proName] || { quote: false, summary: false };
-      const updated = { ...prev, [proName]: { ...current, [type]: true } };
-
-      const list = Object.entries(updated).map(([name, v]) => ({
-        name,
-        quote_requested: v.quote,
-        summary_sent: v.summary,
-      }));
-      updateProject({ subcontractor_interactions: list });
-
-      return updated;
-    });
-  };
-
-  const buildHandoffPayload = (pro: Pro) => ({
-    pro: { name: pro.name, trade: pro.trade, location: pro.location },
-    project: {
-      name: project.name,
-      bathroom_type: project.bathroom_type,
-      bathing_setup: project.bathing_setup,
-      dimensions: project.dimensions,
-      style: project.style_preferences,
-      package: project.selected_package,
-    },
-    reference_photos: referencePhotos
-      .filter((p) => p.url)
-      .map((p) => ({ name: p.name, url: p.url })),
-    homeowner_notes: project.photos.notes?.trim() || null,
-  });
-
-  const handleQuote = (pro: Pro) => {
-    recordInteraction(pro.name, "quote");
-    toast.success("Quote requested", {
-      description: `${pro.name} will receive your project details${photoCount > 0 ? ` and ${photoCount} reference photo${photoCount !== 1 ? "s" : ""}` : ""}.`,
-    });
-  };
-
-  const handleSummary = (pro: Pro) => {
-    recordInteraction(pro.name, "summary");
-    // Payload includes signed photo URLs + homeowner notes for the sub.
-    // Wire this to a real send endpoint when subcontractor delivery is built.
-    console.info("[BOBOX handoff payload]", buildHandoffPayload(pro));
-    toast.success("Summary sent", {
-      description: `Shared with ${pro.name}${photoCount > 0 ? ` — includes ${photoCount} reference photo${photoCount !== 1 ? "s" : ""}` : ""}.`,
-    });
-  };
-
-  const ProCard = ({ pro }: { pro: Pro }) => {
-    const state = interactions[pro.name] || { quote: false, summary: false };
-    return (
-      <div className={`rounded-xl border bg-card p-5 space-y-3 transition-colors ${pro.sponsored ? "border-accent/30" : "border-border"}`}>
-        {pro.sponsored && <span className="inline-block text-[10px] font-semibold uppercase tracking-widest text-accent">Sponsored</span>}
-        <div className="flex items-start justify-between gap-3">
-          <div>
-            <p className="text-sm font-semibold text-foreground">{pro.name}</p>
-            <p className="text-xs text-muted-foreground">{pro.trade} · {pro.location}</p>
-          </div>
-          <div className="flex items-center gap-1 text-xs flex-shrink-0">
-            <Star className="h-3.5 w-3.5 fill-accent text-accent" />
-            <span className="font-semibold text-foreground">{pro.rating}</span>
-            <span className="text-muted-foreground">({pro.reviews})</span>
-          </div>
-        </div>
-        <div className="flex flex-wrap gap-1.5">
-          {pro.badges.map((b) => <BadgePill key={b} label={b} />)}
-        </div>
-        <p className="text-xs text-muted-foreground leading-relaxed">{pro.desc}</p>
-        <div className="flex gap-2 pt-1">
-          <Button size="sm" className="text-xs h-8 px-4 rounded-lg" variant={state.quote ? "secondary" : "default"} onClick={() => handleQuote(pro)}>
-            {state.quote ? "Quote Requested" : "Request Quote"}
-          </Button>
-          <Button size="sm" variant="outline" className="text-xs h-8 px-3 rounded-lg gap-1.5" onClick={() => handleSummary(pro)} disabled={state.summary}>
-            <FileText className="h-3 w-3" /> {state.summary ? "Sent" : "Send Summary"}
-          </Button>
-        </div>
-      </div>
-    );
-  };
-
-  const handleContinue = () => {
-    markStepComplete("subcontractors");
-    navigate("/agreement");
-  };
-
   return (
-    <div className="min-h-screen bg-background">
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+    <div className="min-h-screen bg-background flex flex-col">
+      <nav className="sticky top-0 z-40 bg-background/80 backdrop-blur-md border-b border-border">
         <div className="max-w-5xl mx-auto flex items-center justify-between px-6 h-16">
           <Link to="/" className="font-heading text-xl tracking-tight text-foreground">
             BOBOX <span className="font-body text-sm font-medium text-muted-foreground tracking-normal ml-1">Remodel</span>
           </Link>
-          <div className="flex items-center gap-4">
-            <Link to="/summary" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <ArrowLeft className="h-3.5 w-3.5" /> Back to Summary
-            </Link>
-            <Link to="/" className="flex items-center gap-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors">
-              <Home className="h-3.5 w-3.5" /> Home
-            </Link>
-          </div>
+          <AccountMenu />
         </div>
       </nav>
-
-      <main className="pt-28 pb-20 px-6">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="max-w-4xl mx-auto">
-          <div className="text-center mb-10">
-            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-2">Connect</p>
-            <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">Find Subcontractors</h1>
-            <p className="text-muted-foreground text-base md:text-lg max-w-lg mx-auto leading-relaxed">
-              Connect your remodel plan with verified professionals. Enter your zip code to find contractors near you.
-            </p>
-          </div>
-
-          <div className="rounded-xl border border-border bg-secondary/20 p-5 mb-8 flex flex-col sm:flex-row gap-4 sm:gap-8 text-xs text-muted-foreground">
-            <div className="flex items-start gap-2.5">
-              <BadgeCheck className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-              <span><strong className="text-foreground">Verified Pros</strong> are shown with ratings, service area, and license or insurance status where applicable.</span>
-            </div>
-            <div className="flex items-start gap-2.5">
-              <span className="inline-block w-4 h-4 rounded-sm bg-accent/20 flex-shrink-0 mt-0.5 text-center leading-4 text-accent font-bold text-[9px]">S</span>
-              <span><strong className="text-foreground">Sponsored Pros</strong> are clearly labeled promotional placements from partner professionals.</span>
-            </div>
-          </div>
-
-          <p className="text-sm text-muted-foreground mb-4">
-            Based on your workflow, you may need help with <span className="text-foreground font-medium">plumbing, electrical, tile, shower hardware, and finishing</span>.
+      <main className="flex-1 flex items-center justify-center px-6 py-20">
+        <div className="max-w-xl w-full text-center">
+          <h1 className="font-heading text-3xl md:text-4xl text-foreground mb-4">
+            BOBOX Bid is not part of Remodel V1
+          </h1>
+          <p className="text-muted-foreground leading-relaxed mb-8">
+            Subcontractor bidding and trade coordination are planned as a separate BOBOX product. BOBOX Remodel currently focuses on bathroom package planning and project summaries.
           </p>
-
-          {(photoCount > 0 || hasNotes) && (
-            <div className="rounded-lg border border-primary/20 bg-primary/5 px-4 py-3 mb-8 flex items-start gap-2.5">
-              <ImageIcon className="h-4 w-4 text-primary flex-shrink-0 mt-0.5" />
-              <p className="text-xs text-foreground/90 leading-relaxed">
-                <span className="font-semibold">Reference attached:</span>{" "}
-                {photoCount > 0 && (
-                  <>
-                    {photoCount} photo{photoCount !== 1 ? "s" : ""}
-                    {hasNotes ? " and your notes" : ""}
-                  </>
-                )}
-                {photoCount === 0 && hasNotes && "your notes"}
-                {" "}will be shared with each pro you contact.
-              </p>
-            </div>
-          )}
-
-          <div className="mb-8">
-            <p className="text-sm font-medium text-foreground mb-2">
-              Find contractors near you
-            </p>
-            <div className="flex gap-2 max-w-xs">
-              <input
-                type="text"
-                placeholder="Enter zip code"
-                value={zipCode}
-                onChange={(e) => setZipCode(e.target.value)}
-                maxLength={5}
-                className="flex h-10 rounded-lg border border-border bg-background px-3 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring w-36"
-              />
-              <button
-                onClick={() => {
-                  if (zipCode.length === 5) setZipSubmitted(true);
-                }}
-                className="h-10 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors"
-              >
-                Search
-              </button>
-            </div>
-            {zipSubmitted && (
-              <p className="text-xs text-muted-foreground mt-2">
-                We're building our contractor network in {zipCode}. In the meantime, here are verified pros from our founding region — use them as a reference for what to look for locally.
-              </p>
-            )}
-          </div>
-
-          <section className="mb-12">
-            <h2 className="font-heading text-xl text-foreground mb-5">Verified Pros</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {verifiedPros.map((pro) => <ProCard key={pro.name} pro={pro} />)}
-            </div>
-          </section>
-
-          <section className="mb-12">
-            <h2 className="font-heading text-xl text-foreground mb-5">Sponsored Pros</h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {sponsoredPros.map((pro) => <ProCard key={pro.name} pro={pro} />)}
-            </div>
-          </section>
-
-          <div className="flex flex-col sm:flex-row items-center gap-4">
-            <Button size="lg" className="w-full sm:w-auto px-10 h-12 text-base font-semibold rounded-lg" onClick={handleContinue}>
-              Continue to Agreement Template
-            </Button>
-            <Link to="/summary" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Back to Project Summary
-            </Link>
-          </div>
-        </motion.div>
+          <Button asChild size="lg">
+            <Link to="/summary">Back to your remodel summary</Link>
+          </Button>
+        </div>
       </main>
     </div>
   );

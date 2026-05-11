@@ -35,7 +35,7 @@ vi.mock("@/contexts/ProjectContext", () => ({
 }));
 
 vi.mock("@/hooks/useAuth", () => ({
-  useAuth: () => ({ user: null }),
+  useAuth: () => ({ user: { id: "test-user", email: "test@example.com" } }),
 }));
 
 vi.mock("@/components/ReferencePhotos", () => ({

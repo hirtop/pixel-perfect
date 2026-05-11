@@ -10,6 +10,7 @@ import { buildRenderRequest } from "../render";
 import { saveDesign } from "../persistence/client";
 import { cn } from "@/lib/utils";
 import { supabase } from "@/integrations/supabase/client";
+import { useAuth } from "@/hooks/useAuth";
 import heroBathroom from "../assets/hero-bathroom.jpg";
 
 const fmt = (n: number) =>
@@ -32,6 +33,7 @@ const NARRATIVES: Record<string, string> = {
 
 const Preview = () => {
   const navigate = useNavigate();
+  const { user } = useAuth();
   const { state, designId: ctxDesignId } = useFlow();
   const plan = resolvePlan(state);
   const pkg = state.tier ? PACKAGES[state.tier] : undefined;
@@ -111,10 +113,10 @@ const Preview = () => {
         if (hideTimer.current) window.clearTimeout(hideTimer.current);
         hideTimer.current = window.setTimeout(() => setSavedAt(0), 2000);
       } else {
-        toast("Saved locally — will sync when online");
+        toast(user ? "Saved locally — will sync when online" : "Sign in to save this project to your account.");
       }
     } catch {
-      toast("Saved locally — will sync when online");
+      toast(user ? "Saved locally — will sync when online" : "Sign in to save this project to your account.");
     } finally {
       setSaving(false);
     }
@@ -125,17 +127,17 @@ const Preview = () => {
       <div className="mx-auto max-w-xl text-center py-16">
         <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">Step 05</p>
         <h1 className="text-3xl font-semibold tracking-tight text-foreground">
-          Your design isn’t ready yet
+          Your package preview is not ready yet
         </h1>
         <p className="mt-3 text-sm text-muted-foreground">
-          Pick a style and tier first to see your bathroom design.
+          Choose a package tier first, then review your planning summary.
         </p>
         <button
           type="button"
-          onClick={() => navigate(state.style ? "/remodel-flow/tier" : "/remodel-flow/style")}
+          onClick={() => navigate("/options")}
           className="mt-8 inline-flex items-center justify-center rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors"
         >
-          {state.style ? "Choose a tier" : "Pick a style"} →
+          Choose a package →
         </button>
       </div>
     );
