@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ImagePlus, Copy, Check } from "lucide-react";
 import { useFlow } from "../FlowContext";
-import { CATEGORIES, PACKAGES } from "../catalog";
+import { CATEGORIES, PACKAGES, CATALOG_GROUPS, getPackageFor } from "../catalog";
 import { resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import { buildRenderRequest } from "../render";
 import { saveDesign } from "../persistence/client";
