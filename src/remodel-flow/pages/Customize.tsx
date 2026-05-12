@@ -495,6 +495,9 @@ const Customize = () => {
                   </div>
                 ))}
           </div>
+          <p className="mt-4 border-t border-border/60 pt-3 text-[11px] leading-relaxed text-muted-foreground/90">
+            BOBOX provides planning estimates and curated product concepts. Final pricing, fit, installation, code compliance, product availability, and labor costs require professional review.
+          </p>
         </aside>
       </div>
 
