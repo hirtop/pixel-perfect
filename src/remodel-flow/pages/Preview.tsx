@@ -353,7 +353,7 @@ const Preview = () => {
 
 
       {/* Actions */}
-      <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3 print:hidden">
         <button
           type="button"
           onClick={handleSave}
@@ -369,9 +369,20 @@ const Preview = () => {
         >
           Continue editing
         </button>
+        <button
+          type="button"
+          onClick={() => window.print()}
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-7 py-3 text-sm text-foreground hover:bg-muted transition-colors min-w-[180px]"
+        >
+          <Printer className="h-4 w-4" />
+          Print summary
+        </button>
       </div>
+      <p className="mt-3 text-center text-xs text-muted-foreground print:hidden">
+        Print or save this planning summary as a PDF from your browser.
+      </p>
       {!user && (
-        <p className="mt-3 text-center text-xs text-muted-foreground">
+        <p className="mt-3 text-center text-xs text-muted-foreground print:hidden">
           Create an account to save this plan and return to it later.
         </p>
       )}
