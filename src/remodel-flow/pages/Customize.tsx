@@ -363,7 +363,16 @@ const Customize = () => {
         if (b.categoryId) return renderCategorySection(b.categoryId, b.label, b.key);
         return renderCuratedBinSection(b.label, bin, b.key as ModernBalancedBinKey);
       })
-    : CATEGORIES.map((cat) => renderCategorySection(cat.id));
+    : CATALOG_GROUPS.map((group) => (
+        <div key={`group-${group.label}`} className="space-y-6">
+          <p className="text-[11px] font-semibold uppercase tracking-[0.18em] text-foreground/70 border-b border-border/60 pb-2">
+            {group.label}
+          </p>
+          {group.categoryIds
+            .map((catId) => renderCategorySection(catId))
+            .filter(Boolean)}
+        </div>
+      ));
 
   return (
     <div>
