@@ -110,9 +110,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Tub",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "tub-alcove" },
     options: [
-      { id: "tub-alcove", name: 'Standard 60" Alcove Tub', estPrice: 480, material_tags: ["acrylic", "alcove"], finish_tags: ["white"], bin: "budget" },
-      { id: "tub-drop", name: "Drop-In Soaking Tub", estPrice: 880, material_tags: ["acrylic", "drop_in"], finish_tags: ["white"], bin: "mid" },
-      { id: "tub-freestanding", name: "Freestanding Soaking Tub", estPrice: 1480, material_tags: ["acrylic", "freestanding"], finish_tags: ["matte"], bin: "high" },
+      { id: "tub-alcove", name: '60 in. Alcove Soaking Tub', estPrice: 480, material_tags: ["acrylic", "alcove"], finish_tags: ["white"], bin: "budget" },
+      { id: "tub-drop", name: '60 in. Drop-In Soaking Tub', estPrice: 880, material_tags: ["acrylic", "drop_in"], finish_tags: ["white"], bin: "mid" },
+      { id: "tub-freestanding", name: '59 in. Freestanding Acrylic Soaking Tub', estPrice: 1480, material_tags: ["acrylic", "freestanding"], finish_tags: ["matte"], bin: "high" },
     ],
   },
   {
