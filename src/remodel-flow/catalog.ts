@@ -67,12 +67,12 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Shower Wall Tile",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "tile-subway" },
     options: [
-      { id: "tile-subway", name: "Classic White Subway", estPrice: 480, material_tags: ["porcelain", "subway"], finish_tags: ["polished"], bin: "budget" },
-      { id: "tile-zellige", name: "Handmade Zellige", estPrice: 1380, material_tags: ["zellige", "handmade"], finish_tags: ["honed"], bin: "mid" },
-      { id: "tile-marble", name: "Honed Marble Slab Look", estPrice: 2100, material_tags: ["marble", "porcelain"], finish_tags: ["honed"], bin: "high" },
+      { id: "tile-subway", name: "3x6 Classic White Subway Tile", estPrice: 480, material_tags: ["porcelain", "subway"], finish_tags: ["polished"], bin: "budget" },
+      { id: "tile-zellige", name: "4x4 Handmade Zellige Tile", estPrice: 1380, material_tags: ["zellige", "handmade"], finish_tags: ["honed"], bin: "mid" },
+      { id: "tile-marble", name: "Honed Marble-Look Porcelain Slab", estPrice: 2100, material_tags: ["marble", "porcelain"], finish_tags: ["honed"], bin: "high" },
     ],
     dynamic_pool: [
-      { id: "tile-marble-polished", name: "Polished Marble Slab", estPrice: 2800, material_tags: ["marble"], finish_tags: ["polished"], bin: "luxury" },
+      { id: "tile-marble-polished", name: "Polished Marble-Look Porcelain Slab", estPrice: 2800, material_tags: ["marble"], finish_tags: ["polished"], bin: "luxury" },
     ],
   },
   {
