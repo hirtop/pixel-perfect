@@ -147,11 +147,11 @@ const Preview = () => {
     <div className="mx-auto max-w-3xl">
       {/* Header */}
       <div className="text-center mb-10">
-        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">Step 05</p>
+        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3 print:hidden">Step 05</p>
         <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
           Your Bathroom Plan
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">Concept preview based on your selections</p>
+        <p className="mt-2 text-sm text-muted-foreground print:hidden">Concept preview based on your selections</p>
       </div>
 
       {/* Hero image — minimal frame */}
