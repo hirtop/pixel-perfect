@@ -100,9 +100,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Shower Glass",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "sg-curtain" },
     options: [
-      { id: "sg-curtain", name: "Tension Rod + Liner", estPrice: 80, material_tags: ["fabric"], finish_tags: ["white"], bin: "budget" },
-      { id: "sg-sliding", name: "Frameless Sliding Door", estPrice: 780, material_tags: ["glass", "framed"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "sg-fixed", name: "Fixed Frameless Glass Panel", estPrice: 1280, material_tags: ["glass", "frameless"], finish_tags: ["matte"], bin: "high" },
+      { id: "sg-curtain", name: "Tension Rod + Shower Curtain Liner", estPrice: 80, material_tags: ["fabric"], finish_tags: ["white"], bin: "budget" },
+      { id: "sg-sliding", name: "Frameless Sliding Shower Door", estPrice: 780, material_tags: ["glass", "framed"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "sg-fixed", name: "Fixed Frameless Glass Shower Panel", estPrice: 1280, material_tags: ["glass", "frameless"], finish_tags: ["matte"], bin: "high" },
     ],
   },
   {
