@@ -80,9 +80,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Shower Floor Tile",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "sft-mosaic" },
     options: [
-      { id: "sft-mosaic", name: '2" Hex Porcelain Mosaic', estPrice: 220, material_tags: ["porcelain", "mosaic"], finish_tags: ["matte"], bin: "budget" },
-      { id: "sft-pebble", name: "Honed Pebble Mosaic", estPrice: 480, material_tags: ["stone", "mosaic"], finish_tags: ["honed"], bin: "mid" },
-      { id: "sft-marble-hex", name: "Marble Hex Mosaic", estPrice: 780, material_tags: ["marble", "mosaic"], finish_tags: ["honed"], bin: "high" },
+      { id: "sft-mosaic", name: '2 in. Hex Porcelain Mosaic', estPrice: 220, material_tags: ["porcelain", "mosaic"], finish_tags: ["matte"], bin: "budget" },
+      { id: "sft-pebble", name: "Honed Pebble Stone Mosaic", estPrice: 480, material_tags: ["stone", "mosaic"], finish_tags: ["honed"], bin: "mid" },
+      { id: "sft-marble-hex", name: '2 in. Marble Hex Mosaic', estPrice: 780, material_tags: ["marble", "mosaic"], finish_tags: ["honed"], bin: "high" },
     ],
   },
   {
