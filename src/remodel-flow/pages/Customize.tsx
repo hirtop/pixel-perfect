@@ -418,6 +418,9 @@ const Customize = () => {
                   </span>
                 )}
               </p>
+              <p className="mt-1 text-[11px] text-muted-foreground">
+                Estimated material allowance + labor anchor
+              </p>
             </div>
             {state.style && (
               <div className="text-right">
@@ -442,9 +445,9 @@ const Customize = () => {
               </div>
             )}
           </div>
-          <p className="mt-1 text-xs text-muted-foreground">
-            Base {fmt(plan.basePrice)} {plan.upgradeDelta !== 0 && (
-              <span>· {plan.upgradeDelta > 0 ? "+" : ""}{fmt(plan.upgradeDelta)} adjustments</span>
+          <p className="mt-2 text-xs text-muted-foreground">
+            Labor anchor {fmt(plan.basePrice)} {plan.upgradeDelta !== 0 && (
+              <span>· {plan.upgradeDelta > 0 ? "+" : ""}{fmt(plan.upgradeDelta)} swap adjustments</span>
             )}
           </p>
           {state.style && globalPct < 70 ? (
