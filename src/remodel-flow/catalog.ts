@@ -42,9 +42,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Mirror",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "mirror-frameless" },
     options: [
-      { id: "mirror-frameless", name: "Frameless Wall Mirror", estPrice: 90, material_tags: ["frameless"], finish_tags: ["clear"], bin: "budget" },
-      { id: "mirror-framed", name: "Black Framed Vanity Mirror", estPrice: 220, material_tags: ["framed", "matte_black"], finish_tags: ["matte"], bin: "mid" },
-      { id: "mirror-led", name: "LED Backlit Mirror", estPrice: 420, material_tags: ["led", "frameless"], finish_tags: ["clear"], bin: "high" },
+      { id: "mirror-frameless", name: "24 in. Frameless Wall Mirror", estPrice: 90, material_tags: ["frameless"], finish_tags: ["clear"], bin: "budget" },
+      { id: "mirror-framed", name: "Black Framed Vanity Mirror, 30 in.", estPrice: 220, material_tags: ["framed", "matte_black"], finish_tags: ["matte"], bin: "mid" },
+      { id: "mirror-led", name: "LED Backlit Frameless Mirror", estPrice: 420, material_tags: ["led", "frameless"], finish_tags: ["clear"], bin: "high" },
     ],
   },
   {
