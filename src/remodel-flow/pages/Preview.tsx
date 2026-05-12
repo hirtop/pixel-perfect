@@ -267,14 +267,19 @@ const Preview = () => {
         </div>
       )}
 
+      {/* Planning disclaimer */}
+      <p className="mt-10 text-center text-xs text-muted-foreground/90 max-w-xl mx-auto leading-relaxed">
+        BOBOX provides planning estimates and curated product concepts. Final pricing, fit, installation, code compliance, product availability, and labor costs require professional review.
+      </p>
+
       {/* AI render request foundation — UI scaffold only */}
-      <section className="mt-20 border-t border-border/60 pt-14">
+      <section className="mt-16 border-t border-border/60 pt-14">
         <div className="mx-auto max-w-xl text-center">
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
-            Want to see this in your bathroom?
+            See a concept preview of your plan
           </h2>
           <p className="mt-3 text-sm text-muted-foreground leading-relaxed">
-            Upload a photo to generate a personalized concept preview based on your selections.
+            Generate a concept preview inspired by your selected package. This is a planning visual, not an exact construction rendering.
           </p>
 
           {/* Render mode selector — UI only */}
