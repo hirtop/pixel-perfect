@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { RenderMode } from "../render";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ImagePlus, Copy, Check } from "lucide-react";
+import { ImagePlus, Copy, Check, Printer } from "lucide-react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES, CATALOG_GROUPS, getPackageFor } from "../catalog";
 import { resolvePlan, styleScore, styleMatchLabel } from "../resolver";
