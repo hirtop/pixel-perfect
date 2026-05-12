@@ -16,12 +16,12 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Vanity",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "vanity-std" },
     options: [
-      { id: "vanity-std", name: 'Standard 30" Vanity', estPrice: 600, material_tags: ["laminate", "freestanding"], finish_tags: ["white"], bin: "budget" },
-      { id: "vanity-floating", name: "Floating Oak Vanity", estPrice: 1450, material_tags: ["oak", "floating"], finish_tags: ["natural_wood"], bin: "mid" },
-      { id: "vanity-double", name: "Double Stone-Top Vanity", estPrice: 2400, material_tags: ["walnut", "stone_top", "freestanding"], finish_tags: ["honed"], bin: "high" },
+      { id: "vanity-std", name: '30 in. White Shaker Vanity with Quartz Top', estPrice: 600, material_tags: ["laminate", "freestanding"], finish_tags: ["white"], bin: "budget" },
+      { id: "vanity-floating", name: '36 in. Floating Oak Vanity, Single Sink', estPrice: 1450, material_tags: ["oak", "floating"], finish_tags: ["natural_wood"], bin: "mid" },
+      { id: "vanity-double", name: '60 in. Double Vanity with Honed Stone Top', estPrice: 2400, material_tags: ["walnut", "stone_top", "freestanding"], finish_tags: ["honed"], bin: "high" },
     ],
     dynamic_pool: [
-      { id: "vanity-floating-walnut", name: "Floating Walnut Vanity", estPrice: 1850, material_tags: ["walnut", "floating"], finish_tags: ["natural_wood"], bin: "high" },
+      { id: "vanity-floating-walnut", name: '36 in. Floating Walnut Vanity', estPrice: 1850, material_tags: ["walnut", "floating"], finish_tags: ["natural_wood"], bin: "high" },
     ],
   },
   {
@@ -29,12 +29,12 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Faucet",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "fix-chrome" },
     options: [
-      { id: "fix-chrome", name: "Chrome Single-Handle Faucet", estPrice: 180, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
-      { id: "fix-brushed", name: "Brushed Nickel Widespread", estPrice: 380, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "fix-matteblack", name: "Matte Black Designer Faucet", estPrice: 720, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
+      { id: "fix-chrome", name: "Chrome Single-Handle Bathroom Faucet", estPrice: 180, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
+      { id: "fix-brushed", name: "Brushed Nickel Widespread Faucet", estPrice: 380, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "fix-matteblack", name: "Matte Black Single-Handle Designer Faucet", estPrice: 720, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
     ],
     dynamic_pool: [
-      { id: "fix-brass", name: "Unlacquered Brass Faucet", estPrice: 880, material_tags: ["brass"], finish_tags: ["natural"], bin: "high" },
+      { id: "fix-brass", name: "Unlacquered Brass Widespread Faucet", estPrice: 880, material_tags: ["brass"], finish_tags: ["natural"], bin: "high" },
     ],
   },
   {
@@ -42,9 +42,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Mirror",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "mirror-frameless" },
     options: [
-      { id: "mirror-frameless", name: "Frameless Wall Mirror", estPrice: 90, material_tags: ["frameless"], finish_tags: ["clear"], bin: "budget" },
-      { id: "mirror-framed", name: "Black Framed Vanity Mirror", estPrice: 220, material_tags: ["framed", "matte_black"], finish_tags: ["matte"], bin: "mid" },
-      { id: "mirror-led", name: "LED Backlit Mirror", estPrice: 420, material_tags: ["led", "frameless"], finish_tags: ["clear"], bin: "high" },
+      { id: "mirror-frameless", name: "24 in. Frameless Wall Mirror", estPrice: 90, material_tags: ["frameless"], finish_tags: ["clear"], bin: "budget" },
+      { id: "mirror-framed", name: "Black Framed Vanity Mirror, 30 in.", estPrice: 220, material_tags: ["framed", "matte_black"], finish_tags: ["matte"], bin: "mid" },
+      { id: "mirror-led", name: "LED Backlit Frameless Mirror", estPrice: 420, material_tags: ["led", "frameless"], finish_tags: ["clear"], bin: "high" },
     ],
   },
   {
@@ -53,11 +53,11 @@ export const CATEGORIES: CatalogCategory[] = [
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "light-flush" },
     options: [
       { id: "light-flush", name: "Flush LED Ceiling Light", estPrice: 140, material_tags: ["flush"], finish_tags: ["white"], bin: "budget" },
-      { id: "light-sconces", name: "Sconce Pair + Vanity Bar", estPrice: 420, material_tags: ["sconce"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "light-layered", name: "Layered Designer Lighting", estPrice: 880, material_tags: ["layered", "sconce", "pendant"], finish_tags: ["matte"], bin: "high" },
+      { id: "light-sconces", name: "Brushed Nickel Sconce Pair + Vanity Bar", estPrice: 420, material_tags: ["sconce"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "light-layered", name: "Layered Sconce + Pendant Lighting Set", estPrice: 880, material_tags: ["layered", "sconce", "pendant"], finish_tags: ["matte"], bin: "high" },
     ],
     dynamic_pool: [
-      { id: "light-pendant", name: "Statement Pendant", estPrice: 540, material_tags: ["pendant"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "light-pendant", name: "Designer Statement Pendant", estPrice: 540, material_tags: ["pendant"], finish_tags: ["brushed"], bin: "mid" },
     ],
   },
 
@@ -67,12 +67,12 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Shower Wall Tile",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "tile-subway" },
     options: [
-      { id: "tile-subway", name: "Classic White Subway", estPrice: 480, material_tags: ["porcelain", "subway"], finish_tags: ["polished"], bin: "budget" },
-      { id: "tile-zellige", name: "Handmade Zellige", estPrice: 1380, material_tags: ["zellige", "handmade"], finish_tags: ["honed"], bin: "mid" },
-      { id: "tile-marble", name: "Honed Marble Slab Look", estPrice: 2100, material_tags: ["marble", "porcelain"], finish_tags: ["honed"], bin: "high" },
+      { id: "tile-subway", name: "3x6 Classic White Subway Tile", estPrice: 480, material_tags: ["porcelain", "subway"], finish_tags: ["polished"], bin: "budget" },
+      { id: "tile-zellige", name: "4x4 Handmade Zellige Tile", estPrice: 1380, material_tags: ["zellige", "handmade"], finish_tags: ["honed"], bin: "mid" },
+      { id: "tile-marble", name: "Honed Marble-Look Porcelain Slab", estPrice: 2100, material_tags: ["marble", "porcelain"], finish_tags: ["honed"], bin: "high" },
     ],
     dynamic_pool: [
-      { id: "tile-marble-polished", name: "Polished Marble Slab", estPrice: 2800, material_tags: ["marble"], finish_tags: ["polished"], bin: "luxury" },
+      { id: "tile-marble-polished", name: "Polished Marble-Look Porcelain Slab", estPrice: 2800, material_tags: ["marble"], finish_tags: ["polished"], bin: "luxury" },
     ],
   },
   {
@@ -80,9 +80,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Shower Floor Tile",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "sft-mosaic" },
     options: [
-      { id: "sft-mosaic", name: '2" Hex Porcelain Mosaic', estPrice: 220, material_tags: ["porcelain", "mosaic"], finish_tags: ["matte"], bin: "budget" },
-      { id: "sft-pebble", name: "Honed Pebble Mosaic", estPrice: 480, material_tags: ["stone", "mosaic"], finish_tags: ["honed"], bin: "mid" },
-      { id: "sft-marble-hex", name: "Marble Hex Mosaic", estPrice: 780, material_tags: ["marble", "mosaic"], finish_tags: ["honed"], bin: "high" },
+      { id: "sft-mosaic", name: '2 in. Hex Porcelain Mosaic', estPrice: 220, material_tags: ["porcelain", "mosaic"], finish_tags: ["matte"], bin: "budget" },
+      { id: "sft-pebble", name: "Honed Pebble Stone Mosaic", estPrice: 480, material_tags: ["stone", "mosaic"], finish_tags: ["honed"], bin: "mid" },
+      { id: "sft-marble-hex", name: '2 in. Marble Hex Mosaic', estPrice: 780, material_tags: ["marble", "mosaic"], finish_tags: ["honed"], bin: "high" },
     ],
   },
   {
@@ -90,9 +90,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Shower Trim & Valve",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "st-chrome" },
     options: [
-      { id: "st-chrome", name: "Chrome Single-Function Trim", estPrice: 240, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
-      { id: "st-brushed", name: "Brushed Nickel Trim Kit", estPrice: 480, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "st-rainhand", name: "Matte Black Rain + Handheld", estPrice: 880, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
+      { id: "st-chrome", name: "Chrome Single-Function Trim Kit", estPrice: 240, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
+      { id: "st-brushed", name: "Brushed Nickel Shower Trim Kit", estPrice: 480, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "st-rainhand", name: "Matte Black Rain Head + Handheld Trim Kit", estPrice: 880, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
     ],
   },
   {
@@ -100,9 +100,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Shower Glass",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "sg-curtain" },
     options: [
-      { id: "sg-curtain", name: "Tension Rod + Liner", estPrice: 80, material_tags: ["fabric"], finish_tags: ["white"], bin: "budget" },
-      { id: "sg-sliding", name: "Frameless Sliding Door", estPrice: 780, material_tags: ["glass", "framed"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "sg-fixed", name: "Fixed Frameless Glass Panel", estPrice: 1280, material_tags: ["glass", "frameless"], finish_tags: ["matte"], bin: "high" },
+      { id: "sg-curtain", name: "Tension Rod + Shower Curtain Liner", estPrice: 80, material_tags: ["fabric"], finish_tags: ["white"], bin: "budget" },
+      { id: "sg-sliding", name: "Frameless Sliding Shower Door", estPrice: 780, material_tags: ["glass", "framed"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "sg-fixed", name: "Fixed Frameless Glass Shower Panel", estPrice: 1280, material_tags: ["glass", "frameless"], finish_tags: ["matte"], bin: "high" },
     ],
   },
   {
@@ -110,9 +110,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Tub",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "tub-alcove" },
     options: [
-      { id: "tub-alcove", name: 'Standard 60" Alcove Tub', estPrice: 480, material_tags: ["acrylic", "alcove"], finish_tags: ["white"], bin: "budget" },
-      { id: "tub-drop", name: "Drop-In Soaking Tub", estPrice: 880, material_tags: ["acrylic", "drop_in"], finish_tags: ["white"], bin: "mid" },
-      { id: "tub-freestanding", name: "Freestanding Soaking Tub", estPrice: 1480, material_tags: ["acrylic", "freestanding"], finish_tags: ["matte"], bin: "high" },
+      { id: "tub-alcove", name: '60 in. Alcove Soaking Tub', estPrice: 480, material_tags: ["acrylic", "alcove"], finish_tags: ["white"], bin: "budget" },
+      { id: "tub-drop", name: '60 in. Drop-In Soaking Tub', estPrice: 880, material_tags: ["acrylic", "drop_in"], finish_tags: ["white"], bin: "mid" },
+      { id: "tub-freestanding", name: '59 in. Freestanding Acrylic Soaking Tub', estPrice: 1480, material_tags: ["acrylic", "freestanding"], finish_tags: ["matte"], bin: "high" },
     ],
   },
   {
@@ -120,9 +120,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Tub Fixtures",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "tf-chrome" },
     options: [
-      { id: "tf-chrome", name: "Chrome Tub Spout + Valve", estPrice: 220, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
-      { id: "tf-brushed", name: "Brushed Nickel Tub Filler", estPrice: 420, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "tf-floor", name: "Matte Black Floor-Mount Filler", estPrice: 780, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
+      { id: "tf-chrome", name: "Chrome Tub Spout + Pressure-Balance Valve", estPrice: 220, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
+      { id: "tf-brushed", name: "Brushed Nickel Deck-Mount Tub Filler", estPrice: 420, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "tf-floor", name: "Matte Black Floor-Mount Tub Filler", estPrice: 780, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
     ],
   },
 
@@ -132,9 +132,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Floor Tile",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "ft-porcelain" },
     options: [
-      { id: "ft-porcelain", name: "Wood-Look Porcelain Plank", estPrice: 480, material_tags: ["porcelain"], finish_tags: ["matte"], bin: "budget" },
-      { id: "ft-hex", name: 'Large-Format 12" Porcelain', estPrice: 880, material_tags: ["porcelain"], finish_tags: ["honed"], bin: "mid" },
-      { id: "ft-marble", name: "Marble-Look Slab Porcelain", estPrice: 1450, material_tags: ["marble", "porcelain"], finish_tags: ["honed"], bin: "high" },
+      { id: "ft-porcelain", name: "6x36 Wood-Look Porcelain Plank", estPrice: 480, material_tags: ["porcelain"], finish_tags: ["matte"], bin: "budget" },
+      { id: "ft-hex", name: '12x24 Honed Porcelain Floor Tile', estPrice: 880, material_tags: ["porcelain"], finish_tags: ["honed"], bin: "mid" },
+      { id: "ft-marble", name: "Marble-Look Porcelain Slab Floor Tile", estPrice: 1450, material_tags: ["marble", "porcelain"], finish_tags: ["honed"], bin: "high" },
     ],
   },
 
@@ -144,9 +144,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Toilet",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "toilet-twopiece" },
     options: [
-      { id: "toilet-twopiece", name: "Two-Piece Elongated Toilet", estPrice: 220, material_tags: ["porcelain"], finish_tags: ["white"], bin: "budget" },
-      { id: "toilet-onepiece", name: "One-Piece Skirted Toilet", estPrice: 380, material_tags: ["porcelain"], finish_tags: ["white"], bin: "mid" },
-      { id: "toilet-smart", name: "Smart Bidet Toilet", estPrice: 620, material_tags: ["porcelain", "smart"], finish_tags: ["white"], bin: "high" },
+      { id: "toilet-twopiece", name: "Two-Piece Elongated High-Efficiency Toilet", estPrice: 220, material_tags: ["porcelain"], finish_tags: ["white"], bin: "budget" },
+      { id: "toilet-onepiece", name: "One-Piece Skirted Comfort-Height Toilet", estPrice: 380, material_tags: ["porcelain"], finish_tags: ["white"], bin: "mid" },
+      { id: "toilet-smart", name: "One-Piece Smart Bidet Toilet", estPrice: 620, material_tags: ["porcelain", "smart"], finish_tags: ["white"], bin: "high" },
     ],
   },
   {
@@ -154,9 +154,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Accessories",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "acc-basic" },
     options: [
-      { id: "acc-basic", name: "Towel Bar + Hook + TP Holder", estPrice: 110, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
-      { id: "acc-coordinated", name: "Coordinated Hardware Set", estPrice: 220, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "acc-designer", name: "Designer Hardware + Niche Shelf", estPrice: 380, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
+      { id: "acc-basic", name: "Chrome Towel Bar + Hook + Paper Holder Set", estPrice: 110, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
+      { id: "acc-coordinated", name: "Brushed Nickel Coordinated Hardware Set", estPrice: 220, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "acc-designer", name: "Matte Black Designer Hardware + Niche Shelf", estPrice: 380, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
     ],
   },
 ];
