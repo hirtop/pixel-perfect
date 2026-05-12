@@ -16,12 +16,12 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Vanity",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "vanity-std" },
     options: [
-      { id: "vanity-std", name: 'Standard 30" Vanity', estPrice: 600, material_tags: ["laminate", "freestanding"], finish_tags: ["white"], bin: "budget" },
-      { id: "vanity-floating", name: "Floating Oak Vanity", estPrice: 1450, material_tags: ["oak", "floating"], finish_tags: ["natural_wood"], bin: "mid" },
-      { id: "vanity-double", name: "Double Stone-Top Vanity", estPrice: 2400, material_tags: ["walnut", "stone_top", "freestanding"], finish_tags: ["honed"], bin: "high" },
+      { id: "vanity-std", name: '30 in. White Shaker Vanity with Quartz Top', estPrice: 600, material_tags: ["laminate", "freestanding"], finish_tags: ["white"], bin: "budget" },
+      { id: "vanity-floating", name: '36 in. Floating Oak Vanity, Single Sink', estPrice: 1450, material_tags: ["oak", "floating"], finish_tags: ["natural_wood"], bin: "mid" },
+      { id: "vanity-double", name: '60 in. Double Vanity with Honed Stone Top', estPrice: 2400, material_tags: ["walnut", "stone_top", "freestanding"], finish_tags: ["honed"], bin: "high" },
     ],
     dynamic_pool: [
-      { id: "vanity-floating-walnut", name: "Floating Walnut Vanity", estPrice: 1850, material_tags: ["walnut", "floating"], finish_tags: ["natural_wood"], bin: "high" },
+      { id: "vanity-floating-walnut", name: '36 in. Floating Walnut Vanity', estPrice: 1850, material_tags: ["walnut", "floating"], finish_tags: ["natural_wood"], bin: "high" },
     ],
   },
   {
