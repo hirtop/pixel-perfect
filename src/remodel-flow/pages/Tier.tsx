@@ -1,5 +1,5 @@
 import { useFlow } from "../FlowContext";
-import { PACKAGES } from "../catalog";
+import { PACKAGES, getPackageStartingPrice } from "../catalog";
 import { FlowCard, PrimaryNav, StepHeader } from "../ui";
 import type { TierId } from "../types";
 
@@ -15,10 +15,12 @@ const Tier = () => {
       <div className="grid gap-4 md:grid-cols-3">
         {TIERS.map((id) => {
           const p = PACKAGES[id];
+          const startingAt = getPackageStartingPrice(state.style, id);
           return (
             <FlowCard key={id} selected={state.tier === id} onClick={() => setTier(id)}>
               <p className="text-xs uppercase tracking-widest text-muted-foreground">{p.name}</p>
-              <p className="mt-2 text-2xl font-semibold text-foreground">{fmt(p.basePrice)}</p>
+              <p className="mt-2 text-2xl font-semibold text-foreground">{fmt(startingAt)}</p>
+              <p className="mt-1 text-[11px] text-muted-foreground">Starting at · products + labor</p>
               <p className="mt-2 text-sm text-muted-foreground">{p.tagline}</p>
             </FlowCard>
           );
