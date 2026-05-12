@@ -84,6 +84,9 @@ const Packages = () => {
             </div>
           ))}
         </div>
+        <p className="mt-4 text-xs text-muted-foreground leading-relaxed">
+          Product names and pricing are planning allowances. Final product sourcing, images, dimensions, availability, and installation details require professional review.
+        </p>
       </div>
       <PrimaryNav back="/remodel-flow/tier" next="/remodel-flow/customize" nextLabel="Customize" />
     </div>
