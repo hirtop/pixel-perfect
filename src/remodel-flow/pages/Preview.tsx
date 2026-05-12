@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import type { RenderMode } from "../render";
 import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
-import { ImagePlus, Copy, Check } from "lucide-react";
+import { ImagePlus, Copy, Check, Printer } from "lucide-react";
 import { useFlow } from "../FlowContext";
 import { CATEGORIES, PACKAGES, CATALOG_GROUPS, getPackageFor } from "../catalog";
 import { resolvePlan, styleScore, styleMatchLabel } from "../resolver";
@@ -147,15 +147,15 @@ const Preview = () => {
     <div className="mx-auto max-w-3xl">
       {/* Header */}
       <div className="text-center mb-10">
-        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">Step 05</p>
+        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3 print:hidden">Step 05</p>
         <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
           Your Bathroom Plan
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">Concept preview based on your selections</p>
+        <p className="mt-2 text-sm text-muted-foreground print:hidden">Concept preview based on your selections</p>
       </div>
 
       {/* Hero image — minimal frame */}
-      <div className="overflow-hidden rounded-3xl bg-muted/40">
+      <div className="overflow-hidden rounded-3xl bg-muted/40 print:hidden">
         <img
           src={heroBathroom}
           alt="Bathroom planning visual"
@@ -353,7 +353,7 @@ const Preview = () => {
 
 
       {/* Actions */}
-      <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3">
+      <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3 print:hidden">
         <button
           type="button"
           onClick={handleSave}
@@ -369,14 +369,25 @@ const Preview = () => {
         >
           Continue editing
         </button>
+        <button
+          type="button"
+          onClick={() => window.print()}
+          className="inline-flex items-center justify-center gap-2 rounded-full border border-border px-7 py-3 text-sm text-foreground hover:bg-muted transition-colors min-w-[180px]"
+        >
+          <Printer className="h-4 w-4" />
+          Print summary
+        </button>
       </div>
+      <p className="mt-3 text-center text-xs text-muted-foreground print:hidden">
+        Print or save this planning summary as a PDF from your browser.
+      </p>
       {!user && (
-        <p className="mt-3 text-center text-xs text-muted-foreground">
+        <p className="mt-3 text-center text-xs text-muted-foreground print:hidden">
           Create an account to save this plan and return to it later.
         </p>
       )}
       {/* Reserved confirmation row — fixed height prevents layout jump */}
-      <div className="mt-3 h-5 text-center" aria-live="polite">
+      <div className="mt-3 h-5 text-center print:hidden" aria-live="polite">
         <span
           className={cn(
             "text-xs text-muted-foreground transition-opacity duration-200",
@@ -389,7 +400,7 @@ const Preview = () => {
 
       {/* Continuation link — subtle, only visible after a successful save */}
       {continuationLink && (
-        <div className="mt-2 flex justify-center">
+        <div className="mt-2 flex justify-center print:hidden">
           <button
             type="button"
             onClick={handleCopyLink}
@@ -411,7 +422,7 @@ const Preview = () => {
       </p>
 
       {/* AI render request foundation — UI scaffold only */}
-      <section className="mt-16 border-t border-border/60 pt-14">
+      <section className="mt-16 border-t border-border/60 pt-14 print:hidden">
         <div className="mx-auto max-w-xl text-center">
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
             See a concept preview of your plan

@@ -96,4 +96,9 @@
     page-break-inside: avoid;
   }
   body { background: white !important; }
+  /* BOBOX print refinements */
+  .print-break-inside {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
 }
