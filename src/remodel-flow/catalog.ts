@@ -53,11 +53,11 @@ export const CATEGORIES: CatalogCategory[] = [
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "light-flush" },
     options: [
       { id: "light-flush", name: "Flush LED Ceiling Light", estPrice: 140, material_tags: ["flush"], finish_tags: ["white"], bin: "budget" },
-      { id: "light-sconces", name: "Sconce Pair + Vanity Bar", estPrice: 420, material_tags: ["sconce"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "light-layered", name: "Layered Designer Lighting", estPrice: 880, material_tags: ["layered", "sconce", "pendant"], finish_tags: ["matte"], bin: "high" },
+      { id: "light-sconces", name: "Brushed Nickel Sconce Pair + Vanity Bar", estPrice: 420, material_tags: ["sconce"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "light-layered", name: "Layered Sconce + Pendant Lighting Set", estPrice: 880, material_tags: ["layered", "sconce", "pendant"], finish_tags: ["matte"], bin: "high" },
     ],
     dynamic_pool: [
-      { id: "light-pendant", name: "Statement Pendant", estPrice: 540, material_tags: ["pendant"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "light-pendant", name: "Designer Statement Pendant", estPrice: 540, material_tags: ["pendant"], finish_tags: ["brushed"], bin: "mid" },
     ],
   },
 
