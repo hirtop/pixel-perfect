@@ -361,7 +361,7 @@ const Preview = () => {
           disabled={saving}
           className="inline-flex items-center justify-center rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors min-w-[180px] disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {saving ? "Saving…" : "Save design"}
+          {saving ? "Saving…" : user ? "Save plan" : "Save plan to my account"}
         </button>
         <button
           type="button"
@@ -371,6 +371,11 @@ const Preview = () => {
           Continue editing
         </button>
       </div>
+      {!user && (
+        <p className="mt-3 text-center text-xs text-muted-foreground">
+          Create an account to save this plan and return to it later.
+        </p>
+      )}
       {/* Reserved confirmation row — fixed height prevents layout jump */}
       <div className="mt-3 h-5 text-center" aria-live="polite">
         <span
