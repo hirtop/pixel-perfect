@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "sonner";
 import { ImagePlus, Copy, Check } from "lucide-react";
 import { useFlow } from "../FlowContext";
-import { CATEGORIES, PACKAGES } from "../catalog";
+import { CATEGORIES, PACKAGES, CATALOG_GROUPS, getPackageFor } from "../catalog";
 import { resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import { buildRenderRequest } from "../render";
 import { saveDesign } from "../persistence/client";
@@ -199,25 +199,159 @@ const Preview = () => {
         </p>
       </div>
 
-      {/* Highlights */}
-      {highlights.length > 0 && (
-        <div className="mt-12 mx-auto max-w-xl">
-          <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground text-center mb-5">
-            Highlights
-          </p>
-          <ul className="space-y-2.5">
-            {highlights.map((h) => (
-              <li
-                key={h.categoryName}
-                className="flex items-baseline justify-between gap-4 text-sm border-b border-border/50 pb-2.5 last:border-b-0"
-              >
-                <span className="text-muted-foreground">{h.categoryName}</span>
-                <span className="text-foreground font-medium text-right">{h.optionName}</span>
-              </li>
-            ))}
-          </ul>
+      {/* ─────────────────── Package Overview ─────────────────── */}
+      {(() => {
+        const styleLabel = state.style ? state.style.charAt(0).toUpperCase() + state.style.slice(1) : "—";
+        const tierLabel = state.tier ? state.tier.charAt(0).toUpperCase() + state.tier.slice(1) : "—";
+        const stylePkg = state.tier ? getPackageFor(state.style, state.tier) : pkg;
+        return (
+          <section className="mt-14 mx-auto max-w-2xl">
+            <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground text-center mb-5">
+              Package Overview
+            </p>
+            <div className="rounded-2xl border border-border/60 bg-muted/20 p-6 space-y-3">
+              <div className="grid grid-cols-2 gap-y-2 text-sm">
+                <span className="text-muted-foreground">Style</span>
+                <span className="text-foreground text-right font-medium">{styleLabel}</span>
+                <span className="text-muted-foreground">Tier</span>
+                <span className="text-foreground text-right font-medium">{tierLabel}</span>
+                <span className="text-muted-foreground">Package</span>
+                <span className="text-foreground text-right font-medium">{stylePkg?.name ?? pkg?.name ?? "—"}</span>
+              </div>
+              {stylePkg?.tagline && (
+                <p className="pt-2 border-t border-border/50 text-sm text-muted-foreground leading-relaxed">
+                  {stylePkg.tagline}
+                </p>
+              )}
+              {state.style && (
+                <p className="text-xs text-muted-foreground/90">
+                  Cohesion match: <span className="text-foreground tabular-nums">{stylePct}%</span> — {headline.line.toLowerCase()}.
+                </p>
+              )}
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* ─────────────────── Estimated Materials ─────────────────── */}
+      {(() => {
+        const itemsTotal = plan.items.reduce((s, i) => s + (i.estPrice || 0), 0);
+        return (
+          <section className="mt-10 mx-auto max-w-2xl">
+            <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground text-center mb-5">
+              Estimated Materials
+            </p>
+            <div className="rounded-2xl border border-border/60 p-6 space-y-2">
+              <div className="flex items-baseline justify-between text-sm">
+                <span className="text-muted-foreground">Material allowance (products)</span>
+                <span className="text-foreground tabular-nums font-medium">{fmt(itemsTotal)}</span>
+              </div>
+              <div className="flex items-baseline justify-between text-sm">
+                <span className="text-muted-foreground">Labor anchor (planning estimate)</span>
+                <span className="text-foreground tabular-nums font-medium">{fmt(plan.basePrice)}</span>
+              </div>
+              <div className="flex items-baseline justify-between text-sm pt-2 border-t border-border/50">
+                <span className="text-foreground">Planning total</span>
+                <span className="text-foreground tabular-nums font-semibold">{fmt(plan.total)}</span>
+              </div>
+              <p className="pt-2 text-xs text-muted-foreground leading-relaxed">
+                This is a planning estimate, not a full installed remodel cost. Demo, site conditions,
+                permits, plumbing/electrical changes, finish labor, and professional review will affect final pricing.
+              </p>
+            </div>
+          </section>
+        );
+      })()}
+
+      {/* ─────────────────── Selected Products ─────────────────── */}
+      <section className="mt-10 mx-auto max-w-2xl">
+        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground text-center mb-5">
+          Selected Products
+        </p>
+        <div className="space-y-6">
+          {CATALOG_GROUPS.map((group) => {
+            const groupItems = group.categoryIds
+              .map((cid) => plan.items.find((i) => i.categoryId === cid))
+              .filter((i): i is NonNullable<typeof i> => Boolean(i));
+            if (!groupItems.length) return null;
+            return (
+              <div key={group.label}>
+                <p className="text-[11px] uppercase tracking-[0.2em] text-muted-foreground/80 mb-2">
+                  {group.label}
+                </p>
+                <ul className="rounded-2xl border border-border/60 divide-y divide-border/50">
+                  {groupItems.map((it) => (
+                    <li key={it.categoryId} className="flex items-center justify-between gap-4 px-4 py-3">
+                      <div className="min-w-0">
+                        <p className="text-sm text-foreground font-medium truncate">{it.optionName}</p>
+                        <p className="text-xs text-muted-foreground">{it.categoryName}</p>
+                      </div>
+                      <div className="text-right shrink-0">
+                        <p className="text-sm text-foreground tabular-nums">{fmt(it.estPrice)}</p>
+                        {it.source === "user-selection" && (
+                          <p className="text-[10px] uppercase tracking-wide text-muted-foreground">Swapped</p>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            );
+          })}
         </div>
-      )}
+        <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+          Prices shown are planning allowances based on representative products. Confirm exact models, dimensions,
+          and availability with your project professional before purchase.
+        </p>
+      </section>
+
+      {/* ─────────────────── Selected Swaps ─────────────────── */}
+      {(() => {
+        const swaps = plan.items.filter((i) => i.source === "user-selection");
+        if (!swaps.length) return null;
+        return (
+          <section className="mt-10 mx-auto max-w-2xl">
+            <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground text-center mb-5">
+              Your Swaps
+            </p>
+            <ul className="rounded-2xl border border-border/60 divide-y divide-border/50">
+              {swaps.map((s) => (
+                <li key={s.categoryId} className="px-4 py-3 text-sm">
+                  <span className="text-muted-foreground">{s.categoryName}: </span>
+                  <span className="text-foreground">upgraded to {s.optionName}</span>
+                </li>
+              ))}
+            </ul>
+          </section>
+        );
+      })()}
+
+      {/* ─────────────────── Planning Notes / Professional Review ─────────────────── */}
+      <section className="mt-10 mx-auto max-w-2xl">
+        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground text-center mb-5">
+          Professional Review Checklist
+        </p>
+        <ul className="rounded-2xl border border-border/60 p-6 space-y-2 text-sm text-muted-foreground">
+          {[
+            "Confirm product dimensions against bathroom layout",
+            "Confirm vanity width, plumbing rough-in, and clearances",
+            "Confirm plumbing and electrical requirements",
+            "Confirm tile quantities, pattern layout, and waste factor",
+            "Confirm shower waterproofing system and substrate",
+            "Confirm labor, demo, and installation pricing with a licensed pro",
+            "Confirm product availability and lead times before purchase",
+          ].map((line) => (
+            <li key={line} className="flex gap-2">
+              <span aria-hidden className="text-foreground/60">□</span>
+              <span>{line}</span>
+            </li>
+          ))}
+        </ul>
+        <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
+          BOBOX is a planning tool. A licensed remodeling professional should review this plan before any work begins.
+        </p>
+      </section>
+
 
       {/* Actions */}
       <div className="mt-14 flex flex-col sm:flex-row items-center justify-center gap-3">
@@ -227,7 +361,7 @@ const Preview = () => {
           disabled={saving}
           className="inline-flex items-center justify-center rounded-full bg-foreground text-background px-7 py-3 text-sm font-medium hover:bg-foreground/90 transition-colors min-w-[180px] disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          {saving ? "Saving…" : "Save design"}
+          {saving ? "Saving…" : user ? "Save plan" : "Save plan to my account"}
         </button>
         <button
           type="button"
@@ -237,6 +371,11 @@ const Preview = () => {
           Continue editing
         </button>
       </div>
+      {!user && (
+        <p className="mt-3 text-center text-xs text-muted-foreground">
+          Create an account to save this plan and return to it later.
+        </p>
+      )}
       {/* Reserved confirmation row — fixed height prevents layout jump */}
       <div className="mt-3 h-5 text-center" aria-live="polite">
         <span
