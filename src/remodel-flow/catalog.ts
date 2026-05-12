@@ -90,9 +90,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Shower Trim & Valve",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "st-chrome" },
     options: [
-      { id: "st-chrome", name: "Chrome Single-Function Trim", estPrice: 240, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
-      { id: "st-brushed", name: "Brushed Nickel Trim Kit", estPrice: 480, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "st-rainhand", name: "Matte Black Rain + Handheld", estPrice: 880, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
+      { id: "st-chrome", name: "Chrome Single-Function Trim Kit", estPrice: 240, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
+      { id: "st-brushed", name: "Brushed Nickel Shower Trim Kit", estPrice: 480, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "st-rainhand", name: "Matte Black Rain Head + Handheld Trim Kit", estPrice: 880, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
     ],
   },
   {
