@@ -120,9 +120,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Tub Fixtures",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "tf-chrome" },
     options: [
-      { id: "tf-chrome", name: "Chrome Tub Spout + Valve", estPrice: 220, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
-      { id: "tf-brushed", name: "Brushed Nickel Tub Filler", estPrice: 420, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "tf-floor", name: "Matte Black Floor-Mount Filler", estPrice: 780, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
+      { id: "tf-chrome", name: "Chrome Tub Spout + Pressure-Balance Valve", estPrice: 220, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
+      { id: "tf-brushed", name: "Brushed Nickel Deck-Mount Tub Filler", estPrice: 420, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "tf-floor", name: "Matte Black Floor-Mount Tub Filler", estPrice: 780, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
     ],
   },
 
