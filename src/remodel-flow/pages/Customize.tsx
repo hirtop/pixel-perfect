@@ -1,6 +1,6 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from "react";
 import { useFlow } from "../FlowContext";
-import { CATEGORIES, PACKAGES, TIER_BINS, getCategory, getOption } from "../catalog";
+import { CATEGORIES, CATALOG_GROUPS, PACKAGES, TIER_BINS, getCategory, getOption } from "../catalog";
 import { rank_candidates, resolvePlan, styleScore, styleMatchLabel } from "../resolver";
 import {
   MODERN_BALANCED,
