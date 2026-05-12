@@ -400,7 +400,7 @@ const Preview = () => {
 
       {/* Continuation link — subtle, only visible after a successful save */}
       {continuationLink && (
-        <div className="mt-2 flex justify-center">
+        <div className="mt-2 flex justify-center print:hidden">
           <button
             type="button"
             onClick={handleCopyLink}
@@ -422,7 +422,7 @@ const Preview = () => {
       </p>
 
       {/* AI render request foundation — UI scaffold only */}
-      <section className="mt-16 border-t border-border/60 pt-14">
+      <section className="mt-16 border-t border-border/60 pt-14 print:hidden">
         <div className="mx-auto max-w-xl text-center">
           <h2 className="text-2xl md:text-3xl font-semibold tracking-tight text-foreground">
             See a concept preview of your plan
