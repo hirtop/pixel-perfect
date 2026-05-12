@@ -144,9 +144,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Toilet",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "toilet-twopiece" },
     options: [
-      { id: "toilet-twopiece", name: "Two-Piece Elongated Toilet", estPrice: 220, material_tags: ["porcelain"], finish_tags: ["white"], bin: "budget" },
-      { id: "toilet-onepiece", name: "One-Piece Skirted Toilet", estPrice: 380, material_tags: ["porcelain"], finish_tags: ["white"], bin: "mid" },
-      { id: "toilet-smart", name: "Smart Bidet Toilet", estPrice: 620, material_tags: ["porcelain", "smart"], finish_tags: ["white"], bin: "high" },
+      { id: "toilet-twopiece", name: "Two-Piece Elongated High-Efficiency Toilet", estPrice: 220, material_tags: ["porcelain"], finish_tags: ["white"], bin: "budget" },
+      { id: "toilet-onepiece", name: "One-Piece Skirted Comfort-Height Toilet", estPrice: 380, material_tags: ["porcelain"], finish_tags: ["white"], bin: "mid" },
+      { id: "toilet-smart", name: "One-Piece Smart Bidet Toilet", estPrice: 620, material_tags: ["porcelain", "smart"], finish_tags: ["white"], bin: "high" },
     ],
   },
   {
