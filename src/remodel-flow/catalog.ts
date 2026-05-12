@@ -29,12 +29,12 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Faucet",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "fix-chrome" },
     options: [
-      { id: "fix-chrome", name: "Chrome Single-Handle Faucet", estPrice: 180, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
-      { id: "fix-brushed", name: "Brushed Nickel Widespread", estPrice: 380, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "fix-matteblack", name: "Matte Black Designer Faucet", estPrice: 720, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
+      { id: "fix-chrome", name: "Chrome Single-Handle Bathroom Faucet", estPrice: 180, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
+      { id: "fix-brushed", name: "Brushed Nickel Widespread Faucet", estPrice: 380, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "fix-matteblack", name: "Matte Black Single-Handle Designer Faucet", estPrice: 720, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
     ],
     dynamic_pool: [
-      { id: "fix-brass", name: "Unlacquered Brass Faucet", estPrice: 880, material_tags: ["brass"], finish_tags: ["natural"], bin: "high" },
+      { id: "fix-brass", name: "Unlacquered Brass Widespread Faucet", estPrice: 880, material_tags: ["brass"], finish_tags: ["natural"], bin: "high" },
     ],
   },
   {
