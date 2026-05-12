@@ -252,7 +252,7 @@ const Preview = () => {
               </div>
               <div className="flex items-baseline justify-between text-sm pt-2 border-t border-border/50">
                 <span className="text-foreground">Planning total</span>
-                <span className="text-foreground tabular-nums font-semibold">{fmt(plan.total)}</span>
+                <span className="text-foreground tabular-nums font-semibold">{fmt(itemsTotal + (plan.basePrice || 0))}</span>
               </div>
               <p className="pt-2 text-xs text-muted-foreground leading-relaxed">
                 This is a planning estimate, not a full installed remodel cost. Demo, site conditions,
