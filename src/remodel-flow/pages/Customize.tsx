@@ -483,7 +483,7 @@ const Customize = () => {
                     <div key={`sb-${b.key}`} className="flex justify-between text-xs">
                       <span className="text-muted-foreground">{b.label}</span>
                       <span className="text-muted-foreground/70 italic">
-                        {bin ? "Sourcing" : "Curated product needed"}
+                        {bin ? "Included in planning estimate" : "Curated product needed"}
                       </span>
                     </div>
                   );
