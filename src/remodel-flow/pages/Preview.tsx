@@ -155,7 +155,7 @@ const Preview = () => {
       </div>
 
       {/* Hero image — minimal frame */}
-      <div className="overflow-hidden rounded-3xl bg-muted/40">
+      <div className="overflow-hidden rounded-3xl bg-muted/40 print:hidden">
         <img
           src={heroBathroom}
           alt="Bathroom planning visual"
