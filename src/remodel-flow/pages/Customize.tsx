@@ -483,7 +483,7 @@ const Customize = () => {
                     <div key={`sb-${b.key}`} className="flex justify-between text-xs">
                       <span className="text-muted-foreground">{b.label}</span>
                       <span className="text-muted-foreground/70 italic">
-                        {bin ? "Sourcing" : "Curated product needed"}
+                        {bin ? "Included in planning estimate" : "Curated product needed"}
                       </span>
                     </div>
                   );
@@ -496,7 +496,7 @@ const Customize = () => {
                 ))}
           </div>
           <p className="mt-4 border-t border-border/60 pt-3 text-[11px] leading-relaxed text-muted-foreground/90">
-            BOBOX provides planning estimates and curated product concepts. Final pricing, fit, installation, code compliance, product availability, and labor costs require professional review.
+            Some product sourcing details are finalized in the planning summary. BOBOX provides planning estimates and curated product concepts. Final pricing, fit, installation, code compliance, product availability, and labor costs require professional review.
           </p>
         </aside>
       </div>
