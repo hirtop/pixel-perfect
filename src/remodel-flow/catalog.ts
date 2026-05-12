@@ -154,9 +154,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Accessories",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "acc-basic" },
     options: [
-      { id: "acc-basic", name: "Towel Bar + Hook + TP Holder", estPrice: 110, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
-      { id: "acc-coordinated", name: "Coordinated Hardware Set", estPrice: 220, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
-      { id: "acc-designer", name: "Designer Hardware + Niche Shelf", estPrice: 380, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
+      { id: "acc-basic", name: "Chrome Towel Bar + Hook + Paper Holder Set", estPrice: 110, material_tags: ["chrome"], finish_tags: ["polished"], bin: "budget" },
+      { id: "acc-coordinated", name: "Brushed Nickel Coordinated Hardware Set", estPrice: 220, material_tags: ["brushed_nickel"], finish_tags: ["brushed"], bin: "mid" },
+      { id: "acc-designer", name: "Matte Black Designer Hardware + Niche Shelf", estPrice: 380, material_tags: ["matte_black"], finish_tags: ["matte"], bin: "high" },
     ],
   },
 ];
