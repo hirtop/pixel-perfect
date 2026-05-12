@@ -387,7 +387,7 @@ const Preview = () => {
         </p>
       )}
       {/* Reserved confirmation row — fixed height prevents layout jump */}
-      <div className="mt-3 h-5 text-center" aria-live="polite">
+      <div className="mt-3 h-5 text-center print:hidden" aria-live="polite">
         <span
           className={cn(
             "text-xs text-muted-foreground transition-opacity duration-200",
