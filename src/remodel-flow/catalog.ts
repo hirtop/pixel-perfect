@@ -132,9 +132,9 @@ export const CATEGORIES: CatalogCategory[] = [
     name: "Floor Tile",
     swap_config: { allowed_bins: ["budget", "mid", "high", "luxury"], backup_option_id: "ft-porcelain" },
     options: [
-      { id: "ft-porcelain", name: "Wood-Look Porcelain Plank", estPrice: 480, material_tags: ["porcelain"], finish_tags: ["matte"], bin: "budget" },
-      { id: "ft-hex", name: 'Large-Format 12" Porcelain', estPrice: 880, material_tags: ["porcelain"], finish_tags: ["honed"], bin: "mid" },
-      { id: "ft-marble", name: "Marble-Look Slab Porcelain", estPrice: 1450, material_tags: ["marble", "porcelain"], finish_tags: ["honed"], bin: "high" },
+      { id: "ft-porcelain", name: "6x36 Wood-Look Porcelain Plank", estPrice: 480, material_tags: ["porcelain"], finish_tags: ["matte"], bin: "budget" },
+      { id: "ft-hex", name: '12x24 Honed Porcelain Floor Tile', estPrice: 880, material_tags: ["porcelain"], finish_tags: ["honed"], bin: "mid" },
+      { id: "ft-marble", name: "Marble-Look Porcelain Slab Floor Tile", estPrice: 1450, material_tags: ["marble", "porcelain"], finish_tags: ["honed"], bin: "high" },
     ],
   },
 
