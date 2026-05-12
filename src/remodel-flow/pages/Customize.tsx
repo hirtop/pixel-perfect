@@ -496,7 +496,7 @@ const Customize = () => {
                 ))}
           </div>
           <p className="mt-4 border-t border-border/60 pt-3 text-[11px] leading-relaxed text-muted-foreground/90">
-            Some product sourcing details are finalized in the planning summary. BOBOX provides planning estimates and curated product concepts. Final pricing, fit, installation, code compliance, product availability, and labor costs require professional review.
+            Product names and pricing are planning allowances. Final product sourcing, images, dimensions, availability, and installation details require professional review.
           </p>
         </aside>
       </div>

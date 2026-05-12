@@ -300,8 +300,7 @@ const Preview = () => {
           })}
         </div>
         <p className="mt-3 text-xs text-muted-foreground leading-relaxed">
-          Prices shown are planning allowances based on representative products. Confirm exact models, dimensions,
-          and availability with your project professional before purchase.
+          Product names and pricing are planning allowances. Final product sourcing, images, dimensions, availability, and installation details require professional review.
         </p>
       </section>
 
