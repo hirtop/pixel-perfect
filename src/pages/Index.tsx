@@ -151,17 +151,24 @@ export default function LandingPage() {
     goStartFresh();
   };
 
-  // Header CTA: signed-in users with saved projects see "Your Projects"
-  // (opens picker). Otherwise "Start a Bathroom Project". We never show
-  // an ambiguous resume-this-project button because multiple projects
-  // may exist; users explicitly pick one from the dialog.
-  const navCtaText = isProjectStateLoading
-    ? "Loading..."
-    : canContinue
-      ? "Your Projects"
-      : "Start a Bathroom Project";
+  // Header CTA: signed-out users get "Sign In" (clean entry point, no
+  // ambiguous resume state). Signed-in users with saved or in-progress
+  // work see "Your Projects" (opens picker). Otherwise "Start a
+  // Bathroom Project". Signed-out flow progress is intentionally NOT
+  // surfaced in the header to avoid showing "Your Projects" to guests.
+  const navCtaText = !user
+    ? "Sign In"
+    : isProjectStateLoading
+      ? "Loading..."
+      : canContinue
+        ? "Your Projects"
+        : "Start a Bathroom Project";
 
   const handleNavCta = () => {
+    if (!user) {
+      navigate("/auth");
+      return;
+    }
     if (isProjectStateLoading) return;
     if (canContinue) {
       // Open the picker for signed-in users with projects, regardless of
