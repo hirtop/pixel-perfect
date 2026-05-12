@@ -11,12 +11,16 @@ export const StepHeader = ({
   title: string;
   description?: string;
 }) => (
-  <div className="mb-10 max-w-2xl">
+  <div className="mb-10 md:mb-12 max-w-2xl">
     {eyebrow && (
-      <p className="text-xs uppercase tracking-[0.2em] text-muted-foreground mb-3">{eyebrow}</p>
+      <p className="text-[11px] uppercase tracking-[0.22em] text-muted-foreground mb-3">{eyebrow}</p>
     )}
-    <h1 className="text-3xl md:text-4xl font-semibold tracking-tight text-foreground">{title}</h1>
-    {description && <p className="mt-3 text-muted-foreground leading-relaxed">{description}</p>}
+    <h1 className="text-3xl md:text-[40px] md:leading-[1.1] font-semibold tracking-tight text-foreground">
+      {title}
+    </h1>
+    {description && (
+      <p className="mt-4 text-base text-muted-foreground leading-relaxed">{description}</p>
+    )}
   </div>
 );
 
