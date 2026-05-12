@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useFlow } from "../FlowContext";
-import { CATEGORIES, getOption, getPackageFor, PACKAGES } from "../catalog";
+import { CATALOG_GROUPS, getOption, getPackageFor, getPackageStartingPrice, PACKAGES } from "../catalog";
 import { PrimaryNav, StepHeader } from "../ui";
 import { getPackage, isLegacyRouteAlias } from "../package-engine/registry";
 import { parsePackageId } from "../package-engine/normalize";
@@ -15,10 +15,6 @@ const Packages = () => {
   const { state, setPackageId, setLegacyTierRoute } = useFlow();
   const pkg = state.tier ? getPackageFor(state.style, state.tier) : undefined;
 
-  // Persist explicit package selection. Only write packageId when pkg.id is
-  // a real PackageId registered in the manifest (curated or placeholder).
-  // Bare tier aliases ("balanced", "essential", "premium") flow through the
-  // legacyTierRoute field instead and never land in `state.packageId`.
   useEffect(() => {
     if (!pkg) return;
     const parsed = parsePackageId(pkg.id);
@@ -45,8 +41,9 @@ const Packages = () => {
   const tierLabel = TIER_LABEL[state.tier];
   const title = styleLabel ? `${styleLabel} — ${tierLabel} Package` : `${tierLabel} Package`;
   const description = styleLabel
-    ? `Designed in your selected ${styleLabel} style`
+    ? `A complete bathroom package designed in your selected ${styleLabel} style.`
     : PACKAGES[state.tier].tagline;
+  const startingAt = getPackageStartingPrice(state.style, state.tier);
 
   return (
     <div>
@@ -59,27 +56,49 @@ const Packages = () => {
       <div className="rounded-2xl border border-border bg-card p-6">
         <div className="flex items-baseline justify-between">
           <p className="text-sm text-muted-foreground">Starting at</p>
-          <p className="text-3xl font-semibold text-foreground">{fmt(pkg.basePrice)}</p>
+          <p className="text-3xl font-semibold text-foreground">{fmt(startingAt)}</p>
         </div>
-        <div className="mt-6 grid gap-3 md:grid-cols-2">
-          {CATEGORIES.map((cat) => {
-            const optId = pkg.defaults[cat.id];
-            const opt = optId ? getOption(cat.id, optId) : undefined;
-            return (
-              <div key={cat.id} className="flex items-center justify-between rounded-xl border border-border/60 bg-background px-4 py-3">
-                <div>
-                  <p className="text-xs uppercase tracking-widest text-muted-foreground">{cat.name}</p>
-                  <p className="text-sm text-foreground mt-0.5">{opt?.name ?? "—"}</p>
-                </div>
-                <p className="text-sm text-muted-foreground">{opt ? fmt(opt.estPrice) : ""}</p>
+        <p className="mt-1 text-xs text-muted-foreground">
+          Includes products + estimated labor. You can swap items in the next step.
+        </p>
+
+        <div className="mt-6 space-y-6">
+          {CATALOG_GROUPS.map((group) => (
+            <div key={group.label}>
+              <p className="text-xs uppercase tracking-widest text-muted-foreground mb-3">{group.label}</p>
+              <div className="grid gap-3 md:grid-cols-2">
+                {group.categoryIds.map((catId) => {
+                  const optId = pkg.defaults[catId];
+                  const opt = optId ? getOption(catId, optId) : undefined;
+                  return (
+                    <div key={catId} className="flex items-center justify-between rounded-xl border border-border/60 bg-background px-4 py-3">
+                      <div>
+                        <p className="text-xs uppercase tracking-widest text-muted-foreground">{labelFor(catId)}</p>
+                        <p className="text-sm text-foreground mt-0.5">{opt?.name ?? "Included"}</p>
+                      </div>
+                      <p className="text-sm text-muted-foreground">{opt ? fmt(opt.estPrice) : ""}</p>
+                    </div>
+                  );
+                })}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
       </div>
       <PrimaryNav back="/remodel-flow/tier" next="/remodel-flow/customize" nextLabel="Customize" />
     </div>
   );
 };
+
+// Display-only labels for the package page (we keep canonical cat.name for
+// the customize cards but show user-friendlier labels in the summary list).
+const LABEL_OVERRIDES: Record<string, string> = {
+  fixtures: "Faucet",
+  tile: "Shower Wall Tile",
+};
+import { getCategory } from "../catalog";
+function labelFor(catId: string): string {
+  return LABEL_OVERRIDES[catId] ?? getCategory(catId)?.name ?? catId;
+}
 
 export default Packages;
