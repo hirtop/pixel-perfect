@@ -149,30 +149,33 @@ const Preview = () => {
       <div className="text-center mb-10">
         <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground mb-3">Step 05</p>
         <h1 className="text-4xl md:text-5xl font-semibold tracking-tight text-foreground">
-          Your Bathroom Design
+          Your Bathroom Plan
         </h1>
-        <p className="mt-2 text-sm text-muted-foreground">Based on your selections</p>
+        <p className="mt-2 text-sm text-muted-foreground">Concept preview based on your selections</p>
       </div>
 
       {/* Hero image — minimal frame */}
       <div className="overflow-hidden rounded-3xl bg-muted/40">
         <img
           src={heroBathroom}
-          alt="Your bathroom design preview"
+          alt="Bathroom planning visual"
           width={1600}
           height={900}
           className="w-full h-auto block"
         />
+        <p className="px-4 py-2 text-center text-[11px] text-muted-foreground">
+          Planning visual — inspired by your selected package, not an exact rendering of your bathroom.
+        </p>
       </div>
 
       {/* Summary block */}
       <div className="mt-10 text-center">
-        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Total</p>
+        <p className="text-xs uppercase tracking-[0.25em] text-muted-foreground">Estimated material range + labor anchor</p>
         <p className="mt-2 text-5xl font-semibold tracking-tight text-foreground tabular-nums">
           {fmt(plan.total)}
         </p>
         <p className="mt-2 text-xs text-muted-foreground">
-          Estimated total based on your selections
+          Planning estimate only — final pricing, scope, and labor require professional review.
         </p>
 
         {state.style && (
